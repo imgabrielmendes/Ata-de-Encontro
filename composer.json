@@ -1,0 +1,8 @@
+{
+    "require": {
+        "phpmailer/phpmailer": "v6.0.0",
+        "firebase/php-jwt": "^v5.4.0",
+        "mike42/escpos-php": "^v2.0",
+        "robgridley/zebra":"^2.0.0"
+    }
+}

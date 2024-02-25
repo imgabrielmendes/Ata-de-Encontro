@@ -1,0 +1,24 @@
+.navbar {
+
+        background-color: #20315f !important;
+        border-bottom: 4px solid green;
+
+}
+
+#tittle{
+    color: white;
+}
+
+.box-primary {
+    padding: 30px 50px 30px 50px;
+    background-color: rgba(240, 240, 240, 0.41);
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+
+.div {
+    display: flex;
+    flex-wrap: wrap;
+    width: 300px;
+    background-color: blue;
+    padding: 10px;
+}
