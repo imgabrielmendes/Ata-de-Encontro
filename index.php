@@ -1,5 +1,9 @@
 <?php 
-  //Testar banco de dados
+
+
+  include ("vendor/autoload.php");
+
+  //Testar conexao com banco de dados
   if (include ("conexao.php")){
     echo "Conexão Estabecida";
 
@@ -7,27 +11,13 @@
     echo "conexão perdida";
   }
 
-   session_start();  
+  session_start();  
+  include_once ("app/acoesform.php");
 
-  //pegando as bibliotecas
-  include ("vendor/autoload.php");
-
-  //Puxando as funções que vão ser usadas no formulário
-  include ("app/acoesform.php");
+  //atribuindo funções para as variáveis
+  
  
-  //Instancie o objeto antes de usar
-  $acoesForm = new AcoesForm();
-
-
-  // atribuindo funções para as variáveis
-  //$formulario = $acoesForm->selecionarfacilitador();
-  //print_r($formulario);
-
- 
-
- echo "<br>";
- var_dump($linkando);
-
+  
 
 $arrayStatus = [
 
@@ -79,8 +69,6 @@ $arrayStatus = [
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" type="text/css" href="view/css/styles.css" media="screen" />
-
-
 
 </head>
 <body>
@@ -169,7 +157,7 @@ $arrayStatus = [
                       <input type="radio" class="objetivo" name="objetivo[]" id="consulta" value="3" checked=""> Consulta/Parecer </label></div>
 
                 <!---Horário de Término---->  
-                    <div class="col ">
+                    <div class="col-4">
                       <label for="nomeMedico"><b>Horário de Término:</b></label>
                       <br>
                       <input class="form-control " type="time" id="appt" name="appt" min="09:00" max="18:00">
@@ -190,8 +178,20 @@ $arrayStatus = [
                           <select id="select-gear" class="demo-default form-group" multiple placeholder="Select gear">
                               <option disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores da ata:</option>
                               <optgroup label="ADM">
-                                <option>FAC1</option>
-                                <option>FA21</option>
+                                <option>
+
+                                <!----<?php
+                                        foreach ($hgjg as $resMed) :
+                                    ?> 
+                                        <option value="<?php echo $resMed['nome_facilitador'] . '/' . $resMed['email_facilitador'] ?>" data-tokens="<?php echo $resMed['NOME']; ?>">
+                                            <?php echo 'CRM: ' . $resMed['PSV_CRM'] . ' - ' . $resMed['NOME']; ?>
+                                        </option>
+                                    <?php
+                                    endforeach;
+                                    ?> --->
+
+                                </option>
+                                
                               <optgroup label="Coordenação">
                                 <option>FAC1</option>
                                 <option>FA21</option>
@@ -236,7 +236,7 @@ $arrayStatus = [
                       <tr>    
 
                     <!--TENTANDO LINKAR O BOTÃO COM O MODAL "registraremail.php"-->  
-                    
+
                    <!-------------------- BOTÃO ------------------->
                   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     Registrar Email
@@ -247,26 +247,32 @@ $arrayStatus = [
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                          <h1 class="modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                           
                           <form>
                             <div class="mb-3">
+
+                            <label type="email" for="recipient-name" class="col-form-label">Nome completo:</label>
+                              <input type="text" class="form-control" id="recipient-name">
+                            </div>
+
+                            <div class="mb-3">
                               <label type="email" for="recipient-name" class="col-form-label">Informe o Email</label>
                               <input type="text" class="form-control" id="recipient-name">
                             </div>
 
-                            <div class="col">
-                              <label type="email" for="recipient-name" class="col-form-label">Informe o Email</label>
-                              <input type="text" class="form-control" id="recipient-name">
-                            </div>
-
-                            <div class="col">
-                              <label type="email" for="recipient-name" class="col-form-label">Informe o Email</label>
-                              <input type="text" class="form-control" id="recipient-name">
-                            </div>
+                            
+                            <label type="email" for="recipient-name" class="col-form-label">Informe o Cargo</label>
+                            <select type="text" class="form-control" id="nomeFacilitador">
+                              <option disabled> - Informe o Local - </option>
+                              <option>l1</option>
+                              <option>l2</option>
+                              <option>l3</option>  
+                                          
+                            </select>  
 
                           </form>
 
@@ -307,17 +313,3 @@ $arrayStatus = [
 </class>  
 </body>
 </html>
-
-<!------ ESTUDAR
-
-<div class="selectize-control multi plugin-remove_button">
-  <div class="selectize-input items not-full has-options has-items">
-    <div class="item" data-value="02 ">ASSEFAZ
-      <a href="javascript:void(0)" class="remove" tabindex="-1" title="Remove">×</a></div>
-      <div class="item" data-value="011">EXTRAS E OPCIONAIS
-        <a href="javascript:void(0)" class="remove" tabindex="-1" title="Remove">×</a>
-      </div>
-      <div class="item" data-value="033">SESEF
-        <a href="javascript:void(0)" class="remove" tabindex="-1" title="Remove">×</a>
-      </div>
-       
