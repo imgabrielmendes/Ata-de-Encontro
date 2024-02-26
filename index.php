@@ -5,7 +5,7 @@
 
   //Testar conexao com banco de dados
   if (include ("conexao.php")){
-    echo "Conexão Estabecida";
+    echo "Conexão eEstabecida";
 
   } else {
     echo "conexão perdida";
