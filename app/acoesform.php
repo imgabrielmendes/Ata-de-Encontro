@@ -4,8 +4,9 @@ namespace App\Models;
 
 class AcoesForm {
 
-    public function selecionarfacilitador() {
-        $sql = "SELECT atareu as nome_facilitador from facilitadores;";
+        public function selecionarfacilitador() {
+
+        $sql = "SELECT facilitadores as nome_facilitador from facilitadores;";
         
         try {
             $sqlconnect = Conexao::getConnSrv();
@@ -34,7 +35,7 @@ class AcoesForm {
     public function cadastrarfacilitador($nomefacilitador, $email, $cargo)
     {
 
-        $sql = "INSERT INTO atareu (nome_facilitador, email_facilitador, cargo) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO facilitadores (nome_facilitador, email_facilitador, cargo) VALUES (?, ?, ?)";
         $stmt = Conexao::getConnMy()->prepare($sql);
         $stmt->bindValue(1, $nomefacilitador['nome_facilitador']);
         $stmt->bindValue(2, $email['email_facilitador']);
