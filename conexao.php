@@ -1,53 +1,59 @@
 <?php
-namespace App\Models; // Definindo o namespace para a classe
+namespace formulario;
 
-class Conexao
-{
-    private static $instanceMy; // Variável para armazenar a instância PDO para MySQL
-    private static $instanceSrv; // Variável para armazenar a instância PDO para SQL Server
+echo "mostrando o local do banco";
 
-    /**
-     * Obtém a conexão PDO para MySQL.
-     *
-     * @return \PDO A instância PDO para MySQL.
-     * @throws \PDOException Em caso de erro na conexão.
-     */
-    public static function getConnMy()
-    {
-        if (!isset(self::$instanceMy)) {
-            try {
-                // Configurando a conexão PDO para MySQL
-                self::$instanceMy = new \PDO("mysql:host=localhost;dbname=atareu;charset=utf8", "root", '');
+$servername = "localhost";
+$database = "atareu";
+$username = "root";
+$password = "";
+// Create connection
+$conn = mysqli_connect($servername, $username, $password, $database);
+// Check connection
+if (!$conn) {
+    die("Conexão deu ruim: " . mysqli_connect_error());
+}
+echo "Conexão deu bom";
+mysqli_close($conn);
+
+
+class Conexao{
+
+    private static $instanceMy;
+    private static $instanceSrv;
+    
+
+
+    public static function getConnMy(){
+        if(!isset(self::$instanceMy)){
+            try
+            {
+                self::$instanceMy = new \PDO("mysql:host=10.1.1.57;dbname=medicos_ps;charset=utf8","bi_user", 'qwe456*');
                 self::$instanceMy->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-            } catch (\PDOException $exception) {
+            }
+            catch(PDOException $exception)
+            {
                 throw $exception;
             }
         }
         return self::$instanceMy;
     }
-
-    /**
-     * Obtém a conexão PDO para SQL Server.
-     *
-     * @return resource A instância de conexão PDO para SQL Server.
-     * @throws \PDOException Em caso de erro na conexão.
-     */
-    public static function getConnSrv()
-    {
-        if (!isset(self::$instanceSrv)) {
-            $host = "localhost";
-            $user = Array("UID" => "root", "PWD" => '', "Database" => "atareu", "CharacterSet" => "UTF-8");
-
-            // Conectando ao SQL Server usando sqlsrv_connect
+    public static function getConnSrv(){
+        if(!isset(self::$instanceSrv)){
+            $host = "10.1.3.195,50000";
+            $user = Array("UID" => "smart", "PWD" => 'SMART2018#', "Database" => "SMART","CharacterSet" => "UTF-8");
+            // $user = Array("UID" => "bi_user", "PWD" => 'bLL$Bi-2019@', "Database" => "SMART","CharacterSet" => "UTF-8");
+            
             self::$instanceSrv = sqlsrv_connect($host, $user);
 
-            if (!self::$instanceSrv) {
-                echo "A conexão não pôde ser estabelecida.<br />";
-                die(print_r(sqlsrv_errors(), true));
+            if(!self::$instanceSrv){
+                 echo "Connection could not be established.<br />";
+                 die(print_r(sqlsrv_errors(), true));
             }
         }
         return self::$instanceSrv;
     }
+
 }
 
 ?>
