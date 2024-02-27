@@ -1,31 +1,13 @@
 <?php 
-
-
+  namespace formulario;
+  
   include ("vendor/autoload.php");
-
-  //Testar conexao com banco de dados
-  if (include ("conexao.php")){
-    echo "Conexão Estabecida";
-
-  } else {
-    echo "conexão perdida";
-  }
-
-  session_start();  
   include_once ("app/acoesform.php");
 
-  //atribuindo funções para as variáveis
-  
- 
-  
+  //Testar conexao com banco de dados
+  include ("conexao.php");
 
-$arrayStatus = [
 
-  PHP_SESSION_DISABLED => "Sessões Desabilitadas",
-  PHP_SESSION_NONE => "Sessões não iniciada",
-  PHP_SESSION_ACTIVE => "Sessões iniciada",
-
-];
 
 // o numero 2 significa que foi iniciado, o 1 signifca que não
 //$status= session_start();
