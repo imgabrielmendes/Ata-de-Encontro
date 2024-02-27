@@ -3,11 +3,11 @@
   
   include ("vendor/autoload.php");
   include_once ("app/acoesform.php");
-
-  //Testar conexao com banco de dados
   include ("conexao.php");
 
-
+  $puxarform= new AcoesForm;
+  //$facilitadores=$puxarform->selecionarFacilitadores();
+  $pegarfa=$puxarform->selecionarFacilitadores();
 
 // o numero 2 significa que foi iniciado, o 1 signifca que não
 //$status= session_start();
@@ -91,9 +91,16 @@
               <label for="nomeFacilitador"><b>Informe o Local</b></label>
               <select type="text" class="form-control" id="nomeFacilitador">
                 <option disabled> - Informe o Local - </option>
-                <option>l1</option>
-                <option>l2</option>
-                <option>l3</option>              
+                  <option>
+                    <?php foreach ($pegarfa as $facarg) : ?> 
+                      <option value="<?php echo $facarg['nome_facilitador'] . $facarg['email_facilitador'] ?>" 
+                        data-tokens="<?php echo $facarg['NOME']; ?>">
+                        <?php echo $facarg['nome_facilitador'] ?>
+                      </option>
+                      <?php
+                        endforeach;
+                      ?>
+                </option>            
               </select>  
             </div>
 
@@ -166,19 +173,16 @@
                           <select id="select-gear" class="demo-default form-group" multiple placeholder="Select gear">
                               <option disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores da ata:</option>
                               <optgroup label="ADM">
-                                <option>
-
-                                <!----<?php
-                                        foreach ($hgjg as $resMed) :
-                                    ?> 
-                                        <option value="<?php echo $resMed['nome_facilitador'] . '/' . $resMed['email_facilitador'] ?>" data-tokens="<?php echo $resMed['NOME']; ?>">
-                                            <?php echo 'CRM: ' . $resMed['PSV_CRM'] . ' - ' . $resMed['NOME']; ?>
-                                        </option>
-                                    <?php
-                                    endforeach;
-                                    ?> --->
-
-                                </option>
+                              <option>
+                    <?php foreach ($pegarfa as $facarg) : ?> 
+                          <option value="<?php echo $facarg['nome_facilitador'] . $facarg['email_facilitador'] ?>" 
+                            data-tokens="<?php echo $facarg['NOME']; ?>">
+                            <?php echo $facarg['nome_facilitador'] ?>
+                          </option>
+                          <?php
+                            endforeach;
+                          ?>
+                    </option> 
                                 
                               <optgroup label="Coordenação">
                                 <option>FAC1</option>
@@ -256,10 +260,14 @@
                             <label type="email" for="recipient-name" class="col-form-label">Informe o Cargo</label>
                             <select type="text" class="form-control" id="nomeFacilitador">
                               <option disabled> - Informe o Local - </option>
-                              <option>l1</option>
-                              <option>l2</option>
-                              <option>l3</option>  
-                                          
+                              <?php
+                                        foreach ($pegarfa as $facarg) :
+                                    ?> 
+                                        <option value="<?php echo $resMed['nome_facilitador'] . '/' . $facarg['email_facilitador'] ?>" data-tokens="<?php echo $facarg['NOME']; ?>">
+                                        </option>
+                                    <?php
+                                    endforeach;
+                                    ?>
                             </select>  
 
                           </form>
