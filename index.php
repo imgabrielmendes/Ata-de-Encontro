@@ -7,7 +7,9 @@
 
   $puxarform= new AcoesForm;
   //$facilitadores=$puxarform->selecionarFacilitadores();
-  $pegarfa=$puxarform->selecionarFacilitadores();
+  $pegarfa=$puxarform->pegarfacilitador();
+  $pegarcoo=$puxarform->pegarcordenador();
+  
 
 // o numero 2 significa que foi iniciado, o 1 signifca que não
 //$status= session_start();
@@ -92,14 +94,7 @@
               <select type="text" class="form-control" id="nomeFacilitador">
                 <option disabled> - Informe o Local - </option>
                   <option>
-                    <?php foreach ($pegarfa as $facarg) : ?> 
-                      <option value="<?php echo $facarg['nome_facilitador'] . $facarg['email_facilitador'] ?>" 
-                        data-tokens="<?php echo $facarg['NOME']; ?>">
-                        <?php echo $facarg['nome_facilitador'] ?>
-                      </option>
-                      <?php
-                        endforeach;
-                      ?>
+                    Linkar algum banco de dados aqui
                 </option>            
               </select>  
             </div>
@@ -169,24 +164,38 @@
               <div class="row">
                   <form class="row">                 
                       <div class="col-5">
-                          <div class="multiselect" onclick="SelecionarFacilitador()"></div>
+                          <div class="multiselect" ></div>
                           <select id="select-gear" class="demo-default form-group" multiple placeholder="Select gear">
                               <option disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores da ata:</option>
+
+                              <!---FILTRAR APENAS FUNCIONÁRIOS DA ADM---->  
                               <optgroup label="ADM">
-                              <option>
-                    <?php foreach ($pegarfa as $facarg) : ?> 
-                          <option value="<?php echo $facarg['nome_facilitador'] . $facarg['email_facilitador'] ?>" 
-                            data-tokens="<?php echo $facarg['NOME']; ?>">
-                            <?php echo $facarg['nome_facilitador'] ?>
-                          </option>
-                          <?php
-                            endforeach;
-                          ?>
-                    </option> 
+                                <option>
+                                    <?php foreach ($pegarfa as $facarg) : ?> 
+                                      <option value="<?php echo $facarg['cargo'] . $facarg['cargo'] ?>" 
+
+                                      data-tokens="<?php echo $facarg['NOME']; ?>">
+
+                                      <?php echo $facarg['nome_facilitador'] ?>
+                                </option>
                                 
+                                  <?php endforeach ?>
+                                </option> 
+
+                          <!---FILTRAR APENAS FUNCIONÁRIOS DA Coordenação---->  
                               <optgroup label="Coordenação">
-                                <option>FAC1</option>
-                                <option>FA21</option>
+                              <option>
+                                    <?php foreach ($pegarcoo as $facarg) : ?> 
+                                      <option value="<?php echo $facarg['cargo']?>" 
+
+                                      data-tokens="<?php echo $facarg['NOME']; ?>">
+
+                                      <?php echo $facarg['nome_facilitador'] ?>
+                                </option>
+                                
+                                  <?php endforeach ?>
+                                </option> 
+
                               <optgroup label="Supervisão">
                                 <option>SUP1</option>
                                 <option>SUP1</option>
@@ -260,14 +269,6 @@
                             <label type="email" for="recipient-name" class="col-form-label">Informe o Cargo</label>
                             <select type="text" class="form-control" id="nomeFacilitador">
                               <option disabled> - Informe o Local - </option>
-                              <?php
-                                        foreach ($pegarfa as $facarg) :
-                                    ?> 
-                                        <option value="<?php echo $resMed['nome_facilitador'] . '/' . $facarg['email_facilitador'] ?>" data-tokens="<?php echo $facarg['NOME']; ?>">
-                                        </option>
-                                    <?php
-                                    endforeach;
-                                    ?>
                             </select>  
 
                           </form>

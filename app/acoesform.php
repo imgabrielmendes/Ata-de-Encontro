@@ -5,7 +5,9 @@ namespace formulario;
 
 $acoesForm = new AcoesForm();
 $resultados = $acoesForm->selecionarFacilitadores();
-print_r($resultados);
+
+$apenascargos= $acoesForm->pegarfacilitador();
+print_r($apenascargos);
 
 class AcoesForm {
 
@@ -39,7 +41,7 @@ class AcoesForm {
 
   
 
-
+    //FUNÇÃO CADASTRAR DA MODAL
     public function cadastrarfacilitador($nomefacilitador, $email, $cargo)
     {
 
@@ -50,20 +52,71 @@ class AcoesForm {
         $stmt->bindValue(3, $cargo['cargo']);
         
     }
+
+    public function cadastrarata(){
+        // INSERIR A DATA, TÍTULO E DESCRIÇÃO DA ATA PARA A TABELA ASSUNTO
+    }
     
     public function pegarfacilitador() {
 
-        $sql = "SELECT atareu FROM facilitadores;";
-        
-        $stmt = Conexao::getConnMy()->prepare($sql);
-        //$stmt->execute();
+        try {
+                   
+            //ARRUMAR UM JEITO DE DIMINUIR ISSO
+            $dbhost = 'localhost';
+            $dbname = 'atareu';
+            $dbuser = 'root';
+            $dbpass = '';
 
-        $resultado = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            // Conexão com o banco de dados usando PDO
+            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-        print_r($resultado);
+            //SELECT * FROM facilitadores
+            $sql = "SELECT nome_facilitador , cargo FROM facilitadores WHERE cargo = 'ADM';";
 
-        return $resultado;
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
 
+            print_r($sql);
+
+            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $resultados;
+
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+            
+    }
+
+    public function pegarcordenador() {
+
+        try {
+                   
+            //ARRUMAR UM JEITO DE DIMINUIR ISSO
+            $dbhost = 'localhost';
+            $dbname = 'atareu';
+            $dbuser = 'root';
+            $dbpass = '';
+
+            // Conexão com o banco de dados usando PDO
+            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            //SELECT * FROM facilitadores
+            $sql = "SELECT nome_facilitador , cargo FROM facilitadores WHERE cargo = 'Coordenador';";
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+            print_r($sql);
+
+            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $resultados;
+
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+            
     }
 
   }
