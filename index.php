@@ -75,7 +75,7 @@ $arrayStatus = [
 
 <!--BARRA DE NAVEGAÇÃO-->
   <header>
-    <nav class="navbar bg-body-tertiary br-hrg shadow">
+    <nav class="navbar">
       <div class="container">
         <a class="navbar-brand position-absolute top-100 start-0 translate-middle">
           <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
@@ -128,12 +128,15 @@ $arrayStatus = [
                 <br>
                 <input class="form-control col-12 col-md-6" type="time" id="appt" name="appt" min="09:00" max="18:00">
               </div>
-          </div>
+          
 <br>
 
-
+<br>
 <!--2° LINHA DO FORMULÁRIO DA ATA----------------------->
-          <!---ABA DE OBJETIVOS---->          
+          <!---ABA DE OBJETIVOS---->   
+          <div class="formulario_ata">
+
+                
           <div class="row ">
             <div class="col ">
               <label for="objetivo"> <b>Objetivo do Encontro:</b></label>
@@ -144,7 +147,7 @@ $arrayStatus = [
           <div class="row ">
           <div class="col ">
                       <label class="form-control">
-                      <input type="radio" class="objetivo" name="objetivo[]" id="reunião" value="1" checked=""> Reunião </label></div>
+                      <input type="radio" class="objetivo" name="objetivo[]" id="reunião" value="1" checked="">  Reunião </label></div>
 
                   
                   <div class="col">
@@ -158,14 +161,17 @@ $arrayStatus = [
 
                 <!---Horário de Término---->  
                     <div class="col-4">
-                      <label for="nomeMedico"><b>Horário de Término:</b></label>
-                      <br>
+                    <label for="nomeMedico"><b>Horário de Término:</b></label>
+                    <br>
                       <input class="form-control " type="time" id="appt" name="appt" min="09:00" max="18:00">
                     </div>
           </div>
-        </div>  
+        </div> 
+      </div> 
+      </div> 
 <br>
 <br>
+
 <!---3 ° SELEÇÃO DOS FACILITADORES + VIZUALIZAÇÃO DOS SELECIONADOS----->
 
               <!---CHECK DE FACILITADOR---->  
