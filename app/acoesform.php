@@ -2,34 +2,50 @@
 
 namespace formulario;
 
+// Exemplo de utilização:
+$acoesForm = new AcoesForm();
+$resultados = $acoesForm->selecionarFacilitadores();
 
+// Exibe os resultados
+print_r($resultados);
 
 class AcoesForm {
 
-        public function selecionarfacilitador() {
-
-        $sql = "SELECT facilitadores as nome_facilitador from facilitadores;";
-        
+    public function selecionarFacilitadores() {
         try {
-            $sqlconnect = Conexao::getConnSrv();
-            $stmt = sqlsrv_query($sqlconnect, $sql);
+            // Configurações do banco de dados
+            $dbhost = 'localhost';
+            $dbname = 'atareu';
+            $dbuser = 'root';
+            $dbpass = '';
 
-            $listafacil = [];
-            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-                $listafacil[] = $row;
-            }
+            include_once ("database.php");
+            
+            // Conexão com o banco de dados usando PDO
+            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
 
-            // Mova a impressão para fora do bloco try-catch
-            print_r($listafacil);
-            return $listafacil;
-        } catch (PDOException $e) {
+            // Configura para que o PDO lance exceções em caso de erro
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            // Query SQL para selecionar todos os registros da tabela "facilitadores"
+            $sql = "SELECT * FROM facilitadores";
+
+            // Prepara a query
+            $stmt = $pdo->prepare($sql);
+
+            // Executa a query
+            $stmt->execute();
+
+            // Obtém os resultados
+            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            // Retorna os resultados
+            return $resultados;
+        } catch (\PDOException $e) {
+            // Em caso de erro, lança a exceção
             throw $e;
         }
-
-        // A query SQL não será executada porque está após o return
-        print_r($sql);
     }
-
 
   
 
@@ -59,8 +75,6 @@ class AcoesForm {
         return $resultado;
 
     }
-
-  
 
   }
 

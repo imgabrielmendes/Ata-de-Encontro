@@ -1,9 +1,9 @@
 <?php
 require_once 'database.php';
 try {
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username,
+    $conn = new PDO("mysql:host=$dbhost;dbname=$dbname", $username,
 $password);
-    echo "Conectado a $dbname em $host com sucesso.";
+    echo "Conectado a $dbname em $dbhost com sucesso.";
 } catch (PDOException $pe) {
     die("Não foi possível se conectar ao banco de dados $dbname :" . $pe
 >getMessage());

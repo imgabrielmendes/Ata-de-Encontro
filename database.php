@@ -1,8 +1,8 @@
 <?php
-    $host = 'localhost';
+    $dbhost = 'localhost';
     $dbname = 'atareu';
-    $username = 'root';
-    $password = '';
-    $conn = mysqli_connect($servername, $username, $password,$db);
+    $dbuser = 'root';
+    $dbpass = '';
+    $conn = mysqli_connect($dbhost, $dbuser, $dbpass,$dbname);
 
 ?>

@@ -6,7 +6,7 @@ echo "mostrando o local do banco";
 $servername = "localhost";
 $database = "atareu";
 $username = "root";
-$password = "";
+$dbpass = "";
 // Create connection
 $conn = mysqli_connect($servername, $username, $password, $database);
 // Check connection
@@ -41,8 +41,8 @@ class Conexao{
     public static function getConnSrv(){
         if(!isset(self::$instanceSrv)){
             $host = "10.1.3.195,50000";
-            $user = Array("UID" => "smart", "PWD" => 'SMART2018#', "Database" => "SMART","CharacterSet" => "UTF-8");
-            // $user = Array("UID" => "bi_user", "PWD" => 'bLL$Bi-2019@', "Database" => "SMART","CharacterSet" => "UTF-8");
+            //$user = Array("UID" => "smart", "PWD" => 'SMART2018#', "Database" => "SMART","CharacterSet" => "UTF-8");
+             $user = Array("UID" => "root", "PWD" => '', "Database" => "atareu","CharacterSet" => "UTF-8");
             
             self::$instanceSrv = sqlsrv_connect($host, $user);
 
