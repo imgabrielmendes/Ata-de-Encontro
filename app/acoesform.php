@@ -1,7 +1,10 @@
 <?php
 
 namespace formulario;
+include ("conexao.php");
 
+$puxarclas = new AcoesForm;
+$puxarfun=$puxarclas->selecionarfacilitador();
 
 $acoesForm = new AcoesForm();
 $resultados = $acoesForm->selecionarFacilitadores();
@@ -11,6 +14,7 @@ print_r($apenascargos);
 
 class AcoesForm {
 
+<<<<<<< HEAD
     public function selecionarFacilitadores() {
         try {
         
@@ -37,7 +41,32 @@ class AcoesForm {
         } catch (\PDOException $e) {
             throw $e;
         }
+=======
+    public function selecionarfacilitador() {
+        
+        $sql = "SELECT facilitadores as nome_facilitador from facilitadores;";
+
+        //print_r($sql);
+    
+        try {
+            $sqlconnect = Conexao::getConnSrv();
+            $stmt = sqlsrv_query($sqlconnect, $sql);
+    
+            $listafacil = [];
+            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
+                $listafacil[] = $row;
+            }
+    
+            // Mova a impressão para fora do bloco try-catch
+            print_r($listafacil);
+            return $listafacil;
+        } catch (PDOException $e) {
+            throw $e;
+        }
+    
+>>>>>>> a9d2214 (trocando o código)
     }
+    
 
   
 

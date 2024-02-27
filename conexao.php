@@ -1,5 +1,6 @@
 <?php
 namespace formulario;
+use \PDOException;
 
 echo "mostrando o local do banco";
 
@@ -15,9 +16,6 @@ $conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 if (!$conn) {
     die("Conexão deu ruim: " . mysqli_connect_error());
 }
-echo "Conexão deu bom";
-mysqli_close($conn);
-
 
 class Conexao{
 
@@ -30,7 +28,7 @@ class Conexao{
         if(!isset(self::$instanceMy)){
             try
             {
-                self::$instanceMy = new \PDO("mysql:host=10.1.1.57;dbname=medicos_ps;charset=utf8","bi_user", 'qwe456*');
+                self::$instanceMy = new \PDO("mysql:host=localhost;dbname=atareu;charset=utf8","root", '');
                 self::$instanceMy->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             }
             catch(PDOException $exception)
@@ -44,12 +42,16 @@ class Conexao{
         if(!isset(self::$instanceSrv)){
             $host = "localhost,50000";
             //$user = Array("UID" => "smart", "PWD" => 'SMART2018#', "Database" => "SMART","CharacterSet" => "UTF-8");
+<<<<<<< HEAD
              $user = Array("UID" => "root", "PWD" => '', "Database" => "atareu","CharacterSet" => "UTF-8");
+=======
+             $user = Array("UID" => "root", "PWD" => 'root ', "atareu" => "SMART","CharacterSet" => "UTF-8");
+>>>>>>> a9d2214 (trocando o código)
             
             self::$instanceSrv = sqlsrv_connect($host, $user);
 
             if(!self::$instanceSrv){
-                 echo "Connection could not be established.<br />";
+                 echo "Conexão deu ruim.<br />";
                  die(print_r(sqlsrv_errors(), true));
             }
         }

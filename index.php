@@ -1,9 +1,15 @@
 <?php 
   namespace formulario;
-  
+
   include ("vendor/autoload.php");
   include_once ("app/acoesform.php");
+<<<<<<< HEAD
   include ("conexao.php");
+=======
+
+  //Testar conexao com banco de dados
+  
+>>>>>>> a9d2214 (trocando o código)
 
   $puxarform= new AcoesForm;
   //$facilitadores=$puxarform->selecionarFacilitadores();
