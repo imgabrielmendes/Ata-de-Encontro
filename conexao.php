@@ -42,11 +42,7 @@ class Conexao{
         if(!isset(self::$instanceSrv)){
             $host = "localhost,50000";
             //$user = Array("UID" => "smart", "PWD" => 'SMART2018#', "Database" => "SMART","CharacterSet" => "UTF-8");
-<<<<<<< HEAD
-             $user = Array("UID" => "root", "PWD" => '', "Database" => "atareu","CharacterSet" => "UTF-8");
-=======
              $user = Array("UID" => "root", "PWD" => 'root ', "atareu" => "SMART","CharacterSet" => "UTF-8");
->>>>>>> a9d2214 (trocando o código)
             
             self::$instanceSrv = sqlsrv_connect($host, $user);
 

@@ -1,5 +1,4 @@
 <?php
-
 namespace formulario;
 include ("conexao.php");
 
@@ -14,7 +13,6 @@ print_r($apenascargos);
 
 class AcoesForm {
 
-<<<<<<< HEAD
     public function selecionarFacilitadores() {
         try {
         
@@ -41,35 +39,10 @@ class AcoesForm {
         } catch (\PDOException $e) {
             throw $e;
         }
-=======
-    public function selecionarfacilitador() {
-        
-        $sql = "SELECT facilitadores as nome_facilitador from facilitadores;";
-
-        //print_r($sql);
-    
-        try {
-            $sqlconnect = Conexao::getConnSrv();
-            $stmt = sqlsrv_query($sqlconnect, $sql);
-    
-            $listafacil = [];
-            while ($row = sqlsrv_fetch_array($stmt, SQLSRV_FETCH_ASSOC)) {
-                $listafacil[] = $row;
-            }
-    
-            // Mova a impressão para fora do bloco try-catch
-            print_r($listafacil);
-            return $listafacil;
-        } catch (PDOException $e) {
-            throw $e;
-        }
-    
->>>>>>> a9d2214 (trocando o código)
     }
+
+    public function selecionarfacilitador() {}
     
-
-  
-
     //FUNÇÃO CADASTRAR DA MODAL
     public function cadastrarfacilitador($nomefacilitador, $email, $cargo)
     {
@@ -114,8 +87,8 @@ class AcoesForm {
         } catch (\PDOException $e) {
             throw $e;
         }
-            
-    }
+    }    
+    
 
     public function pegarcordenador() {
 

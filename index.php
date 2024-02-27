@@ -1,21 +1,14 @@
 <?php 
-<<<<<<< HEAD
   namespace formulario;
 
   include ("vendor/autoload.php");
   include_once ("app/acoesform.php");
-<<<<<<< HEAD
-  include ("conexao.php");
-=======
+  //include ("conexao.php");
+
 
   //Testar conexao com banco de dados
-  
->>>>>>> a9d2214 (trocando o código)
-=======
->>>>>>> 6718c073cf6c31dc778b390cb664647a8d7777ff
-
   $puxarform= new AcoesForm;
-  //$facilitadores=$puxarform->selecionarFacilitadores();
+  $facilitadores=$puxarform->selecionarFacilitadores();
   $pegarfa=$puxarform->pegarfacilitador();
   $pegarcoo=$puxarform->pegarcordenador();
   
@@ -43,7 +36,7 @@
         
     
 
-    <!--SELECTIZER---------------->
+
 
     
 
@@ -156,13 +149,12 @@
               <label><b>Add Facilitador</b></label>
               <div class="row">
                   <form class="row">                 
-<<<<<<< HEAD
+
                       <div class="col-5">
                           <div class="multiselect" ></div>
-=======
+
                       <div class="col-8">
                           <div class="multiselect" onclick="SelecionarFacilitador()"></div>
->>>>>>> 6718c073cf6c31dc778b390cb664647a8d7777ff
                           <select id="select-gear" class="demo-default form-group" multiple placeholder="Select gear">
                               <option disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores da ata:</option>
 
