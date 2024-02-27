@@ -2,6 +2,9 @@
 
         background-color: #20315f !important;
         border-bottom: 4px solid green;
+        padding: 20px;
+        align-items: center;
+        
 
 }
 
@@ -25,30 +28,24 @@
     padding: 10px;
 }
 
-.navbar{
-padding: 20px;
-align-items: center;
-}
-
 /* navbar para mobile */
-@media screen and (max-width: 768px){
+/* @media screen and (max-width: 768px){
     .navbar{
         align-items: center;
         display: inline-flex ;
         width: 100%;
-    }
-    .d-inline-block{
+    } */
+    /* .d-inline-block{
         width: 50px;
-    }
-    #tittle{
+    } */
+    /* #tittle{
         width: 80%;
         font-size:20px;
         margin: 0px;
     }
     
-}
-
-.formulario_ata{
+} */
+/* main .formulario_ata{
     margin-top: 25px;
     margin-bottom: 25px;
     display: flex;
@@ -56,32 +53,32 @@ align-items: center;
     background-color: aqua;
     justify-content: space-between;
 
-}
-@media screen and (max-width: 768px){
+} */
+/* .grid-container.horizontal {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 10px;
+    padding: 20px;
+} */
+/* @media screen and (max-width: 768px){ */
 
-    .formulario_ata{
+    /* .formulario_ata{
         flex-direction: column;
         flex-wrap: wrap;
-    }
-    .formulario_ata .col-4{
+    } */
+    /* .formulario_ata .col-4{
         width: 300px;
-    }
-    .formulario_ata .form-control{
+    } */
+    /* .formulario_ata .form-control{
         margin-bottom: 20px;
         width: 100%;
-    }
+    } */
 
-}
+/* }
 .formulario_ata .form-control{
     padding: 10px;
     display: flex;
 }
 .formulario_ata .form-control .objetivo{
     margin: 5px;
-}
-.formulario_ata .col-4{ 
-    display:block;
-    margin-right: -50px;
-
-
-}
+} */

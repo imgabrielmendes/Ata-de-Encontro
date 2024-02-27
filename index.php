@@ -1,4 +1,5 @@
 <?php 
+<<<<<<< HEAD
   namespace formulario;
 
   include ("vendor/autoload.php");
@@ -10,6 +11,8 @@
   //Testar conexao com banco de dados
   
 >>>>>>> a9d2214 (trocando o código)
+=======
+>>>>>>> 6718c073cf6c31dc778b390cb664647a8d7777ff
 
   $puxarform= new AcoesForm;
   //$facilitadores=$puxarform->selecionarFacilitadores();
@@ -38,27 +41,17 @@
     <title>Ata de encontro - HRG</title>
     <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
         
-    <script src="view/jquery-3.7.1.js"></script>
+    
 
     <!--SELECTIZER---------------->
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css" integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"/>
+    
 
-    <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
-    integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
-    crossorigin="anonymous"
-    referrerpolicy="no-referrer"></script>
     
 <!---------------------------------------------------------------->
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" type="text/css" href="view/css/styles.css" media="screen" />
+     <link rel="stylesheet" type="text/css" href="view/css/styles.css" media="screen" />
+     <link rel="stylesheet" href="view/css/bootstrap.min.css">
 
 </head>
 <body>
@@ -93,7 +86,6 @@
           <div class="col-md-12 text-center"> <h2>Formulário de Solicitação </h2> </div>
           <br><br><br>
 
-
             <!---ABA DE SELECIONAR FACILITADORES---->
             <div class="col">
               <label for="nomeFacilitador"><b>Informe o Local</b></label>
@@ -123,19 +115,16 @@
 
 <br>
 <!--2° LINHA DO FORMULÁRIO DA ATA----------------------->
-          <!---ABA DE OBJETIVOS---->   
-          <div class="formulario_ata">
-
-                
+          <!---ABA DE OBJETIVOS---->  
           <div class="row ">
             <div class="col ">
               <label for="objetivo"> <b>Objetivo do Encontro:</b></label>
             </div>
 
           <!---ABA DE MARCAÇÕES de OBJETIVOS----> 
-        <div class="row"> 
-          <div class="row ">
-          <div class="col ">
+       
+          <div class="row">
+          <div class="col">
                       <label class="form-control">
                       <input type="radio" class="objetivo" name="objetivo[]" id="reunião" value="1" checked="">  Reunião </label></div>
 
@@ -147,17 +136,15 @@
                      
                     <div class="col">
                       <label class="form-control">
-                      <input type="radio" class="objetivo" name="objetivo[]" id="consulta" value="3" checked=""> Consulta/Parecer </label></div>
+                      <input type="radio" class="objetivo" name="objetivo[]" id="consulta" value="3" checked=""> Consulta </label></div>
 
                 <!---Horário de Término---->  
-                    <div class="col-4">
-                    <label for="nomeMedico"><b>Horário de Término:</b></label>
-                    <br>
+                     
+                    <div class="col-4"> 
+                      <label for="nomeMedico"><b>Horário de Término:</b></label>
                       <input class="form-control " type="time" id="appt" name="appt" min="09:00" max="18:00">
                     </div>
           </div>
-        </div> 
-      </div> 
       </div> 
 <br>
 <br>
@@ -169,8 +156,13 @@
               <label><b>Add Facilitador</b></label>
               <div class="row">
                   <form class="row">                 
+<<<<<<< HEAD
                       <div class="col-5">
                           <div class="multiselect" ></div>
+=======
+                      <div class="col-8">
+                          <div class="multiselect" onclick="SelecionarFacilitador()"></div>
+>>>>>>> 6718c073cf6c31dc778b390cb664647a8d7777ff
                           <select id="select-gear" class="demo-default form-group" multiple placeholder="Select gear">
                               <option disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores da ata:</option>
 
