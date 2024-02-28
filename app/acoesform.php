@@ -90,7 +90,7 @@ class AcoesForm {
     }    
     
 
-    public function pegarcordenador() {
+    public function pegarcoordenador() {
 
         try {
                    

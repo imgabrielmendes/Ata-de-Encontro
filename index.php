@@ -10,7 +10,7 @@
   $puxarform= new AcoesForm;
   $facilitadores=$puxarform->selecionarFacilitadores();
   $pegarfa=$puxarform->pegarfacilitador();
-  $pegarcoo=$puxarform->pegarcordenador();
+  $pegarcoo=$puxarform->pegarcoordenador();
   
 
 // o numero 2 significa que foi iniciado, o 1 signifca que não
@@ -33,16 +33,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ata de encontro - HRG</title>
     <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
-        
-    
 
-
-
-    
-
-    
 <!---------------------------------------------------------------->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
      <link rel="stylesheet" type="text/css" href="view/css/styles.css" media="screen" />
      <link rel="stylesheet" href="view/css/bootstrap.min.css">
 
@@ -164,7 +160,7 @@
                                     <?php foreach ($pegarfa as $facarg) : ?> 
                                       <option value="<?php echo $facarg['cargo'] . $facarg['cargo'] ?>" 
 
-                                      data-tokens="<?php echo $facarg['NOME']; ?>">
+                                      data-tokens="<?php echo $facarg['nome_facilitador']; ?>">
 
                                       <?php echo $facarg['nome_facilitador'] ?>
                                 </option>
@@ -178,7 +174,7 @@
                                     <?php foreach ($pegarcoo as $facarg) : ?> 
                                       <option value="<?php echo $facarg['cargo']?>" 
 
-                                      data-tokens="<?php echo $facarg['NOME']; ?>">
+                                      data-tokens="<?php echo $facarg['nome_facilitador']; ?>">
 
                                       <?php echo $facarg['nome_facilitador'] ?>
                                 </option>
