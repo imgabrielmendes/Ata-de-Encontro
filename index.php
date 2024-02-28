@@ -224,7 +224,7 @@
             <div class="row">
             <div class="col  ">
               <div  class="lineButtons col d-flex justify-content-center align-items-center ">
-                    <a id="temaprincipal" style="margin:20px;" class="btn btn-success">Solicitar uma ata<a>
+                    <a type="input" id="botaosolicitar" style="margin:20px;" class="btn btn-success">Solicitar uma ata<a>
                       <tr>    
 
                     <!--TENTANDO LINKAR O BOTÃO COM O MODAL "registraremail.php"-->  
