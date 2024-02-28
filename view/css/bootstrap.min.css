@@ -525,7 +525,7 @@ select:disabled {
 [type=reset],
 [type=submit],
 button {
-    -webkit-appearance: button
+    -webkit-appearance: button;
 }
 
 [type=button]:not(:disabled),
@@ -859,6 +859,7 @@ progress {
     margin-top: calc(-1 * var(--bs-gutter-y));
     margin-right: calc(-.5 * var(--bs-gutter-x));
     margin-left: calc(-.5 * var(--bs-gutter-x));
+    
 }
 
 .row>* {
@@ -869,7 +870,11 @@ progress {
     padding-left: calc(var(--bs-gutter-x) * .5);
     margin-top: var(--bs-gutter-y)
 }
-
+.row_aba_de_objetivos{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
 .col {
     margin-bottom: 10px;
     flex: 1 0 0%
@@ -912,8 +917,8 @@ progress {
 
 .col-auto {
     flex: 0 0 auto;
-    width: auto
 }
+
 
 .col-1 {
     flex: 0 0 auto;
@@ -931,16 +936,13 @@ progress {
 }
 
 .col-4 {
-    position: relative;
     flex: 0 0 auto;
-    width: 220px;
-    margin-top:-25px;
-    margin-right: -50px;
+    width: 205%
 }
 
 .col-5 {
     flex: 0 0 auto;
-    width: 41.66666667%
+    width: 10%
 }
 
 .col-6 {
@@ -1084,7 +1086,8 @@ progress {
 
 @media (min-width:576px) {
     .col-sm {
-        flex: 1 0 0%
+        flex: 1 0 0%;
+        
     }
 
     .row-cols-sm-auto>* {
@@ -1144,7 +1147,7 @@ progress {
 
     .col-sm-4 {
         flex: 0 0 auto;
-        width: 33.33333333%
+        width: 100%
     }
 
     .col-sm-5 {
@@ -2602,7 +2605,8 @@ progress {
 }
 
 textarea.form-control {
-    min-height: calc(1.5em + .75rem + calc(var(--bs-border-width) * 2))
+    min-height: calc(1.5em + .75rem + calc(var(--bs-border-width) * 2));
+    
 }
 
 textarea.form-control-sm {

@@ -1,16 +1,16 @@
 <?php 
   namespace formulario;
 
-  include ("vendor/autoload.php");
-  include_once ("app/acoesform.php");
+  // include ("vendor/autoload.php");
+  // include_once ("app/acoesform.php");
   //include ("conexao.php");
 
 
   //Testar conexao com banco de dados
-  $puxarform= new AcoesForm;
-  $facilitadores=$puxarform->selecionarFacilitadores();
-  $pegarfa=$puxarform->pegarfacilitador();
-  $pegarcoo=$puxarform->pegarcoordenador();
+  // $puxarform= new AcoesForm;
+  // $facilitadores=$puxarform->selecionarFacilitadores();
+  // $pegarfa=$puxarform->pegarfacilitador();
+  // $pegarcoo=$puxarform->pegarcoordenador();
   
 
 // o numero 2 significa que foi iniciado, o 1 signifca que não
@@ -38,9 +38,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-
-     <link rel="stylesheet" type="text/css" href="view/css/styles.css" media="screen" />
+<link rel="stylesheet" href="view/css/styles.css">
      <link rel="stylesheet" href="view/css/bootstrap.min.css">
+     <link rel="stylesheet" href="view/css/bootstrap-grid.css">
+     <link rel="stylesheet" href="view/css/bootstrap-grid.min.css">
+     <link rel="stylesheet" href="view/css/bootstrap.css">
+     <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
 
 </head>
 <body>
@@ -105,17 +108,19 @@
 <br>
 <!--2° LINHA DO FORMULÁRIO DA ATA----------------------->
           <!---ABA DE OBJETIVOS---->  
-          <div class="row ">
-            <div class="col ">
-              <label for="objetivo"> <b>Objetivo do Encontro:</b></label>
-            </div>
-
+          <div class="txtaba" style="display: flex;
+    position: relative;
+    width: 95%;
+    margin:0 auto;
+    justify-content: space-between;
+    flex-wrap:wrap; ">
+               <b class="txt_objetivo" style="margin-left: -20px;">Objetivo:</b>
+                <b class="txt_horariotermino" style="" >Horário de Término:</b>
+              </div>
           <!---ABA DE MARCAÇÕES de OBJETIVOS----> 
-       
-          <div class="row">
           <div class="col">
                       <label class="form-control">
-                      <input type="radio" class="objetivo" name="objetivo[]" id="reunião" value="1" checked="">  Reunião </label></div>
+                      <input type="radio" class="objetivo" name="objetivo[]" id="reunião" value="1" checked="">  Reunião</label> </div>
 
                   
                   <div class="col">
@@ -129,12 +134,11 @@
 
                 <!---Horário de Término---->  
                      
-                    <div class="col-4"> 
-                      <label for="nomeMedico"><b>Horário de Término:</b></label>
+                    <div class="col"> 
+                      <label style="display: none;" for="form-control"> <b> Horário de Término:</b> </label>
                       <input class="form-control " type="time" id="appt" name="appt" min="09:00" max="18:00">
                     </div>
-          </div>
-      </div> 
+          
 <br>
 <br>
 
@@ -154,7 +158,7 @@
                           <select id="select-gear" class="demo-default form-group" multiple placeholder="Select gear">
                               <option disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores da ata:</option>
 
-                              <!---FILTRAR APENAS FUNCIONÁRIOS DA ADM---->  
+                              <!---FILTRAR APENAS FUNCIONÁRIOS DA ADM---->
                               <optgroup label="ADM">
                                 <option>
                                     <?php foreach ($pegarfa as $facarg) : ?> 
@@ -200,7 +204,7 @@
 
 <br>
                   <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
-                  <div class="row">     
+                  <div style="width: 100%;"  class="row">     
                       <div class="col"><b>Tema principal</b></div>
                       <br>
                       <textarea type= "text" class="form-control"></textarea> 
@@ -219,13 +223,13 @@
             <div class="row">
             <div class="col  ">
               <div  class="lineButtons col d-flex justify-content-center align-items-center ">
-                    <a class="btn btn-success">Solicitar uma ata<a>
+                    <a style="margin:20px;" class="btn btn-success">Solicitar uma ata<a>
                       <tr>    
 
                     <!--TENTANDO LINKAR O BOTÃO COM O MODAL "registraremail.php"-->  
 
                    <!-------------------- BOTÃO ------------------->
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  <button style="margin:20px;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                     Registrar Email
                   </button>
 
