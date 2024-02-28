@@ -154,9 +154,9 @@
                           <div class="multiselect" ></div>
 
                       <div class="col-8">
-                          <div class="multiselect" onclick="SelecionarFacilitador()"></div>
-                          <select id="select-gear" class="demo-default form-group" multiple placeholder="Select gear">
-                              <option disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores da ata:</option>
+                          <div class="multiselect"></div>
+                          <select id="selecionandofacilitador" class="demo-default form-group" multiple placeholder="Select gear">
+                              <option id="" disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores da ata:</option>
 
                               <!---FILTRAR APENAS FUNCIONÁRIOS DA ADM---->
                               <optgroup label="ADM">
@@ -207,14 +207,15 @@
                   <div style="width: 100%;"  class="row">     
                       <div class="col"><b>Tema principal</b></div>
                       <br>
-                      <textarea type= "text" class="form-control"></textarea> 
+                      <!-- Um campo básico --> 
+                      <input id="temaprincipal" class="form-control" type="text" />
                   </div>
 
                   <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
                   <div class="row">     
                       <div spellcheck="textarea" class="col"><b>Informe uma descrição</b></div>
                       <br>
-                      <textarea type= "text" class="form-control"></textarea> 
+                      <textarea id="descricao" type= "text" class="form-control"></textarea> 
                   </div>
 <br>
 <br>
@@ -234,7 +235,7 @@
                   </button>
 
                   <!-------------------- MODAL ------------------->
-                  <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -258,15 +259,15 @@
                             
                             <label type="email" for="recipient-name" class="col-form-label">Informe o Cargo</label>
                             <select type="text" class="form-control" id="nomeFacilitador">
-                              <option disabled> - Informe o Local - </option>
+                              <option disabled> - Informe aqui - </option>
                             </select>  
 
                           </form>
 
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">Understood</button>
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                          <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
                         </div>
                       </div>
                     </div>
@@ -276,7 +277,7 @@
 <br> <br>
 </main> 
 <!-----------------------HISTÓRICO DE ATAS-------------->
-
+/////<script> console.log (temaprincipal); </script>
 <div>
   <div>  <div class="container">
         <div class="col-md-12 text-center"> <h2> Histórico de ATAS </h2> </div> 
@@ -286,14 +287,14 @@
         <thead>
     <tr>
       <th scope="col">Data de Solicitação</th>
-      <th scope="col">Tema principal</th>
       <th scope="col">Facilitador Responsável</th>
+      <th scope="col">Tema principal</th>
       <th scope="col">*Espaço para uma doc box (ou tentar colocar uma)</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <select
+      <select>
         <th scope="row">1</th>
         <td>Mark</td>
         <td>Otto</td>
@@ -303,13 +304,13 @@
 
         </table>
             
-      </nav> </div>
-     
-      
-      
-       
-    
+      </nav> </div>  
 </div>  
+
+<script src="app/gravar.js"></script>
+
 </class>  
+
+
 </body>
 </html>
