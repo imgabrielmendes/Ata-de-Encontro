@@ -1,16 +1,16 @@
 <?php 
   namespace formulario;
 
-  // include ("vendor/autoload.php");
-  // include_once ("app/acoesform.php");
-  //include ("conexao.php");
+  include ("vendor/autoload.php");
+  include_once ("app/acoesform.php");
+  include ("conexao.php");
 
 
   //Testar conexao com banco de dados
-  // $puxarform= new AcoesForm;
-  // $facilitadores=$puxarform->selecionarFacilitadores();
-  // $pegarfa=$puxarform->pegarfacilitador();
-  // $pegarcoo=$puxarform->pegarcoordenador();
+  $puxarform= new AcoesForm;
+  $facilitadores=$puxarform->selecionarFacilitadores();
+  $pegarfa=$puxarform->pegarfacilitador();
+  $pegarcoo=$puxarform->pegarcoordenador();
   
 
 // o numero 2 significa que foi iniciado, o 1 signifca que não
@@ -224,13 +224,13 @@
             <div class="row">
             <div class="col  ">
               <div  class="lineButtons col d-flex justify-content-center align-items-center ">
-                    <a style="margin:20px;" class="btn btn-success">Solicitar uma ata<a>
+                    <a id="temaprincipal" style="margin:20px;" class="btn btn-success">Solicitar uma ata<a>
                       <tr>    
 
                     <!--TENTANDO LINKAR O BOTÃO COM O MODAL "registraremail.php"-->  
 
                    <!-------------------- BOTÃO ------------------->
-                  <button style="margin:20px;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  <button style="margin:20px;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
                     Registrar Email
                   </button>
 

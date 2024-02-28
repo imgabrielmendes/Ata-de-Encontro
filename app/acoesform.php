@@ -1,6 +1,7 @@
 <?php
 namespace formulario;
-include ("conexao.php");
+
+//include ("conexao.php");
 
 $puxarclas = new AcoesForm;
 $puxarfun=$puxarclas->selecionarfacilitador();
