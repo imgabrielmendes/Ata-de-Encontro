@@ -3,24 +3,32 @@ var temaprincipal = document.getElementById("temaprincipal");
 var facilitadores = document.getElementById("selecionandofacilitador");
 
 
-console.log (facilitadores);
+//console.log (facilitadores);
 
-function gravando(){
-    alert('A função foi ativada!');
-}
-gravarinformacoes.addEventListener('click', gravando);
+// Tentando puxar o que vai ser executado após o click do botão
+    function gravando(temaprincipal){
+
+        // Linkando a variável da função com a id da textarea dentro do index
+        var temaprincipal = document.getElementById("temaprincipal").value;
+        
+        //trim() usado para verificar se o campo está vazio.
+        if (temaprincipal.trim() === ""){
+
+            window.alert("a textarea tá vazia");
+
+        }   else {
+                window.alert("Identifiquei, a text foi:" . temaprincipal)};
+
+        console.log("a função 'gravando' foi puxada");
+
+        return gravando;
+        
+    } gravarinformacoes.addEventListener('click', gravando);
 
 // ---------------------------------------------------------------------
 
 function mostrartema (temaprincipal){
-    if (temaprincipal !==""){
-        window.document.write("Seu tema principal é" + temaprincipal.innertext);
-    } 
-    else {
-        window.document.write("Funçaõ não encontrada")
-    };
-
-    return mostrartema;
+  
 }
 
 

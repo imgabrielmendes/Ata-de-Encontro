@@ -201,9 +201,10 @@
 <br>
                   <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
                   <div class="row">     
-                      <div class="col"><b>Tema principal</b></div>
+                      <div class="col"><b>Informe o tema principal</b></div>
                       <br>
-                      <textarea id="temaprincipal"  type= "text" class="form-control"></textarea> 
+                      <!-- Um campo básico --> 
+                      <input id="temaprincipal" class="form-control" type="text" />
                   </div>
 
                   <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
@@ -272,7 +273,7 @@
 <br> <br>
 </main> 
 <!-----------------------HISTÓRICO DE ATAS-------------->
-<script> console.log (temaprincipal); </script>
+/////<script> console.log (temaprincipal); </script>
 <div>
   <div>  <div class="container">
         <div class="col-md-12 text-center"> <h2> Histórico de ATAS </h2> </div> 
