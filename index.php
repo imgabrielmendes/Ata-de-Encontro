@@ -219,7 +219,7 @@
             <div class="row">
             <div class="col  ">
               <div  class="lineButtons col d-flex justify-content-center align-items-center ">
-                    <a href="app/abrirata.php" class="btn btn-success">Solicitar uma ata<a>
+                    <a class="btn btn-success">Solicitar uma ata<a>
                       <tr>    
 
                     <!--TENTANDO LINKAR O BOTÃO COM O MODAL "registraremail.php"-->  
@@ -270,20 +270,34 @@
               </div>
             
 <br> <br>
-
+</main> 
 <!-----------------------HISTÓRICO DE ATAS-------------->
 
-<div class="row">
-  <div>  <div class="container-fluid">
+<div>
+  <div>  <div class="container">
         <div class="col-md-12 text-center"> <h2> Histórico de ATAS </h2> </div> 
         <nav>    
-          <div class="table shadow d-flex justify-content-center align-items-center">
-            <tr>aba de data</tr>
-            <tr>título da ata</tr>
-            <tr>algum código de indetificação</tr>
-            <tr>informação</tr>
-            <tr>caixa de doc para importar arquivo da ATA</tr>
-            </div>
+        <table class="table table-striped">
+
+        <thead>
+    <tr>
+      <th scope="col">Data de Solicitação</th>
+      <th scope="col">Tema principal</th>
+      <th scope="col">Facilitador Responsável</th>
+      <th scope="col">*Espaço para uma doc box (ou tentar colocar uma)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <select
+        <th scope="row">1</th>
+        <td>Mark</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+      </select>  
+    </tr>
+
+        </table>
             
       </nav> </div>
      
@@ -291,7 +305,6 @@
       
        
     
-</main> 
 </div>  
 </class>  
 </body>
