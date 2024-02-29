@@ -25,6 +25,7 @@ var facilitadores = document.getElementById("selecionandofacilitador");
         } gravarinformacoes.addEventListener('click', gravando);
     
 /////// COMANDO PARA ENVIAR AS INFORMAÇÕES DO BOTÃO PARA O BANCO DE DADOS
+
         // Quando o botão é clicado
         $('#botaosolicitar').click(function() {
 
@@ -47,8 +48,11 @@ var facilitadores = document.getElementById("selecionandofacilitador");
                     console.error('Erro na solicitação AJAX:', error);
                 }
             });
-        });
-    }
+        };
+        }
+    
+
+
 // ---------------------------------------------------------------------
 
 function mostrartema (temaprincipal){
