@@ -3,6 +3,6 @@
     $dbname = 'atareu';
     $dbuser = 'root';
     $dbpass = '';
-    $conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+    $conexao = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
 ?>

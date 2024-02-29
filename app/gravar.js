@@ -1,65 +1,45 @@
 var gravarinformacoes = document.getElementById("botaosolicitar");
 var temaprincipal = document.getElementById("temaprincipal");
 var facilitadores = document.getElementById("selecionandofacilitador");
+var conteudo; 
 
 
-//console.log (facilitadores);
+function gravando() {
 
-// Tentando puxar o que vai ser executado após o click do botão
-    function gravando(temaprincipal){
+    // Linkando a variável da função com a id da textarea dentro do index
+    var temaprincipal = document.getElementById("temaprincipal");
+    conteudo = temaprincipal.value;
 
-        // Linkando a variável da função com a id da textarea dentro do index
-        var temaprincipal = document.getElementById("temaprincipal");
-        var conteudo = temaprincipal.value;
+    // trim() usado para verificar se o campo está vazio.
+    if (conteudo.trim() === "") {
+        window.alert("A textarea está vazia");
+    } else {
+        window.alert("Identifiquei, o texto foi: " + conteudo);
+        console.log("(1) A function 'gravando()' foi chamada");
 
-        //console.log(conteudo);
+        
+// CÓDIGO AJAX QUE VAI ENVIAR AS INFORMAÇÕES DAS FUNCTION PARA O BANCO DE DADOS
 
-        //trim() usado para verificar se o campo está vazio.
-        if (conteudo.trim() === ""){
-            window.alert("a textarea tá vazia");
-        }   else {
-                window.alert("Identifiquei, a text foi: " + conteudo)};
-                    console.log("a função 'gravando' foi puxada");
-                    
-                        return gravando;
-        } gravarinformacoes.addEventListener('click', gravando);
-    
-/////// COMANDO PARA ENVIAR AS INFORMAÇÕES DO BOTÃO PARA O BANCO DE DADOS
+  
+        if (conteudo !== "") {
 
-        // Quando o botão é clicado
-        $('#botaosolicitar').click(function() {
-
-             if (conteudo !=="") {
-            // Faz uma solicitação AJAX para o arquivo PHP no servidor
             $.ajax({
                 url: 'enviarprobanco.php',
                 method: 'POST',
-                data: 
-                { 
-                    conteudo: conteudo
-                },
+                data: { informacao: "enviar" },
 
-                 success: function(response) {
-                    console.log("Deu bom! Ele está enviando para o arquivo")
+
+                success: function(response) {
+                    console.log("(2) Deu bom! AJAX está enviando");
                     console.log(response);
                 },
-
                 error: function(error) {
                     console.error('Erro na solicitação AJAX:', error);
                 }
             });
-        };
         }
-    
-
-
-// ---------------------------------------------------------------------
-
-function mostrartema (temaprincipal){
-  
+    }
 }
 
-
-
-
-//temaprincipal - 
+// Adiciona um ouvinte de evento ao botão
+gravarinformacoes.addEventListener('click', gravando);
