@@ -273,7 +273,13 @@
                     </div>
                   </div>
               </div>
-            
+
+<!--- COMANDO PARA ENVIAR AS INFORMAÇÕES DO BOTÃO PARA O BANCO DE DADOS----->
+
+              <script>
+      
+    </script>
+
 <br> <br>
 </main> 
 <!-----------------------HISTÓRICO DE ATAS-------------->
