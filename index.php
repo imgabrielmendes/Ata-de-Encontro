@@ -282,11 +282,13 @@
 
 <br> <br>
 </main> 
+
 <!-----------------------HISTÓRICO DE ATAS-------------->
-/////<script> console.log (temaprincipal); </script>
+
 <div>
   <div>  <div class="container">
         <div class="col-md-12 text-center"> <h2> Histórico de ATAS </h2> </div> 
+        <br>
         <nav>    
         <table class="table table-striped">
 
@@ -300,12 +302,12 @@
   </thead>
   <tbody>
     <tr>
-      <select>
+     
         <th scope="row">1</th>
         <td>Mark</td>
         <td>Otto</td>
         <td>@mdo</td>
-      </select>  
+    
     </tr>
 
         </table>

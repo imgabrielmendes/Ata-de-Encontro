@@ -4,8 +4,8 @@ var facilitadores = document.getElementById("selecionandofacilitador");
 var conteudo; 
 
 
-function gravando() {
 
+function gravando() {
     // Linkando a variável da função com a id da textarea dentro do index
     var temaprincipal = document.getElementById("temaprincipal");
     conteudo = temaprincipal.value;
@@ -16,17 +16,16 @@ function gravando() {
     } else {
         window.alert("Identifiquei, o texto foi: " + conteudo);
         console.log("(1) A function 'gravando()' foi chamada");
+   
 
-        
 // CÓDIGO AJAX QUE VAI ENVIAR AS INFORMAÇÕES DAS FUNCTION PARA O BANCO DE DADOS
 
-  
         if (conteudo !== "") {
 
             $.ajax({
                 url: 'enviarprobanco.php',
                 method: 'POST',
-                data: { informacao: "enviar" },
+                data: { informacao: "enviar"},
 
 
                 success: function(response) {

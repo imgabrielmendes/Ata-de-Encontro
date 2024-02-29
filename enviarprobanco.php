@@ -1,7 +1,7 @@
 <?php
 include 'database.php';
-
 session_start();
+
 $conteudo = $_POST['informacao'];
 
 if ($conteudo == "enviar") {
@@ -22,4 +22,7 @@ if ($conteudo == "enviar") {
 
     mysqli_close($conexao);
 } 
+
+var_dump($conteudo);
+
 ?>
