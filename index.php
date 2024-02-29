@@ -6,7 +6,7 @@
   include ("conexao.php");
 
 
-  //Testar conexao com banco de dados
+  // Testar conexao com banco de dados
   $puxarform= new AcoesForm;
   $facilitadores=$puxarform->selecionarFacilitadores();
   $pegarfa=$puxarform->pegarfacilitador();
@@ -51,13 +51,13 @@
 <!--BARRA DE NAVEGAÇÃO-->
   <header>
     <nav class="navbar">
-      <div class="container">
-        <a class="navbar-brand position-absolute top-100 start-0 translate-middle">
-          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
-            <img alt="Logo" width="40%" height="40%" class="d-inline-block align-text-top"
+      <div id="container">
+        <div class="container_align"> 
+          <a  href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
+            <img alt="Logo" class="logo_hospital"
           src="view\img\Logobordab.png"></a>
-          <h1 id="tittle" class="container d-flex justify-content-center align-items-center text-light">Ata de Encontro</h1>
-              
+          <h1 id="tittle" class="">Ata de Encontro</h1>
+        </div>      
       </div>
     </nav>
   </header>
@@ -108,14 +108,14 @@
 <br>
 <!--2° LINHA DO FORMULÁRIO DA ATA----------------------->
           <!---ABA DE OBJETIVOS---->  
-          <div class="txtaba" style="display: flex;
+          <div id="txtaba" style="display: flex;
     position: relative;
     width: 95%;
     margin:0 auto;
     justify-content: space-between;
     flex-wrap:wrap; ">
-               <b class="txt_objetivo" style="margin-left: -20px;">Objetivo:</b>
-                <b class="txt_horariotermino" style="" >Horário de Término:</b>
+               <b class="txt-objetivo" >Objetivo:</b>
+                <b class="txt-horariotermino" >Horário de Término:</b>
               </div>
           <!---ABA DE MARCAÇÕES de OBJETIVOS----> 
           <div class="col">
@@ -135,7 +135,7 @@
                 <!---Horário de Término---->  
                      
                     <div class="col"> 
-                      <label style="display: none;" for="form-control"> <b> Horário de Término:</b> </label>
+                      <label class="horario-termino" for="form-control"> <b> Horário de Término:</b> </label>
                       <input class="form-control " type="time" id="appt" name="appt" min="09:00" max="18:00">
                     </div>
           
