@@ -34,9 +34,12 @@ function gravando() {
 
 
                 success: function(response) {
+
                     console.log("(2) Deu bom! AJAX está enviando");
                     console.log(response);
+
                 },
+                
                 error: function(error) {
                     console.error('Erro na solicitação AJAX:', error);
                 }
