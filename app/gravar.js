@@ -1,7 +1,13 @@
+// Pegar inputs 
 var gravarinformacoes = document.getElementById("botaosolicitar");
 var temaprincipal = document.getElementById("temaprincipal");
+var data = document.getElementById("datainicio").value;
+
+
+// Pegar seletores
 var facilitadores = document.getElementById("selecionandofacilitador");
-var conteudo = temaprincipal.value; 
+var horainic = document.getElementById("horainicio").value;
+var horaterm = document.getElementById("horaterm");
 
 
 
@@ -10,26 +16,47 @@ function gravando() {
     var temaprincipal = document.getElementById("temaprincipal");
     conteudo = temaprincipal.value;
 
+    var horainic = document.getElementById("horainicio").value;
+    var data = document.getElementById("datainicio").value;
+    //console.log(data);
+
+
+    // CRIANDO CONDIÇÕES PARA QUE SÓ ENVIE PARA O AJAX SE TUDO ESTIVER PREENCHIDO
     // trim() usado para verificar se o campo está vazio.
+
     if (conteudo.trim() === "") {
+
         window.alert("A textarea está vazia");
-    } else {
-        window.alert("Identifiquei, o texto foi: " + conteudo);
+    } 
+
+    if (horainic.trim() === "") {
+
+        window.alert("O hórario de inicio está vazio");
+
+    } 
+
+    if (data.trim() === "") {
+
+        window.alert("Você não inseriu uma data para a ata");
+
+    } 
+        else {
+        window.alert("Identifiquei, o texto foi: <br>" + conteudo + " e seu horário é: <br>" + horainic + " e seu horário é:<br>" + data);
+
         console.log("(1) A function 'gravando()' foi chamada");
    
 
 // CÓDIGO AJAX QUE VAI ENVIAR AS INFORMAÇÕES DAS FUNCTION PARA O BANCO DE DADOS
 
-        if (conteudo !== "") {
+        if (conteudo !== "" && horainic !=="" && data !=="") {
 
             $.ajax({
                 url: 'enviarprobanco.php',
                 method: 'POST',
-                data: { 
-
-                        informacao: "enviar",
-                        texto: conteudo
-            
+                data: {                        
+                        texto: conteudo,
+                        horai: horainic,
+                        datainic: data
                       },
 
 

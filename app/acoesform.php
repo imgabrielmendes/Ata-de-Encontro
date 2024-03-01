@@ -10,9 +10,41 @@ $acoesForm = new AcoesForm();
 $resultados = $acoesForm->selecionarFacilitadores();
 
 $apenascargos= $acoesForm->pegarfacilitador();
-print_r($apenascargos);
+//print_r($apenascargos);
 
 class AcoesForm {
+
+    public function pegarlocais(){
+
+        
+        try {
+                   
+            //ARRUMAR UM JEITO DE DIMINUIR ISSO
+            $dbhost = 'localhost';
+            $dbname = 'atareu';
+            $dbuser = 'root';
+            $dbpass = '';
+
+            // Conexão com o banco de dados usando PDO
+            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            //SELECT * FROM facilitadores
+            $sql = "SELECT locais FROM locais;";
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+            //print_r($sql);
+
+            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $resultados;
+
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+
+    }
 
     public function selecionarFacilitadores() {
         try {
@@ -80,7 +112,7 @@ class AcoesForm {
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
 
-            print_r($sql);
+            //print_r($sql);
 
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             return $resultados;
@@ -111,7 +143,7 @@ class AcoesForm {
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
 
-            print_r($sql);
+            //print_r($sql);
 
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             return $resultados;

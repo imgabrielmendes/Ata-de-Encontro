@@ -1,9 +1,6 @@
 <?php
 namespace formulario;
 use \PDOException;
-
-echo "mostrando o local do banco";
-
 $dbhost = "localhost";
 $dbname = "atareu";
 $dbuser = "root";

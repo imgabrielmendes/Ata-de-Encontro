@@ -9,8 +9,13 @@
   // Testar conexao com banco de dados
   $puxarform= new AcoesForm;
   $facilitadores=$puxarform->selecionarFacilitadores();
+
+  // funções de encotrar pessoas
   $pegarfa=$puxarform->pegarfacilitador();
   $pegarcoo=$puxarform->pegarcoordenador();
+
+  // Puxar local
+  $pegarlocal=$puxarform->pegarlocais();
   
 
 // o numero 2 significa que foi iniciado, o 1 signifca que não
@@ -78,21 +83,27 @@
           <div class="col-md-12 text-center"> <h2>Formulário de Solicitação </h2> </div>
           <br><br><br>
 
-            <!---ABA DE SELECIONAR FACILITADORES---->
+            <!--- ABA DE SELECIONAR LOCAL ---->
             <div class="col">
               <label for="nomeFacilitador"><b>Informe o Local</b></label>
               <select type="text" class="form-control" id="nomeFacilitador">
                 <option disabled> - Informe o Local - </option>
-                  <option>
-                    Linkar algum banco de dados aqui
+
+                  <option> <?php foreach ($pegarlocal as $locais) : ?> 
+
+                        <option value="<?php echo $locais['locais']?>" 
+                        data-tokens="<?php echo $locais['locais']; ?>">
+                        <?php echo $locais['locais'] ?>
+
+                            <?php endforeach ?>
                 </option>            
               </select>  
             </div>
 
               <!---ABA DE DATA---->
               <div class="col">
-                <label for="nomeMedico"><b>Data</b></label>
-                <input class="form-control col-12 col-md-6" placeholder="dd-mm-aaaa" type="date">
+                <label ><b>Data</b></label>
+                <input id="datainicio"class="form-control col-12 col-md-6" placeholder="dd-mm-aaaa" type="date">
               </div>
               
 
@@ -100,7 +111,7 @@
               <div class="col">
                 <label for="nomeMedico"><b>Horário de Início:</b></label>
                 <br>
-                <input class="form-control col-12 col-md-6" type="time" id="appt" name="appt" min="09:00" max="18:00">
+                <input class="form-control col-12 col-md-6" type="time" id="horainicio" name="appt" min="09:00" max="18:00">
               </div>
           
 <br>
@@ -136,7 +147,7 @@
                      
                     <div class="col"> 
                       <label class="horario-termino" for="form-control"> <b> Horário de Término:</b> </label>
-                      <input class="form-control " type="time" id="appt" name="appt" min="09:00" max="18:00">
+                      <input class="form-control " type="time" id="horaterm" name="appt" min="13:00" max="12:00">
                     </div>
           
 <br>
@@ -162,7 +173,7 @@
                               <optgroup label="ADM">
                                 <option>
                                     <?php foreach ($pegarfa as $facarg) : ?> 
-                                      <option value="<?php echo $facarg['cargo'] . $facarg['cargo'] ?>" 
+                                      <option value="<?php echo $facarg['cargo']?>" 
 
                                       data-tokens="<?php echo $facarg['nome_facilitador']; ?>">
 
@@ -175,16 +186,15 @@
                           <!---FILTRAR APENAS FUNCIONÁRIOS DA Coordenação---->  
                               <optgroup label="Coordenação">
                               <option>
-                                    <?php foreach ($pegarcoo as $facarg) : ?> 
-                                      <option value="<?php echo $facarg['cargo']?>" 
+                                    <?php foreach ($pegarcoo as $coordenador) : ?> 
 
-                                      data-tokens="<?php echo $facarg['nome_facilitador']; ?>">
+                                      <option value="<?php echo $coordenador['cargo']?>" 
+                                      data-tokens="<?php echo $coordenador['nome_facilitador']; ?>">
+                                      <?php echo $coordenador['nome_facilitador'] ?>
 
-                                      <?php echo $facarg['nome_facilitador'] ?>
-                                </option>
-                                
-                                  <?php endforeach ?>
-                                </option> 
+                                      </option>
+                                        <?php endforeach ?>
+                                      </option> 
 
                               <optgroup label="Supervisão">
                                 <option>SUP1</option>
@@ -205,7 +215,7 @@
 <br>
                   <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
                   <div style="width: 100%;"  class="row">     
-                      <div class="col"><b>Tema principal</b></div>
+                      <div class="col"><b>Tema principal (Conteúdo Abordado)</b></div>
                       <br>
                       <!-- Um campo básico --> 
                       <input id="temaprincipal" class="form-control" type="text" />
@@ -213,7 +223,7 @@
 
                   <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
                   <div class="row">     
-                      <div spellcheck="textarea" class="col"><b>Informe uma descrição</b></div>
+                      <div spellcheck="textarea" class="col"><b>Informe uma descrição (Deliberações)</b></div>
                       <br>
                       <textarea id="descricao" type= "text" class="form-control"></textarea> 
                   </div>
