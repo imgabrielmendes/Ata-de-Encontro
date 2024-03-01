@@ -1,7 +1,7 @@
 var gravarinformacoes = document.getElementById("botaosolicitar");
 var temaprincipal = document.getElementById("temaprincipal");
 var facilitadores = document.getElementById("selecionandofacilitador");
-var conteudo; 
+var conteudo = temaprincipal.value; 
 
 
 
@@ -25,7 +25,12 @@ function gravando() {
             $.ajax({
                 url: 'enviarprobanco.php',
                 method: 'POST',
-                data: { informacao: "enviar"},
+                data: { 
+
+                        informacao: "enviar",
+                        texto: conteudo
+            
+                      },
 
 
                 success: function(response) {

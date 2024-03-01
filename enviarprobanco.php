@@ -2,27 +2,29 @@
 include 'database.php';
 session_start();
 
-$conteudo = $_POST['informacao'];
+// Verifica se a variável 'texto' foi enviada através do método POST
+if (isset($_POST['texto'])) {
 
-if ($conteudo == "enviar") {
+    $conteudo = mysqli_real_escape_string($conexao, $_POST['texto']);
 
-    
-    $enviarbanco = "INSERT INTO assunto (texto) VALUES ('$conteudo')";
+    // Verifica se a variável $conteudo não está vazia
+    if ($conteudo !== "") {
 
-    if (mysqli_query($conexao, $enviarbanco)) {
+        $enviarbanco = "INSERT INTO assunto (texto) VALUES ('$conteudo')";
 
-		echo '(3) RECEBEU E ENVIOU PRO BANCO';
-        echo json_encode(array("statusCode" => 200, "message" => "Comando de envio para o banco funcionou"));
+        if (mysqli_query($conexao, $enviarbanco)) {
+            echo '(3) RECEBEU E ENVIOU PRO BANCO';
+            echo json_encode(array("statusCode" => 200, "message" => "Comando de envio para o banco funcionou"));
+        } else {
+            echo "(X) A marcação do AJAX não foi identificada";
+            echo json_encode(array("statusCode" => 201, "message" => "Erro ao executar o comando SQL: " . mysqli_error($conexao)));
+        }
 
+        mysqli_close($conexao);
     } else {
-
-		echo "(X) A marcação do AJAX não foi identificada";
-        echo json_encode(array("statusCode" => 201, "message" => "Erro ao executar o comando SQL: " . mysqli_error($conexao)));
+        echo json_encode(array("statusCode" => 202, "message" => "O conteúdo está vazio"));
     }
-
-    mysqli_close($conexao);
-} 
-
-var_dump($conteudo);
-
+} else {
+    echo json_encode(array("statusCode" => 203, "message" => "Variável 'texto' não encontrada na solicitação POST"));
+}
 ?>
