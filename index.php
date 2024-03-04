@@ -1,33 +1,33 @@
 <?php 
   namespace formulario;
 
-  include ("vendor/autoload.php");
-  include_once ("app/acoesform.php");
-  include ("conexao.php");
+//   include ("vendor/autoload.php");
+//   include_once ("app/acoesform.php");
+//   include ("conexao.php");
 
 
-  // Testar conexao com banco de dados
-  $puxarform= new AcoesForm;
-  $facilitadores=$puxarform->selecionarFacilitadores();
+//   //Testar conexao com banco de dados
+//   $puxarform= new AcoesForm;
+//   $facilitadores=$puxarform->selecionarFacilitadores();
 
-  // funções de encotrar pessoas
-  $pegarfa=$puxarform->pegarfacilitador();
-  $pegarcoo=$puxarform->pegarcoordenador();
+//   // funções de encotrar pessoas
+//   $pegarfa=$puxarform->pegarfacilitador();
+//   $pegarcoo=$puxarform->pegarcoordenador();
 
-  // Puxar local
-  $pegarlocal=$puxarform->pegarlocais();
+//   // Puxar local
+//   $pegarlocal=$puxarform->pegarlocais();
   
 
-// o numero 2 significa que foi iniciado, o 1 signifca que não
-//$status= session_start();
-//$name = session_name();
+// // o numero 2 significa que foi iniciado, o 1 signifca que não
+// $status= session_start();
+// $name = session_name();
 
-//echo "<pre>"; print_r($status); echo "</pre>";
-//echo "<pre>"; print_r($name); echo "</pre>";
+// echo "<pre>"; print_r($status); echo "</pre>";
+// echo "<pre>"; print_r($name); echo "</pre>";
 
 
-//$start=session_start();
-//echo "<pre>"; print_r($arrayStatus[$status] ?? ''); echo "</pre>";
+// $start=session_start();
+// echo "<pre>"; print_r($arrayStatus[$status] ?? ''); echo "</pre>";
 
 ?>
 
@@ -160,7 +160,7 @@
 
               <label><b>Add Facilitador</b></label>
               <div class="row">
-                  <form class="row">                 
+                  <form class="row-addfacilitador">                 
 
                       <div class="col-5">
                           <div class="multiselect" ></div>
@@ -168,7 +168,7 @@
                       <div class="col-8">
                           <div class="multiselect"></div>
                           <select id="selecionandofacilitador" class="demo-default form-group" multiple placeholder="Select gear">
-                              <option id="" disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores da ata:</option>
+                              <option id="" disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores:</option>
 
                               <!---FILTRAR APENAS FUNCIONÁRIOS DA ADM---->
                               <optgroup label="ADM">
@@ -204,7 +204,7 @@
                           </div>
 
                         <!---CHECK DE FACILITADOR---->  
-                        <div class="col-7">
+                        <div class="col-7-facilitador">
                         <div class="multiselect"></div>
                           <select class="form-control">
                             <option disabled> <?php  ?> </option>    
@@ -215,8 +215,8 @@
 
 <br>
                   <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
-                  <div style="width: 100%;"  class="row">     
-                      <div class="col"><b>Tema principal (Conteúdo Abordado)</b></div>
+                  <div   class="row">     
+                      <div class="col" ><b>Tema principal (Conteúdo Abordado)</b></div>
                       <br>
                       <!-- Um campo básico --> 
                       <input id="temaprincipal" class="form-control" type="text" />
@@ -234,14 +234,14 @@
             <!--BOTÕES-->
             <div class="row">
             <div class="col  ">
-              <div  class="lineButtons col d-flex justify-content-center align-items-center ">
-                    <a type="input" id="botaosolicitar" style="margin:20px;" class="btn btn-success">Solicitar uma ata<a>
+              <div  class="btn-atas">
+                    <a type="input" id="botaosolicitar"  class="btn btn-success">Solicitar uma ata<a>
                       <tr>    
 
                     <!--TENTANDO LINKAR O BOTÃO COM O MODAL "registraremail.php"-->  
 
                    <!-------------------- BOTÃO ------------------->
-                  <button style="margin:20px;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
+                  <button id="botaoregistrar"  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
                     Registrar Email
                   </button>
 

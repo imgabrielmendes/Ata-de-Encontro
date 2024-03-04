@@ -174,7 +174,8 @@
 
 .col-7 {
     flex: 0 0 auto;
-    width: 58.33333333%
+    width: 58.3333333%;
+    background-color: aquamarine;
 }
 
 .col-8 {
