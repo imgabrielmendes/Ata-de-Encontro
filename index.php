@@ -120,36 +120,37 @@
 <!--2° LINHA DO FORMULÁRIO DA ATA----------------------->
           <!---ABA DE OBJETIVOS---->  
           <div id="txtaba" style="display: flex;
-    position: relative;
-    width: 95%;
-    margin:0 auto;
-    justify-content: space-between;
-    flex-wrap:wrap; ">
+              position: relative;
+              width: 95%;
+              margin:0 auto;
+              justify-content: space-between;
+              flex-wrap:wrap; ">
                <b class="txt-objetivo" >Objetivo:</b>
                 <b class="txt-horariotermino" >Horário de Término:</b>
               </div>
           <!---ABA DE MARCAÇÕES de OBJETIVOS----> 
+          <form class="row" id="objetivos">
           <div class="col">
                       <label class="form-control">
-                      <input type="radio" class="objetivo" name="objetivo[]" id="reunião" value="1" checked="">  Reunião</label> </div>
+                      <input type="radio" class="objetivo" name="objetivo" id="reunião" value="Reunião" checked="">  Reunião</label> </div>
 
                   
                   <div class="col">
                     <label class="form-control">
-                      <input type="radio" class="objetivo" name="objetivo[]" id="treinamento" value="2" checked=""> Treinamento </label></div>
+                      <input type="radio" class="objetivo" name="objetivo" id="treinamento" value="Treinamento" checked=""> Treinamento </label></div>
 
                      
                     <div class="col">
                       <label class="form-control">
-                      <input type="radio" class="objetivo" name="objetivo[]" id="consulta" value="3" checked=""> Consulta </label></div>
-
+                      <input type="radio" class="objetivo" name="objetivo" id="consulta" value="Consulta" checked=""> Consulta </label></div>
                 <!---Horário de Término---->  
                      
                     <div class="col"> 
                       <label class="horario-termino" for="form-control"> <b> Horário de Término:</b> </label>
                       <input class="form-control " type="time" id="horaterm" name="appt" min="13:00" max="12:00">
                     </div>
-          
+        </form>
+
 <br>
 <br>
 
@@ -258,16 +259,16 @@
                             <div class="mb-3">
 
                             <label type="email" for="recipient-name" class="col-form-label">Nome completo:</label>
-                              <input type="text" class="form-control" id="recipient-name">
+                              <input type="text" class="form-control" id="caixanome">
                             </div>
 
                             <div class="mb-3">
                               <label type="email" for="recipient-name" class="col-form-label">Informe o Email</label>
-                              <input type="text" class="form-control" id="recipient-name">
+                              <input type="text" class="form-control" id="caixadeemail">
                             </div>
-
                             
                             <label type="email" for="recipient-name" class="col-form-label">Informe o Cargo</label>
+                            
                             <select type="text" class="form-control" id="nomeFacilitador">
                               <option disabled> - Informe aqui - </option>
                             </select>  
@@ -277,7 +278,9 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+
                           <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
+
                         </div>
                       </div>
                     </div>

@@ -12,68 +12,108 @@ var horaterm = document.getElementById("horaterm");
 
 
 function gravando() {
+
     // Linkando a variável da função com a id da textarea dentro do index
     var temaprincipal = document.getElementById("temaprincipal");
-    conteudo = temaprincipal.value;
+    var conteudo = temaprincipal.value;
 
     var horainic = document.getElementById("horainicio").value;
     var data = document.getElementById("datainicio").value;
-    //console.log(data);
 
+    // BOTÕES DE OBJETIVO
+    var objetivomarc = document.getElementsByName("objetivo");
+    var objetivoSelecionado = null;
+
+    //CONDIÇÃO PARA AS OPÇÕES DE OBJETIVOS
+    for (var op = 0; op < objetivomarc.length; op++) {
+        if (objetivomarc[op].checked) {
+            objetivoSelecionado = objetivomarc[op].value;
+            break;
+        }
+    }
 
     // CRIANDO CONDIÇÕES PARA QUE SÓ ENVIE PARA O AJAX SE TUDO ESTIVER PREENCHIDO
     // trim() usado para verificar se o campo está vazio.
+    if (conteudo.trim() === "") { window.alert("A textarea está vazia");} 
 
-    if (conteudo.trim() === "") {
+    if (horainic.trim() === "") {window.alert("O horário de início está vazio");} 
 
-        window.alert("A textarea está vazia");
-    } 
+    if (data.trim() === "") {window.alert("Você não inseriu uma data para a ata");}
 
-    if (horainic.trim() === "") {
+    if (objetivoSelecionado === "") {window.alert("Você não selecionou o seu objetivo");} 
+    
+    else {
 
-        window.alert("O hórario de inicio está vazio");
+        window.alert("Identifiquei, o texto foi: " + conteudo + ", o objetivo é: " + objetivoSelecionado + ", o horário é: " + horainic + " e a data é: " + data);
 
-    } 
+        console.log("(1) A função 'gravando()' foi chamada");
+        console.log (objetivoSelecionado);
 
-    if (data.trim() === "") {
+        // CÓDIGO AJAX QUE VAI ENVIAR AS INFORMAÇÕES DAS FUNCTION PARA O BANCO DE DADOS
+        if (conteudo !== "" && horainic !=="" && data !=="" && objetivoSelecionado !=="") 
 
-        window.alert("Você não inseriu uma data para a ata");
+        $.ajax({
+            url: 'enviarprobanco.php',
+            method: 'POST',
+            data: {
+                texto: conteudo,
+                horai: horainic,
+                datainic: data,
+                objetivos: objetivoSelecionado,
+            },
 
-    } 
-        else {
-        window.alert("Identifiquei, o texto foi: <br>" + conteudo + " e seu horário é: <br>" + horainic + " e seu horário é:<br>" + data);
-
-        console.log("(1) A function 'gravando()' foi chamada");
-   
-
-// CÓDIGO AJAX QUE VAI ENVIAR AS INFORMAÇÕES DAS FUNCTION PARA O BANCO DE DADOS
-
-        if (conteudo !== "" && horainic !=="" && data !=="") {
-
-            $.ajax({
-                url: 'enviarprobanco.php',
-                method: 'POST',
-                data: {                        
-                        texto: conteudo,
-                        horai: horainic,
-                        datainic: data
-                      },
-
-
-                success: function(response) {
-
-                    console.log("(2) Deu bom! AJAX está enviando");
-                    console.log(response);
-
-                },
-                
-                error: function(error) {
-                    console.error('Erro na solicitação AJAX:', error);
-                }
-            });
-        }
+            success: function (response) {
+                console.log("(2) Deu bom! AJAX está enviando");
+                console.log(response);
+            },
+            error: function (error) {
+                console.error('Erro na solicitação AJAX:', error);
+            }
+        });
     }
 }
 
+///------------BOTÃO DE REGISTRAR EMAIL DENTRO DA MODAL------------------------------
+var botaoemail = document.getElementById("registraremail");
+
+function gravaremail(){
+
+    var caixadenome = document.getElementById("caixanome").value;
+    var caixadeemail = document.getElementById("caixadeemail").value;
+   
+    if (caixadenome.trim() ===""){window.alert ("Você não informou o seu nome completo");} 
+    if (caixadeemail ===""){window.alert ("Você não informou o seu nome completo");} 
+    
+    else {
+
+        window.alert ("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail);
+        console.log ("(3.1) As informações de email foram enviadas");
+
+        if (caixadenome !=="" && caixadeemail !=="") 
+
+        $.ajax({
+            url: 'registrarfacilitadores.php',
+            method: 'POST',
+            data: {
+               caixaname: caixadenome,
+               caixaemail: caixadeemail
+            },
+
+            success: function (response) {
+                console.log("(3.2) Deu bom! AJAX está enviando");
+                console.log(response);
+            },
+            error: function (error) {
+                console.error('Erro na solicitação AJAX:', error);
+            }
+        });
+    }
+
+    } 
+
+
+
 // Adiciona um ouvinte de evento ao botão
 gravarinformacoes.addEventListener('click', gravando);
+botaoemail.addEventListener('click', gravaremail);
+
