@@ -1,3 +1,5 @@
+
+
 // Pegar inputs 
 var gravarinformacoes = document.getElementById("botaosolicitar");
 var temaprincipal = document.getElementById("temaprincipal");
@@ -34,15 +36,24 @@ function gravando() {
 
     // CRIANDO CONDIÇÕES PARA QUE SÓ ENVIE PARA O AJAX SE TUDO ESTIVER PREENCHIDO
     // trim() usado para verificar se o campo está vazio.
-    if (conteudo.trim() === "") { window.alert("A textarea está vazia");} 
-
-    if (horainic.trim() === "") {window.alert("O horário de início está vazio");} 
-
-    if (data.trim() === "") {window.alert("Você não inseriu uma data para a ata");}
-
-    if (objetivoSelecionado === "") {window.alert("Você não selecionou o seu objetivo");} 
+    if (conteudo.trim() === ""||horainic.trim() === ""||data.trim() === ""||objetivoSelecionado.trim() === "") 
     
+            {   
+        Swal.fire({
+            title: "Erro no registro",
+            text: "Preencha todas as caixas do formulário",
+            icon: "error"
+          }); 
+        
+          console.log("(X) Puxou a function, mas está faltando informações");
+        }
+        
     else {
+
+        Swal.fire({
+            title: "Ata registrada com sucesso!",
+            icon: "success"
+          });
 
         window.alert("Identifiquei, o texto foi: " + conteudo + ", o objetivo é: " + objetivoSelecionado + ", o horário é: " + horainic + " e a data é: " + data);
 
@@ -63,6 +74,7 @@ function gravando() {
             },
 
             success: function (response) {
+
                 console.log("(2) Deu bom! AJAX está enviando");
                 console.log(response);
             },
@@ -81,10 +93,26 @@ function gravaremail(){
     var caixadenome = document.getElementById("caixanome").value;
     var caixadeemail = document.getElementById("caixadeemail").value;
    
-    if (caixadenome.trim() ===""){window.alert ("Você não informou o seu nome completo");} 
-    if (caixadeemail ===""){window.alert ("Você não informou o seu nome completo");} 
+    if (caixadenome.trim() ==="" || caixadeemail.trim() ==="")
+    {
+        
+        Swal.fire({
+            title: "Erro no registro",
+            text: "Preencha todas as caixas do formulário",
+            icon: "error"
+          });
+          console.log ("(X) Puxou a function da modal, mas não preencheu todas as informações")
+    } 
+
+    //if (caixadeemail ===""){window.alert ("Você não informou o seu nome completo");} 
     
     else {
+
+        Swal.fire({
+            title: "Cadastrado com sucesso!",
+            text: "Atualize a página e continue a operação",
+            icon: "success"
+          });
 
         window.alert ("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail);
         console.log ("(3.1) As informações de email foram enviadas");
@@ -110,8 +138,6 @@ function gravaremail(){
     }
 
     } 
-
-
 
 // Adiciona um ouvinte de evento ao botão
 gravarinformacoes.addEventListener('click', gravando);

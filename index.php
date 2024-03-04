@@ -1,24 +1,24 @@
 <?php 
   namespace formulario;
 
-//   include ("vendor/autoload.php");
-//   include_once ("app/acoesform.php");
-//   include ("conexao.php");
+include ("vendor/autoload.php");
+include_once ("app/acoesform.php");
+include ("conexao.php");
 
 
-//   //Testar conexao com banco de dados
-//   $puxarform= new AcoesForm;
-//   $facilitadores=$puxarform->selecionarFacilitadores();
+//Testar conexao com banco de dados
+$puxarform= new AcoesForm;
+$facilitadores=$puxarform->selecionarFacilitadores();
 
-//   // funções de encotrar pessoas
-//   $pegarfa=$puxarform->pegarfacilitador();
-//   $pegarcoo=$puxarform->pegarcoordenador();
+//funções de encotrar pessoas
+$pegarfa=$puxarform->pegarfacilitador();
+$pegarcoo=$puxarform->pegarcoordenador();
 
-//   // Puxar local
-//   $pegarlocal=$puxarform->pegarlocais();
+//Puxar local
+$pegarlocal=$puxarform->pegarlocais();
   
 
-// // o numero 2 significa que foi iniciado, o 1 signifca que não
+// o numero 2 significa que foi iniciado, o 1 signifca que não
 // $status= session_start();
 // $name = session_name();
 
@@ -41,6 +41,8 @@
 
 <!---------------------------------------------------------------->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="view/css/styles.css">
@@ -171,6 +173,18 @@
                               <option id="" disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores:</option>
 
                               <!---FILTRAR APENAS FUNCIONÁRIOS DA ADM---->
+                              <optgroup label="Sem cargos">
+                              <option>
+                                      <?php foreach ($pegarfa as $facnull) : ?>
+                                        <option value="<?php echo $facnull['cargo']; ?>"
+                                        data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+
+                                        <?php echo $facnull['nome_facilitador'] ?>
+                                </option>
+                                
+                                  <?php endforeach ?>
+                                </option> 
+                                   
                               <optgroup label="ADM">
                                 <option>
                                     <?php foreach ($pegarfa as $facarg) : ?> 
