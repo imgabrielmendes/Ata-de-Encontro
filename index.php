@@ -138,13 +138,13 @@ $pegarlocal=$puxarform->pegarlocais();
 <br>
 
  <div class="col"><br>
-                    <b> Objetivo do encontro:</b></div>
+    <b> Objetivo do encontro:</b></div>
 
                      
-                    <div class="col">
-                      <br>
-                      <label class="form-control">
-                      <input type="radio" class="objetivo" name="objetivo" id="reuniao" value="reuniao" checked=""> Reunião</label></div>
+      <div class="col">
+        <br>
+        <label class="form-control">
+          <input type="radio" class="objetivo" name="objetivo" id="reuniao" value="reuniao" checked=""> Reunião</label></div>
 
                       <div class="col">
                       <br>
@@ -175,62 +175,60 @@ $pegarlocal=$puxarform->pegarlocais();
                  </div>
 
                                 <!---CHECK DE FACILITADOR---->  
-
-            <div class="col">
+      <div class="row" id="novadeliber">
+         <div class="col">
               <label for="nomeFacilitador"><b>Informe o deliberador*:</b></label>
               <select type="text" class="form-control" id="nomeFacilitador">
 
                 <option id="" disabled class="form-control disable" name="Informe os facilitadores da ata">Informe as deliberações*:</option>
 
-<!---FILTRAR APENAS FUNCIONÁRIOS DA ADM---->
-<form action="">
-<optgroup label="Sem cargos">
-<option>
-        <?php foreach ($pegarfa as $facnull) : ?>
-          <option value="<?php echo $facnull['cargo']; ?>"
-          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
 
-          <?php echo $facnull['nome_facilitador'] ?>
-  </option>
-  
-    <?php endforeach ?>
-  </option> 
-     
-<optgroup label="ADM">
-  <option>
-      <?php foreach ($pegarfa as $facarg) : ?> 
-        <option value="<?php echo $facarg['cargo']?>" 
+              <!---FILTRAR APENAS FUNCIONÁRIOS DA ADM---->
 
-        data-tokens="<?php echo $facarg['nome_facilitador']; ?>">
+              <optgroup label="Sem cargos">
+              <option>
+                      <?php foreach ($pegarfa as $facnull) : ?>
+                        <option value="<?php echo $facnull['cargo']; ?>"
+                        data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
 
-        <?php echo $facarg['nome_facilitador'] ?>
-  </option>
-  
-    <?php endforeach ?>
-  </option> 
+                        <?php echo $facnull['nome_facilitador'] ?>
+                </option>
+                
+                <?php endforeach ?>
+                </option> 
+                  
+              <optgroup label="ADM">
+              <option>
+                    <?php foreach ($pegarfa as $facarg) : ?> 
+                      <option value="<?php echo $facarg['cargo']?>" 
 
-<!---FILTRAR APENAS FUNCIONÁRIOS DA Coordenação---->  
-<optgroup label="Coordenação">
-<option>
-      <?php foreach ($pegarcoo as $coordenador) : ?> 
+                      data-tokens="<?php echo $facarg['nome_facilitador']; ?>">
 
-        <option value="<?php echo $coordenador['cargo']?>" 
-        data-tokens="<?php echo $coordenador['nome_facilitador']; ?>">
-        <?php echo $coordenador['nome_facilitador'] ?>
+                      <?php echo $facarg['nome_facilitador'] ?>
+                </option>
+                
+                  <?php endforeach ?>
+                </option> 
 
-        </option>
-          <?php endforeach ?>
-        </option> 
+              <!---FILTRAR APENAS FUNCIONÁRIOS DA Coordenação---->  
+              <optgroup label="Coordenação">
+              <option>
+                    <?php foreach ($pegarcoo as $coordenador) : ?> 
 
-<optgroup label="Supervisão">
-  <option>SUP1</option>
-  <option>SUP1</option> </form>          
-              </select>  
-            </div>
+                      <option value="<?php echo $coordenador['cargo']?>" 
+                      data-tokens="<?php echo $coordenador['nome_facilitador']; ?>">
+                      <?php echo $coordenador['nome_facilitador'] ?>
 
-              
+                      </option>
+                        <?php endforeach ?>
+                      </option> 
 
-             
+              <optgroup label="Supervisão">
+                <option>SUP1</option>
+                <option>SUP1</option>           
+                            </select>  
+                          </div>
+
                         <!---CHECK DE FACILITADOR---->  
                       
                 
@@ -244,7 +242,7 @@ $pegarlocal=$puxarform->pegarlocais();
   <div class="row">
     <div class="col"> <button id="addelibe" class="add-button" value="+" >+</button> </div>
   </div>   
-                   
+</div>                   
 <br>
       
             <!--BOTÕES-->

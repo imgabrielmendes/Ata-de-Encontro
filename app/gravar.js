@@ -145,9 +145,14 @@ function gravaremail(){
 function deliberacoes(){
 
     var adddeli = document.getElementById("addelibe");
+    var novadel = document.getElementById("novadeliber");
+    
+
     adddeli.addEventListener('click', function(){
 
         console.log ("Botão foi selecionado");
+        console.log(novadel);
+
         // $.ajax({
         //     url: 'addfacilidar',
         //     method: 'POST',
