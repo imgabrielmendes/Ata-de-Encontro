@@ -1,21 +1,21 @@
 <?php 
   namespace formulario;
 
-// include ("vendor/autoload.php");
-// include_once ("app/acoesform.php");
-// include ("conexao.php");
+include ("vendor/autoload.php");
+include_once ("app/acoesform.php");
+include ("conexao.php");
 
 
-// //Testar conexao com banco de dados
-// $puxarform= new AcoesForm;
-// $facilitadores=$puxarform->selecionarFacilitadores();
+//Testar conexao com banco de dados
+$puxarform= new AcoesForm;
+$facilitadores=$puxarform->selecionarFacilitadores();
 
-// //funções de encotrar pessoas
-// $pegarfa=$puxarform->pegarfacilitador();
-// $pegarcoo=$puxarform->pegarcoordenador();
+//funções de encotrar pessoas
+$pegarfa=$puxarform->pegarfacilitador();
+$pegarcoo=$puxarform->pegarcoordenador();
 
-// //Puxar local
-// $pegarlocal=$puxarform->pegarlocais();
+//Puxar local
+$pegarlocal=$puxarform->pegarlocais();
   
 
 // o numero 2 significa que foi iniciado, o 1 signifca que não
@@ -343,9 +343,6 @@
             
       </nav> </div>  
 </div>  
-
-
-
 </class>  
 
 <script src="app/gravar.js"></script>

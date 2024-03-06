@@ -1,5 +1,6 @@
 
 
+console.log("Puxando a aba gravar.js");
 // Pegar inputs 
 var gravarinformacoes = document.getElementById("botaosolicitar");
 var temaprincipal = document.getElementById("temaprincipal");
@@ -137,29 +138,27 @@ function gravaremail(){
         });
     }
 
-    }
+}
     
 //    
 
-var adddeli =document.getElementById("iddobotao").addEventListener('click', deliberacoes);
+// function deliberacoes(){
 
-function deliberacoes(){
+//     var adddeli = document.getElementById("iddobotãoadd");
+//     adddeli.addEventListener('click', function(){
 
-    var adddeli = document.getElementById("iddobotãoadd");
-    adddeli.addEventListener('click', function(){
-
-        console.log ("Botão foi selecionado")
-        $.ajax({
-            url: 'addfacilidar',
-            method: 'POST',
-            data: {
-                //
-                //
-                //
-            },
-        })
-    });  
-}
+//         console.log ("Botão foi selecionado")
+//         $.ajax({
+//             url: 'addfacilidar',
+//             method: 'POST',
+//             data: {
+//                 //
+//                 //
+//                 //
+//             },
+//         })
+//     });  
+// }
 
 // Botões
 gravarinformacoes.addEventListener('click', gravando);
