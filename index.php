@@ -1,21 +1,21 @@
 <?php 
   namespace formulario;
 
-include ("vendor/autoload.php");
-include_once ("app/acoesform.php");
-include ("conexao.php");
+// include ("vendor/autoload.php");
+// include_once ("app/acoesform.php");
+// include ("conexao.php");
 
 
-//Testar conexao com banco de dados
-$puxarform= new AcoesForm;
-$facilitadores=$puxarform->selecionarFacilitadores();
+// //Testar conexao com banco de dados
+// $puxarform= new AcoesForm;
+// $facilitadores=$puxarform->selecionarFacilitadores();
 
-//funções de encotrar pessoas
-$pegarfa=$puxarform->pegarfacilitador();
-$pegarcoo=$puxarform->pegarcoordenador();
+// //funções de encotrar pessoas
+// $pegarfa=$puxarform->pegarfacilitador();
+// $pegarcoo=$puxarform->pegarcoordenador();
 
-//Puxar local
-$pegarlocal=$puxarform->pegarlocais();
+// //Puxar local
+// $pegarlocal=$puxarform->pegarlocais();
   
 
 // o numero 2 significa que foi iniciado, o 1 signifca que não
@@ -121,129 +121,131 @@ $pegarlocal=$puxarform->pegarlocais();
 <br>
 <!--2° LINHA DO FORMULÁRIO DA ATA----------------------->
           <!---ABA DE OBJETIVOS---->  
-          <div id="txtaba" style="display: flex;
-              position: relative;
-              width: 95%;
-              margin:0 auto;
-              justify-content: space-between;
-              flex-wrap:wrap; ">
-               <b class="txt-objetivo" >Objetivo:</b>
-                <b class="txt-horariotermino" >Horário de Término:</b>
-              </div>
+         
           <!---ABA DE MARCAÇÕES de OBJETIVOS----> 
-          <form class="row" id="objetivos">
-          <div class="col">
-                      <label class="form-control">
-                      <input type="radio" class="objetivo" name="objetivo" id="reunião" value="Reunião" checked="">  Reunião</label> </div>
+          
+                      <div class="col-8" ><b>Facilitador(res) Responsáveis:</b>
+                      <br>
+                      <!-- Um campo básico --> 
+                      <input id="temaprincipal" class="form-control" type="text" /></div>
 
-                  
-                  <div class="col">
-                    <label class="form-control">
-                      <input type="radio" class="objetivo" name="objetivo" id="treinamento" value="Treinamento" checked=""> Treinamento </label></div>
+                    <div class="col-4"> 
+                      <label  for="form-control"> <b> Horário de Término:</b> </label>
+                      <input class="form-control" type="time" id="horaterm" name="appt" min="13:00" max="12:00">
+                    </div>
+
+<br>
+<br>
+
+ <div class="col"><br>
+                    <b> Objetivo do encontro:</b></div>
 
                      
                     <div class="col">
+                      <br>
+                      <label class="form-control">
+                      <input type="radio" class="objetivo" name="objetivo" id="reuniao" value="reuniao" checked=""> Reunião</label></div>
+                      <div class="col">
+                      <br>
+                      <label class="form-control">
+                      <input type="radio" class="objetivo" name="objetivo" id="treinamento" value="treinamento" checked=""> Treinamento </label></div>
+                      <div class="col">
+                        <br>
                       <label class="form-control">
                       <input type="radio" class="objetivo" name="objetivo" id="consulta" value="Consulta" checked=""> Consulta </label></div>
-                <!---Horário de Término---->  
-                     
-                    <div class="col"> 
-                      <label class="horario-termino" for="form-control"> <b> Horário de Término:</b> </label>
-                      <input class="form-control " type="time" id="horaterm" name="appt" min="13:00" max="12:00">
-                    </div>
-        </form>
-
-<br>
-<br>
 
 <!---3 ° SELEÇÃO DOS FACILITADORES + VIZUALIZAÇÃO DOS SELECIONADOS----->
 
-              <!---CHECK DE FACILITADOR---->  
 
-              <label><b>Add Facilitador</b></label>
-              <div class="row">
-                  <form class="row-addfacilitador">                 
-
-                      <div class="col-5">
-                          <div class="multiselect" ></div>
-
-                      <div class="col-8">
-                          <div class="multiselect"></div>
-                          <select id="selecionandofacilitador" class="demo-default form-group" multiple placeholder="Select gear">
-                              <option id="" disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores:</option>
-
-                              <!---FILTRAR APENAS FUNCIONÁRIOS DA ADM---->
-                              <optgroup label="Sem cargos">
-                              <option>
-                                      <?php foreach ($pegarfa as $facnull) : ?>
-                                        <option value="<?php echo $facnull['cargo']; ?>"
-                                        data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-
-                                        <?php echo $facnull['nome_facilitador'] ?>
-                                </option>
-                                
-                                  <?php endforeach ?>
-                                </option> 
-                                   
-                              <optgroup label="ADM">
-                                <option>
-                                    <?php foreach ($pegarfa as $facarg) : ?> 
-                                      <option value="<?php echo $facarg['cargo']?>" 
-
-                                      data-tokens="<?php echo $facarg['nome_facilitador']; ?>">
-
-                                      <?php echo $facarg['nome_facilitador'] ?>
-                                </option>
-                                
-                                  <?php endforeach ?>
-                                </option> 
-
-                          <!---FILTRAR APENAS FUNCIONÁRIOS DA Coordenação---->  
-                              <optgroup label="Coordenação">
-                              <option>
-                                    <?php foreach ($pegarcoo as $coordenador) : ?> 
-
-                                      <option value="<?php echo $coordenador['cargo']?>" 
-                                      data-tokens="<?php echo $coordenador['nome_facilitador']; ?>">
-                                      <?php echo $coordenador['nome_facilitador'] ?>
-
-                                      </option>
-                                        <?php endforeach ?>
-                                      </option> 
-
-                              <optgroup label="Supervisão">
-                                <option>SUP1</option>
-                                <option>SUP1</option>
-                            </select>
-                          </div>
-
-                        <!---CHECK DE FACILITADOR---->  
-                        <div class="col-7-facilitador">
-                        <div class="multiselect"></div>
-                          <select class="form-control">
-                            <option disabled> <?php  ?> </option>    
-                          </select></div>
-                </form>
-              </div>
-          </div>
-
-<br>
                   <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
-                  <div   class="row">     
-                      <div class="col" ><b>Tema principal (Conteúdo Abordado)</b></div>
+                  
+                      <div class="col-12" ><b>Conteúdo abordado:</b>
                       <br>
                       <!-- Um campo básico --> 
-                      <input id="temaprincipal" class="form-control" type="text" />
+                      <input  id="temaprincipal" class="form-control" type="text" />
                   </div>
 
-                  <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
-                  <div class="row">     
-                      <div spellcheck="textarea" class="col"><b>Informe uma descrição (Deliberações)</b></div>
+
+                 <div class="delibera">
+                   <h2> Deliberações</h2>
+                   <div> </div>
+                   
+                 </div>
+
+                                <!---CHECK DE FACILITADOR---->  
+
+                                <div class="col">
+              <label for="nomeFacilitador"><b>Informe o Local</b></label>
+              <select type="text" class="form-control" id="nomeFacilitador">
+
+                <option id="" disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores:</option>
+
+<!---FILTRAR APENAS FUNCIONÁRIOS DA ADM---->
+<form action="">
+<optgroup label="Sem cargos">
+<option>
+        <?php foreach ($pegarfa as $facnull) : ?>
+          <option value="<?php echo $facnull['cargo']; ?>"
+          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+
+          <?php echo $facnull['nome_facilitador'] ?>
+  </option>
+  
+    <?php endforeach ?>
+  </option> 
+     
+<optgroup label="ADM">
+  <option>
+      <?php foreach ($pegarfa as $facarg) : ?> 
+        <option value="<?php echo $facarg['cargo']?>" 
+
+        data-tokens="<?php echo $facarg['nome_facilitador']; ?>">
+
+        <?php echo $facarg['nome_facilitador'] ?>
+  </option>
+  
+    <?php endforeach ?>
+  </option> 
+
+<!---FILTRAR APENAS FUNCIONÁRIOS DA Coordenação---->  
+<optgroup label="Coordenação">
+<option>
+      <?php foreach ($pegarcoo as $coordenador) : ?> 
+
+        <option value="<?php echo $coordenador['cargo']?>" 
+        data-tokens="<?php echo $coordenador['nome_facilitador']; ?>">
+        <?php echo $coordenador['nome_facilitador'] ?>
+
+        </option>
+          <?php endforeach ?>
+        </option> 
+
+<optgroup label="Supervisão">
+  <option>SUP1</option>
+  <option>SUP1</option> </form>          
+              </select>  
+            </div>
+
+              
+
+             
+                        <!---CHECK DE FACILITADOR---->  
+                      
+                
+                <div spellcheck="textarea" class="col-8">
+                  <b>Informe uma descrição (Deliberações)</b>
                       <br>
-                      <textarea id="descricao" type= "text" class="form-control"></textarea> 
-                  </div>
-<br>
-<br>
+                      <!-- Um campo básico --> 
+                      <input id="temaprincipal" class="form-control" type="text" /></div>
+       
+</form>
+  <div class="row">
+    <div class="col"> <button class="add-button" value="+" >+</button> </div>
+     
+  </div>   
+                   
+                      <br>
+      
 
             <!--BOTÕES-->
             <div class="row">
