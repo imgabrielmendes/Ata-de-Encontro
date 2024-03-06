@@ -104,14 +104,14 @@ $pegarlocal=$puxarform->pegarlocais();
 
               <!---ABA DE DATA---->
               <div class="col">
-                <label ><b>Data</b></label>
+                <label ><b>Data*</b></label>
                 <input id="datainicio"class="form-control col-12 col-md-6" placeholder="dd-mm-aaaa" type="date">
               </div>
               
 
               <!---ABA DE HORÁRIO---->
               <div class="col">
-                <label for="nomeMedico"><b>Horário de Início:</b></label>
+                <label for="nomeMedico"><b>Horário de Início*:</b></label>
                 <br>
                 <input class="form-control col-12 col-md-6" type="time" id="horainicio" name="appt" min="09:00" max="18:00">
               </div>
@@ -124,7 +124,7 @@ $pegarlocal=$puxarform->pegarlocais();
          
           <!---ABA DE MARCAÇÕES de OBJETIVOS----> 
           
-                      <div class="col-8" ><b>Facilitador(res) Responsáveis:</b>
+                      <div class="col-8" ><b>Facilitador(res) Responsáveis*:</b>
                       <br>
                       <!-- Um campo básico --> 
                       <input id="temaprincipal" class="form-control" type="text" /></div>
@@ -145,10 +145,12 @@ $pegarlocal=$puxarform->pegarlocais();
                       <br>
                       <label class="form-control">
                       <input type="radio" class="objetivo" name="objetivo" id="reuniao" value="reuniao" checked=""> Reunião</label></div>
+
                       <div class="col">
                       <br>
                       <label class="form-control">
                       <input type="radio" class="objetivo" name="objetivo" id="treinamento" value="treinamento" checked=""> Treinamento </label></div>
+
                       <div class="col">
                         <br>
                       <label class="form-control">
@@ -159,7 +161,7 @@ $pegarlocal=$puxarform->pegarlocais();
 
                   <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
                   
-                      <div class="col-12" ><b>Conteúdo abordado:</b>
+                      <div class="col-12" ><b>Conteúdo abordado*:</b>
                       <br>
                       <!-- Um campo básico --> 
                       <input  id="temaprincipal" class="form-control" type="text" />
@@ -174,11 +176,11 @@ $pegarlocal=$puxarform->pegarlocais();
 
                                 <!---CHECK DE FACILITADOR---->  
 
-                                <div class="col">
-              <label for="nomeFacilitador"><b>Informe o Local</b></label>
+            <div class="col">
+              <label for="nomeFacilitador"><b>Informe o deliberador*:</b></label>
               <select type="text" class="form-control" id="nomeFacilitador">
 
-                <option id="" disabled class="form-control disable" name="Informe os facilitadores da ata">Informe os facilitadores:</option>
+                <option id="" disabled class="form-control disable" name="Informe os facilitadores da ata">Informe as deliberações*:</option>
 
 <!---FILTRAR APENAS FUNCIONÁRIOS DA ADM---->
 <form action="">
@@ -233,20 +235,18 @@ $pegarlocal=$puxarform->pegarlocais();
                       
                 
                 <div spellcheck="textarea" class="col-8">
-                  <b>Informe uma descrição (Deliberações)</b>
+                  <b>Informe as deliberações*</b>
                       <br>
                       <!-- Um campo básico --> 
                       <input id="temaprincipal" class="form-control" type="text" /></div>
        
 </form>
   <div class="row">
-    <div class="col"> <button class="add-button" value="+" >+</button> </div>
-     
+    <div class="col"> <button id="addelibe" class="add-button" value="+" >+</button> </div>
   </div>   
                    
-                      <br>
+<br>
       
-
             <!--BOTÕES-->
             <div class="row">
             <div class="col  ">

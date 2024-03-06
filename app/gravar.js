@@ -1,6 +1,5 @@
 
 
-console.log("Puxando a aba gravar.js");
 // Pegar inputs 
 var gravarinformacoes = document.getElementById("botaosolicitar");
 var temaprincipal = document.getElementById("temaprincipal");
@@ -42,7 +41,7 @@ function gravando() {
             {   
         Swal.fire({
             title: "Erro no registro",
-            text: "Preencha todas as caixas do formulário",
+            text: "Preencha todas as caixas obrigatórias",
             icon: "error"
           }); 
         
@@ -141,26 +140,28 @@ function gravaremail(){
 }
     
 //    
+    var adddeli = document.getElementById("addelibe");
 
-// function deliberacoes(){
+function deliberacoes(){
 
-//     var adddeli = document.getElementById("iddobotãoadd");
-//     adddeli.addEventListener('click', function(){
+    var adddeli = document.getElementById("addelibe");
+    adddeli.addEventListener('click', function(){
 
-//         console.log ("Botão foi selecionado")
-//         $.ajax({
-//             url: 'addfacilidar',
-//             method: 'POST',
-//             data: {
-//                 //
-//                 //
-//                 //
-//             },
-//         })
-//     });  
-// }
+        console.log ("Botão foi selecionado");
+        // $.ajax({
+        //     url: 'addfacilidar',
+        //     method: 'POST',
+        //     data: {
+        //         //
+        //         //
+        //         //
+        //     },
+        // })
+    });  
+}
 
 // Botões
+adddeli.addEventListener('click', deliberacoes);
 gravarinformacoes.addEventListener('click', gravando);
 botaoemail.addEventListener('click', gravaremail);
 
