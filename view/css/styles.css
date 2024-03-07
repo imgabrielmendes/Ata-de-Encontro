@@ -32,9 +32,8 @@ margin-left: -20px;    }
     display: flex;align-items: center;
     justify-content: space-around;}
   .btn-atas{
-    gap: 3rem;
-    flex-wrap: wrap;
-    width: 75%;
+    gap: 1rem;
+    width: 100%;
     display: flex;
     margin: 0 auto;
     justify-content: center;
@@ -148,4 +147,59 @@ transition: 1s;
 color: #FFFFFF;
 
 
+}
+#teste {
+  width: 100px;
+  height: 40px;
+  background-color: #20315f;
+}
+
+
+ /* Modal styles */
+ .modal {
+  display: none;
+  position: fixed;
+  z-index: 0;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Dark background */
+  transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 2% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  height: 80vh;
+  max-width: 900px;
+  transition: 1s;
+}
+
+/* Button styles */
+#botaosolicitar{
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+/* Close button styles */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
