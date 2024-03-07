@@ -140,17 +140,20 @@ function gravaremail(){
 }
     
 //    
-    var adddeli = document.getElementById("addelibe");
+    var adddeli = document.getElementById("addDeliberacoes");
+    novadel.addEventListener('submit' , addDeliberacoes);
 
-function deliberacoes(){
+function addDeliberacoes(){
 
     var adddeli = document.getElementById("addelibe");
     var novadel = document.getElementById("novadeliber");
     
 
-    adddeli.addEventListener('click', function(){
+    adddeli.addEventListener('submit', function(){
 
         console.log ("Botão foi selecionado");
+
+        document.createElement("novadeliber");
         console.log(novadel);
 
         // $.ajax({
@@ -166,7 +169,7 @@ function deliberacoes(){
 }
 
 // Botões
-adddeli.addEventListener('click', deliberacoes);
+adddeli.addEventListener('click', addDeliberacoes);
 gravarinformacoes.addEventListener('click', gravando);
 botaoemail.addEventListener('click', gravaremail);
 

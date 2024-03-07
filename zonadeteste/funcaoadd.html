@@ -55,49 +55,46 @@ var filter = document.getElementById('filter');
       filter.addEventListener('keyup', filterItems);
 
 // Add item
-function addItem(e){
+    function addItem(e){
 
-  e.preventDefault();
+      e.preventDefault();
+      console.log("(1) Ele está puxando a função 'addItem'");
+      
+      // Get input value
+      var newItem = document.getElementById('item').value;
+      // Create new li element
+      var li = document.createElement('li');
 
-  
-  console.log("(1) Ele está puxando a função 'addItem'")
+                  if (newItem.trim() ===""){
 
-  // Get input value
-  var newItem = document.getElementById('item').value;
+                    console.log("(X) mas você não inseriu nada");
+                    window.alert("Você não escreveu nenhuma deliberação")
 
-  // Create new li element
-  var li = document.createElement('li');
+                  } else { 
+                    
+                    console.log("(2) Está criando uma nova aba");
 
-  if (newItem.trim() ===""){
+                    // Add class
+                    li.className = 'list-group-item';
+                    // Add text node with input value
+                    li.appendChild(document.createTextNode(newItem));
+                    // Create del button element
+                    var deleteBtn = document.createElement('button');
+                    // Add classes to del button
+                    deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
+                    // Append text node
+                    deleteBtn.appendChild(document.createTextNode('X'));
+                    // Append button to li
+                    li.appendChild(deleteBtn);
+                    // Append li to list
+                    itemList.appendChild(li);
+                }
+    }
 
-    console.log("(X) mas você não inseriu nada");
-    window.alert("Você não escreveu nenhuma deliberação")
 
-  } else{
-   
-  console.log("(2) Está criando uma nova aba");
-  
-  // Add class
-  li.className = 'list-group-item';
-  // Add text node with input value
-  li.appendChild(document.createTextNode(newItem));
 
-  // Create del button element
-  var deleteBtn = document.createElement('button');
 
-  // Add classes to del button
-  deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
 
-  // Append text node
-  deleteBtn.appendChild(document.createTextNode('X'));
-
-  // Append button to li
-  li.appendChild(deleteBtn);
-
-  // Append li to list
-  itemList.appendChild(li);
-}
-}
 // Remove item
 function removeItem(e){
   if(e.target.classList.contains('delete')){

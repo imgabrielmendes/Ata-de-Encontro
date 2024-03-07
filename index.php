@@ -175,7 +175,7 @@ $pegarlocal=$puxarform->pegarlocais();
                  </div>
 
                                 <!---CHECK DE FACILITADOR---->  
-      <div class="row" id="novadeliber">
+      <form class="row" id="novadeliber">
          <div class="col">
               <label for="nomeFacilitador"><b>Informe o deliberador*:</b></label>
               <select type="text" class="form-control" id="nomeFacilitador">
@@ -238,11 +238,13 @@ $pegarlocal=$puxarform->pegarlocais();
                       <!-- Um campo básico --> 
                       <input id="temaprincipal" class="form-control" type="text" /></div>
        
-</form>
-  <div class="row">
-    <div class="col"> <button id="addelibe" class="add-button" value="+" >+</button> </div>
-  </div>   
-</div>                   
+                </form>
+                  <div class="row">
+                    <div class="col"> 
+                      <button type="submit" id="addelibe" class="add-button" value="+"> + </button> 
+                    </div>
+                  </div>   
+  </form>                   
 <br>
       
             <!--BOTÕES-->
