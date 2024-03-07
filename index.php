@@ -2,21 +2,21 @@
 
 namespace formulario;
 
-// include ("vendor/autoload.php");
-// include_once ("app/acoesform.php");
-// include ("conexao.php");
+include ("vendor/autoload.php");
+include_once ("app/acoesform.php");
+include ("conexao.php");
 
 
-// //Testar conexao com banco de dados
-// $puxarform= new AcoesForm;
-// $facilitadores=$puxarform->selecionarFacilitadores();
+//Testar conexao com banco de dados
+$puxarform= new AcoesForm;
+$facilitadores=$puxarform->selecionarFacilitadores();
 
-// //funções de encotrar pessoas
-// $pegarfa=$puxarform->pegarfacilitador();
-// $pegarcoo=$puxarform->pegarcoordenador();
+//funções de encotrar pessoas
+$pegarfa=$puxarform->pegarfacilitador();
+$pegarcoo=$puxarform->pegarcoordenador();
 
-// //Puxar local
-// $pegarlocal=$puxarform->pegarlocais();
+//Puxar local
+$pegarlocal=$puxarform->pegarlocais();
 
 
 // o numero 2 significa que foi iniciado, o 1 signifca que não
@@ -136,7 +136,6 @@ namespace formulario;
               <input type="checkbox" class="objetivo" name="objetivo" id="consulta" value="Consulta" checked=""> Consulta </label>
           </div>
 
-
           <!--- ABA DE SELECIONAR LOCAL ---->
           <div class="col-4">
             <label for="nomeFacilitador"><b>Informe o Local</b></label>
@@ -153,7 +152,7 @@ namespace formulario;
           <br>
 
            <!---ABA DE ADICIONAR FACILITADORES---->
-          <div class="col-4"> <label for="form-control"> <b> Facilitador(res) Responsáveis*:</b> </label> </div>
+          <div class="col-4"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
           <br>
           <div class="col-8">
             <!-- Um campo básico -->
@@ -252,29 +251,31 @@ namespace formulario;
 
             <div class="col  "><br>
               <div class="btn-atas">
-               
 
-                    <button id="botaosolicitar" class="open-modal-btn"  type="button" class="btn btn-primary" 
-                    data-bs-toggle="modal" data-bs-target="#myModal">Solicitar Ata</button>
+              <button id="botaoregistrar" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Solicitar ata
+                      </button>
 
 <!-- The Modal -->
-<div id="myModal" class="modal" onclick="closeModal()">
-  <!-- Modal content -->
-  <div class="modal-content">
-  
-    <h2>This is a Fixed Modal with Transition</h2>
-    <p>You can add any content you like here.</p>
-    <p>Click the close button or anywhere outside the modal to close it.</p>
 
-    <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
-                              <button id="#myModal" type="button" class="btn btn-primary">Registrar</button>
-
-                            </div>
-  </div>
- 
-</div> 
                       <!--TENTANDO LINKAR O BOTÃO COM O MODAL "registraremail.php"-->
 
                       <!-------------------- BOTÃO ------------------->
