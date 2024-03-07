@@ -1,31 +1,41 @@
 
+// AS VARIÁVEIS ESTÃO NA ORDEM QUE É SOLICITADA NO FORMULÁRIO
+var data, horainic, horaterm,tempoes
+    objetivo, local,
+    facilitadores,
+    temaprincipal,
+    gravarinformacoes;
 
 // Pegar inputs 
 var gravarinformacoes = document.getElementById("botaosolicitar");
-var temaprincipal = document.getElementById("temaprincipal");
+
+// Pegar caixas do fomulário
+//1° LINHAS
 var data = document.getElementById("datainicio").value;
-
-
-// Pegar seletores
-var facilitadores = document.getElementById("selecionandofacilitador");
 var horainic = document.getElementById("horainicio").value;
-var horaterm = document.getElementById("horaterm");
+var horaterm = document.getElementById("horaterm").value;
+var tempoes = document.getElementById("iddoinput"); //FALTANDO
 
+// 2° LINHAS
+var objetivomarc = document.getElementsByName("objetivo"); // MUDAR
+var objetivoSelecionado = null;
 
+var local = document.getElementById("iddolocal"); //FALTANDO
+
+//3° LINHA
+var facilitadores = document.getElementById("selecionandofacilitador");
+
+// 4° LINHA
+var temaprincipal = document.getElementById("temaprincipal");
 
 function gravando() {
 
     // Linkando a variável da função com a id da textarea dentro do index
-    var temaprincipal = document.getElementById("temaprincipal");
     var conteudo = temaprincipal.value;
-
-    var horainic = document.getElementById("horainicio").value;
     var data = document.getElementById("datainicio").value;
 
+// ------------------------------------------------------------------------------------------
     // BOTÕES DE OBJETIVO
-    var objetivomarc = document.getElementsByName("objetivo");
-    var objetivoSelecionado = null;
-
     //CONDIÇÃO PARA AS OPÇÕES DE OBJETIVOS
     for (var op = 0; op < objetivomarc.length; op++) {
         if (objetivomarc[op].checked) {
@@ -34,10 +44,11 @@ function gravando() {
         }
     }
 
+// ------------------------------------------------------------------------------------------
+
     // CRIANDO CONDIÇÕES PARA QUE SÓ ENVIE PARA O AJAX SE TUDO ESTIVER PREENCHIDO
-    // trim() usado para verificar se o campo está vazio.
-    if (conteudo.trim() === ""||horainic.trim() === ""||data.trim() === ""||objetivoSelecionado.trim() === "") 
-    
+    // trim() usado para verificar se o campo está vazio
+    if (data.trim() === "" || horainic.trim() === ""|| horaterm.trim()==="" || tempoes.trim()==="" || objetivoSelecionado.trim() === "" || local.trim()==="" || facilitadores.trim() ==="" || conteudo.trim() === "") 
             {   
         Swal.fire({
             title: "Erro no registro",
@@ -86,12 +97,14 @@ function gravando() {
 }
 
 ///------------BOTÃO DE REGISTRAR EMAIL DENTRO DA MODAL------------------------------
+var caixadenome, caixadeemail;
+
+var caixadenome = document.getElementById("caixanome").value;
+var caixadeemail = document.getElementById("caixadeemail").value;
+
 var botaoemail = document.getElementById("registraremail");
 
 function gravaremail(){
-
-    var caixadenome = document.getElementById("caixanome").value;
-    var caixadeemail = document.getElementById("caixadeemail").value;
    
     if (caixadenome.trim() ==="" || caixadeemail.trim() ==="")
     {
@@ -139,37 +152,7 @@ function gravaremail(){
 
 }
     
-//    
-    var adddeli = document.getElementById("addDeliberacoes");
-    novadel.addEventListener('submit' , addDeliberacoes);
-
-function addDeliberacoes(){
-
-    var adddeli = document.getElementById("addelibe");
-    var novadel = document.getElementById("novadeliber");
-    
-
-    adddeli.addEventListener('submit', function(){
-
-        console.log ("Botão foi selecionado");
-
-        document.createElement("novadeliber");
-        console.log(novadel);
-
-        // $.ajax({
-        //     url: 'addfacilidar',
-        //     method: 'POST',
-        //     data: {
-        //         //
-        //         //
-        //         //
-        //     },
-        // })
-    });  
-}
-
 // Botões
-adddeli.addEventListener('click', addDeliberacoes);
 gravarinformacoes.addEventListener('click', gravando);
 botaoemail.addEventListener('click', gravaremail);
 
