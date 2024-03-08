@@ -1,34 +1,52 @@
 
 // AS VARIÁVEIS ESTÃO NA ORDEM QUE É SOLICITADA NO FORMULÁRIO
-var data, horainic, horaterm,tempoes
+var data, horainicio, horaterm,tempoes,
     objetivo, local,
     facilitadores,
     temaprincipal,
     gravarinformacoes;
 
+
 // Pegar inputs 
-var gravarinformacoes = document.getElementById("botaosolicitar");
+var gravarinformacoes = document.getElementById("botaoregistrar");
 
 // Pegar caixas do fomulário
+
 //1° LINHAS
 var data = document.getElementById("datainicio").value;
-var horainic = document.getElementById("horainicio").value;
+var horainicio = document.getElementById("horainicio").value;
 var horaterm = document.getElementById("horaterm").value;
 var tempoes = document.getElementById("iddoinput"); //FALTANDO
 
 // 2° LINHAS
-var objetivomarc = document.getElementsByName("objetivo"); // MUDAR
+var objetivomarc = document.getElementsByName("objetivo");
 var objetivoSelecionado = null;
 
-var local = document.getElementById("iddolocal"); //FALTANDO
-
 //3° LINHA
-var facilitadores = document.getElementById("selecionandofacilitador");
+var facilitadores = document.getElementById("selecionandofacilitador").value;
 
 // 4° LINHA
 var temaprincipal = document.getElementById("temaprincipal");
 
 function gravando() {
+
+    //console.log (datainicio, local, facilitadores,)
+    var data = document.getElementById("datainicio").value;
+    var horainicio = document.getElementById("horainicio").value;
+    var horaterm = document.getElementById("horaterm").value;
+    var tempoes = document.getElementById("tempoestim").value;
+
+    // 2° LINHAS
+    var objetivomarc = document.getElementsByName("objetivo"); // MUDAR
+    var objetivoSelecionado = null;
+
+    var local = document.getElementById("pegarlocal").value;
+
+    //3° LINHA
+    var facilitadores = document.getElementById("selecionandofacilitador").value;
+
+    // 4° LINHA
+    var temaprincipal = document.getElementById("temaprincipal");
 
     // Linkando a variável da função com a id da textarea dentro do index
     var conteudo = temaprincipal.value;
@@ -36,7 +54,8 @@ function gravando() {
 
 // ------------------------------------------------------------------------------------------
     // BOTÕES DE OBJETIVO
-    //CONDIÇÃO PARA AS OPÇÕES DE OBJETIVOS
+    // CONDIÇÃO PARA AS OPÇÕES DE OBJETIVOS
+
     for (var op = 0; op < objetivomarc.length; op++) {
         if (objetivomarc[op].checked) {
             objetivoSelecionado = objetivomarc[op].value;
@@ -48,7 +67,7 @@ function gravando() {
 
     // CRIANDO CONDIÇÕES PARA QUE SÓ ENVIE PARA O AJAX SE TUDO ESTIVER PREENCHIDO
     // trim() usado para verificar se o campo está vazio
-    if (data.trim() === "" || horainic.trim() === ""|| horaterm.trim()==="" || tempoes.trim()==="" || objetivoSelecionado.trim() === "" || local.trim()==="" || facilitadores.trim() ==="" || conteudo.trim() === "") 
+    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() ===""|| conteudo.trim() === "") 
             {   
         Swal.fire({
             title: "Erro no registro",
@@ -57,6 +76,9 @@ function gravando() {
           }); 
         
           console.log("(X) Puxou a function, mas está faltando informações");
+          console.log(objetivoSelecionado);
+          console.log(local);
+          console.log (facilitadores);
         }
         
     else {
@@ -66,39 +88,44 @@ function gravando() {
             icon: "success"
           });
 
-        window.alert("Identifiquei, o texto foi: " + conteudo + ", o objetivo é: " + objetivoSelecionado + ", o horário é: " + horainic + " e a data é: " + data);
+        window.alert("Identifiquei, o texto foi: " + facilitadores + conteudo + ", o objetivo é: " + objetivoSelecionado + ", o horário é: " + horainicio + " e a data é: " + data);
 
         console.log("(1) A função 'gravando()' foi chamada");
-        console.log (objetivoSelecionado);
+        console.log (facilitadores);
 
         // CÓDIGO AJAX QUE VAI ENVIAR AS INFORMAÇÕES DAS FUNCTION PARA O BANCO DE DADOS
-        if (conteudo !== "" && horainic !=="" && data !=="" && objetivoSelecionado !=="") 
+        if (facilitadores !=="" && conteudo !== "" && horainicio !=="" && horaterm!=="" && data !=="") 
 
         $.ajax({
             url: 'enviarprobanco.php',
             method: 'POST',
             data: {
+                facilitadores: facilitadores,
                 texto: conteudo,
-                horai: horainic,
+                horai: horainicio,
+                horat: horaterm,
                 datainic: data,
                 objetivos: objetivoSelecionado,
+                local: local,
             },
 
             success: function (response) {
 
                 console.log("(2) Deu bom! AJAX está enviando");
+                console.log(facilitadores);
                 console.log(response);
             },
             error: function (error) {
                 console.error('Erro na solicitação AJAX:', error);
+                console.log(facilitadores)
             }
         });
     }
 }
 
 ///------------BOTÃO DE REGISTRAR EMAIL DENTRO DA MODAL------------------------------
-var caixadenome, caixadeemail;
 
+var caixadenome, caixadeemail;
 var caixadenome = document.getElementById("caixanome").value;
 var caixadeemail = document.getElementById("caixadeemail").value;
 

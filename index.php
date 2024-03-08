@@ -18,7 +18,6 @@ $pegarcoo=$puxarform->pegarcoordenador();
 //Puxar local
 $pegarlocal=$puxarform->pegarlocais();
 
-
 // o numero 2 significa que foi iniciado, o 1 signifca que não
 // $status= session_start();
 // $name = session_name();
@@ -53,14 +52,13 @@ $pegarlocal=$puxarform->pegarlocais();
   <link rel="stylesheet" href="view/css/bootstrap-grid.min.css">
   <link rel="stylesheet" href="view/css/bootstrap.css">
   <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
-
 </head>
 
 <body>
 
   <!--BARRA DE NAVEGAÇÃO-->
   <header>
-    <nav class="navbar">
+    <nav class="navbar shadow">
       <div id="container">
         <div class="container_align">
           <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
@@ -112,34 +110,35 @@ $pegarlocal=$puxarform->pegarlocais();
  <!---ABA DE TEMPO ESTIMADO ---->
           <div class="col-3">
             <label for="form-control"> <b> Tempo Estimado:</b> </label>
-            <input class="form-control" type="time" id="horaterm" name="appt" min="13:00" max="12:00">
+            <input class="form-control" type="input" id="tempoestim" name="appt" min="13:00" max="12:00">
           </div>
           <br>
 
            <!---ABA DE OBJETIVO - REUNIÃO---->
-          <div class="col"><label for="form-control"> <b>Objetivo:</b> </label>
+          <div class="col" id="objetivo">
+            <label for="form-control"> <b>Objetivo:</b> </label>
             <label class="form-control">
-              <input type="checkbox" class="objetivo" name="objetivo" id="reuniao" value="reuniao" checked=""> Reunião</label>
+              <input type="checkbox" class="objetivo" name="objetivo" id="reuniao" value="reuniao" > Reunião</label>
           </div>
 
            <!---ABA DE OBJETIVO - TREINAMENTO---->
           <div class="col">
             <br>
             <label class="form-control">
-              <input type="checkbox" class="objetivo" name="objetivo" id="treinamento" value="treinamento" checked=""> Treinamento</label>
+              <input type="checkbox" class="objetivo" name="objetivo" id="treinamento" value="treinamento"> Treinamento</label>
           </div>
 
         <!---ABA DE OBJETIVO - CONSULTA---->
           <div class="col">
             <br>
             <label class="form-control">
-              <input type="checkbox" class="objetivo" name="objetivo" id="consulta" value="Consulta" checked=""> Consulta </label>
+              <input type="checkbox" class="objetivo" name="objetivo" id="consulta" value="Consulta"> Consulta </label>
           </div>
 
           <!--- ABA DE SELECIONAR LOCAL ---->
           <div class="col-4">
             <label for="nomeFacilitador"><b>Informe o Local</b></label>
-            <select type="text" class="form-control" id="nomeFacilitador">
+            <select class="form-control" id="pegarlocal">
               <option disabled> - Informe o Local - </option>
               <option> <?php foreach ($pegarlocal as $locais) : ?>
               <option value="<?php echo $locais['locais'] ?>" data-tokens="<?php echo $locais['locais']; ?>">
@@ -149,46 +148,17 @@ $pegarlocal=$puxarform->pegarlocais();
             </select>
           </div>
 
-          <br>
+          <br><br>
 
-           <!---ABA DE ADICIONAR FACILITADORES---->
+          <!---ABA DE ADICIONAR FACILITADORES---->
           <div class="col-4"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
           <br>
-          <div class="col-8">
-            <!-- Um campo básico -->
-            <input id="temaprincipal" class="form-control" type="text" />
-          </div>
-
-          <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
-
-          <div class="col-12"><b>Tema abordado*:</b>
-            <br>
-            <!-- Um campo básico -->
-            <input id="temaprincipal" class="form-control" type="text" />
-          </div>
-
-
-          <!-- <div class="delibera">
-                   <h2> Deliberações</h2>
-                   <div> </div>
-                   
-                 </div> -->
-
-          <!---CHECK DE FACILITADOR---->
-          <!-- <form class="row" id="novadeliber">
-         <div class="col">
-              <label for="nomeFacilitador"><b>Informe o deliberador*:</b></label>
-              <select type="text" class="form-control" id="nomeFacilitador">
-
-                <option id="" disabled class="form-control disable" name="Informe os facilitadores da ata">Informe as deliberações*:</option> -->
-
-
-          <!---FILTRAR APENAS FUNCIONÁRIOS DA ADM---->
-
-          <!-- <optgroup label="Sem cargos">
+          <div class="col-8"  >
+          <select class=" col-8 form-control" id="selecionandofacilitador">
+          <optgroup label="Sem cargos">
               <option>
-                      <?php foreach ($pegarfa as $facnull) : ?>
-                        <option value="<?php echo $facnull['cargo']; ?>"
+              <?php foreach ($pegarfa as $facnull) : ?>
+                        <option value="<?php echo $facnull['nome_facilitador'] ." "."<". $facnull ['cargo'].">"; ?>"
                         data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
 
                         <?php echo $facnull['nome_facilitador'] ?>
@@ -200,7 +170,7 @@ $pegarlocal=$puxarform->pegarlocais();
               <optgroup label="ADM">
               <option>
                     <?php foreach ($pegarfa as $facarg) : ?> 
-                      <option value="<?php echo $facarg['cargo'] ?>" 
+                      <option value="<?php echo $facarg['nome_facilitador'] ?>" 
 
                       data-tokens="<?php echo $facarg['nome_facilitador']; ?>">
 
@@ -208,15 +178,16 @@ $pegarlocal=$puxarform->pegarlocais();
                 </option>
                 
                   <?php endforeach ?>
-                </option>  -->
+                </option> 
 
-          <!---FILTRAR APENAS FUNCIONÁRIOS DA Coordenação---->
-          <!-- <optgroup label="Coordenação">
+          <!--------------------------------------------->
+
+           <optgroup label="Coordenação">
               <option>
                     <?php foreach ($pegarcoo as $coordenador) : ?> 
 
-                      <option value="<?php echo $coordenador['cargo'] ?>" 
-                      data-tokens="<?php echo $coordenador['nome_facilitador']; ?>">
+                      <option value="<?php echo $coordenador['nome_facilitador']." "."<".$coordenador['cargo'].">" ?>" data-tokens="<?php echo $coordenador['nome_facilitador']; ?>">
+
                       <?php echo $coordenador['nome_facilitador'] ?>
 
                       </option>
@@ -225,26 +196,17 @@ $pegarlocal=$puxarform->pegarlocais();
 
               <optgroup label="Supervisão">
                 <option>SUP1</option>
-                <option>SUP1</option>           
-                            </select>  
-                          </div> -->
+                <option>SUP1</option> 
+          </select>
 
-          <!---CHECK DE FACILITADOR---->
+          </div>
 
+          <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
 
-          <!-- <div spellcheck="textarea" class="col-8">
-                  <b>Informe as deliberações*</b>
-                      <br> -->
-          <!-- Um campo básico -->
-          <!-- <input id="temaprincipal" class="form-control" type="text" /></div>
-       
-                </form>
-                  <div class="row">
-                    <div class="col"> 
-                      <button type="submit" id="addelibe" class="add-button" value="+"> + </button> 
-                    </div>
-                  </div>   
-  </form>                    -->
+          <div class="col-12"><b>Tema abordado*:</b>
+            <br>
+            <input id="temaprincipal" class="form-control" type="text" />
+          </div>
 
           <!--BOTÕES-->
           <div class="row">
@@ -252,30 +214,10 @@ $pegarlocal=$puxarform->pegarlocais();
             <div class="col  "><br>
               <div class="btn-atas">
 
-              <button id="botaoregistrar" type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+              <button id="botaoregistrar" type="button" class="btn btn-success" data-bs-toggle="modal">
                         Solicitar ata
                       </button>
-
-<!-- The Modal -->
-
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel"></h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              ...
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      
                       <!--TENTANDO LINKAR O BOTÃO COM O MODAL "registraremail.php"-->
 
                       <!-------------------- BOTÃO ------------------->
@@ -324,52 +266,12 @@ $pegarlocal=$puxarform->pegarlocais();
                         </div>
                       </div>
               </div>
-
               <!--- COMANDO PARA ENVIAR AS INFORMAÇÕES DO BOTÃO PARA O BANCO DE DADOS----->
-
               <script>
 
               </script>
 
-              <br> <br>
-    </main>
-
-    <!-----------------------HISTÓRICO DE ATAS-------------->
-
-    <div>
-      <div>
-        <div class="container">
-          <div class="col-md-12 text-center">
-            <h2> Histórico de ATAS </h2>
-          </div>
-          <br>
-          <nav>
-            <table class="table table-striped">
-
-              <thead>
-                <tr>
-                  <th scope="col">Data de Solicitação</th>
-                  <th scope="col">Facilitador Responsável</th>
-                  <th scope="col">Tema principal</th>
-                  <th scope="col">*Espaço para uma doc box (ou tentar colocar uma)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-
-                  <th scope="row">1</th>
-                  <td>Mark</td>
-                  <td>Otto</td>
-                  <td>@mdo</td>
-
-                </tr>
-
-            </table>
-
-          </nav>
-        </div>
-      </div>
-      </class>
+              <br><br>
 
       <script src="app/gravar.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
