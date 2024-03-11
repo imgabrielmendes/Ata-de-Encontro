@@ -73,7 +73,7 @@ $pegarlocal=$puxarform->pegarlocais();
 
   <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
   <div class="box box-primary">
-    <main class="container d-flex justify-content-center align-items-center">
+    <main class="container_fluid d-flex justify-content-center align-items-center">
       <div class="form-group col-8">
         <!--2° LINHA DO FORMULÁRIO DA ATA----------------------->
         <div class="row"> <!---COLUNA NOME + DATA---->
@@ -109,7 +109,7 @@ $pegarlocal=$puxarform->pegarlocais();
 
  <!---ABA DE TEMPO ESTIMADO ---->
           <div class="col-3">
-            <label for="form-control"> <b> Tempo Estimado:</b> </label>
+            <label for="form-control"> <b> Tempo Estimado (horas):</b> </label>
             <input class="form-control" type="input" id="tempoestim" name="appt" min="13:00" max="12:00">
           </div>
           <br>
@@ -172,7 +172,7 @@ $pegarlocal=$puxarform->pegarlocais();
 
           <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
 
-          <div class="col-12"><b>Tema abordado*:</b>
+          <div class="col-12"><b>Tema*:</b>
             <br>
             <input id="temaprincipal" class="form-control" type="text" />
           </div>
