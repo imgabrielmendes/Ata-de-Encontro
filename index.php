@@ -166,37 +166,6 @@ $pegarlocal=$puxarform->pegarlocais();
                 
                 <?php endforeach ?>
                 </option> 
-                  
-              <optgroup label="ADM">
-              <option>
-                    <?php foreach ($pegarfa as $facarg) : ?> 
-                      <option value="<?php echo $facarg['nome_facilitador'] ?>" 
-
-                      data-tokens="<?php echo $facarg['nome_facilitador']; ?>">
-
-                      <?php echo $facarg['nome_facilitador'] ?>
-                </option>
-                
-                  <?php endforeach ?>
-                </option> 
-
-          <!--------------------------------------------->
-
-           <optgroup label="Coordenação">
-              <option>
-                    <?php foreach ($pegarcoo as $coordenador) : ?> 
-
-                      <option value="<?php echo $coordenador['nome_facilitador']." "."<".$coordenador['cargo'].">" ?>" data-tokens="<?php echo $coordenador['nome_facilitador']; ?>">
-
-                      <?php echo $coordenador['nome_facilitador'] ?>
-
-                      </option>
-                        <?php endforeach ?>
-                      </option> 
-
-              <optgroup label="Supervisão">
-                <option>SUP1</option>
-                <option>SUP1</option> 
           </select>
 
           </div>
@@ -215,13 +184,13 @@ $pegarlocal=$puxarform->pegarlocais();
               <div class="btn-atas">
 
               <button id="botaoregistrar" type="button" class="btn btn-success" data-bs-toggle="modal">
-                        Solicitar ata
+                        salvar
                       </button>
       
                       <!--TENTANDO LINKAR O BOTÃO COM O MODAL "registraremail.php"-->
 
                       <!-------------------- BOTÃO ------------------->
-                      <button id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
+                      <!-- <button id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
                         Registrar Email
                       </button>
 
@@ -264,7 +233,7 @@ $pegarlocal=$puxarform->pegarlocais();
                             </div>
                           </div>
                         </div>
-                      </div>
+                      </div> 
               </div>
               <!--- COMANDO PARA ENVIAR AS INFORMAÇÕES DO BOTÃO PARA O BANCO DE DADOS----->
               <script>
