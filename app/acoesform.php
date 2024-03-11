@@ -107,7 +107,7 @@ class AcoesForm {
             $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
             //SELECT * FROM facilitadores
-            $sql = "SELECT nome_facilitador , cargo FROM facilitadores WHERE cargo = 'ADM';";
+            $sql = "SELECT nome_facilitador , cargo FROM facilitadores ;";
 
             $stmt = $pdo->prepare($sql);
             $stmt->execute();

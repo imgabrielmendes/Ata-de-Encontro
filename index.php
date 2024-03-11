@@ -140,6 +140,7 @@ $pegarlocal=$puxarform->pegarlocais();
             <label for="nomeFacilitador"><b>Informe o Local</b></label>
             <select class="form-control" id="pegarlocal">
               <option disabled> - Informe o Local - </option>
+              
               <option> <?php foreach ($pegarlocal as $locais) : ?>
               <option value="<?php echo $locais['locais'] ?>" data-tokens="<?php echo $locais['locais']; ?>">
                 <?php echo $locais['locais'] ?>
@@ -149,27 +150,26 @@ $pegarlocal=$puxarform->pegarlocais();
           </div>
 
           <br><br>
-
           <!---ABA DE ADICIONAR FACILITADORES---->
           <div class="col-4"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
           <br>
-          <div class="col-8"  >
-          <select class=" col-8 form-control" id="selecionandofacilitador">
-          <optgroup label="Sem cargos">
-              <option>
-              <?php foreach ($pegarfa as $facnull) : ?>
-                        <option value="<?php echo $facnull['nome_facilitador'] ." "."<". $facnull ['cargo'].">"; ?>"
-                        data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
 
-                        <?php echo $facnull['nome_facilitador'] ?>
+          <div class="col-8">
+          <select class=" col-8 form-control" id="selecionandofacilitador" name="facilitador">
+          <optgroup label="Selecione Facilitadores">
+              <?php foreach ($pegarfa as $facnull) : ?>
+
+                        <option value="<?php echo $facnull['nome_facilitador'] ." "."<". $facnull ['cargo'].">"; ?>"
+                        data-tokens="<?php echo $facnull['nome_facilitador']?>">
+                        <?php echo $facnull['nome_facilitador']." "."<". $facnull ['cargo'].">"; ?>
+                        
                 </option>
                 
                 <?php endforeach ?>
                 </option> 
           </select>
-
           </div>
-
+ 
           <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
 
           <div class="col-12"><b>Tema*:</b>
@@ -182,10 +182,10 @@ $pegarlocal=$puxarform->pegarlocais();
 
             <div class="col  "><br>
               <div class="btn-atas">
-
+                <a href="addparticipantes.php">
               <button id="botaoregistrar" type="button" class="btn btn-success" data-bs-toggle="modal">
                         salvar
-                      </button>
+                      </button></a>
       
                       <!--TENTANDO LINKAR O BOTÃO COM O MODAL "registraremail.php"-->
 
@@ -194,7 +194,7 @@ $pegarlocal=$puxarform->pegarlocais();
                         Registrar Email
                       </button>
 
-                      <!-------------------- MODAL ------------------->
+                      <!------------------ MODAL ------------------->
                       <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
                           <div class="modal-content">

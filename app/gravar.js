@@ -13,7 +13,7 @@ var gravarinformacoes = document.getElementById("botaoregistrar");
 // Pegar caixas do fomulário
 
 //1° LINHAS
-var data = document.getElementById("datainicio").value;
+var data = document.getElementById("datainicio");
 var horainicio = document.getElementById("horainicio").value;
 var horaterm = document.getElementById("horaterm").value;
 var tempoes = document.getElementById("iddoinput"); //FALTANDO
@@ -53,17 +53,6 @@ function gravando() {
     var data = document.getElementById("datainicio").value;
 
 // ------------------------------------------------------------------------------------------
-    // BOTÕES DE OBJETIVO
-    // CONDIÇÃO PARA AS OPÇÕES DE OBJETIVOS
-
-    for (var op = 0; op < objetivomarc.length; op++) {
-        if (objetivomarc[op].checked) {
-            objetivoSelecionado = objetivomarc[op].value;
-            break;
-        }
-    }
-
-// ------------------------------------------------------------------------------------------
 
     // CRIANDO CONDIÇÕES PARA QUE SÓ ENVIE PARA O AJAX SE TUDO ESTIVER PREENCHIDO
     // trim() usado para verificar se o campo está vazio
@@ -76,7 +65,7 @@ function gravando() {
           }); 
         
           console.log("(X) Puxou a function, mas está faltando informações");
-          console.log(objetivoSelecionado);
+          console.log(objetivoSelecionado).values ;
           console.log(local);
           console.log (facilitadores);
         }
@@ -93,11 +82,14 @@ function gravando() {
         console.log("(1) A função 'gravando()' foi chamada");
         console.log (facilitadores);
 
+        //
+        //
         // CÓDIGO AJAX QUE VAI ENVIAR AS INFORMAÇÕES DAS FUNCTION PARA O BANCO DE DADOS
         if (facilitadores !=="" && conteudo !== "" && horainicio !=="" && horaterm!=="" && data !=="") 
 
         $.ajax({
             url: 'enviarprobanco.php',
+            url: 'addparticipantes.php',
             method: 'POST',
             data: {
                 facilitadores: facilitadores,
@@ -109,6 +101,7 @@ function gravando() {
                 local: local,
             },
 
+
             success: function (response) {
 
                 console.log("(2) Deu bom! AJAX está enviando");
@@ -119,9 +112,29 @@ function gravando() {
                 console.error('Erro na solicitação AJAX:', error);
                 console.log(facilitadores)
             }
+
+            
         });
-    }
-}
+
+            $.ajax({
+                url: 'addparticipantes.php', 
+                method: 'POST',
+                data: {
+                    facilitadores: facilitadores,
+            
+                },
+                success: function (response) {
+                    console.log("!!!!!ENVIOU PARA A OUTRA PÁGINA");
+                    console.log(facilitadores);
+                    console.log(response);
+                },
+                error: function (error) {
+                    console.error('Erro na solicitação AJAX para addparticipantes.php:', error);
+                    console.log(facilitadores);
+                }
+            });
+
+
 
 ///------------BOTÃO DE REGISTRAR EMAIL DENTRO DA MODAL------------------------------
 
