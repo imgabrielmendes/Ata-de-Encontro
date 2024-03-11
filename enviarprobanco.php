@@ -10,6 +10,8 @@ session_start();
     $objetivoSelecionado= $_POST['objetivos'];
     $local= $_POST['local'];
 
+    var_dump($facilitadores);
+    echo $facilitadores;
     // $horaterm= $_POST['datainic'] . ' ' .$_POST['horat'] .':00';
     $horaterm=$_POST['horat'].':00';
     // $horaterm='7777-77-77';

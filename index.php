@@ -182,7 +182,7 @@ $pegarlocal=$puxarform->pegarlocais();
 
             <div class="col  "><br>
               <div class="btn-atas">
-                <a href="addparticipantes.php">
+                <!-- <a href="addparticipantes.php"> -->
               <button id="botaoregistrar" type="button" class="btn btn-success" data-bs-toggle="modal">
                         salvar
                       </button></a>

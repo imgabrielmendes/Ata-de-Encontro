@@ -19,8 +19,9 @@ $pegarcoo=$puxarform->pegarcoordenador();
 $pegarlocal=$puxarform->pegarlocais();
 
 $facilitadores=$_POST['facilitadores'];
+
     echo "Variáveis recebidas: Facilitadores - $facilitadores";
-    var_dump($facilitadores);
+    //var_dump($pegarfa);
 
 ?>
 <!DOCTYPE html>
@@ -77,14 +78,30 @@ $facilitadores=$_POST['facilitadores'];
     <div class="row">
         <div class="col">
             <label><b>Nome inserido:</b></label> 
+
             <div class="col">
-            <tbody>
-                
+            <label><b>Data solicitada</b></label>
+
+            <div class="col">
+            <tbody>  
                 <?php foreach ($pegarfa as $fac) ?> 
-                
                     <?php echo $fac['nome_facilitador'] ?>
-                <?php  ?> 
+
+                <?php ?> 
             </tbody>
+        </div>
+
+        <div class="col">
+            <tbody>  
+             <?php echo "caixa aqui" ?>
+            </tbody>
+        <div class="col">
+            <label>Data de inicio</label>
+            <label>Data de Término</label>
+            
+        </div>
+        </div>
+   
         </div>
     </div>
         <script>
