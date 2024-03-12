@@ -4,6 +4,7 @@ namespace formulario;
 
 include ("vendor/autoload.php");
 include_once ("app/acoesform.php");
+include ("enviarprobanco.php");
 include ("conexao.php");
 
 
@@ -16,12 +17,16 @@ $pegarfa=$puxarform->pegarfacilitador();
 $pegarcoo=$puxarform->pegarcoordenador();
 
 //Puxar local
-$pegarlocal=$puxarform->pegarlocais();
+$facilitadores = $_GET['facilitadores'];
+$conteudo = $_GET['conteudo'];
+$horainicio = $_GET['horainicio'];
+$horaterm = $_GET['horaterm'];
+$data = $_GET['data'];
+$objetivoSelecionado = $_GET['objetivoSelecionado'];
+$local = $_GET['local'];
 
-$facilitadores=$_POST['facilitadores'];
-
-    echo "Variáveis recebidas: Facilitadores - $facilitadores";
-    //var_dump($pegarfa);
+// Agora você pode usar essas variáveis conforme necessário
+echo "Variáveis recebidas: Facilitadores - $facilitadores, Conteúdo - $conteudo, Horário de Início - $horainicio, Horário de Término - $horaterm, Data - $data, Objetivos - $objetivoSelecionado, Local - $local";
 
 ?>
 <!DOCTYPE html>
