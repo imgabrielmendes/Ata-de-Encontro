@@ -41,11 +41,10 @@ $pegarlocal=$puxarform->pegarlocais();
   <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
 
   <!---------------------------------------------------------------->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="view/js/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="view/css/styles.css">
   <link rel="stylesheet" href="view/css/bootstrap.min.css">
   <link rel="stylesheet" href="view/css/bootstrap-grid.css">
@@ -182,10 +181,10 @@ $pegarlocal=$puxarform->pegarlocais();
 
             <div class="col  "><br>
               <div class="btn-atas">
-                <a href="addparticipantes.php">
+                
               <button id="botaoregistrar" type="button" class="btn btn-success" data-bs-toggle="modal">
                         salvar
-                      </button></a>
+                      </button>
       
                       <!--TENTANDO LINKAR O BOTÃO COM O MODAL "registraremail.php"-->
 
@@ -194,7 +193,7 @@ $pegarlocal=$puxarform->pegarlocais();
                         Registrar Email
                       </button>
 
-                      <!------------------ MODAL ------------------->
+                      <!------------------ MODAL ------------------>
                       <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
                           <div class="modal-content">

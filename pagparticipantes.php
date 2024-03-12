@@ -4,17 +4,8 @@ namespace formulario;
 
 include ("vendor/autoload.php");
 include_once ("app/acoesform.php");
-include ("enviarprobanco.php");
 include ("conexao.php");
 
-
-//Testar conexao com banco de dados
-$puxarform= new AcoesForm;
-$facilitadores=$puxarform->selecionarFacilitadores();
-
-//funções de encotrar pessoas
-$pegarfa=$puxarform->pegarfacilitador();
-$pegarcoo=$puxarform->pegarcoordenador();
 
 //Puxar local
 $facilitadores = $_GET['facilitadores'];
@@ -25,8 +16,13 @@ $data = $_GET['data'];
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
 
-// Agora você pode usar essas variáveis conforme necessário
-echo "Variáveis recebidas: Facilitadores - $facilitadores, Conteúdo - $conteudo, Horário de Início - $horainicio, Horário de Término - $horaterm, Data - $data, Objetivos - $objetivoSelecionado, Local - $local";
+echo "Facilitadores - $facilitadores, 
+      Conteúdo - $conteudo, 
+      Horário de Início - $horainicio, 
+      Horário de Término - $horaterm, 
+      Data - $data, 
+      Objetivos - $objetivoSelecionado, 
+      Local - $local";
 
 ?>
 <!DOCTYPE html>
@@ -39,11 +35,10 @@ echo "Variáveis recebidas: Facilitadores - $facilitadores, Conteúdo - $conteud
   <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
 
   <!---------------------------------------------------------------->
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <script src="view/js/popper.min.js" crossorigin="anonymous"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="view/css/styles.css">
   <link rel="stylesheet" href="view/css/bootstrap.min.css">
   <link rel="stylesheet" href="view/css/bootstrap-grid.css">
@@ -78,37 +73,21 @@ echo "Variáveis recebidas: Facilitadores - $facilitadores, Conteúdo - $conteud
         <div class="row"> <!---COLUNA NOME + DATA---->
 
         <h1>DEU BOM, FOI PUXADO</h1>
+        <h1>Dados Recebidos:</h1>
+    <ul>
+        <li><strong>Facilitadores:</strong> <?php echo $facilitadores; ?></li>
+        <li><strong>Conteúdo:</strong> <?php echo $conteudo; ?></li>
+        <li><strong>Horário de Início:</strong> <?php echo $horainicio; ?></li>
+        <li><strong>Horário de Término:</strong> <?php echo $horaterm; ?></li>
+        <li><strong>Data:</strong> <?php echo $data; ?></li>
+        <li><strong>Objetivos:</strong> <?php echo $objetivoSelecionado; ?></li>
+        <li><strong>Local:</strong> <?php echo $local; ?></li>
+    </ul>
     <form>
 
     <div class="row">
         <div class="col">
-            <label><b>Nome inserido:</b></label> 
-
-            <div class="col">
-            <label><b>Data solicitada</b></label>
-
-            <div class="col">
-            <tbody>  
-                <?php foreach ($pegarfa as $fac) ?> 
-                    <?php echo $fac['nome_facilitador'] ?>
-
-                <?php ?> 
-            </tbody>
-        </div>
-
-        <div class="col">
-            <tbody>  
-             <?php echo "caixa aqui" ?>
-            </tbody>
-        <div class="col">
-            <label>Data de inicio</label>
-            <label>Data de Término</label>
-            
-        </div>
-        </div>
-   
-        </div>
-    </div>
+           </div>
         <script>
             console.log ("PUXOU! TA PUXANDO A PÁG");
             console.log ("O VALOR INSERIDO NO NOME ANTERIORMENTE FOI:");
@@ -120,7 +99,6 @@ echo "Variáveis recebidas: Facilitadores - $facilitadores, Conteúdo - $conteud
         <div class="row">
 
         </div>
-      <script src="app/gravar.js"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </body>
 

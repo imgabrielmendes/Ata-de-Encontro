@@ -67,7 +67,9 @@ function gravando() {
 
     // CRIANDO CONDIÇÕES PARA QUE SÓ ENVIE PARA O AJAX SE TUDO ESTIVER PREENCHIDO
     // trim() usado para verificar se o campo está vazio
-    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() ===""|| conteudo.trim() === "") 
+
+    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() ===""|| conteudo.trim() === "")
+
             {   
         Swal.fire({
             title: "Erro no registro",
@@ -93,14 +95,11 @@ function gravando() {
         console.log("(1) A função 'gravando()' foi chamada");
         console.log (facilitadores);
 
-        //
-        //
+        
         // CÓDIGO AJAX QUE VAI ENVIAR AS INFORMAÇÕES DAS FUNCTION PARA O BANCO DE DADOS
         if (facilitadores !=="" && conteudo !== "" && horainicio !=="" && horaterm!=="" && data !=="") 
-
         $.ajax({
             url: 'enviarprobanco.php',
-            url: 'addparticipantes.php',
             method: 'POST',
             data: {
                 facilitadores: facilitadores,
@@ -113,17 +112,24 @@ function gravando() {
             },
 
 
-            success: function (response) {
+            success: function (teste) {
 
                 console.log("(2) Deu bom! AJAX está enviando");
-                //console.log(facilitadores);
-                //console.log(response);
-                window.location.href = 'addparticipantes.php';
+                console.log(teste);
+
+                window.location.href = 'pagparticipantes.php' +
+                '?facilitadores=' + encodeURIComponent(facilitadores) +
+                '&conteudo=' + encodeURIComponent(conteudo) +
+                '&horainicio=' + encodeURIComponent(horainicio) +
+                '&horaterm=' + encodeURIComponent(horaterm) +
+                '&data=' + encodeURIComponent(data) +
+                '&objetivoSelecionado=' + encodeURIComponent(objetivoSelecionado) +
+                '&local=' + encodeURIComponent(local);
             },
             error: function (error) {
                 console.error('Erro na solicitação AJAX:', error);
                 console.log(facilitadores)
-            }
+            },
 
             
         });
@@ -133,61 +139,61 @@ function gravando() {
 
 ///------------BOTÃO DE REGISTRAR EMAIL DENTRO DA MODAL------------------------------
 
-// var caixadenome, caixadeemail;
-// var caixadenome = document.getElementById("caixanome").value;
-// var caixadeemail = document.getElementById("caixadeemail").value;
+var caixadenome, caixadeemail;
+var caixadenome = document.getElementById("caixanome").value;
+var caixadeemail = document.getElementById("caixadeemail").value;
 
-// var botaoemail = document.getElementById("registraremail");
+var botaoemail = document.getElementById("registraremail");
 
-// function gravaremail(){
+function gravaremail(){
    
-//     if (caixadenome.trim() ==="" || caixadeemail.trim() ==="")
-//     {
+    if (caixadenome.trim() ==="" || caixadeemail.trim() ==="")
+    {
         
-//         Swal.fire({
-//             title: "Erro no registro",
-//             text: "Preencha todas as caixas do formulário",
-//             icon: "error"
-//           });
-//           console.log ("(X) Puxou a function da modal, mas não preencheu todas as informações")
-//     } 
+        Swal.fire({
+            title: "Erro no registro",
+            text: "Preencha todas as caixas do formulário",
+            icon: "error"
+          });
+          console.log ("(X) Puxou a function da modal, mas não preencheu todas as informações")
+    } 
 
-//     //if (caixadeemail ===""){window.alert ("Você não informou o seu nome completo");} 
+    if (caixadeemail ===""){window.alert ("Você não informou o seu nome completo");} 
     
-//     else {
+    else {
 
-//         Swal.fire({
-//             title: "Cadastrado com sucesso!",
-//             text: "Atualize a página e continue a operação",
-//             icon: "success"
-//           });
+        Swal.fire({
+            title: "Cadastrado com sucesso!",
+            text: "Atualize a página e continue a operação",
+            icon: "success"
+          });
 
-//         window.alert ("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail);
-//         console.log ("(3.1) As informações de email foram enviadas");
+        window.alert ("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail);
+        console.log ("(3.1) As informações de email foram enviadas");
 
-//         if (caixadenome !=="" && caixadeemail !=="") 
+        if (caixadenome !=="" && caixadeemail !=="") 
 
-//         $.ajax({
-//             url: 'registrarfacilitadores.php',
-//             method: 'POST',
-//             data: {
-//                caixaname: caixadenome,
-//                caixaemail: caixadeemail
-//             },
+        $.ajax({
+            url: 'registrarfacilitadores.php',
+            method: 'POST',
+            data: {
+               caixaname: caixadenome,
+               caixaemail: caixadeemail
+            },
 
-//             success: function (response) {
-//                 console.log("(3.2) Deu bom! AJAX está enviando");
-//                 console.log(response);
-//             },
-//             error: function (error) {
-//                 console.error('Erro na solicitação AJAX:', error);
-//             }
-//         });
-//     }
+            success: function (response) {
+                console.log("(3.2) Deu bom! AJAX está enviando");
+                console.log(response);
+            },
+            error: function (error) {
+                console.error('Erro na solicitação AJAX:', error);
+            }
+        });
+    }
 
-// };
+};
     
 // Botões
 gravarinformacoes.addEventListener('click', gravando);
-//botaoemail.addEventListener('click', gravaremail);
+botaoemail.addEventListener('click', gravaremail);
 
