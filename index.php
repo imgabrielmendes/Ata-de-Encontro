@@ -117,7 +117,7 @@ $pegarlocal=$puxarform->pegarlocais();
           <div class="col" id="objetivo">
             <label for="form-control"> <b>Objetivo:</b> </label>
             <label class="form-control">
-              <input type="checkbox" class="objetivo" name="objetivo" id="reuniao" value="reuniao" > Reunião</label>
+              <input type="checkbox" class="objetivo" name="objetivo" id="reuniao" value="Reuniao" > Reunião</label>
           </div>
 
            <!---ABA DE OBJETIVO - TREINAMENTO---->
@@ -171,7 +171,7 @@ $pegarlocal=$puxarform->pegarlocais();
  
           <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
 
-          <div class="col-12"><b>Tema*:</b>
+          <div class="col"><b>Tema*:</b>
             <br>
             <input id="temaprincipal" class="form-control" type="text" />
           </div>

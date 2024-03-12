@@ -85,6 +85,8 @@ function gravando() {
         
     else {
 
+        setTimeout(gravando, 3000);
+
         Swal.fire({
             title: "Ata registrada com sucesso!",
             icon: "success"
