@@ -58,7 +58,7 @@ $pegarlocal=$puxarform->pegarlocais();
   <!--BARRA DE NAVEGAÇÃO-->
   <header>
     <nav class="navbar shadow">
-      <div id="container">
+      <div id="container" style="background-color: #001f3f;">
         <div class="container_align">
           <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
             <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"></a>
