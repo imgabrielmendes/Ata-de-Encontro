@@ -6,6 +6,10 @@ namespace formulario;
 // include_once ("app/acoesform.php");
 // include ("conexao.php");
 
+$puxarform= new AcoesForm;
+$facilitadores=$puxarform->selecionarFacilitadores();
+$pegarfa=$puxarform->pegarfacilitador();
+var_dump($pegarfa);
 
 //PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
 $facilitadores = $_GET['facilitadores'];
@@ -16,13 +20,13 @@ $data = $_GET['data'];
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
 
-echo "Facilitadores - $facilitadores, 
-      Conteúdo - $conteudo, 
-      Horário de Início - $horainicio, 
-      Horário de Término - $horaterm, 
-      Data - $data, 
-      Objetivos - $objetivoSelecionado, 
-      Local - $local";
+// echo "Facilitadores - $facilitadores, 
+//       Conteúdo - $conteudo, 
+//       Horário de Início - $horainicio, 
+//       Horário de Término - $horaterm, 
+//       Data - $data, 
+//       Objetivos - $objetivoSelecionado, 
+//       Local - $local";
 
 ?>
 <!DOCTYPE html>
@@ -72,7 +76,7 @@ echo "Facilitadores - $facilitadores,
           
     <div class="accordion" id="accordionPanelsStayOpenExample">
 
-      <div class="accordion-item">
+      <div class="accordion-item shadow">
         <h2 class="accordion-header">
           <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background-color: #001f3f;">
             <h5>Informações de Registro</h5>
@@ -102,13 +106,13 @@ echo "Facilitadores - $facilitadores,
           <div class="row">
             <br>
                   <div class="col-3">
-                    <label><b>Data*</b></label>
+                    <label>Data*</label>
                     <ul class="form-control bg-body-secondary"> <?php echo $data;  ?> </ul>
                   </div>
           
                   <!---ABA DE HORÁRIO INICIO---->
                   <div class="col-3">
-                    <label for="nomeMedico"><b>Horário de Início*:</b></label>
+                    <label for="nomeMedico">Horário de Início*:</label>
                     <br>
                     <ul class="form-control bg-body-secondary"><?php echo $horainicio; ?></ul>
                   </div>
@@ -167,7 +171,7 @@ echo "Facilitadores - $facilitadores,
             <main class="container-fluid ">
 
             <div class="row">
-            <h1 class="text-center">Participantes </h1>
+            <h4 class="text-center">Participantes </h4>
             </div>
 
           <div class="row">
@@ -176,19 +180,122 @@ echo "Facilitadores - $facilitadores,
             </div>
           </div>
 
-          <div class="row">
+          <!-- <div class="row">
             <main class="container_fluid d-flex justify-content-center align-items-center">
             <div class="col-9">
-                <select class="form-control">
-                    <option>
-                      <?php 
-                                   
-                      ?>
-                  </option>
-                </select>
+            <select class="form-control" id="selecionandoparticipa" name="facilitador">
+          
+              <?php foreach ($pegarfa as $facnull) : ?>
+
+                        <option value="<?= $facnull['nome_facilitador'] ." "."<". $facnull ['cargo'].">"; ?>"
+                        data-tokens="<?= $facnull['nome_facilitador']?>">
+                        <?= $facnull['nome_facilitador']." "."<". $facnull ['cargo'].">"; ?>
+                        
+                </option>
+                
+                <?php endforeach ?>
+                </option> 
+          </select>
           </div>
           <div class="col-3">
           <button class="col-4 btn btn-success text-center">+</button>
+         -->
+        <div class="row">
+        <form id="addForm">
+            <div class="form-group">
+                <label for="item">Nova Tarefa</label>
+                <input type="text" id="item" class="form-control" placeholder="Adicionar nova tarefa...">
+            </div>
+            <button type="submit" class="btn btn-primary">Adicionar</button>
+        </form>
+        <button id="addNewTextBox" class="btn btn-success">Adicionar Nova Tarefa</button>
+        <hr>
+        <h3>Tarefas</h3>
+        <input type="text" id="filter" class="form-control" placeholder="Filtrar Tarefas...">
+        <ul id="items" class="list-group"></ul>
+
+        <script>
+        var form = document.getElementById('addForm');
+        var itemList = document.getElementById('items');
+        var filter = document.getElementById('filter');
+        var addNewTextBoxBtn = document.getElementById('addNewTextBox');
+        var newItemCounter = 1;
+
+        form.addEventListener('submit', addItem);
+        itemList.addEventListener('click', removeItem);
+        filter.addEventListener('keyup', filterItems);
+        addNewTextBoxBtn.addEventListener('click', addNewTextBox);
+
+        function addItem(e) {
+            e.preventDefault();
+            var newItem = document.getElementById('item').value.trim();
+            if (newItem === "") {
+                window.alert("Você não escreveu nenhuma deliberação");
+            } else {
+                var li = document.createElement('li');
+                li.className = 'list-group-item';
+                li.appendChild(document.createTextNode(newItem));
+                var deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn btn-danger btn-sm float-right delete';
+                deleteBtn.appendChild(document.createTextNode('X'));
+                li.appendChild(deleteBtn);
+                itemList.appendChild(li);
+            }
+            document.getElementById('item').value = ''; // Limpa o campo de texto
+        }
+
+        function removeItem(e) {
+            if (e.target.classList.contains('delete')) {
+                if (confirm('Tem certeza?')) {
+                    var li = e.target.parentElement;
+                    itemList.removeChild(li);
+                }
+            }
+        }
+
+        function filterItems(e) {
+            var text = e.target.value.toLowerCase();
+            var items = itemList.getElementsByTagName('li');
+            Array.from(items).forEach(function (item) {
+                var itemName = item.firstChild.textContent.toLowerCase();
+                if (itemName.indexOf(text) !== -1) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function addNewTextBox() {
+            var newDiv = document.createElement('div');
+            newDiv.className = 'row';
+            var mainContainer = document.createElement('main');
+            mainContainer.className = 'container_fluid d-flex justify-content-center align-items-center';
+            var col9 = document.createElement('div');
+            col9.className = 'col-9';
+            var select = document.createElement('select');
+            select.className = 'form-control';
+            select.id = 'selecionandoparticipa';
+            select.name = 'facilitador';
+            pegarfa.forEach(function (item) {
+                var option = document.createElement('option');
+                option.value = item['nome_facilitador'] + ' <' + item['cargo'] + '>';
+                option.text = item['nome_facilitador'] + ' <' + item['cargo'] + '>';
+                select.appendChild(option);
+            });
+            var col3 = document.createElement('div');
+            col3.className = 'col-3';
+            var button = document.createElement('button');
+            button.className = 'col-4 btn btn-success text-center';
+            button.innerText = '+';
+            col3.appendChild(button);
+            col9.appendChild(select);
+            mainContainer.appendChild(col9);
+            newDiv.appendChild(mainContainer);
+            newDiv.appendChild(col3);
+            document.getElementById('addForm').appendChild(newDiv);
+        }
+          </script>
          </div>
 
               </div>

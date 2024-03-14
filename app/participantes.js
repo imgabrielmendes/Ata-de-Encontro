@@ -1,27 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>To-Do List</title>
-</head>
-<body>
-    <div class="container">
-        <h1>To-Do List</h1>
-        <form id="addForm">
-            <div class="form-group">
-                <label for="item">Nova Tarefa</label>
-                <input type="text" id="item" class="form-control" placeholder="Adicionar nova tarefa...">
-            </div>
-            <button type="submit" class="btn btn-primary">Adicionar</button>
-        </form>
-        <button id="addNewTextBox" class="btn btn-success">Adicionar Nova Tarefa</button>
-        <hr>
-        <h3>Tarefas</h3>
-        <input type="text" id="filter" class="form-control" placeholder="Filtrar Tarefas...">
-        <ul id="items" class="list-group"></ul>
-    </div>
 
-    <script>
-        var form = document.getElementById('addForm');
+
+var form = document.getElementById('selecionandoparticipante');
         var itemList = document.getElementById('items');
         var filter = document.getElementById('filter');
         var addNewTextBoxBtn = document.getElementById('addNewTextBox');
@@ -81,6 +60,3 @@
             document.getElementById('addForm').appendChild(newTextBox);
             newItemCounter++;
         }
-    </script>
-</body>
-</html>
