@@ -2,9 +2,9 @@
 
 namespace formulario;
 
-// include ("vendor/autoload.php");
-// include_once ("app/acoesform.php");
-// include ("conexao.php");
+include ("vendor/autoload.php");
+include_once ("app/acoesform.php");
+include ("conexao.php");
 
 $puxarform= new AcoesForm;
 $facilitadores=$puxarform->selecionarFacilitadores();
@@ -218,17 +218,21 @@ $local = $_GET['local'];
             </option> 
 
             <!----- BOTÃO DE ADICIONAR---->
-            <div class="col-5">
-            <button type="submit" class="btn btn-success">+</button>
-            
+
+            <div class="col">
+            <button type="submit" class="btn btn-success" id="addNewTextBox">+</button>
+            </div>
+
       </select>                      
         </form>       
 </div>
 </div>
-        <!-- <button id="addNewTextBox" class="btn btn-success">Adicionar Nova Tarefa</button> -->
+        <button id="addNewTextBox" class="btn btn-success">Adicionar Nova Tarefa</button>
         <hr>
         <h3>DEU BOM, TÁ PUXANDO</h3>
-        <!-- <input type="text" id="filter" class="form-control" placeholder="Filtrar Tarefas..."> -->
+        <button type="submit" class="btn btn-success" id="addNewTextBox">+</button>
+
+        <input type="text" id="filter" class="form-control" placeholder="Filtrar Tarefas...">
         <ul id="items" class="list-group"></ul>
 
         <script>
@@ -247,6 +251,7 @@ $local = $_GET['local'];
               <button id="botaoregistrar" type="button" class="btn btn-success" data-bs-toggle="modal">
                 Continuar ata
               </button>
+
             <br>
               <button onclick="openInternalPage()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
                 Atualizar a ata
