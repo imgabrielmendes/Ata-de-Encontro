@@ -2,9 +2,9 @@
 
 namespace formulario;
 
-include ("vendor/autoload.php");
-include_once ("app/acoesform.php");
-include ("conexao.php");
+// include ("vendor/autoload.php");
+// include_once ("app/acoesform.php");
+// include ("conexao.php");
 
 $puxarform= new AcoesForm;
 $facilitadores=$puxarform->selecionarFacilitadores();
@@ -248,9 +248,14 @@ $local = $_GET['local'];
                 Continuar ata
               </button>
             <br>
-              <button id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
+              <button onclick="openInternalPage()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
                 Atualizar a ata
               </button>
+              <script>
+        function openInternalPage() {
+            window.location.href = 'paghistorico.php';
+        }
+    </script>
             </div>
         </div>
       </div>
