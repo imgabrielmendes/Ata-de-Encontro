@@ -137,13 +137,18 @@ $pegarlocal=$puxarform->pegarlocais();
           <!--- ABA DE SELECIONAR LOCAL ---->
           <div class="col-4">
             <label for="nomeFacilitador"><b>Informe o Local</b></label>
+            
             <select class="form-control" id="pegarlocal">
+              
               <option disabled> - Informe o Local - </option>
               
               <option> <?php foreach ($pegarlocal as $locais) : ?>
               <option value="<?php echo $locais['locais'] ?>" data-tokens="<?php echo $locais['locais']; ?>">
-                <?php echo $locais['locais'] ?>
+
+              <?php echo $locais['locais'] ?>
+
               <?php endforeach ?>
+
               </option>
             </select>
           </div>
