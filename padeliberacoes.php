@@ -176,47 +176,56 @@ $local = $_GET['local'];
 
             </div>
 
-        <div class="container">
-          <form id="addForm">
-              <div class="form-group">
-                  <ul id="items" class="list-group"></ul>
-                  <br>
-                  <label for="item">Informe os participantes</label>
-                  <select id="item" class="form-control" placeholder="Participantes...">
-                      <?php foreach ($pegarfa as $facnull) : ?>
-                          <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
-                              <?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>
-                            
-                            </option>
-                      <?php endforeach ?>
-                  </select>
-                        <div class="col-2">
-                  <button type="button" id="addItemButton" class="btn btn-primary mt-2">+</button>
-                  </div>
-              </div>
-          </form>
-    </div>
-
-           
-              <!--BOTÕES-->
-      <div class="container d-flex justify-content-center align-items-center">
-        <div class="row">
-          <div class="col">
-            <div class="btn">
-              <br>
-              <button id="botaocontinuarata" type="button" class="btn btn-success" data-bs-toggle="modal">
-                Continuar ata
-              </button>
-
+            <div class="container">
+    <form id="addForm">
+        <div class="form-group">
+            <ul id="items" class="list-group"></ul>
             <br>
-              <button onclick="openInternalPage()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
-                Atualizar a ata
-              </button>
-              <script>
-        function openInternalPage() {
-            window.location.href = 'paghistorico.php';
-        }
-    </script>
+            <label for="item">Informe os participantes</label>
+            <select id="item" class="form-control" placeholder="Participantes...">
+                <?php foreach ($pegarfa as $facnull) : ?>
+                    <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
+                        <?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>
+                    </option>
+                <?php endforeach ?>
+            </select>
+            <div class="col-2">
+                <button type="button" id="addItemButton" class="btn btn-primary mt-2">+</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="row">
+        <div class="col">
+            <div class="btn">
+                <br>
+                <button id="botaocontinuarata" type="button" class="btn btn-success" data-bs-toggle="modal">
+                    Continuar ata
+                </button>
+
+                <br>
+                <button id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
+                    Atualizar a ata
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var botaocont = document.getElementById('botaocontinuarata');
+        var botaoregistrar = document.getElementById('botaoregistrar');
+        var itemList = document.getElementById('items');
+        var filter = document.getElementById('filter');
+        var addItemButton = document.getElementById('addItemButton');
+
+        // Seu código JavaScript aqui...
+    });
+</script>
+
             </div>
         </div>
       </div>
