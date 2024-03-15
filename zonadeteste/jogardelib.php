@@ -75,3 +75,18 @@
                     </div>
                   </div>   
   </form>                   
+
+  filter.addEventListener('keyup', function() {
+
+    var text = this.value.toLowerCase();
+    var items = itemList.getElementsByTagName('li');
+
+    Array.from(items).forEach(function(item) {
+        var itemName = item.textContent.toLowerCase();
+        if (itemName.includes(text)) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+});

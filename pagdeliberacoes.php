@@ -2,15 +2,6 @@
 
 namespace formulario;
 
-include ("vendor/autoload.php");
-include_once ("app/acoesform.php");
-include ("conexao.php");
-
-$puxarform= new AcoesForm;
-$facilitadores=$puxarform->selecionarFacilitadores();
-$pegarfa=$puxarform->pegarfacilitador();
-//var_dump($pegarfa);
-
 //PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
 $facilitadores = $_GET['facilitadores'];
 $conteudo = $_GET['conteudo'];
@@ -60,7 +51,7 @@ $local = $_GET['local'];
         <div class="container_align">
           <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php"  style="background-color: #20315f;">
             <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"  style="background-color: #20315f;"></a>
-          <h1 id="tittle" class="text-center">2° FASE</h1>
+          <h1 id="tittle" class="text-center">Deliberações</h1>
         </div>
       </div>
     </nav>
@@ -87,19 +78,7 @@ $local = $_GET['local'];
     <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
       <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
           <div class="col-md-12 text-center">         
-          <!----<ul>
-              <strong>Facilitadores:</strong> <?php echo $facilitadores; ?>
-              <br>
-              <strong>Tema:</strong> <?php echo $conteudo; ?>
-              <br>
-              <strong>Horário de Início:</strong> <?php echo $horainicio; ?>
-              <strong>Horário de Término:</strong> <?php echo $horaterm; ?>
-              <strong>Data:</strong> <?php echo $data; ?>
-              <br>
-              <strong>Objetivos:</strong> <?php echo $objetivoSelecionado; ?>
-              <strong>Local:</strong> <?php echo $local; ?>
-              <h3>---------------------------------</h3>
-          </ul> --->          
+                
           </div>     
 
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
@@ -162,53 +141,106 @@ $local = $_GET['local'];
             </div>
     </div>
 </div>
+
+<div class="accordion" id="accordionPanelsStayOpenExample">
+
+<div class="accordion-item shadow">
+  <h2 class="accordion-header">
+    <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background-color: #1c8f69;">
+      <h5>Participantes Adicionados</h5>
+      <i class="fas fa-plus"></i>
+    </button>
+  </h2>
+
+<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+<div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+    <div class="col-md-12 text-center">         
+          
+    </div>     
+
+    <!---- PRIMEIRA LINHA DO REGISTRO ---->
+    <div class="row">
+      <br>
+            <div class="col-3">
+              <label>Data*</label>
+              <ul class="form-control bg-body-secondary"> <?php echo $data;  ?> </ul>
+            </div>
+    
+            <!---ABA DE HORÁRIO INICIO---->
+            <div class="col-3">
+              <label for="nomeMedico">Horário de Início*:</label>
+              <br>
+              <ul class="form-control bg-body-secondary"><?php echo $horainicio; ?></ul>
+            </div>
+   
+      </div>
+
+
+      </div>
+</div>
+</div>
+</div>
   </div>
 
 <!-----------------------------2° FASE-------------------------------->
 <br>
-
+  
         <div class="box box-primary">
+        <h1>asasasasasas</h1>
+        <form id="addForm">
+        <div class="form-group">
+            <ul id="items" class="list-group"></ul>
+            <br>
+            <label for="item">Informe o deliberador:</label>
+
+            <select id="item" class="col-4 form-control" placeholder="Participantes...">
+                <?php foreach ($pegarfa as $facnull) : ?>
+
+                    <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
+                        <?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . $facnull['email_facilitador']. ">"; ?>
+                    </option>
+
+                <?php endforeach ?>
+            </select>
+            <div class="col">
+              <label>Deliberações</label>
+              <input class="form-control" type="text">
+            </div>
+            <div class="col-2">
+                <button type="button" id="addItemButton" class="btn btn-primary mt-2">+</button>
+            </div>
+        </div>
+
+        <br>
+                <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
+                Atualizar a ata
+              </button>
+              <script>
+        function abrirHistorico() {
+            window.location.href = 'paghistorico.php';
+        }
+    </script>
+    </form>
             <main class="container-fluid ">
+            </div>     
 
             <div class="row">
+              
             <h4 class="text-center">Participantes </h4>
             <br>
 
             </div>
 
             <div class="container">
-    <form id="addForm">
-        <div class="form-group">
-            <ul id="items" class="list-group"></ul>
-            <br>
-            <label for="item">Informe os participantes</label>
-            <select id="item" class="form-control" placeholder="Participantes...">
-                <?php foreach ($pegarfa as $facnull) : ?>
-                    <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
-                        <?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>
-                    </option>
-                <?php endforeach ?>
-            </select>
-            <div class="col-2">
-                <button type="button" id="addItemButton" class="btn btn-primary mt-2">+</button>
-            </div>
-        </div>
-    </form>
+              
+    
 </div>
 
 <div class="container d-flex justify-content-center align-items-center">
     <div class="row">
         <div class="col">
             <div class="btn">
-                <br>
-                <button id="botaocontinuarata" type="button" class="btn btn-success" data-bs-toggle="modal">
-                    Continuar ata
-                </button>
-
-                <br>
-                <button id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
-                    Atualizar a ata
-                </button>
+                
             </div>
         </div>
     </div>
@@ -220,18 +252,18 @@ $local = $_GET['local'];
         var botaoregistrar = document.getElementById('botaoregistrar');
         var itemList = document.getElementById('items');
         var filter = document.getElementById('filter');
-        var addItemButton = document.getElementById('addItemButton');
+        var addItemButton = document.getElementById('addItemButton'); 
 
-        // Seu código JavaScript aqui...
     });
+
 </script>
-
-            </div>
-        </div>
+  </div>
+    </div>
       </div>
-
-            </div>
+         </div>
+         
 </main>
+
 </div>
        
       

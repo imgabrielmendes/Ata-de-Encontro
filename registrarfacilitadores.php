@@ -2,30 +2,27 @@
 include 'database.php';
 session_start();
 
-
-/// COMANDO PARA ENVIAR AS INFORMAÇÕES DE REGISTROS DA MODAL PARA O BANCO DE DADOS 
-
-$caixadenome=$_POST['caixaname'];
-$caixadeemail=$_POST['caixaemail'];
-
-$participantesAdicionados=$_POST['participantes'];
+$participantesAdicionados = $_POST['particadd'];
 echo $participantesAdicionados;
 
-if($participantesAdicionados !==""){
+if ($particadd !== "") {
 
     $enviarregistro = "INSERT INTO participantes (participantes) VALUE ('$participantesAdicionados')";
     
     if (mysqli_query($conexao, $enviarregistro)) {
-
         echo '(3.3) RECEBEU E ENVIOU PRO BANCO';
         echo $participantesAdicionados;
 
     } else {
+
         var_dump($enviarregistro);
-        echo "(X) A marcação do AJAX não foi identificada";
-        
+        echo "(X) A marcação do AJAX não foi identificada"; 
+
     } 
 }
+
+?>
+<!-- 
 
     // if($caixadenome !=="" && $caixadeemail !==""){
 
@@ -41,5 +38,4 @@ if($participantesAdicionados !==""){
             
     //     } 
     // }
-
-?>
+ -->

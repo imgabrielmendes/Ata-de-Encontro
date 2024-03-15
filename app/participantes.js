@@ -1,19 +1,28 @@
-var participantesAdicionados = [];
+console.log();
 
+var participantesAdicionados = [];
 var botaocont = document.getElementById('botaocontinuarata');
 var itemList = document.getElementById('items');
 var filter = document.getElementById('filter');
 var addItemButton = document.getElementById('addItemButton');
+var mensagemInfo = document.getElementById('infoMessage');
+
+//LINKANDO AS VARÍAVEIS QUE VÃO SER ENVIADO JUNTO COM PARTICIPANTES
+
 
 addItemButton.addEventListener('click', function() {
+
     var newItem = document.getElementById('item').value.trim();
     if (newItem === "") {
+
         Swal.fire({
             title: "Você não adicionou um participante",
             text: "Adicione pelo menos 1 participante para a ata",
             icon: "error"
         });
+
     } else {
+        
         var li = document.createElement('li');
         li.className = 'list-group-item';
         li.appendChild(document.createTextNode(newItem));
@@ -25,8 +34,6 @@ addItemButton.addEventListener('click', function() {
         deleteBtn.addEventListener('click', function() {
             if (confirm('Tem certeza?')) {
                 itemList.removeChild(li);
-
-                // Remove o participante do array quando removido da lista
                 var index = participantesAdicionados.indexOf(newItem);
                 if (index !== -1) {
                     participantesAdicionados.splice(index, 1);
@@ -37,45 +44,48 @@ addItemButton.addEventListener('click', function() {
         li.appendChild(deleteBtn);
         itemList.appendChild(li);
 
-        // Adiciona o novo participante ao array
         participantesAdicionados.push(newItem);
-
-        document.getElementById('item').value = ''; // Limpa o campo de texto
+        document.getElementById('item').value = '';
     }
 });
 
-filter.addEventListener('keyup', function() {
-    var text = this.value.toLowerCase();
-    var items = itemList.getElementsByTagName('li');
-
-    Array.from(items).forEach(function(item) {
-        var itemName = item.textContent.toLowerCase();
-        if (itemName.includes(text)) {
-            item.style.display = 'block';
-        } else {
-            item.style.display = 'none';
-        }
-    });
-});
-
-botaocont.addEventListener('click', addDeliberacoes);
-
 function addDeliberacoes() {
+    console.log("adadasdasdsad");
+    console.log(participantesAdicionados);
 
-    // Função para enviar os participantes para o servidor usando AJAX
     $.ajax({
-        url: 'registrarfacilitadores.php', // Altere para o URL correto do seu servidor
+        url: 'registrarfacilitadores.php',
         method: 'POST',
         data: {
-            participantes: participantesAdicionados
+            particadd: JSON.stringify(participantesAdicionados)
         },
         success: function(response) {
             console.log("(4.2) Deu bom! AJAX está enviando os participantes");
             console.log(response);
             console.log(participantesAdicionados);
+
+            Swal.fire({
+                title: "Perfeito!",
+                text: "Seus participantes foram registrados",
+                icon: "success"
+            });
+
+            window.location.href = 'pagdeliberacoes.php';
+
+            participantesAdicionados = [];
+            atualizarListaParticipantes();
+
         },
         error: function(error) {
             console.error('Erro na solicitação AJAX:', error);
         }
     });
 }
+
+// Função para limpar visualmente a lista de participantes
+function atualizarListaParticipantes() {
+    itemList.innerHTML = ''; // Limpa a lista visualmente
+}
+
+botaocont.addEventListener('click', addDeliberacoes);
+

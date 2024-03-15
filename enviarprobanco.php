@@ -21,7 +21,7 @@ session_start();
 
     if ($facilitadores !=="" && $data !=="" && $horainicio !=="" && $horaterm !=="" && $conteudo !== "" && $objetivoSelecionado !=="" && $local !=="") {
 
-        $enviarbanco = "INSERT INTO assunto (facilitador , data_solicitada, tema,objetivo , hora_inicial, hora_termino, local) VALUES ('$facilitadores','$data','$conteudo','$objetivoSelecionado', '$data', '$horaterm','$local')";
+        $enviarbanco = "INSERT INTO assunto (facilitador , data_solicitada, tema,objetivo , hora_inicial, hora_termino, local, status) VALUES ('$facilitadores','$data','$conteudo','$objetivoSelecionado', '$data', '$horaterm','$local','ABERTA')";
 
         if (mysqli_query($conexao, $enviarbanco)) {
 

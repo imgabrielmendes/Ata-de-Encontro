@@ -87,19 +87,7 @@ $local = $_GET['local'];
     <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
       <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
           <div class="col-md-12 text-center">         
-          <!----<ul>
-              <strong>Facilitadores:</strong> <?php echo $facilitadores; ?>
-              <br>
-              <strong>Tema:</strong> <?php echo $conteudo; ?>
-              <br>
-              <strong>Horário de Início:</strong> <?php echo $horainicio; ?>
-              <strong>Horário de Término:</strong> <?php echo $horaterm; ?>
-              <strong>Data:</strong> <?php echo $data; ?>
-              <br>
-              <strong>Objetivos:</strong> <?php echo $objetivoSelecionado; ?>
-              <strong>Local:</strong> <?php echo $local; ?>
-              <h3>---------------------------------</h3>
-          </ul> --->          
+        
           </div>     
 
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
@@ -169,7 +157,6 @@ $local = $_GET['local'];
 
         <div class="box box-primary">
             <main class="container-fluid ">
-
             <div class="row">
             <h4 class="text-center">Participantes </h4>
             <br>
@@ -207,13 +194,18 @@ $local = $_GET['local'];
               <button id="botaocontinuarata" type="button" class="btn btn-success" data-bs-toggle="modal">
                 Continuar ata
               </button>
+              <script>
+                function abrirDeliberacoes(){
+                  window.location.href = 'pagdeliberacoes.php';
+                }
+              </script>
 
             <br>
-              <button onclick="openInternalPage()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
+              <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
                 Atualizar a ata
               </button>
               <script>
-        function openInternalPage() {
+        function abrirHistorico() {
             window.location.href = 'paghistorico.php';
         }
     </script>
@@ -223,6 +215,51 @@ $local = $_GET['local'];
 
             </div>
 </main>
+  <!-------------------- BOTÃO ------------------->
+  <button id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
+  Seu usuário não está cadastrado? <b>clique aqui</b>
+                      </button>
+
+                      <!------------------ MODAL ------------------>
+                      <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="col modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                              <form>
+                                <div class="mb-3">
+
+                                  <label type="email" for="recipient-name" class="col-form-label">Nome completo:</label>
+                                  <input type="text" class="form-control" id="caixanome">
+                                </div>
+
+                                <div class="mb-3">
+                                  <label type="email" for="recipient-name" class="col-form-label">Informe o Email</label>
+                                  <input type="text" class="form-control" id="caixadeemail">
+                                </div>
+
+                                <label type="email" for="recipient-name" class="col-form-label">Informe o Cargo</label>
+
+                                <select type="text" class="form-control" id="nomeFacilitador">
+                                  <option disabled> - Informe aqui - </option>
+                                </select>
+
+                              </form>
+
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">clique</button>
+
+                              <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div> 
 </div>
        
       

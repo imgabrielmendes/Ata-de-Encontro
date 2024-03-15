@@ -117,14 +117,14 @@ $pegarlocal=$puxarform->pegarlocais();
           <div class="col" id="objetivo">
             <label for="form-control"> <b>Objetivo:</b> </label>
             <label class="form-control">
-              <input type="checkbox" class="objetivo" name="objetivo" id="reuniao" value="Reuniao" > Reunião</label>
+              <input type="checkbox" class="objetivo" name="objetivo" id="reuniao" value="Reunião" > Reunião</label>
           </div>
 
            <!---ABA DE OBJETIVO - TREINAMENTO---->
           <div class="col">
             <br>
             <label class="form-control">
-              <input type="checkbox" class="objetivo" name="objetivo" id="treinamento" value="treinamento"> Treinamento</label>
+              <input type="checkbox" class="objetivo" name="objetivo" id="treinamento" value="Treinamento"> Treinamento</label>
           </div>
 
         <!---ABA DE OBJETIVO - CONSULTA---->
@@ -191,53 +191,6 @@ $pegarlocal=$puxarform->pegarlocais();
                         salvar
                       </button>
       
-                      <!--TENTANDO LINKAR O BOTÃO COM O MODAL "registraremail.php"-->
-
-                      <!-------------------- BOTÃO ------------------->
-                      <!-- <button id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
-                        Registrar Email
-                      </button>
-
-                      <!------------------ MODAL ------------------>
-                      <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h1 class="modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-
-                              <form>
-                                <div class="mb-3">
-
-                                  <label type="email" for="recipient-name" class="col-form-label">Nome completo:</label>
-                                  <input type="text" class="form-control" id="caixanome">
-                                </div>
-
-                                <div class="mb-3">
-                                  <label type="email" for="recipient-name" class="col-form-label">Informe o Email</label>
-                                  <input type="text" class="form-control" id="caixadeemail">
-                                </div>
-
-                                <label type="email" for="recipient-name" class="col-form-label">Informe o Cargo</label>
-
-                                <select type="text" class="form-control" id="nomeFacilitador">
-                                  <option disabled> - Informe aqui - </option>
-                                </select>
-
-                              </form>
-
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-
-                              <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
-
-                            </div>
-                          </div>
-                        </div>
-                      </div> 
               </div>
               <!--- COMANDO PARA ENVIAR AS INFORMAÇÕES DO BOTÃO PARA O BANCO DE DADOS----->
               <script>
