@@ -1,11 +1,4 @@
 
-// AS VARIÁVEIS ESTÃO NA ORDEM QUE É SOLICITADA NO FORMULÁRIO
-var data, horainicio, horaterm,tempoes,
-    objetivo, local,
-    facilitadores,
-    temaprincipal,
-    gravarinformacoes;
-
 
 // Pegar inputs 
 var gravarinformacoes = document.getElementById("botaoregistrar");
@@ -85,7 +78,6 @@ function gravando() {
         
     else {
 
-        setTimeout(gravando, 3000);
 
         Swal.fire({
             title: "Ata registrada com sucesso!",
@@ -119,7 +111,7 @@ function gravando() {
                 console.log("(2) Deu bom! AJAX está enviando");
                 console.log(teste);
 
-                window.location.href = 'pagparticipantes.php' + 'participante.js'
+                window.location.href = 'pagparticipantes.php' +
                 '?facilitadores=' + encodeURIComponent(facilitadores) +
                 '&conteudo=' + encodeURIComponent(conteudo) +
                 '&horainicio=' + encodeURIComponent(horainicio) +
@@ -138,64 +130,7 @@ function gravando() {
 
         }}
 
-
-///------------BOTÃO DE REGISTRAR EMAIL DENTRO DA MODAL------------------------------
-
-var caixadenome, caixadeemail;
-var caixadenome = document.getElementById("caixanome").value;
-var caixadeemail = document.getElementById("caixadeemail").value;
-
-var botaoemail = document.getElementById("registraremail");
-
-function gravaremail(){
-   
-    if (caixadenome.trim() ==="" || caixadeemail.trim() ==="")
-    {
-        
-        Swal.fire({
-            title: "Erro no registro",
-            text: "Preencha todas as caixas do formulário",
-            icon: "error"
-          });
-          console.log ("(X) Puxou a function da modal, mas não preencheu todas as informações")
-    } 
-
-    if (caixadeemail ===""){window.alert ("Você não informou o seu nome completo");} 
-    
-    else {
-
-        Swal.fire({
-            title: "Cadastrado com sucesso!",
-            text: "Atualize a página e continue a operação",
-            icon: "success"
-          });
-
-        window.alert ("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail);
-        console.log ("(3.1) As informações de email foram enviadas");
-
-        if (caixadenome !=="" && caixadeemail !=="") 
-
-        $.ajax({
-            url: 'registrarfacilitadores.php',
-            method: 'POST',
-            data: {
-               caixaname: caixadenome,
-               caixaemail: caixadeemail
-            },
-
-            success: function (response) {
-                console.log("(3.2) Deu bom! AJAX está enviando");
-                console.log(response);
-            },
-            error: function (error) {
-                console.error('Erro na solicitação AJAX:', error);
-            }
-        });
-    }
-
-};
-    
 // Botões
 gravarinformacoes.addEventListener('click', gravando);
-botaoemail.addEventListener('click', gravaremail);
+
 

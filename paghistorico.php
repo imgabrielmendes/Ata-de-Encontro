@@ -56,14 +56,32 @@
     </nav>
   </header>
 
-  <!--FORMULÁRIO-->
-
   <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
   <div class="box box-primary">
     <main class="container d-flex justify-content-center align-items-center">
       <div class="form-group col-12">
         <div class="row"> 
-          
+
+          <!----LEGENDA DA TABELA------->
+        <caption id="caption" style="caption-side: top;display: flex;padding-top: 0;font-size: 14px;"
+    class="text-uppercase pb-0 mr-0">
+    <div class="collapse show">
+        <ul class="d-flex flex-wrap row text-right" style="list-style-type: none;justify-content: right;">
+            <li class="col">
+                <span class='badge bg-primary'>ABERTA</span>
+                <label>Ata aberta</label>
+            </li>
+            <li class="col">
+                <span class='badge bg-warning'>PROCESSO</span>
+                <label>Ata em processo</label>
+            </li>
+            <li class="col">
+                <span class='badge bg-success'>FECHADA</span>
+                <label>Ata fechada</label>
+            </li>
+        </ul>
+    </div>
+</caption>
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
           <div class="form-group col-10">
       <div class="row">

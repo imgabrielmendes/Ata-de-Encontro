@@ -49,6 +49,11 @@ $local = $_GET['local'];
   <link rel="stylesheet" href="view/css/bootstrap-grid.min.css">
   <link rel="stylesheet" href="view/css/bootstrap.css">
   <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
+
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" />
+
+  <link rel="stylesheet" href="view/fontawesome/">
 </head>
 
 <body>
@@ -79,8 +84,9 @@ $local = $_GET['local'];
       <div class="accordion-item shadow">
         <h2 class="accordion-header">
           <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background-color: #001f3f;">
+          <i class="fa fa-info-circle" aria-hidden="true"></i>
+          <i class="fa-solid fa-circle-info"></i>
             <h5>Informações de Registro</h5>
-            <i class="fas fa-plus"></i>
           </button>
         </h2>
 
@@ -100,7 +106,7 @@ $local = $_GET['local'];
           
                   <!---ABA DE HORÁRIO INICIO---->
                   <div class="col-3">
-                    <label for="nomeMedico">Horário de Início*:</label>
+                    <label for="nomeMedico"><b>Horário de Início*:</b></label>
                     <br>
                     <ul class="form-control bg-body-secondary"><?php echo $horainicio; ?></ul>
                   </div>
@@ -154,22 +160,23 @@ $local = $_GET['local'];
 
 <!-----------------------------2° FASE-------------------------------->
 <br>
-
-        <div class="box box-primary">
-            <main class="container-fluid ">
-            <div class="row">
-            <h4 class="text-center">Participantes </h4>
-            <br>
-
-            </div>
-
+<div class="accordion">
+<div class="accordion-item shadow">
+  <h2 class="accordion-header">
+    <div class="accordion-button shadow-sm text-white" style="background-color: #1c8f69;;">
+    <i class="fa-solid fa-circle-info"></i>
+    <h5>Participantes</h5>
+</div>
+  </h2>
+        <main class="container-fluid ">
         <div class="container">
           <form id="addForm">
               <div class="form-group">
-                  <ul id="items" class="list-group"></ul>
                   <br>
-                  <label for="item">Informe os participantes</label>
-                  <select id="item" class="form-control" placeholder="Participantes...">
+                  <ul id="items" class="col-10 list-group"></ul>
+                  
+                  <label for="item"><b>Informe os participantes<b></label>
+                  <select id="item" class="col-8 form-control" placeholder="Participantes...">
                       <?php foreach ($pegarfa as $facnull) : ?>
                           <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
                               <?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>
@@ -177,20 +184,22 @@ $local = $_GET['local'];
                             </option>
                       <?php endforeach ?>
                   </select>
+
                         <div class="col-2">
                   <button type="button" id="addItemButton" class="btn btn-primary mt-2">+</button>
+                        
                   </div>
               </div>
           </form>
     </div>
 
            
-              <!--BOTÕES-->
-      <div class="container d-flex justify-content-center align-items-center">
+      <!--BOTÕES-->
+      <div class="container d-flex justify-content-center">
         <div class="row">
+
           <div class="col">
             <div class="btn">
-              <br>
               <button id="botaocontinuarata" type="button" class="btn btn-success" data-bs-toggle="modal">
                 Continuar ata
               </button>
@@ -200,10 +209,15 @@ $local = $_GET['local'];
                 }
               </script>
 
-            <br>
+        </div>
+        </div>
+        <div class="col">
+                  
               <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
                 Atualizar a ata
               </button>
+            </div>
+            </div>
               <script>
         function abrirHistorico() {
             window.location.href = 'paghistorico.php';
@@ -215,11 +229,6 @@ $local = $_GET['local'];
 
             </div>
 </main>
-  <!-------------------- BOTÃO ------------------->
-  <button id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
-  Seu usuário não está cadastrado? <b>clique aqui</b>
-                      </button>
-
                       <!------------------ MODAL ------------------>
                       <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -244,15 +253,13 @@ $local = $_GET['local'];
 
                                 <label type="email" for="recipient-name" class="col-form-label">Informe o Cargo</label>
 
-                                <select type="text" class="form-control" id="nomeFacilitador">
-                                  <option disabled> - Informe aqui - </option>
-                                </select>
+                                <input type="text" class="form-control" id="caixacargo">
 
                               </form>
 
                             </div>
                             <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">clique</button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
 
                               <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
 
@@ -260,9 +267,18 @@ $local = $_GET['local'];
                           </div>
                         </div>
                       </div> 
+                      
+                      <div class="row">
+          <div class="col-2">
+           <button id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
+              Seu usuário não está cadastrado? <b>clique aqui</b>
+            </button>
+       </div>
+      </div>
 </div>
-       
-      
+           <!-------------------- BOTÃO DA MODAL ------------------->
+         
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>

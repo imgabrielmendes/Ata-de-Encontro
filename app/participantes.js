@@ -2,6 +2,8 @@ console.log();
 
 var participantesAdicionados = [];
 var botaocont = document.getElementById('botaocontinuarata');
+var botaohist = document.getElementById('abrirhist');
+
 var itemList = document.getElementById('items');
 var filter = document.getElementById('filter');
 var addItemButton = document.getElementById('addItemButton');
@@ -28,11 +30,12 @@ addItemButton.addEventListener('click', function() {
         li.appendChild(document.createTextNode(newItem));
 
         var deleteBtn = document.createElement('button');
-        deleteBtn.className = 'col-3 btn btn-danger float-left delete';
+        deleteBtn.className = 'col-2 btn btn-danger float-left delete';
         deleteBtn.appendChild(document.createTextNode('X'));
 
         deleteBtn.addEventListener('click', function() {
             if (confirm('Tem certeza?')) {
+                
                 itemList.removeChild(li);
                 var index = participantesAdicionados.indexOf(newItem);
                 if (index !== -1) {
@@ -64,17 +67,23 @@ function addDeliberacoes() {
             console.log(response);
             console.log(participantesAdicionados);
 
+            // Montando a URL com os parâmetros
+            var url = 'pagdeliberacoes.php' +
+                '?participantesAdicionados=' + encodeURIComponent(JSON.stringify(participantesAdicionados));
+
+            // Redirecionando para a nova URL
+            window.location.href = url;
+
+            // Exibindo uma mensagem de sucesso para o usuário
             Swal.fire({
                 title: "Perfeito!",
                 text: "Seus participantes foram registrados",
                 icon: "success"
             });
 
-            window.location.href = 'pagdeliberacoes.php';
-
+            // Limpando a lista de participantes adicionados
             participantesAdicionados = [];
             atualizarListaParticipantes();
-
         },
         error: function(error) {
             console.error('Erro na solicitação AJAX:', error);
@@ -87,5 +96,65 @@ function atualizarListaParticipantes() {
     itemList.innerHTML = ''; // Limpa a lista visualmente
 }
 
-botaocont.addEventListener('click', addDeliberacoes);
+///------------BOTÃO DE REGISTRAR EMAIL DENTRO DA MODAL------------------------------
 
+var caixadenome = document.getElementById("caixanome").value;
+var caixadeemail = document.getElementById("caixadeemail").value;
+var caixacargo = document.getElementById("caixacargo").value
+
+var botaoemail = document.getElementById("registraremail");
+
+function gravaremail(){
+   
+    if (caixadenome.trim() ==="" || caixadeemail.trim() ==="" || caixacargo.trim()==="")
+    {
+        
+        Swal.fire({
+            title: "Erro no registro",
+            text: "Preencha todas as caixas do formulário",
+            icon: "error"
+          });
+          console.log ("(X) Puxou a function da modal, mas não preencheu todas as informações")
+    } 
+    
+    else {
+
+        Swal.fire({
+            title: "Cadastrado com sucesso!",
+            text: "Atualize a página e continue a operação",
+            icon: "success"
+          });
+
+        window.alert ("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail);
+        console.log ("(3.1) As informações de email foram enviadas");
+
+        if (caixadenome !=="" && caixadeemail !=="" && caixacargo !=="") 
+
+        $.ajax({
+            url: 'registrarfacilitadores.php',
+            method: 'POST',
+            data: {
+               caixaname: caixadenome,
+               caixaemail: caixadeemail,
+               caixacargo: caixacargo,
+            },
+
+            success: function (response) {
+                console.log("(3.2) Deu bom! AJAX está enviando");
+                console.log(response);
+
+                
+            },
+            error: function (error) {
+                console.error('Erro na solicitação AJAX:', error);
+            }
+        });
+    }
+
+};
+    
+
+botaocont.addEventListener('click', addDeliberacoes);
+botaohist.addEventListener('click', addDeliberacoes);
+
+botaoemail.addEventListener('click', gravaremail);

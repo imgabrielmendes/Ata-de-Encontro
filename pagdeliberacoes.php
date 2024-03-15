@@ -2,6 +2,22 @@
 
 namespace formulario;
 
+namespace formulario;
+
+include ("vendor/autoload.php");
+include_once ("app/acoesform.php");
+include ("conexao.php");
+
+
+//Testar conexao com banco de dados
+$puxarform= new AcoesForm;
+$facilitadores=$puxarform->selecionarFacilitadores();
+
+//funções de encotrar pessoas
+$pegarfa=$puxarform->pegarfacilitador();
+$pegarcoo=$puxarform->pegarcoordenador();
+
+
 //PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
 $facilitadores = $_GET['facilitadores'];
 $conteudo = $_GET['conteudo'];
@@ -10,6 +26,10 @@ $horaterm = $_GET['horaterm'];
 $data = $_GET['data'];
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
+
+$participantesAdicionados = $_GET['participantesAdicionados'];
+echo ($participantesAdicionados);
+echo ("sasasasasas");
 
 // echo "Facilitadores - $facilitadores, 
 //       Conteúdo - $conteudo, 
@@ -31,6 +51,11 @@ $local = $_GET['local'];
 
   <!---------------------------------------------------------------->
   <script src="view/js/popper.min.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" />
+
+  <link rel="stylesheet" href="view/fontawesome/css/fontawesome.css">
+
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -78,7 +103,6 @@ $local = $_GET['local'];
     <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
       <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
           <div class="col-md-12 text-center">         
-                
           </div>     
 
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
@@ -141,14 +165,16 @@ $local = $_GET['local'];
             </div>
     </div>
 </div>
-
+<!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
 <div class="accordion" id="accordionPanelsStayOpenExample">
 
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
     <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background-color: #1c8f69;">
-      <h5>Participantes Adicionados</h5>
-      <i class="fas fa-plus"></i>
+
+    <i class="fas"></i>
+    <h5>Participantes Adicionados </h5>
+
     </button>
   </h2>
 
@@ -160,17 +186,9 @@ $local = $_GET['local'];
 
     <!---- PRIMEIRA LINHA DO REGISTRO ---->
     <div class="row">
-      <br>
-            <div class="col-3">
-              <label>Data*</label>
-              <ul class="form-control bg-body-secondary"> <?php echo $data;  ?> </ul>
-            </div>
-    
-            <!---ABA DE HORÁRIO INICIO---->
-            <div class="col-3">
-              <label for="nomeMedico">Horário de Início*:</label>
-              <br>
-              <ul class="form-control bg-body-secondary"><?php echo $horainicio; ?></ul>
+            <div class="col">
+              <label>Participantes</label>
+              <ul class="form-control bg-body-secondary"> <?php echo $participantesAdicionados;  ?> </ul>
             </div>
    
       </div>
@@ -182,13 +200,25 @@ $local = $_GET['local'];
 </div>
   </div>
 
-<!-----------------------------2° FASE-------------------------------->
-<br>
-  
-        <div class="box box-primary">
-        <h1>asasasasasas</h1>
+<!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
+
+<div class="accordion">
+<div class="accordion-item shadow">
+  <h2 class="accordion-header">
+    <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
+      <h5>Deliberações</h5>
+</div>
+  </h2>
+
+<!-----------------------------4° FASE-------------------------------->
+
+<div class="accordion-collapse collapse show">
+<div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+    <div class="col-md-12 text-center">               
+    </div>     
         <form id="addForm">
         <div class="form-group">
+            <br>
             <ul id="items" class="list-group"></ul>
             <br>
             <label for="item">Informe o deliberador:</label>
@@ -212,7 +242,7 @@ $local = $_GET['local'];
         </div>
 
         <br>
-                <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
+                <button onclick="abrirHistorico()"  id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">
                 Atualizar a ata
               </button>
               <script>
@@ -222,30 +252,8 @@ $local = $_GET['local'];
     </script>
     </form>
             <main class="container-fluid ">
-            </div>     
-
-            <div class="row">
-              
-            <h4 class="text-center">Participantes </h4>
-            <br>
-
-            </div>
-
-            <div class="container">
-              
-    
+            </div>          
 </div>
-
-<div class="container d-flex justify-content-center align-items-center">
-    <div class="row">
-        <div class="col">
-            <div class="btn">
-                
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var botaocont = document.getElementById('botaocontinuarata');

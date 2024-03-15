@@ -187,12 +187,11 @@ $pegarlocal=$puxarform->pegarlocais();
             <div class="col  "><br>
               <div class="btn-atas">
                 
-              <button id="botaoregistrar" type="button" class="btn btn-success" data-bs-toggle="modal">
+              <button id="botaoregistrar" type="button" class="btn btn-success">
                         salvar
-                      </button>
+                </button>
       
               </div>
-              <!--- COMANDO PARA ENVIAR AS INFORMAÇÕES DO BOTÃO PARA O BANCO DE DADOS----->
               <script>
 
               </script>
