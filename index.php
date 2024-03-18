@@ -13,7 +13,6 @@ $facilitadores=$puxarform->selecionarFacilitadores();
 
 //funções de encotrar pessoas
 $pegarfa=$puxarform->pegarfacilitador();
-$pegarcoo=$puxarform->pegarcoordenador();
 
 //Puxar local
 $pegarlocal=$puxarform->pegarlocais();

@@ -1,5 +1,3 @@
-console.log();
-
 var participantesAdicionados = [];
 var botaocont = document.getElementById('botaocontinuarata');
 var botaohist = document.getElementById('abrirhist');
@@ -25,15 +23,18 @@ addItemButton.addEventListener('click', function() {
 
     } else {
         
+        //ZONA QUE CRIA A NOVA CAIXA DE TEXTO
         var li = document.createElement('li');
+        
         li.className = 'list-group-item';
         li.appendChild(document.createTextNode(newItem));
 
         var deleteBtn = document.createElement('button');
-        deleteBtn.className = 'col-2 btn btn-danger float-left delete';
+        deleteBtn.className = 'row btn btn-danger float-left delete';
         deleteBtn.appendChild(document.createTextNode('X'));
 
         deleteBtn.addEventListener('click', function() {
+
             if (confirm('Tem certeza?')) {
                 
                 itemList.removeChild(li);
@@ -60,6 +61,7 @@ function addDeliberacoes() {
         url: 'registrarfacilitadores.php',
         method: 'POST',
         data: {
+            
             particadd: JSON.stringify(participantesAdicionados)
         },
         success: function(response) {

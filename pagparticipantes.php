@@ -114,26 +114,26 @@ $local = $_GET['local'];
                   <!---ABA DE HORÁRIO TERMINO---->
                   <div class="col-3">
                     <label for="form-control"> <b> Horário de Término:</b> </label>
-                    <ul class="form-control bg-body-secondary"><?php echo $horaterm; ?></ul>
+                    <ul class="form-control bg-body-secondary"><?= $horaterm; ?></ul>
                   </div>
 
                   <!---ABA DE TEMPO ESTIMADO ---->
                   <div class="col-3">
                     <label for="form-control"> <b>Tempo Estimado:</b> </label>
-                    <ul class="form-control bg-body-secondary">Colocar resultado</ul>
+                    <ul class="form-control bg-body-secondary"><?="valor";?>.Horas</ul>
                   </div>
           </div>
 
           <div class="row">
             <div class="col-6 ">
               <label><b> Facilitador(res) responsável:</b></label>
-              <ul class="form-control bg-body-secondary"><?php echo $facilitadores; ?></ul>            
+              <ul class="form-control bg-body-secondary"><?= $facilitadores; ?></ul>            
             </div>
           
  
           <div class="col-3">
             <label><b>Local:</b></label>
-            <ul class="form-control bg-body-secondary border rounded"><?php echo $local; ?></ul>
+            <ul class="form-control bg-body-secondary border rounded"><?= $local; ?></ul>
           </div>
 
           <div class="col-3">
@@ -173,8 +173,11 @@ $local = $_GET['local'];
           <form id="addForm">
               <div class="form-group">
                   <br>
+                  <!----APRESENTANDO O ITEM.CREATE NO PARTICIPANTE.JS------>
                   <ul id="items" class="col-10 list-group"></ul>
-                  
+                  <div>
+                    
+                  </div>                  
                   <label for="item"><b>Informe os participantes<b></label>
                   <select id="item" class="col-8 form-control" placeholder="Participantes...">
                       <?php foreach ($pegarfa as $facnull) : ?>
