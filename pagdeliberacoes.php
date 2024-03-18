@@ -2,35 +2,42 @@
 
 namespace formulario;
 
+namespace formulario;
+
 include ("vendor/autoload.php");
 include_once ("app/acoesform.php");
 include ("conexao.php");
 
+
+//Testar conexao com banco de dados
 $puxarform= new AcoesForm;
 $facilitadores=$puxarform->selecionarFacilitadores();
+
+//funções de encotrar pessoas
 $pegarfa=$puxarform->pegarfacilitador();
+$pegarcoo=$puxarform->pegarcoordenador();
 
-// $puxandoata=$puxarform->puxarAta();
-// var_dump($puxandoata);
 
-$facilitadores1 = $_POST['facilitadores'];
-$conteudo = "adasdadadsada";
-$horainicio = $_POST['horainicio'];
-$horaterm = $_POST['horaterm'];
-$data = $_POST['data'];
-$objetivoSelecionado = $_POST['objetivoSelecionado'];
-$local = $_POST['local'];
+//PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
+$facilitadores = $_GET['facilitadores'];
+$conteudo = $_GET['conteudo'];
+$horainicio = $_GET['horainicio'];
+$horaterm = $_GET['horaterm'];
+$data = $_GET['data'];
+$objetivoSelecionado = $_GET['objetivoSelecionado'];
+$local = $_GET['local'];
 
-echo "Facilitadores - $facilitadores, 
-      Conteúdo - $conteudo, 
-      Horário de Início - $horainicio, 
-      Horário de Término - $horaterm, 
-      Data - $data, 
-      Objetivos - $objetivoSelecionado, 
-      Local - $local";
-
-$participantesAdicionados = $_POST['participantesAdicionados'];
+$participantesAdicionados = $_GET['participantesAdicionados'];
 echo ($participantesAdicionados);
+echo ("sasasasasas");
+
+// echo "Facilitadores - $facilitadores, 
+//       Conteúdo - $conteudo, 
+//       Horário de Início - $horainicio, 
+//       Horário de Término - $horaterm, 
+//       Data - $data, 
+//       Objetivos - $objetivoSelecionado, 
+//       Local - $local";
 
 ?>
 <!DOCTYPE html>
@@ -40,17 +47,17 @@ echo ($participantesAdicionados);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ata de encontro - HRG</title>
-  <link rel="icon" href="view\img/Logobordab.png" type="image/x-icon">
+  <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
 
   <!---------------------------------------------------------------->
-  <!-- <script src="view/js/popper.min.js" crossorigin="anonymous"></script> -->
+  <script src="view/js/popper.min.js" crossorigin="anonymous"></script>
 
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" /> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" />
 
-  <!-- <link rel="stylesheet" href="view/fontawesome/css/fontawesome.css"> -->
+  <link rel="stylesheet" href="view/fontawesome/css/fontawesome.css">
 
 
-  -<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <link rel="stylesheet" href="view/css/styles.css">
   <link rel="stylesheet" href="view/css/bootstrap.min.css">
@@ -76,6 +83,7 @@ echo ($participantesAdicionados);
   </header>
 
   <!--FORMULÁRIO-->
+
   <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
   <div class="box box-primary">
     <main class="container_fluid d-flex justify-content-center align-items-center">
@@ -128,7 +136,7 @@ echo ($participantesAdicionados);
           <div class="row">
             <div class="col-6 ">
               <label><b> Facilitador(res) responsável:</b></label>
-              <ul class="form-control bg-body-secondary"><?php echo $facilitadores1; ?></ul>            
+              <ul class="form-control bg-body-secondary"><?php echo $facilitadores; ?></ul>            
             </div>
           
  
@@ -159,10 +167,6 @@ echo ($participantesAdicionados);
 </div>
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
 <div class="accordion" id="accordionPanelsStayOpenExample">
-
-<script>
-  
-</script>
 
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
@@ -250,6 +254,17 @@ echo ($participantesAdicionados);
             <main class="container-fluid ">
             </div>          
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var botaocont = document.getElementById('botaocontinuarata');
+        var botaoregistrar = document.getElementById('botaoregistrar');
+        var itemList = document.getElementById('items');
+        var filter = document.getElementById('filter');
+        var addItemButton = document.getElementById('addItemButton'); 
+
+    });
+
+</script>
   </div>
     </div>
       </div>

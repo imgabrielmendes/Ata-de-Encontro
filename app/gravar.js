@@ -4,6 +4,7 @@
 var gravarinformacoes = document.getElementById("botaoregistrar");
 
 // Pegar caixas do fomulário
+
 //1° LINHAS
 var data = document.getElementById("datainicio");
 var horainicio = document.getElementById("horainicio").value;
@@ -90,11 +91,7 @@ function gravando() {
 
         
         // CÓDIGO AJAX QUE VAI ENVIAR AS INFORMAÇÕES DAS FUNCTION PARA O BANCO DE DADOS
-
-        if (facilitadores !=="" && conteudo !== "" && horainicio !=="" && horaterm!=="" && data !== "") {
-
-            // Enviando ajax para enviarprobanco.php
-          // Primeira chamada AJAX
+        if (facilitadores !=="" && conteudo !== "" && horainicio !=="" && horaterm!=="" && data !=="") 
         $.ajax({
             url: 'enviarprobanco.php',
             method: 'POST',
@@ -105,42 +102,35 @@ function gravando() {
                 horat: horaterm,
                 datainic: data,
                 objetivos: objetivoSelecionado,
-                local: local
+                local: local,
             },
-            success: function (resposta1) {
-                console.log("(1) Deu bom! AJAX está enviando para enviarprobanco.php");
-                console.log(resposta1);
 
-                // Segunda chamada AJAX
-                $.ajax({
-                    url: 'pagdeliberacoes.php',
-                    method: 'POST', // Corrigido para POST
-                    data: {
-                        facilitadores: facilitadores,
-                        texto: conteudo,
-                        horai: horainicio,
-                        horat: horaterm,
-                        datainic: data,
-                        objetivos: objetivoSelecionado,
-                        local: local
-                    },
-                    success: function (resposta2) {
-                        console.log("(2) Deu bom! AJAX está enviando para pagdeliberacoes.php");
-                        console.log(resposta2);
-                    },
-                    error: function (error2) {
-                        console.error('Erro na solicitação AJAX para pagdeliberacoes.php:', error2);
-                    }
-                });
+
+            success: function (teste) {
+
+                console.log("(2) Deu bom! AJAX está enviando");
+                console.log(teste);
+
+                window.location.href = 'pagparticipantes.php' +
+                '?facilitadores=' + encodeURIComponent(facilitadores) +
+                '&conteudo=' + encodeURIComponent(conteudo) +
+                '&horainicio=' + encodeURIComponent(horainicio) +
+                '&horaterm=' + encodeURIComponent(horaterm) +
+                '&data=' + encodeURIComponent(data) +
+                '&objetivoSelecionado=' + encodeURIComponent(objetivoSelecionado) +
+                '&local=' + encodeURIComponent(local);
             },
-            error: function (error1) {
-                console.error('Erro na solicitação AJAX para enviarprobanco.php:', error1);
-            }
+            error: function (error) {
+                console.error('Erro na solicitação AJAX:', error);
+                console.log(facilitadores)
+            },
+
             
         });
 
-        }
-        
+        }}
 
 // Botões
 gravarinformacoes.addEventListener('click', gravando);
+
+
