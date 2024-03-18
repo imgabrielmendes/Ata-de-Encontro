@@ -203,3 +203,7 @@ color: #FFFFFF;
   text-decoration: none;
   cursor: pointer;
 }
+.status_button{
+  padding: 10px;
+  border-radius: 10px;
+}
