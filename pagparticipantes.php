@@ -268,11 +268,13 @@ $local = $_GET['local'];
                         </div>
                       </div> 
                       
+<!-------------------- BOTÃO DA MODAL ------------------->
                       <div class="row">
-          <div class="col-2">
+          <div class="col-10">
            <button id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
               Seu usuário não está cadastrado? <b>clique aqui</b>
             </button>
+</div>
        </div>
       </div>
 </div>
