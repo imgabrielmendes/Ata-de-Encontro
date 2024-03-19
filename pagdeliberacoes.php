@@ -2,12 +2,9 @@
 
 namespace formulario;
 
-namespace formulario;
-
-include ("vendor/autoload.php");
+// include ("vendor/autoload.php");
 include_once ("app/acoesform.php");
 include ("conexao.php");
-
 
 //Testar conexao com banco de dados
 $puxarform= new AcoesForm;
@@ -16,28 +13,68 @@ $facilitadores=$puxarform->selecionarFacilitadores();
 //funções de encotrar pessoas
 $pegarfa=$puxarform->pegarfacilitador();
 $pegarcoo=$puxarform->pegarcoordenador();
-
-
-//PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
-$facilitadores = $_GET['facilitadores'];
-$conteudo = $_GET['conteudo'];
-$horainicio = $_GET['horainicio'];
-$horaterm = $_GET['horaterm'];
-$data = $_GET['data'];
-$objetivoSelecionado = $_GET['objetivoSelecionado'];
-$local = $_GET['local'];
-
 $participantesAdicionados = $_GET['participantesAdicionados'];
 echo ($participantesAdicionados);
-echo ("sasasasasas");
 
-// echo "Facilitadores - $facilitadores, 
-//       Conteúdo - $conteudo, 
-//       Horário de Início - $horainicio, 
-//       Horário de Término - $horaterm, 
-//       Data - $data, 
-//       Objetivos - $objetivoSelecionado, 
-//       Local - $local";
+// ARRUMAR UM JEITO DE DIMINUIR ISSO
+$dbhost = 'localhost';
+$dbname = 'atareu';
+$dbuser = 'root';
+$dbpass = '';
+
+try {
+  // Conexão com o banco de dados usando PDO
+  $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
+  $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+  // Consulta SQL para selecionar os últimos valores da tabela
+  $sql = "SELECT facilitador, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
+          FROM assunto 
+          ORDER BY data_registro DESC 
+          LIMIT 1";
+
+  // Preparar e executar a consulta
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute();
+
+  // Verificar se há linhas retornadas
+  if ($stmt->rowCount() > 0) {
+      // Exibir os dados encontrados
+      $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+      $facilitadores = $row["facilitador"];
+      $conteudo = $row["tema"];
+      $horainicio = substr($row["hora_inicial"], 0,5);
+      $horaterm = substr($row["hora_termino"], 0,5);
+      $data = substr($row["data_solicitada"], 0, 10);
+      $objetivoSelecionado = $row["objetivo"];
+      $local = $row["local"];
+      
+      // Agora você pode usar essas variáveis para exibir os valores na sua página HTML
+  } else {
+      echo "Nenhum resultado encontrado";
+  }
+
+  // Fechar a conexão
+  $pdo = null;
+
+} catch (\PDOException $e) {
+  // Se houver um erro, exibir mensagem de erro
+  echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+}
+
+
+catch (\PDOException $e) {
+    // Se houver um erro, exibir mensagem de erro
+    echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+}
+
+echo "Facilitadores - $facilitadores, 
+      Conteúdo - $conteudo, 
+      Horário de Início - $horainicio, 
+      Horário de Término - $horaterm, 
+      Data - $data, 
+      Objetivos - $objetivoSelecionado, 
+      Local - $local";
 
 ?>
 <!DOCTYPE html>
@@ -52,9 +89,9 @@ echo ("sasasasasas");
   <!---------------------------------------------------------------->
   <script src="view/js/popper.min.js" crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" />
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" /> -->
 
-  <link rel="stylesheet" href="view/fontawesome/css/fontawesome.css">
+  <!-- <link rel="stylesheet" href="view/fontawesome/css/fontawesome.css"> -->
 
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -275,10 +312,12 @@ echo ("sasasasasas");
 </div>
        
       
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
     <script src="app/participantes.js"></script>
+    <script src="app/gravar.js"></script>
+
 
 </body>
 

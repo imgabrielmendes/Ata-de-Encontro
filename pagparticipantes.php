@@ -20,13 +20,13 @@ $data = $_GET['data'];
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
 
-// echo "Facilitadores - $facilitadores, 
-//       Conteúdo - $conteudo, 
-//       Horário de Início - $horainicio, 
-//       Horário de Término - $horaterm, 
-//       Data - $data, 
-//       Objetivos - $objetivoSelecionado, 
-//       Local - $local";
+echo "Facilitadores - $facilitadores, 
+      Conteúdo - $conteudo, 
+      Horário de Início - $horainicio, 
+      Horário de Término - $horaterm, 
+      Data - $data, 
+      Objetivos - $objetivoSelecionado, 
+      Local - $local";
 
 ?>
 <!DOCTYPE html>

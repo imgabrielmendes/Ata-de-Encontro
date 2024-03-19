@@ -149,6 +149,45 @@ class AcoesForm {
             
     }
 
+    function obterUltimoRegistro() {
+        // ARRUMAR UM JEITO DE DIMINUIR ISSO
+        $dbhost = 'localhost';
+        $dbname = 'atareu';
+        $dbuser = 'root';
+        $dbpass = '';
+    
+        try {
+            // Conexão com o banco de dados usando PDO
+            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    
+            // Consulta SQL para selecionar os últimos valores da tabela
+            $sql = "SELECT facilitador, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
+                    FROM assunto 
+                    ORDER BY data_registro DESC 
+                    LIMIT 1";
+    
+            // Preparar e executar a consulta
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+    
+            // Verificar se há linhas retornadas
+            if ($stmt->rowCount() > 0) {
+                // Exibir os dados encontrados
+                $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+                return $row; // Retornar os dados encontrados
+            } else {
+                return false; // Se nenhum registro for encontrado, retornar false
+            }
+    
+            // Fechar a conexão
+            $pdo = null;
+        } catch (\PDOException $e) {
+            // Se houver um erro, lançar uma exceção
+            throw new Exception("Erro ao conectar ao banco de dados: " . $e->getMessage());
+        }
+    }
+
   }
 
 
