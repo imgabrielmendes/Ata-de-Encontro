@@ -32,7 +32,6 @@ addItemButton.addEventListener('click', function() {
         var deleteBtn = document.createElement('button');
         deleteBtn.className = 'col-2 btn btn-danger float-left delete';
         deleteBtn.appendChild(document.createTextNode('X'));
-
         deleteBtn.addEventListener('click', function() {
             if (confirm('Tem certeza?')) {
                 

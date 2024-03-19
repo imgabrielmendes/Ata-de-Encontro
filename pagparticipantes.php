@@ -1,24 +1,24 @@
 <?php
 
-namespace formulario;
+// namespace formulario;
 
-include ("vendor/autoload.php");
-include_once ("app/acoesform.php");
-include ("conexao.php");
+// include ("vendor/autoload.php");
+// include_once ("app/acoesform.php");
+// include ("conexao.php");
 
-$puxarform= new AcoesForm;
-$facilitadores=$puxarform->selecionarFacilitadores();
-$pegarfa=$puxarform->pegarfacilitador();
-//var_dump($pegarfa);
+// $puxarform= new AcoesForm;
+// $facilitadores=$puxarform->selecionarFacilitadores();
+// $pegarfa=$puxarform->pegarfacilitador();
+// //var_dump($pegarfa);
 
-//PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
-$facilitadores = $_GET['facilitadores'];
-$conteudo = $_GET['conteudo'];
-$horainicio = $_GET['horainicio'];
-$horaterm = $_GET['horaterm'];
-$data = $_GET['data'];
-$objetivoSelecionado = $_GET['objetivoSelecionado'];
-$local = $_GET['local'];
+// //PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
+// $facilitadores = $_GET['facilitadores'];
+// $conteudo = $_GET['conteudo'];
+// $horainicio = $_GET['horainicio'];
+// $horaterm = $_GET['horaterm'];
+// $data = $_GET['data'];
+// $objetivoSelecionado = $_GET['objetivoSelecionado'];
+// $local = $_GET['local'];
 
 echo "Facilitadores - $facilitadores, 
       Conteúdo - $conteudo, 
@@ -167,39 +167,53 @@ echo "Facilitadores - $facilitadores,
     <i class="fa-solid fa-circle-info"></i>
     <h5>Participantes</h5>
 </div>
-  </h2>
+  </h2>                                                                                                                                       
         <main class="container-fluid ">
-        <div class="container">
+        <div class="row">
           <form id="addForm">
-              <div class="form-group">
+              <div class="form-group ">
                   <br>
-                  <ul id="items" class="col-10 list-group"></ul>
+                  <div  id="items" class="col-10 list-group"></div>
                   
                   <label for="item"><b>Informe os participantes<b></label>
-                  <select id="item" class="col-8 form-control" placeholder="Participantes...">
+                  <div class="row">
+                    <div class="col-10"> 
+                    <select id="item" class="form-control" placeholder="Participantes...">
                       <?php foreach ($pegarfa as $facnull) : ?>
                           <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
                               <?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>
-                            
+                             
                             </option>
-                      <?php endforeach ?>
+                            
+                      <?php endforeach ?><option value="teste">testee</option>
+                        <option value="teste">testee</option>
+                        <option value="teste">testee</option>
+                        <option value="teste">testee</option>
                   </select>
-
-                        <div class="col-2">
-                  <button type="button" id="addItemButton" class="btn btn-primary mt-2">+</button>
-                        
+                </div>
+                  <div class="col-2">
+                  <button type="button" id="addItemButton" class="btn btn-primary ">+</button>
+                  </div> 
+                </div>
                   </div>
-              </div>
+                       
+             
           </form>
+          <div  class="row">
+          <div class="col">
+           <button style="width: 30%; padding:0px;margin:5px; background-color:white; color:#353535; border:none;" id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
+              Clique aqui para cadastrar usúario 
+            </button>
+       </div>
+      </div>
     </div>
-
+<br>
            
       <!--BOTÕES-->
       <div class="container d-flex justify-content-center">
         <div class="row">
 
           <div class="col">
-            <div class="btn">
               <button id="botaocontinuarata" type="button" class="btn btn-success" data-bs-toggle="modal">
                 Continuar ata
               </button>
@@ -209,7 +223,6 @@ echo "Facilitadores - $facilitadores,
                 }
               </script>
 
-        </div>
         </div>
         <div class="col">
                   
@@ -268,6 +281,8 @@ echo "Facilitadores - $facilitadores,
                         </div>
                       </div> 
                       
+<<<<<<< HEAD
+=======
 <!-------------------- BOTÃO DA MODAL ------------------->
                       <div class="row">
           <div class="col-10">
@@ -277,6 +292,7 @@ echo "Facilitadores - $facilitadores,
 </div>
        </div>
       </div>
+>>>>>>> 6efe61e14139a8b23b0fd3fe587036b31823d01d
 </div>
            <!-------------------- BOTÃO DA MODAL ------------------->
          
