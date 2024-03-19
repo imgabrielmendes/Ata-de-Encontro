@@ -20,13 +20,13 @@
 // $objetivoSelecionado = $_GET['objetivoSelecionado'];
 // $local = $_GET['local'];
 
-// echo "Facilitadores - $facilitadores, 
-//       Conteúdo - $conteudo, 
-//       Horário de Início - $horainicio, 
-//       Horário de Término - $horaterm, 
-//       Data - $data, 
-//       Objetivos - $objetivoSelecionado, 
-//       Local - $local";
+echo "Facilitadores - $facilitadores, 
+      Conteúdo - $conteudo, 
+      Horário de Início - $horainicio, 
+      Horário de Término - $horaterm, 
+      Data - $data, 
+      Objetivos - $objetivoSelecionado, 
+      Local - $local";
 
 ?>
 <!DOCTYPE html>
@@ -281,6 +281,18 @@
                         </div>
                       </div> 
                       
+<<<<<<< HEAD
+=======
+<!-------------------- BOTÃO DA MODAL ------------------->
+                      <div class="row">
+          <div class="col-10">
+           <button id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
+              Seu usuário não está cadastrado? <b>clique aqui</b>
+            </button>
+</div>
+       </div>
+      </div>
+>>>>>>> 6efe61e14139a8b23b0fd3fe587036b31823d01d
 </div>
            <!-------------------- BOTÃO DA MODAL ------------------->
          

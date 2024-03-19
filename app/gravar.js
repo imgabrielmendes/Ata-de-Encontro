@@ -22,20 +22,13 @@ var facilitadores = document.getElementById("selecionandofacilitador").value;
 var temaprincipal = document.getElementById("temaprincipal");
 
 function gravando() {
-
-    //console.log (datainicio, local, facilitadores,)
     var data = document.getElementById("datainicio").value;
     var horainicio = document.getElementById("horainicio").value;
     var horaterm = document.getElementById("horaterm").value;
     var tempoes = document.getElementById("tempoestim").value;
 
-    // 2° LINHAS
-    var objetivomarc = document.getElementsByName("objetivo"); // MUDAR
+    var objetivomarc = document.getElementsByName("objetivo");
     var objetivoSelecionado = null;
-
-    // ------------------------------------------------------------------------------------------
-    // BOTÕES DE OBJETIVO
-    // CONDIÇÃO PARA AS OPÇÕES DE OBJETIVOS
 
     for (var op = 0; op < objetivomarc.length; op++) {
         if (objetivomarc[op].checked) {
@@ -45,53 +38,34 @@ function gravando() {
     }
 
     var local = document.getElementById("pegarlocal").value;
-
-    //3° LINHA
     var facilitadores = document.getElementById("selecionandofacilitador").value;
-
-    // 4° LINHA
     var temaprincipal = document.getElementById("temaprincipal");
 
-    // Linkando a variável da função com a id da textarea dentro do index
     var conteudo = temaprincipal.value;
     var data = document.getElementById("datainicio").value;
 
-// ------------------------------------------------------------------------------------------
-
-    // CRIANDO CONDIÇÕES PARA QUE SÓ ENVIE PARA O AJAX SE TUDO ESTIVER PREENCHIDO
-    // trim() usado para verificar se o campo está vazio
-
-    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() ===""|| conteudo.trim() === "")
-
-            {   
+    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() === "" || conteudo.trim() === "") {
         Swal.fire({
             title: "Erro no registro",
             text: "Preencha todas as caixas obrigatórias",
             icon: "error"
-          }); 
-        
-          console.log("(X) Puxou a function, mas está faltando informações");
-          console.log(objetivoSelecionado).values ;
-          console.log(local);
-          console.log (facilitadores);
-        }
-        
-    else {
-
-
+        });
+        console.log("(X) Puxou a function, mas está faltando informações");
+        console.log(objetivoSelecionado).values;
+        console.log(local);
+        console.log(facilitadores);
+    } else {
         Swal.fire({
             title: "Ata registrada com sucesso!",
             icon: "success"
-          });
+        });
 
         window.alert("Identifiquei, o texto foi: " + facilitadores + conteudo + ", o objetivo é: " + objetivoSelecionado + ", o horário é: " + horainicio + " e a data é: " + data);
 
         console.log("(1) A função 'gravando()' foi chamada");
-        console.log (facilitadores);
+        console.log(facilitadores);
 
-        
-        // CÓDIGO AJAX QUE VAI ENVIAR AS INFORMAÇÕES DAS FUNCTION PARA O BANCO DE DADOS
-        if (facilitadores !=="" && conteudo !== "" && horainicio !=="" && horaterm!=="" && data !=="") 
+        // Primeira solicitação AJAX para enviarprobanco.php
         $.ajax({
             url: 'enviarprobanco.php',
             method: 'POST',
@@ -104,31 +78,48 @@ function gravando() {
                 objetivos: objetivoSelecionado,
                 local: local,
             },
-
-
             success: function (teste) {
-
                 console.log("(2) Deu bom! AJAX está enviando");
                 console.log(teste);
-
+                // Redirecionando para pagparticipantes.php
                 window.location.href = 'pagparticipantes.php' +
-                '?facilitadores=' + encodeURIComponent(facilitadores) +
-                '&conteudo=' + encodeURIComponent(conteudo) +
-                '&horainicio=' + encodeURIComponent(horainicio) +
-                '&horaterm=' + encodeURIComponent(horaterm) +
-                '&data=' + encodeURIComponent(data) +
-                '&objetivoSelecionado=' + encodeURIComponent(objetivoSelecionado) +
-                '&local=' + encodeURIComponent(local);
+                    '?facilitadores=' + encodeURIComponent(facilitadores) +
+                    '&conteudo=' + encodeURIComponent(conteudo) +
+                    '&horainicio=' + encodeURIComponent(horainicio) +
+                    '&horaterm=' + encodeURIComponent(horaterm) +
+                    '&data=' + encodeURIComponent(data) +
+                    '&objetivoSelecionado=' + encodeURIComponent(objetivoSelecionado) +
+                    '&local=' + encodeURIComponent(local);
             },
             error: function (error) {
                 console.error('Erro na solicitação AJAX:', error);
-                console.log(facilitadores)
+                console.log(facilitadores);
             },
-
-            
         });
 
-        }}
+        // Segunda solicitação AJAX para pagdeliberacoes.php
+        $.ajax({
+            url: 'pagparticipantes.php',
+            method: 'POST',
+            data: {
+                facilitadores: facilitadores,
+                texto: conteudo,
+                horai: horainicio,
+                horat: horaterm,
+                datainic: data,
+                objetivos: objetivoSelecionado,
+                local: local,
+            },
+            success: function (response) {
+                console.log("(3) Deu bom! AJAX está enviando para pagdeliberacoes.php");
+                console.log(response);
+            },
+            error: function (error) {
+                console.error('Erro na solicitação AJAX para pagdeliberacoes.php:', error);
+            }
+        });
+    }
+}
 
 // Botões
 gravarinformacoes.addEventListener('click', gravando);
