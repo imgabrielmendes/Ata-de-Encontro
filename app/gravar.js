@@ -60,7 +60,7 @@ function gravando() {
             icon: "success"
         });
 
-        window.alert("Identifiquei, o texto foi: " + facilitadores + conteudo + ", o objetivo é: " + objetivoSelecionado + ", o horário é: " + horainicio + " e a data é: " + data);
+        // window.alert("Identifiquei, o texto foi: " + facilitadores + conteudo + ", o objetivo é: " + objetivoSelecionado + ", o horário é: " + horainicio + " e a data é: " + data);
 
         console.log("(1) A função 'gravando()' foi chamada");
         console.log(facilitadores);

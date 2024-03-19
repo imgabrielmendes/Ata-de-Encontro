@@ -23,11 +23,9 @@ $dbuser = 'root';
 $dbpass = '';
 
 try {
-  // Conexão com o banco de dados usando PDO
   $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
   $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
-  // Consulta SQL para selecionar os últimos valores da tabela
   $sql = "SELECT facilitador, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
           FROM assunto 
           ORDER BY data_registro DESC 
@@ -37,9 +35,8 @@ try {
   $stmt = $pdo->prepare($sql);
   $stmt->execute();
 
-  // Verificar se há linhas retornadas
   if ($stmt->rowCount() > 0) {
-      // Exibir os dados encontrados
+
       $row = $stmt->fetch(\PDO::FETCH_ASSOC);
       $facilitadores = $row["facilitador"];
       $conteudo = $row["tema"];
@@ -48,8 +45,6 @@ try {
       $data = substr($row["data_solicitada"], 0, 10);
       $objetivoSelecionado = $row["objetivo"];
       $local = $row["local"];
-      
-      // Agora você pode usar essas variáveis para exibir os valores na sua página HTML
   } else {
       echo "Nenhum resultado encontrado";
   }
@@ -58,23 +53,17 @@ try {
   $pdo = null;
 
 } catch (\PDOException $e) {
-  // Se houver um erro, exibir mensagem de erro
   echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
 }
 
 
-catch (\PDOException $e) {
-    // Se houver um erro, exibir mensagem de erro
-    echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
-}
-
-echo "Facilitadores - $facilitadores, 
-      Conteúdo - $conteudo, 
-      Horário de Início - $horainicio, 
-      Horário de Término - $horaterm, 
-      Data - $data, 
-      Objetivos - $objetivoSelecionado, 
-      Local - $local";
+// echo "Facilitadores - $facilitadores, 
+//       Conteúdo - $conteudo, 
+//       Horário de Início - $horainicio, 
+//       Horário de Término - $horaterm, 
+//       Data - $data, 
+//       Objetivos - $objetivoSelecionado, 
+//       Local - $local";
 
 ?>
 <!DOCTYPE html>
@@ -146,13 +135,13 @@ echo "Facilitadores - $facilitadores,
           <div class="row">
             <br>
                   <div class="col-3">
-                    <label>Data*</label>
+                    <label><b>Data*</b></label>
                     <ul class="form-control bg-body-secondary"> <?php echo $data;  ?> </ul>
                   </div>
           
                   <!---ABA DE HORÁRIO INICIO---->
                   <div class="col-3">
-                    <label for="nomeMedico">Horário de Início*:</label>
+                    <label for="nomeMedico"><b>Horário de Início*:</b></label>
                     <br>
                     <ul class="form-control bg-body-secondary"><?php echo $horainicio; ?></ul>
                   </div>

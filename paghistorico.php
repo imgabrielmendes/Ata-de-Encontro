@@ -1,5 +1,6 @@
 <?php
-            //Conexão com o banco de dados (substitua os valores pelos seus próprios)
+           
+           //Conexão com o banco de dados (substitua os valores pelos seus próprios)
             $servername = "localhost";
             $username = "root";
             $password = "";
@@ -16,8 +17,6 @@
             // Consulta SQL para selecionar os dados
             $sql = "SELECT data_registro, facilitador, tema, objetivo, local, status FROM assunto ORDER BY `data_registro` desc";
             $result = $conn->query($sql);
-
-            var_dump ($sql);
 
 ?>
 
@@ -78,14 +77,14 @@
                 <label>Ata em processo</label>
             </li>
             <li class="col">
-                <span class='badge bg-success'>FECHADA</span>
+                <span id="FECHADA" class='badge bg-success'>FECHADA</span>
                 <label>Ata fechada</label>
             </li>
         </ul>
     </div>
 </caption>
-          <!---- PRIMEIRA LINHA DO REGISTRO ---->
-       
+
+<!----------------------------- MODAL ----------------------------------------------------->       
 <!-- Button to trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="display:none;" id="modalTrigger">
   Launch modal
@@ -121,38 +120,59 @@
 <table  id="myTable" class="table table-striped">
   <thead>
     <tr class="col">
-      <th>data_registro</th>
-      <th>objetivo</th>
-      <th>facilitador</th>
-      <th>tema</th>
+      <th>data de registro</th>
+      <th>Facilitador Resposável</th>
+      <th>Tema</th>
       <th>local</th>
       <th>status</th>
     </tr>
   </thead>
   <tbody>
-    <?php
-      // Sample data
-      // $users = array(
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Jhon' ,'tema' => 'organização' ,'local' => 'sala 15','status' => 'Aberta'   ),
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Eduarda' ,'tema' => 'organização' ,'local' => 'sala 10','status' => 'Aberta'   ),
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Gabriel' ,'tema' => 'organização' ,'local' => 'sala 1','status' => 'Fechada'   ),
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Lucas' ,'tema' => 'organização' ,'local' => 'sala 13','status' => 'Aberta'   ),
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Pedro' ,'tema' => 'organização' ,'local' => 'sala 2','status' => 'Fechada'   ),
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Jonas' ,'tema' => 'organização' ,'local' => 'sala 17','status' => 'Aberta'   ),
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Luan' ,'tema' => 'organização' ,'local' => 'sala 23','status' => 'Fechada'   ),
-      // );
-      // Loop through each user and create a row
-      foreach ($sql as $banco) {
-        echo '<tr class="table-row" data-toggle="modal" data-target="#myModal">';
-        echo '<td>' . $banco['id'] . '</td>';
-        echo '<td>' . $banco['objetivo'] . '</td>';
-        echo '<td>' . $banco['facilitador'] . '</td>';
-        echo '<td>' . $banco['tema'] . '</td>';
-        echo '<td>' . $banco['local'] . '</td>';
-        echo '<td class="status_button" >' . $user['status'] . '</td>';
-        echo '</tr>';
-      }
-    ?>
+  <div class="form-group col-8">
+    <div class="row">
+        <main class="col-12">       
+           <?php
+            // Conexão com o banco de dados (substitua os valores pelos seus próprios)
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "atareu";
+
+            // Cria a conexão
+            $conn = new mysqli($servername, $username, $password, $dbname);
+
+            // Checa a conexão
+            if ($conn->connect_error) {
+                die("Falha na conexão: " . $conn->connect_error);
+            }
+
+            // Consulta SQL para selecionar os dados
+            $sql = "SELECT data_solicitada ,facilitador, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local, status 
+            FROM assunto 
+            ORDER BY data_registro DESC";
+
+            $result = $conn->query($sql);
+            ?>
+
+            <tbody>
+                <?php
+                // Exibe os dados em cada linha da tabela
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo "<tr>";
+                        echo "<td>" . $row["data_solicitada"] . "</td>";
+                        echo "<td>" . $row["facilitador"] . "</td>";
+                        echo "<td>" . $row["tema"] . "</td>";
+                        echo "<td>" . $row["local"] . "</td>";
+                        echo '<td class="status_button" >' . $row['status'] . '</td>';
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='3'>Nenhum resultado encontrado.</td></tr>";
+                }
+                $conn->close();
+                ?>
+                </tbody>
   </tbody>
 </table>
 <div id="myModal" class="modal">
@@ -207,8 +227,13 @@ buttons.forEach(function(button) {
 
     // Add or remove classes based on the text content
     if (buttonText === 'Aberta') {
+
+        getElementById("FECHADA");
+        input.
         button.style.backgroundColor = 'green';
+
     } else if (buttonText === 'Fechada') {
+
         button.style.backgroundColor = 'red';
     }
 });

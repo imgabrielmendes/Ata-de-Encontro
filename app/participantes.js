@@ -125,7 +125,7 @@ function gravaremail(){
             icon: "success"
           });
 
-        window.alert ("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail);
+        // window.alert ("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail);
         console.log ("(3.1) As informações de email foram enviadas");
 
         if (caixadenome !=="" && caixadeemail !=="" && caixacargo !=="") 

@@ -166,6 +166,7 @@ class AcoesForm {
                     FROM assunto 
                     ORDER BY data_registro DESC 
                     LIMIT 1";
+                    
     
             // Preparar e executar a consulta
             $stmt = $pdo->prepare($sql);
