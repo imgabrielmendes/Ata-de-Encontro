@@ -203,7 +203,8 @@ color: #FFFFFF;
   text-decoration: none;
   cursor: pointer;
 }
-.status_button{
-  padding: 10px;
-  border-radius: 10px;
+.participantes_forms{
+  display: flex;
+ outline: ;
+ background-color: #353535;
 }

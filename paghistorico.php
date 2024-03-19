@@ -132,6 +132,7 @@
   </thead>
   <tbody>
     <?php
+    
       // Sample data
       $users = array(
         array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Jhon' ,'tema' => 'organização' ,'local' => 'sala 15','status' => 'Aberta'   ),
@@ -140,7 +141,7 @@
         array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Lucas' ,'tema' => 'organização' ,'local' => 'sala 13','status' => 'Aberta'   ),
         array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Pedro' ,'tema' => 'organização' ,'local' => 'sala 2','status' => 'Fechada'   ),
         array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Jonas' ,'tema' => 'organização' ,'local' => 'sala 17','status' => 'Aberta'   ),
-        array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Luan' ,'tema' => 'organização' ,'local' => 'sala 23','status' => 'Fechada'   ),
+        array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Luan' ,'tema' => 'organização' ,'local' => 'sala 23','status' => 'Aberta'   ),
 
       );
 
@@ -212,7 +213,8 @@ buttons.forEach(function(button) {
     if (buttonText === 'Aberta') {
         button.style.backgroundColor = 'green';
     } else if (buttonText === 'Fechada') {
-        button.style.backgroundColor = 'red';
+  button.style.backgroundColor = 'red'; // Change background color
+ 
     }
 });
 
