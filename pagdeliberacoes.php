@@ -244,12 +244,10 @@ try {
     </div>     
         <form id="addForm">
         <div class="form-group">
-            <br>
             <ul id="items" class="list-group"></ul>
-            <br>
-            <label for="item">Informe o deliberador:</label>
+            <!-- <label for="item">Informe o deliberador:</label> -->
 
-            <select id="item" class="col-4 form-control" placeholder="Participantes...">
+            <!-- <select id="item" class="col-4 form-control" placeholder="Participantes...">
                 <?php foreach ($pegarfa as $facnull) : ?>
 
                     <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
@@ -257,10 +255,11 @@ try {
                     </option>
 
                 <?php endforeach ?>
-            </select>
+            </select> -->
+
             <div class="col">
               <label>Deliberações</label>
-              <input class="form-control" type="text">
+              <textarea  id="item" class="col-4 form-control" type="text"></textarea>
             </div>
             <div class="col-2">
                 <button type="button" id="addItemButton" class="btn btn-primary mt-2">+</button>

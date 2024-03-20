@@ -128,7 +128,6 @@
     </tr>
   </thead>
   <tbody>
-<<<<<<< HEAD
   <div class="form-group col-8">
     <div class="row">
         <main class="col-12">       
@@ -174,11 +173,10 @@
                 $conn->close();
                 ?>
                 </tbody>
-=======
     <?php
     
       // Sample data
-<<<<<<< HEAD
+
       $users = array(
         array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Jhon' ,'tema' => 'organização' ,'local' => 'sala 15','status' => 'Aberta'   ),
         array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Eduarda' ,'tema' => 'organização' ,'local' => 'sala 10','status' => 'Aberta'   ),
@@ -186,23 +184,11 @@
         array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Lucas' ,'tema' => 'organização' ,'local' => 'sala 13','status' => 'Aberta'   ),
         array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Pedro' ,'tema' => 'organização' ,'local' => 'sala 2','status' => 'Fechada'   ),
         array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Jonas' ,'tema' => 'organização' ,'local' => 'sala 17','status' => 'Aberta'   ),
-        array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Luan' ,'tema' => 'organização' ,'local' => 'sala 23','status' => 'Aberta'   ),
-
+        array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Luan' ,'tema' => 'organização' ,'local' => 'sala 23','status' => 'Fechada'   ),
       );
 
-=======
-      // $users = array(
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Jhon' ,'tema' => 'organização' ,'local' => 'sala 15','status' => 'Aberta'   ),
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Eduarda' ,'tema' => 'organização' ,'local' => 'sala 10','status' => 'Aberta'   ),
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Gabriel' ,'tema' => 'organização' ,'local' => 'sala 1','status' => 'Fechada'   ),
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Lucas' ,'tema' => 'organização' ,'local' => 'sala 13','status' => 'Aberta'   ),
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Pedro' ,'tema' => 'organização' ,'local' => 'sala 2','status' => 'Fechada'   ),
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Jonas' ,'tema' => 'organização' ,'local' => 'sala 17','status' => 'Aberta'   ),
-      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Luan' ,'tema' => 'organização' ,'local' => 'sala 23','status' => 'Fechada'   ),
-      // );
->>>>>>> 6efe61e14139a8b23b0fd3fe587036b31823d01d
       // Loop through each user and create a row
-      foreach ($sql as $banco) {
+      foreach ($users as $banco) {
         echo '<tr class="table-row" data-toggle="modal" data-target="#myModal">';
         echo '<td>' . $banco['id'] . '</td>';
         echo '<td>' . $banco['objetivo'] . '</td>';
@@ -213,7 +199,6 @@
         echo '</tr>';
       }
     ?>
->>>>>>> 627bd2616327e205d59a1b530caa7da11a8eec19
   </tbody>
 </table>
 <div id="myModal" class="modal">
@@ -274,13 +259,8 @@ buttons.forEach(function(button) {
         button.style.backgroundColor = 'green';
 
     } else if (buttonText === 'Fechada') {
-<<<<<<< HEAD
-
-        button.style.backgroundColor = 'red';
-=======
   button.style.backgroundColor = 'red'; // Change background color
  
->>>>>>> 627bd2616327e205d59a1b530caa7da11a8eec19
     }
 });
 

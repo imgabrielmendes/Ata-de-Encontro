@@ -1,24 +1,24 @@
 <?php
 
-// namespace formulario;
+namespace formulario;
 
-// include ("vendor/autoload.php");
-// include_once ("app/acoesform.php");
-// include ("conexao.php");
+include ("vendor/autoload.php");
+include_once ("app/acoesform.php");
+include ("conexao.php");
 
-// $puxarform= new AcoesForm;
-// $facilitadores=$puxarform->selecionarFacilitadores();
-// $pegarfa=$puxarform->pegarfacilitador();
-// //var_dump($pegarfa);
+$puxarform= new AcoesForm;
+$facilitadores=$puxarform->selecionarFacilitadores();
+$pegarfa=$puxarform->pegarfacilitador();
+//var_dump($pegarfa);
 
-// //PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
-// $facilitadores = $_GET['facilitadores'];
-// $conteudo = $_GET['conteudo'];
-// $horainicio = $_GET['horainicio'];
-// $horaterm = $_GET['horaterm'];
-// $data = $_GET['data'];
-// $objetivoSelecionado = $_GET['objetivoSelecionado'];
-// $local = $_GET['local'];
+//PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
+$facilitadores = $_GET['facilitadores'];
+$conteudo = $_GET['conteudo'];
+$horainicio = $_GET['horainicio'];
+$horaterm = $_GET['horaterm'];
+$data = $_GET['data'];
+$objetivoSelecionado = $_GET['objetivoSelecionado'];
+$local = $_GET['local'];
 
 echo "Facilitadores - $facilitadores, 
       Conteúdo - $conteudo, 
@@ -281,18 +281,9 @@ echo "Facilitadores - $facilitadores,
                         </div>
                       </div> 
                       
-<<<<<<< HEAD
-=======
 <!-------------------- BOTÃO DA MODAL ------------------->
-                      <div class="row">
-          <div class="col-10">
-           <button id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
-              Seu usuário não está cadastrado? <b>clique aqui</b>
-            </button>
-</div>
-       </div>
+     
       </div>
->>>>>>> 6efe61e14139a8b23b0fd3fe587036b31823d01d
 </div>
            <!-------------------- BOTÃO DA MODAL ------------------->
          
