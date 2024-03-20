@@ -50,6 +50,14 @@ $pegarlocal=$puxarform->pegarlocais();
   <link rel="stylesheet" href="view/css/bootstrap-grid.min.css">
   <link rel="stylesheet" href="view/css/bootstrap.css">
   <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
+
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
+  integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
 </head>
 
 <body>
@@ -68,7 +76,28 @@ $pegarlocal=$puxarform->pegarlocais();
   </header>
 
   <!--FORMULÁRIO-->
+  <div class="row">
+  <select id="select-tools" placeholder="Pick a tool..."></select>
+</div>
 
+<script type="text/javascript" src="selectize.js"></script>
+<script type="text/javascript">
+  $('#select-tools').selectize({
+    maxItems: null,
+    valueField: 'id',
+    labelField: 'title',
+    searchField: 'title',
+    options: [
+      {id: 1, title: 'Spectrometer', url: 'http://en.wikipedia.org/wiki/Spectrometers'},
+      {id: 2, title: 'Star Chart', url: 'http://en.wikipedia.org/wiki/Star_chart'},
+      {id: 3, title: 'Electrical Tape', url: 'http://en.wikipedia.org/wiki/Electrical_tape'}
+    ],
+    create: false
+  });
+</script>
+
+
+</div>
   <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
   <div class="box box-primary">
     <main class="container_fluid d-flex justify-content-center align-items-center">
@@ -155,8 +184,7 @@ $pegarlocal=$puxarform->pegarlocais();
           <br><br>
           <!---ABA DE ADICIONAR FACILITADORES---->
           <div class="col-4"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
-          <br>
-
+          <br>     
           <div class="col-8">
           <select class=" col-8 form-control" id="selecionandofacilitador" name="facilitador">
           <optgroup label="Selecione Facilitadores">
@@ -198,6 +226,10 @@ $pegarlocal=$puxarform->pegarlocais();
               <br><br>
 
       <script src="app/gravar.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+      integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </body>
 
