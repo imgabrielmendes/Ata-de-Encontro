@@ -1,24 +1,23 @@
 <?php
-           
-           //Conexão com o banco de dados (substitua os valores pelos seus próprios)
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $dbname = "atareu";
+            // Conexão com o banco de dados (substitua os valores pelos seus próprios)
+            // $servername = "localhost";
+            // $username = "root";
+            // $password = "";
+            // $dbname = "atareu";
 
-            //Cria a conexão
-            $conn = new mysqli($servername, $username, $password, $dbname);
+            // Cria a conexão
+            // $conn = new mysqli($servername, $username, $password, $dbname);
 
-            // Checa a conexão
-            if ($conn->connect_error) {
-                die("Falha na conexão: " . $conn->connect_error);
-            }
+            // // Checa a conexão
+            // if ($conn->connect_error) {
+            //     die("Falha na conexão: " . $conn->connect_error);
+            // }
 
-            // Consulta SQL para selecionar os dados
-            $sql = "SELECT data_registro, facilitador, tema, objetivo, local, status FROM assunto ORDER BY `data_registro` desc";
-            $result = $conn->query($sql);
+            // // Consulta SQL para selecionar os dados
+            // $sql = "SELECT data_registro, facilitador, tema, objetivo, local, status FROM assunto ORDER BY `data_registro` desc";
+            // $result = $conn->query($sql);
 
-?>
+            // ?>
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -77,21 +76,24 @@
                 <label>Ata em processo</label>
             </li>
             <li class="col">
-                <span id="FECHADA" class='badge bg-success'>FECHADA</span>
+                <span class='badge bg-success'>FECHADA</span>
                 <label>Ata fechada</label>
             </li>
         </ul>
     </div>
 </caption>
+          <!---- PRIMEIRA LINHA DO REGISTRO ---->
+       
 
-<!----------------------------- MODAL ----------------------------------------------------->       
+
+
 <!-- Button to trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="display:none;" id="modalTrigger">
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="display:none;" id="modalTrigger">
   Launch modal
-</button>
+</button> -->
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -100,16 +102,16 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body"> 
+      <div class="modal-body"> -->
         <!-- Content to display in the modal -->
-        <p>This is the modal content.</p>
+        <!-- <p>This is the modal content.</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
     </div>
-  </div> 
-</div> 
+  </div>
+</div> -->
 
 
 <div class="form-group col-10">
@@ -120,14 +122,16 @@
 <table  id="myTable" class="table table-striped">
   <thead>
     <tr class="col">
-      <th>data de registro</th>
-      <th>Facilitador Resposável</th>
-      <th>Tema</th>
+      <th>data_registro</th>
+      <th>objetivo</th>
+      <th>facilitador</th>
+      <th>tema</th>
       <th>local</th>
       <th>status</th>
     </tr>
   </thead>
   <tbody>
+
   <div class="form-group col-8">
     <div class="row">
         <main class="col-12">       
@@ -149,6 +153,7 @@
             // Consulta SQL para selecionar os dados
             $sql = "SELECT data_solicitada ,facilitador, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local, status 
             FROM assunto 
+            
             ORDER BY data_registro DESC";
 
             $result = $conn->query($sql);
@@ -161,6 +166,7 @@
                     while($row = $result->fetch_assoc()) {
                         echo "<tr>";
                         echo "<td>" . $row["data_solicitada"] . "</td>";
+                        echo "<td>" . $row["objetivo"] . "</td>";
                         echo "<td>" . $row["facilitador"] . "</td>";
                         echo "<td>" . $row["tema"] . "</td>";
                         echo "<td>" . $row["local"] . "</td>";
@@ -173,31 +179,32 @@
                 $conn->close();
                 ?>
                 </tbody>
-    <?php
-    
-      // Sample data
 
-      $users = array(
-        array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Jhon' ,'tema' => 'organização' ,'local' => 'sala 15','status' => 'Aberta'   ),
-        array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Eduarda' ,'tema' => 'organização' ,'local' => 'sala 10','status' => 'Aberta'   ),
-        array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Gabriel' ,'tema' => 'organização' ,'local' => 'sala 1','status' => 'Fechada'   ),
-        array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Lucas' ,'tema' => 'organização' ,'local' => 'sala 13','status' => 'Aberta'   ),
-        array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Pedro' ,'tema' => 'organização' ,'local' => 'sala 2','status' => 'Fechada'   ),
-        array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Jonas' ,'tema' => 'organização' ,'local' => 'sala 17','status' => 'Aberta'   ),
-        array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Luan' ,'tema' => 'organização' ,'local' => 'sala 23','status' => 'Fechada'   ),
-      );
+  </tbody>
+    <?php
+      // Sample data
+      // $users = array(
+      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Jhon' ,'tema' => 'organização' ,'local' => 'sala 15','status' => 'Aberta'   ),
+      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Eduarda' ,'tema' => 'organização' ,'local' => 'sala 10','status' => 'Aberta'   ),
+      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Gabriel' ,'tema' => 'organização' ,'local' => 'sala 1','status' => 'Fechada'   ),
+      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Lucas' ,'tema' => 'organização' ,'local' => 'sala 13','status' => 'Aberta'   ),
+      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Pedro' ,'tema' => 'organização' ,'local' => 'sala 2','status' => 'Fechada'   ),
+      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Jonas' ,'tema' => 'organização' ,'local' => 'sala 17','status' => 'Aberta'   ),
+      //   array('id' => '18/03', 'objetivo' => 'reuniao', 'facilitador' => 'Luan' ,'tema' => 'organização' ,'local' => 'sala 23','status' => 'Aberta'   ),
+
+      // );
 
       // Loop through each user and create a row
-      foreach ($users as $banco) {
-        echo '<tr class="table-row" data-toggle="modal" data-target="#myModal">';
-        echo '<td>' . $banco['id'] . '</td>';
-        echo '<td>' . $banco['objetivo'] . '</td>';
-        echo '<td>' . $banco['facilitador'] . '</td>';
-        echo '<td>' . $banco['tema'] . '</td>';
-        echo '<td>' . $banco['local'] . '</td>';
-        echo '<td class="status_button" >' . $user['status'] . '</td>';
-        echo '</tr>';
-      }
+      // foreach ($users as $user) {
+      //   echo '<tr class="table-row" data-toggle="modal" data-target="#myModal">';
+      //   echo '<td>' . $user['id'] . '</td>';
+      //   echo '<td>' . $user['objetivo'] . '</td>';
+      //   echo '<td>' . $user['facilitador'] . '</td>';
+      //   echo '<td>' . $user['tema'] . '</td>';
+      //   echo '<td>' . $user['local'] . '</td>';
+      //   echo '<td class="status_button" >' . $user['status'] . '</td>';
+      //   echo '</tr>';
+      // }
     ?>
   </tbody>
 </table>
@@ -253,14 +260,9 @@ buttons.forEach(function(button) {
 
     // Add or remove classes based on the text content
     if (buttonText === 'Aberta') {
-
-        getElementById("FECHADA");
-        input.
         button.style.backgroundColor = 'green';
-
     } else if (buttonText === 'Fechada') {
-  button.style.backgroundColor = 'red'; // Change background color
- 
+        button.style.backgroundColor = 'red';
     }
 });
 
