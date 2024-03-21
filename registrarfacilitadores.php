@@ -2,40 +2,39 @@
 include 'database.php';
 session_start();
 
-$participantesAdicionados = $_POST['particadd'];
-echo $participantesAdicionados;
 
-if ($particadd !== "") {
+$dbhost = 'localhost';
+$dbname = 'atareu';  
+$dbuser = 'root';  
+$dbpass = '';     
 
-    $enviarregistro = "INSERT INTO participantes (participantes) VALUE ('$participantesAdicionados')";
-    
-    if (mysqli_query($conexao, $enviarregistro)) {
-        echo '(3.3) RECEBEU E ENVIOU PRO BANCO';
-        echo $participantesAdicionados;
-
-    } else {
-
-        var_dump($enviarregistro);
-        echo "(X) A marcação do AJAX não foi identificada"; 
-
-    } 
+$conn = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
+if ($conn->connect_error) {
+    die("Erro ao conectar ao banco de dados: " . $conn->connect_error);
 }
 
+$sql = "SELECT id FROM assunto ORDER BY id DESC LIMIT 1";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+
+    $ultimoID = $row["id"];
+    $participantesAdicionados = $_POST['particadd'];
+
+    $enviarbanco = "INSERT INTO participantes (id_ata, participantes) VALUES ('$ultimoID', '$participantesAdicionados')";
+
+    if ($conn->query($enviarbanco) === TRUE) {
+        echo "Novo registro inserido com sucesso.";
+    } 
+    
+        else {
+            echo "Erro ao inserir registro: " . $conn->error;
+        }
+
+      } else {
+            echo "Nenhum ID encontrado na tabela assunto";
+        }
+
+$conn->close();
 ?>
-<!-- 
-
-    // if($caixadenome !=="" && $caixadeemail !==""){
-
-    //     $enviarregistro = "INSERT INTO facilitadores (nome_facilitador, email_facilitador) VALUES ('$caixadenome','$caixadeemail')";
-        
-    //     if (mysqli_query($conexao, $enviarregistro)) {
-
-    //         echo '(3.3) RECEBEU E ENVIOU PRO BANCO';
-
-    //     } else {
-    //         var_dump($caixadenome . $caixadeemail);
-    //         echo "(X) A marcação do AJAX não foi identificada";
-            
-    //     } 
-    // }
- -->

@@ -16,9 +16,6 @@ session_start();
 
 
     //$objetivoSelecionado= $_POST['objetivos']; NÃO LINKADO AINDA
-
-    
-
     if ($facilitadores !=="" && $data !=="" && $horainicio !=="" && $horaterm !=="" && $conteudo !== "" && $objetivoSelecionado !=="" && $local !=="") {
 
         $enviarbanco = "INSERT INTO assunto (facilitador , data_solicitada, tema,objetivo , hora_inicial, hora_termino, local, status) VALUES ('$facilitadores','$data','$conteudo','$objetivoSelecionado', '$data', '$horaterm','$local','ABERTA')";
