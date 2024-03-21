@@ -30,7 +30,14 @@ addItemButton.addEventListener('click', function() {
         li.appendChild(document.createTextNode(newItem));
 
         var deleteBtn = document.createElement('button');
-        deleteBtn.className = 'col-2 btn btn-danger float-left delete';
+        deleteBtn.className = 'col btn btn-danger  delete';
+        deleteBtn.style.color = '#ffffff'; // Change text color
+        deleteBtn.style.right = '9px'; // Change text color
+        deleteBtn.style.top = '0px'; // Change text alinhamento a esquerda
+        deleteBtn.style.width = '37px'; // Change text tamanho
+        deleteBtn.style.height = '37px'; // Change text alinhamento a esquerda
+        deleteBtn.style.position = 'absolute'; // Change text color
+
         deleteBtn.appendChild(document.createTextNode('X'));
         deleteBtn.addEventListener('click', function() {
             if (confirm('Tem certeza?')) {

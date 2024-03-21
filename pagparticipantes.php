@@ -20,13 +20,13 @@ $data = $_GET['data'];
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
 
-echo "Facilitadores - $facilitadores, 
-      Conteúdo - $conteudo, 
-      Horário de Início - $horainicio, 
-      Horário de Término - $horaterm, 
-      Data - $data, 
-      Objetivos - $objetivoSelecionado, 
-      Local - $local";
+// echo "Facilitadores - $facilitadores, 
+//       Conteúdo - $conteudo, 
+//       Horário de Início - $horainicio, 
+//       Horário de Término - $horaterm, 
+//       Data - $data, 
+//       Objetivos - $objetivoSelecionado, 
+//       Local - $local";
 
 ?>
 <!DOCTYPE html>
@@ -173,11 +173,13 @@ echo "Facilitadores - $facilitadores,
           <form id="addForm">
               <div class="form-group ">
                   <br>
-                  <div  id="items" class="col-10 list-group"></div>
+                  <div  id="items" class="col-12 list-group"></div>
+
+                    
                   
                   <label for="item"><b>Informe os participantes<b></label>
                   <div class="row">
-                    <div class="col-10"> 
+                    <div class="col-11"> 
                     <select id="item" class="form-control" placeholder="Participantes...">
                       <?php foreach ($pegarfa as $facnull) : ?>
                           <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
@@ -185,13 +187,10 @@ echo "Facilitadores - $facilitadores,
                              
                             </option>
                             
-                      <?php endforeach ?><option value="teste">testee</option>
-                        <option value="teste">testee</option>
-                        <option value="teste">testee</option>
-                        <option value="teste">testee</option>
+                      <?php endforeach ?>
                   </select>
                 </div>
-                  <div class="col-2">
+                  <div class="col-1">
                   <button type="button" id="addItemButton" class="btn btn-primary ">+</button>
                   </div> 
                 </div>

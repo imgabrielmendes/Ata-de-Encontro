@@ -55,6 +55,7 @@
       </div>
     </nav>
   </header>
+  
 
   <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
   <div class="box box-primary">
@@ -131,7 +132,36 @@
     </tr>
   </thead>
   <tbody>
-
+<!--barra de pesquisa para filtro-->
+<input type="text" id="searchBar" placeholder="Search for data..." oninput="filterTable()">
+  <script>
+function filterTable() {
+  var input, filter, table, tr, td, i;
+  input = document.getElementById("searchBar");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  
+  for (i = 0; i < tr.length; i++) {
+    var found = false;
+    var tds = tr[i].getElementsByTagName("td");
+    for (var j = 0; j < tds.length; j++) {
+      td = tds[j];
+      if (td) {
+        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          found = true;
+          break; // Stop looping if found in this row
+        }
+      }
+    }
+    if (found) {
+      tr[i].style.display = "";
+    } else {
+      tr[i].style.display = "none";
+    }
+  }
+}
+</script>
   <div class="form-group col-8">
     <div class="row">
         <main class="col-12">       
