@@ -2,7 +2,7 @@ console.log();
 
 var participantesAdicionados = [];
 var botaocont = document.getElementById('botaocontinuarata');
-var botaohist = document.getElementById('abrirhist');
+// var botaohist = document.getElementById('abrirhist');
 
 var itemList = document.getElementById('items');
 var filter = document.getElementById('filter');
@@ -64,23 +64,23 @@ function addDeliberacoes() {
         success: function(response) {
             console.log("(4.2) Deu bom! AJAX está enviando os participantes");
             console.log(response);
-            console.log(participantesAdicionados);
 
-            // Montando a URL com os parâmetros
+            var ultimoID = response.ultimoID;
+            var participantesAdicionados = response.participantesAdicionados;
+
             var url = 'pagdeliberacoes.php' +
-                '?participantesAdicionados=' + encodeURIComponent(JSON.stringify(participantesAdicionados));
+                '?ultimoID=' + encodeURIComponent(ultimoID) +
+                '&participantesAdicionados=' + encodeURIComponent(participantesAdicionados);
 
-            // Redirecionando para a nova URL
             window.location.href = url;
 
-            // Exibindo uma mensagem de sucesso para o usuário
             Swal.fire({
                 title: "Perfeito!",
                 text: "Seus participantes foram registrados",
                 icon: "success"
             });
 
-            // Limpando a lista de participantes adicionados
+            // Limpa a lista de participantes adicionados
             participantesAdicionados = [];
             atualizarListaParticipantes();
         },
@@ -90,7 +90,6 @@ function addDeliberacoes() {
     });
 }
 
-// Função para limpar visualmente a lista de participantes
 function atualizarListaParticipantes() {
     itemList.innerHTML = ''; // Limpa a lista visualmente
 }
@@ -154,6 +153,4 @@ function gravaremail(){
     
 
 botaocont.addEventListener('click', addDeliberacoes);
-botaohist.addEventListener('click', addDeliberacoes);
-
 botaoemail.addEventListener('click', gravaremail);

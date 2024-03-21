@@ -17,6 +17,8 @@ $pegarfa=$puxarform->pegarfacilitador();
 // Puxar local
 $pegarlocal=$puxarform->pegarlocais();
 
+
+
 // o numero 2 significa que foi iniciado, o 1 signifca que não
 // $status= session_start();
 // $name = session_name();
@@ -76,27 +78,6 @@ $pegarlocal=$puxarform->pegarlocais();
   </header>
 
   <!--FORMULÁRIO-->
-  <div class="row">
-  <select id="select-tools" placeholder="Pick a tool..."></select>
-</div>
-
-<script type="text/javascript" src="selectize.js"></script>
-<script type="text/javascript">
-  $('#select-tools').selectize({
-    maxItems: null,
-    valueField: 'id',
-    labelField: 'title',
-    searchField: 'title',
-    options: [
-      {id: 1, title: 'Spectrometer', url: 'http://en.wikipedia.org/wiki/Spectrometers'},
-      {id: 2, title: 'Star Chart', url: 'http://en.wikipedia.org/wiki/Star_chart'},
-      {id: 3, title: 'Electrical Tape', url: 'http://en.wikipedia.org/wiki/Electrical_tape'}
-    ],
-    create: false
-  });
-</script>
-
-
 </div>
   <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
   <div class="box box-primary">

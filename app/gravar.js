@@ -5,6 +5,11 @@ var gravarinformacoes = document.getElementById("botaoregistrar");
 
 // Pegar caixas do fomulário
 
+// PEGAR A ID
+// var linhaSelecionada = document.querySelector('#suaTabela tr.selecionado');
+// var idDaLinha = linhaSelecionada.getAttribute('id');
+
+
 //1° LINHAS
 var data = document.getElementById("datainicio");
 var horainicio = document.getElementById("horainicio").value;
@@ -22,6 +27,9 @@ var facilitadores = document.getElementById("selecionandofacilitador").value;
 var temaprincipal = document.getElementById("temaprincipal");
 
 function gravando() {
+
+    // var idDaLinha = response.idDaLinha; // Puxando a id
+
     var data = document.getElementById("datainicio").value;
     var horainicio = document.getElementById("horainicio").value;
     var horaterm = document.getElementById("horaterm").value;
@@ -70,6 +78,8 @@ function gravando() {
             url: 'enviarprobanco.php',
             method: 'POST',
             data: {
+
+                // idLinha: idDaLinha,
                 facilitadores: facilitadores,
                 texto: conteudo,
                 horai: horainicio,
@@ -81,6 +91,7 @@ function gravando() {
             success: function (teste) {
                 console.log("(2) Deu bom! AJAX está enviando");
                 console.log(teste);
+                // console.log(idDaLinha);
                 // Redirecionando para pagparticipantes.php
                 window.location.href = 'pagparticipantes.php' +
                     '?facilitadores=' + encodeURIComponent(facilitadores) +
@@ -116,8 +127,9 @@ function gravando() {
             },
             error: function (error) {
                 console.error('Erro na solicitação AJAX para pagdeliberacoes.php:', error);
-            }
+            }        
         });
+
     }
 }
 
