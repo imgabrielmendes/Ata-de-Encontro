@@ -9,8 +9,7 @@ include ("conexao.php");
 $puxarform= new AcoesForm;
 $facilitadores=$puxarform->selecionarFacilitadores();
 $pegarfa=$puxarform->pegarfacilitador();
-$pegarid= $puxarform->puxarId();
-var_dump($pegarid);
+
 
 //PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
 $facilitadores = $_GET['facilitadores'];

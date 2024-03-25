@@ -87,39 +87,6 @@ class AcoesForm {
         
     }
     
-    public function puxarId(){
-
-        try {
-                   
-            //ARRUMAR UM JEITO DE DIMINUIR ISSO
-            $dbhost = 'localhost';
-            $dbname = 'atareu';
-            $dbuser = 'root';
-            $dbpass = '';
-
-            // Conexão com o banco de dados usando PDO
-            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-            //SELECT * FROM facilitadores
-            $sql = "SELECT id FROM assunto
-                    ORDER BY id DESC 
-                    LIMIT 1";
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
-
-            //print_r($sql);
-
-            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            return $resultados;
-
-        } catch (\PDOException $e) {
-            throw $e;
-        }
-    } 
-    
-
     public function pegarfacilitador() {
 
         try {
