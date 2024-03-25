@@ -205,8 +205,11 @@ color: #FFFFFF;
 }
 .participantes_forms{
   display: flex;
- outline: ;
  background-color: #353535;
 } .btndeliberacoes{
   margin: 20px;
+}
+#filtroInput{
+  border: none;
+  outline: none;
 }

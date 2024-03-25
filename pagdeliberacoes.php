@@ -42,7 +42,7 @@ try {
       $conteudo = $row["tema"];
       $horainicio = substr($row["hora_inicial"], 0,5);
       $horaterm = substr($row["hora_termino"], 0,5);
-      $data = substr($row["data_solicitada"], 0, 10);
+      $data = substr($row["data_solicitada"], 0,10);
       $objetivoSelecionado = $row["objetivo"];
       $local = $row["local"];
   } else {

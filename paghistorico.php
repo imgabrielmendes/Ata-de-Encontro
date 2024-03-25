@@ -1,21 +1,23 @@
 <?php
-            // Conexão com o banco de dados (substitua os valores pelos seus próprios)
-            // $servername = "localhost";
-            // $username = "root";
-            // $password = "";
-            // $dbname = "atareu";
+            //Conexão com o banco de dados (substitua os valores pelos seus próprios)
+            $servername = "localhost";
+            $username = "root";
+            $password = "";
+            $dbname = "atareu";
 
-            // Cria a conexão
-            // $conn = new mysqli($servername, $username, $password, $dbname);
+            //Cria a conexão
+            $conn = new mysqli($servername, $username, $password, $dbname);
 
-            // // Checa a conexão
-            // if ($conn->connect_error) {
-            //     die("Falha na conexão: " . $conn->connect_error);
-            // }
+            // Checa a conexão
+            if ($conn->connect_error) {
+                die("Falha na conexão: " . $conn->connect_error);
+            }
 
-            // // Consulta SQL para selecionar os dados
-            // $sql = "SELECT data_registro, facilitador, tema, objetivo, local, status FROM assunto ORDER BY `data_registro` desc";
-            // $result = $conn->query($sql);
+            // Consulta SQL para selecionar os dados
+            $sql = "SELECT data_registro, facilitador, tema, objetivo, local, status FROM assunto ORDER BY `data_registro` desc";
+            $result = $conn->query($sql);
+
+            
 
             // ?>
 
@@ -39,6 +41,8 @@
   <link rel="stylesheet" href="view/css/bootstrap-grid.min.css">
   <link rel="stylesheet" href="view/css/bootstrap.css">
   <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
+
+  
 </head>
 
 <body>
@@ -123,7 +127,7 @@
 <table  id="myTable" class="table table-striped">
   <thead>
     <tr class="col">
-      <th>data_registro</th>
+      <th>Solicitação</th>
       <th>objetivo</th>
       <th>facilitador</th>
       <th>tema</th>
@@ -132,36 +136,51 @@
     </tr>
   </thead>
   <tbody>
+
+  <div class="accordion" id="accordionPanelsStayOpenExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+        Filtro de Registro
+      </button>
+    </h2>
+    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+      <div class="accordion-body">
+
 <!--barra de pesquisa para filtro-->
-<input type="text" id="searchBar" placeholder="Search for data..." oninput="filterTable()">
-  <script>
-function filterTable() {
-  var input, filter, table, tr, td, i;
-  input = document.getElementById("searchBar");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-  
-  for (i = 0; i < tr.length; i++) {
-    var found = false;
-    var tds = tr[i].getElementsByTagName("td");
-    for (var j = 0; j < tds.length; j++) {
-      td = tds[j];
-      if (td) {
-        if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-          found = true;
-          break; // Stop looping if found in this row
+<input type="text" id="filtroInput" onkeyup="filtrarRegistros()" placeholder="Filtrar registros...">
+<script>
+    // Função para filtrar registros
+    function filtrarRegistros() {
+        var input, filtro, tabela, linhas, celula, texto;
+        input = document.getElementById("filtroInput");
+        filtro = input.value.toUpperCase();
+        tabela = document.getElementById("myTable");
+        linhas = tabela.getElementsByTagName("tr");
+
+        // Iterar sobre todas as linhas da tabela e esconder aquelas que não correspondem ao filtro
+        for (var i = 0; i < linhas.length; i++) {
+            celula = linhas[i].getElementsByTagName("td");
+            for (var j = 0; j < celula.length; j++) {
+                if (celula[j]) {
+                    texto = celula[j].innerText.toUpperCase() || celula[j].textContent.toUpperCase();
+                    if (texto.indexOf(filtro) > -1) {
+                        linhas[i].style.display = "";
+                        break;
+                    } else {
+                        linhas[i].style.display = "none";
+                    }
+                }
+            }
         }
-      }
     }
-    if (found) {
-      tr[i].style.display = "";
-    } else {
-      tr[i].style.display = "none";
-    }
-  }
-}
-</script>
+</script>     
+ </div>
+  </div>
+  </div>
+  
+</div>
+<br>
   <div class="form-group col-8">
     <div class="row">
         <main class="col-12">       
@@ -299,7 +318,7 @@ buttons.forEach(function(button) {
     
 </script>
 
-       
+       <script src="view/js/bootstrap.js"></script>
     </div>
 </div>
 </div>
