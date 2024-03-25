@@ -14,7 +14,7 @@ $facilitadores=$puxarform->selecionarFacilitadores();
 $pegarfa=$puxarform->pegarfacilitador();
 $pegarcoo=$puxarform->pegarcoordenador();
 $participantesAdicionados = $_GET['participantesAdicionados'];
-
+echo ($participantesAdicionados);
 
 // ARRUMAR UM JEITO DE DIMINUIR ISSO
 $dbhost = 'localhost';
@@ -30,22 +30,6 @@ try {
           FROM assunto 
           ORDER BY data_registro DESC 
           LIMIT 1";
-
-  $participantesQuery = "SELECT participantes FROM participantes";
-  $participantesStmt = $pdo->prepare($participantesQuery);
-  $participantesStmt->execute();
-
-  if ($participantesStmt->rowCount() > 0) {
-      // Se houver participantes encontrados
-      $participantesRow = $participantesStmt->fetch(\PDO::FETCH_ASSOC);
-      $participantes = $participantesRow["participantes"];
-
-      // Agora você pode usar $participantes conforme necessário
-  } else {
-      // Se nenhum participante for encontrado
-      echo "Nenhum participante encontrado.";
-  }
-
 
   // Preparar e executar a consulta
   $stmt = $pdo->prepare($sql);
@@ -72,8 +56,8 @@ try {
   echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
 }
 
-// echo "$participantes;
-//       Facilitadores - $facilitadores, 
+
+// echo "Facilitadores - $facilitadores, 
 //       Conteúdo - $conteudo, 
 //       Horário de Início - $horainicio, 
 //       Horário de Término - $horaterm, 
@@ -229,9 +213,8 @@ try {
     <!---- PRIMEIRA LINHA DO REGISTRO ---->
     <div class="row">
             <div class="col">
-              <label><b>Participantes Adicionado:</b></label>
-              <br>
-              <ul class="form-control bg-body-secondary"> <?php echo $participantes;  ?> </ul>
+              <label>Participantes</label>
+              <ul class="form-control bg-body-secondary"> <?php echo $participantesAdicionados;  ?> </ul>
             </div>
    
       </div>
@@ -320,7 +303,8 @@ try {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
-    <script src="app/deliberacoes.js"></script>
+    <script src="app/participantes.js"></script>
+    <script src="app/gravar.js"></script>
 
 
 </body>
