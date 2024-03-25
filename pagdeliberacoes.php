@@ -245,7 +245,7 @@ try {
         <form id="addForm">
         <div class="form-group">
             <ul id="items" class="list-group"></ul>
-            <!-- <label for="item">Informe o deliberador:</label> -->
+            <ul id="deliberadores" class="form-group"></ul>
 
             <!-- <select id="item" class="col-4 form-control" placeholder="Participantes...">
                 <?php foreach ($pegarfa as $facnull) : ?>
@@ -258,10 +258,11 @@ try {
             </select> -->
 
             <div class="col">
-              <label>Deliberações</label>
+              <label><b>Informe o texto principal:</b></label>
               <textarea  id="item" class="col-4 form-control" type="text"></textarea>
             </div>
             <div class="col-2">
+                <ul id="caixadeselecaodel"></ul>
                 <button type="button" id="addItemButton" class="btn btn-primary mt-2">+</button>
             </div>
         </div>
@@ -303,10 +304,7 @@ try {
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
-    <script src="app/participantes.js"></script>
-    <script src="app/gravar.js"></script>
-
-
+    <script src="app/deliberacoes.js"></script>
 </body>
 
 </html>
