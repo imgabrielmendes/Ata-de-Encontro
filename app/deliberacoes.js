@@ -59,6 +59,35 @@ addItemButton.addEventListener('click', function() {
     }
 });
 
+document.getElementById('addItemButton').addEventListener('click', function() {
+    // Captura o texto digitado e o facilitador selecionado
+    var newItem = document.querySelector('.item').value.trim();
+    var selectedFacilitator = document.querySelector('.facilitator-select').value;
+
+    // Verifica se o texto e o facilitador foram preenchidos
+    if (newItem === "" || selectedFacilitator === "") {
+        alert("Por favor, preencha todos os campos.");
+        return;
+    }
+
+    // Cria uma div para a list-group-item do texto digitado
+    var textListItemDiv = document.createElement('div');
+    textListItemDiv.className = 'form-control border rounded';
+    textListItemDiv.textContent = newItem;
+
+    // Cria uma div para a list-group-item do facilitador selecionado
+    var facilitatorListItemDiv = document.createElement('div');
+    facilitatorListItemDiv.className = 'form-control bg-body-secondary border rounded';
+    facilitatorListItemDiv.textContent = selectedFacilitator;
+
+    // Adiciona as divs da list-group-item ao contêiner
+    var itemList = document.getElementById('inputContainer');
+    itemList.appendChild(textListItemDiv);
+    itemList.appendChild(facilitatorListItemDiv);
+
+    // Limpa a caixa de texto
+    document.querySelector('.item').value = "";
+});
 
 
 // addItemButton.addEventListener('click', function() {

@@ -270,35 +270,38 @@ $dbpass = '';
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
     <div class="col-md-12 text-center">               
     </div>     
+    <span id="inputContainer"></span>
         <form id="addForm">
+          
         <div class="form-group">
-            <ul id="items" class="list-group"></ul>
-            <ul id="deliberadores" class="form-group"></ul>
-
-            <div class="col">
+        <div class="col">
               <label><b>Informe o texto principal:</b></label>
-              <textarea  id="item" class="col-4 form-control" type="text"></textarea>
-            </div>
-            <div class="col">
-              <div id="selectContainer" class="">
-              <select id="selectFacilitators" class="form-control" placeholder="Participantes...">
-              <?php foreach ($pegarde as $facnull) : ?>
-                  <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
-                  
-                      <?php echo "<b>".$facnull['nome_facilitador'] ."</b>" . " <" . $facnull['cargo'] . ">"; ?>
-                  </option>
-              <?php endforeach ?>
-          </select>
-                    
+              <textarea class="form-control item" placeholder="Informe o texto"></textarea>
             </div>
 
-            <div class="col-2">
-                <ul id="caixadeselecaodel"></ul>
-               
-                
-                <button type="button" id="addItemButton" class="btn btn-primary mt-2">+</button>
+            <div class="col">
+            <!-- Primeira caixa de texto e select de facilitadores -->
+            <div class="mb-2">
+                <select class="form-control facilitator-select" placeholder="Participantes...">
+                    <?php foreach ($pegarde as $facnull) : ?>
+                        <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
+                            <?= "<b>".$facnull['nome_facilitador'] ."</b>" . " <" . $facnull['cargo'] . ">"; ?>
+                        </option>
+                    <?php endforeach ?>
+                </select>
             </div>
         </div>
+        <div class="col-2">
+            <ul id="caixadeselecaodel"></ul>
+            <button type="button" id="addItemButton" class="btn btn-primary mt-2">+</button>
+        </div>
+    </div>
+    <script>
+        
+    </script>
+
+    
+    
         <br>
         <button onclick="abrirHistorico()"  id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button>
 
@@ -309,7 +312,7 @@ $dbpass = '';
     </script>
 
     </form>
-            <main class="container-fluid ">
+          
             </div>          
 </div>
 <script>
