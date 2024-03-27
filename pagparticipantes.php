@@ -52,7 +52,7 @@ $local = $_GET['local'];
   <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
 
   
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" />
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" /> -->
 </head>
 
 <body>
@@ -179,15 +179,17 @@ $local = $_GET['local'];
                   <label for="item"><b>Informe os participantes<b></label>
                   <div class="row">
                     <div class="col-11"> 
-                    <select id="item" class="form-control" placeholder="Participantes...">
-                      <?php foreach ($pegarfa as $facnull) : ?>
-                          <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
-                              <?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>
-                             
-                            </option>
-                            
-                      <?php endforeach ?>
-                  </select>
+<select id="item" class="form-control" placeholder="Participantes...">
+    <?php foreach ($pegarfa as $facnull) : ?>
+        <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
+        
+            <?php echo "<b>".$facnull['nome_facilitador'] ."</b>" . " <" . $facnull['cargo'] . ">"; ?>
+        </option>
+    <?php endforeach ?>
+</select>
+
+
+
                 </div>
                   <div class="col-1">
                   <button type="button" id="addItemButton" class="btn btn-primary ">+</button>
@@ -287,7 +289,7 @@ $local = $_GET['local'];
          
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <script src="view/js/bootstrap.js"></script>
     <script src="app/participantes.js"></script>
 

@@ -10,19 +10,28 @@ include ("conexao.php");
 $puxarform= new AcoesForm;
 $facilitadores=$puxarform->selecionarFacilitadores();
 
+$testandodeli=$puxarform->selecionarDeliberadores();
+echo $testandodeli;
 //funções de encotrar pessoas
-$pegarfa=$puxarform->pegarfacilitador();
-$pegarcoo=$puxarform->pegarcoordenador();
-$participantesAdicionados = $_GET['participantesAdicionados'];
-echo ($participantesAdicionados);
+$pegarfa=$puxarform->ultimosParticipantes();
+$pegarde=$puxarform->pegarfacilitador();
+
+$participantesArray = $pegarfa;
+
+
+
+
 
 // ARRUMAR UM JEITO DE DIMINUIR ISSO
+
+try {
+
 $dbhost = 'localhost';
 $dbname = 'atareu';
 $dbuser = 'root';
 $dbpass = '';
 
-try {
+
   $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
   $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
@@ -212,15 +221,34 @@ try {
 
     <!---- PRIMEIRA LINHA DO REGISTRO ---->
     <div class="row">
-            <div class="col">
-              <label>Participantes</label>
-              <ul class="form-control bg-body-secondary"> <?php echo $participantesAdicionados;  ?> </ul>
-            </div>
-   
-      </div>
+    <div class="col">
+        <div>
+            <?php 
+            // Decodifica a string JSON para um array
+            $participantesArray = json_decode($pegarfa[0]['participantes']);
+
+            // Itera sobre os participantes
+            foreach ($participantesArray as $participanteNome) {
+                // Remove as aspas e espaços em branco do início e do final da string
+                $participanteNome = trim($participanteNome, '" ');
+
+                // Exibe o participante
+            ?>
+                <div class='form-control bg-body-secondary border rounded'>
+                    <li><b><?php echo $participanteNome; ?></b></li>
+                </div>
+            <?php
+            }
+            ?>
+        </div>
+    </div>
+</div>
 
 
-      </div>
+
+
+
+</div>
 </div>
 </div>
 </div>
@@ -247,35 +275,39 @@ try {
             <ul id="items" class="list-group"></ul>
             <ul id="deliberadores" class="form-group"></ul>
 
-            <!-- <select id="item" class="col-4 form-control" placeholder="Participantes...">
-                <?php foreach ($pegarfa as $facnull) : ?>
-
-                    <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
-                        <?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . $facnull['email_facilitador']. ">"; ?>
-                    </option>
-
-                <?php endforeach ?>
-            </select> -->
-
             <div class="col">
               <label><b>Informe o texto principal:</b></label>
               <textarea  id="item" class="col-4 form-control" type="text"></textarea>
             </div>
+            <div class="col">
+              <div id="selectContainer" class="">
+              <select id="selectFacilitators" class="form-control" placeholder="Participantes...">
+              <?php foreach ($pegarde as $facnull) : ?>
+                  <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
+                  
+                      <?php echo "<b>".$facnull['nome_facilitador'] ."</b>" . " <" . $facnull['cargo'] . ">"; ?>
+                  </option>
+              <?php endforeach ?>
+          </select>
+                    
+            </div>
+
             <div class="col-2">
                 <ul id="caixadeselecaodel"></ul>
+               
+                
                 <button type="button" id="addItemButton" class="btn btn-primary mt-2">+</button>
             </div>
         </div>
-
         <br>
-                <button onclick="abrirHistorico()"  id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">
-                Atualizar a ata
-              </button>
-              <script>
+        <button onclick="abrirHistorico()"  id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button>
+
+        <script>
         function abrirHistorico() {
             window.location.href = 'paghistorico.php';
         }
     </script>
+
     </form>
             <main class="container-fluid ">
             </div>          

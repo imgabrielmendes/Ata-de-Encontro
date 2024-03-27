@@ -4,11 +4,12 @@ namespace formulario;
 //include ("conexao.php");
 
 $puxarclas = new AcoesForm;
-$puxarfun=$puxarclas->selecionarfacilitador();
 
 $acoesForm = new AcoesForm();
 $resultados = $acoesForm->selecionarFacilitadores();
 $apenascargos= $acoesForm->pegarfacilitador();
+
+
 //print_r($apenascargos);
 
 class AcoesForm {
@@ -73,7 +74,34 @@ class AcoesForm {
         }
     }
 
-    public function selecionarfacilitador() {}
+    public function selecionarDeliberadores() {
+        try {
+            include_once ("database.php");
+    
+            $dbhost = 'localhost';
+            $dbname = 'atareu';
+            $dbuser = 'root';
+            $dbpass = '';
+    
+            // Conexão com o banco de dados usando PDO
+            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+    
+            $sql = "SELECT nome_facilitador FROM facilitadores";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+    
+            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            
+            // Retorna os resultados como JSON
+            echo json_encode($resultados);
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+    }
+    
+    
+    
     
     //FUNÇÃO CADASTRAR DA MODAL
     public function cadastrarfacilitador($nomefacilitador, $email, $cargo)
@@ -87,6 +115,37 @@ class AcoesForm {
         
     }
     
+    public function ultimosParticipantes(){
+
+        try { 
+            //ARRUMAR UM JEITO DE DIMINUIR ISSO
+            $dbhost = 'localhost';
+            $dbname = 'atareu';
+            $dbuser = 'root';
+            $dbpass = '';
+
+            // Conexão com o banco de dados usando PDO
+            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            //SELECT * FROM facilitadores
+            $sql = "SELECT participantes FROM participantes
+                    ORDER BY id DESC 
+                    LIMIT 1";
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+            //print_r($sql);
+
+            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $resultados;
+
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+    }
+
     public function puxarId(){
 
         try {
@@ -150,38 +209,6 @@ class AcoesForm {
         }
     }    
     
-
-    public function pegarcoordenador() {
-
-        try {
-                   
-            //ARRUMAR UM JEITO DE DIMINUIR ISSO
-            $dbhost = 'localhost';
-            $dbname = 'atareu';
-            $dbuser = 'root';
-            $dbpass = '';
-
-            // Conexão com o banco de dados usando PDO
-            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-            //SELECT * FROM facilitadores
-            $sql = "SELECT nome_facilitador , cargo FROM facilitadores WHERE cargo = 'Coordenador';";
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
-
-            //print_r($sql);
-
-            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            return $resultados;
-
-        } catch (\PDOException $e) {
-            throw $e;
-        }
-            
-    }
-
     function obterUltimoRegistro() {
         // ARRUMAR UM JEITO DE DIMINUIR ISSO
         $dbhost = 'localhost';
@@ -218,7 +245,7 @@ class AcoesForm {
             $pdo = null;
         } catch (\PDOException $e) {
             // Se houver um erro, lançar uma exceção
-            throw new Exception("Erro ao conectar ao banco de dados: " . $e->getMessage());
+            throw new \Exception("Erro ao conectar ao banco de dados: " . $e->getMessage());
         }
     }
 

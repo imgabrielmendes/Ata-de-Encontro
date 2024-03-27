@@ -11,47 +11,127 @@ var mensagemInfo = document.getElementById('infoMessage');
 
 //LINKANDO AS VARÍAVEIS QUE VÃO SER ENVIADO JUNTO COM PARTICIPANTES
 
-
+// Adiciona um evento de clique ao botão "addItemButton"
+// Adiciona um evento de clique ao botão "addItemButton"
 addItemButton.addEventListener('click', function() {
     var newItem = document.getElementById('item').value.trim();
+    
+    // Obtém o elemento <select>
+    var selectElement = document.getElementById('selectFacilitators');
+    
+    // Obtém o valor selecionado
+    var selectedFacilitator = selectElement.value;
+    
     if (newItem === "") {
-
         Swal.fire({
             title: "Você não adicionou um participante",
             text: "Adicione pelo menos 1 participante para a ata",
             icon: "error"
         });
-        
     } else {
         // Remove a caixa de texto existente
         var inputField = document.getElementById('item');
         inputField.parentNode.removeChild(inputField);
 
-        // Cria uma label
-        var labelElement = document.createElement('label');
-        labelElement.className = 'list-group-item';
-        labelElement.textContent = newItem;
+        // Cria uma div para a list-group-item do texto digitado
+        var textListItemDiv = document.createElement('div');
+        textListItemDiv.className = 'list-group-item';
 
-        // Adiciona a label à lista
-        itemList.appendChild(labelElement);
+        // Cria uma label para o texto digitado
+        var textLabelElement = document.createElement('label');
+        textLabelElement.textContent = newItem;
+        textListItemDiv.appendChild(textLabelElement);
 
-        // Cria um elemento <select>
-        var selectElement = document.createElement('select');
-        selectElement.className = 'form-control';
+        // Adiciona a div da list-group-item de texto à lista
+        itemList.appendChild(textListItemDiv);
 
-        // Adiciona três opções ao <select>
-        var options = ['Option 1', 'Option 2', 'Option 3'];
-        options.forEach(function(optionText) {
-            var option = document.createElement('option');
-            option.value = optionText;
-            option.textContent = optionText;
-            selectElement.appendChild(option);
-        });
+        // Cria uma div para a list-group-item do facilitador selecionado
+        var facilitatorListItemDiv = document.createElement('div');
+        facilitatorListItemDiv.className = 'form-control bg-body-secondary border rounded';
 
-        // Adiciona o <select> após a lista
-        itemList.parentNode.insertBefore(selectElement, itemList.nextSibling);
+        // Cria uma label para o facilitador selecionado
+        var facilitatorLabelElement = document.createElement('label');
+        facilitatorLabelElement.textContent = selectedFacilitator;
+        facilitatorListItemDiv.appendChild(facilitatorLabelElement);
+
+        // Adiciona a div da list-group-item de facilitador à lista
+        itemList.appendChild(facilitatorListItemDiv);
     }
 });
+
+
+
+// addItemButton.addEventListener('click', function() {
+//     var newItem = document.getElementById('item').value.trim();
+//     if (newItem === "") {
+//         Swal.fire({
+//             title: "Você não adicionou um participante",
+//             text: "Adicione pelo menos 1 participante para a ata",
+//             icon: "error"
+//         });
+//     } else {
+//         // Remove a caixa de texto existente
+//         var inputField = document.getElementById('item');
+//         inputField.parentNode.removeChild(inputField);
+
+//         // Cria uma label
+//         var labelElement = document.createElement('label');
+//         labelElement.className = 'list-group-item';
+//         labelElement.textContent = newItem;
+
+//         // Adiciona a label à lista
+//         itemList.appendChild(labelElement);
+
+//         // Cria um elemento <select>
+//         var selectElement = document.createElement('select');
+//         selectElement.className = 'form-control';
+
+//         // Faz uma requisição AJAX para obter os dados dos facilitadores
+//         $.ajax({
+//             url: 'acoesform.php?acao=selecionarDeliberadores',
+//             method: 'GET',
+//             dataType: 'json',
+//             success: function(data) {
+//                 // Adiciona as opções dinâmicas ao <select>
+//                 data.forEach(function(facilitadores) {
+//                     var option = document.createElement('option');
+//                     option.value = facilitadores.nome_facilitador; 
+//                     option.textContent = facilitadores.nome_facilitador;
+//                     selectElement.appendChild(option);
+//                 });
+//             },
+//             error: function(xhr, status, error) {
+//                 console.error('Erro ao buscar dados:', error);
+//             }
+//         });
+//         // Adiciona o <select> após a lista
+//         itemList.parentNode.insertBefore(selectElement, itemList.nextSibling);
+//     }
+// });
+
+///----------------------------------------------------------------------------------------
+
+// function pegarFacilitadores() {
+//     // Faz uma requisição AJAX para obter os dados dos facilitadores
+//     fetch('acoesform.php?acao=selecionarDeliberadores')
+//     .then(response => {
+//         // Verifica se a resposta da requisição foi bem-sucedida
+//         if (!response.ok) {
+//             throw new Error('Erro ao buscar dados do servidor.');
+//         }
+//         // Retorna os dados como JSON
+//         return response.json();
+//     })
+//     .then(data => {
+//         // Manipula os dados retornados
+//         console.log(data); // Aqui você pode fazer o que desejar com os dados
+//     })
+//     .catch(error => {
+//         // Trata erros da requisição
+//         console.error('Erro ao buscar dados:', error);
+//     });
+// }
+
 
 
 function addDeliberacoes() {
