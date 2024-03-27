@@ -17,11 +17,6 @@ $pegarfa=$puxarform->ultimosParticipantes();
 $pegarde=$puxarform->pegarfacilitador();
 
 $participantesArray = $pegarfa;
-
-
-
-
-
 // ARRUMAR UM JEITO DE DIMINUIR ISSO
 
 try {
@@ -275,14 +270,16 @@ $dbpass = '';
           
         <div class="form-group">
         <div class="col">
-              <label><b>Informe o texto principal:</b></label>
-              <textarea class="form-control item" placeholder="Informe o texto"></textarea>
+          
+              <br>
+              <label><b>Informe o texto principal e o deliberador(es):</b></label>
+              <textarea id="deliberacoes" class="form-control item" placeholder="Informe o texto"></textarea>
             </div>
 
             <div class="col">
             <!-- Primeira caixa de texto e select de facilitadores -->
             <div class="mb-2">
-                <select class="form-control facilitator-select" placeholder="Participantes...">
+                <select id="deliberador" class="form-control facilitator-select" placeholder="Participantes...">
                     <?php foreach ($pegarde as $facnull) : ?>
                         <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
                             <?= "<b>".$facnull['nome_facilitador'] ."</b>" . " <" . $facnull['cargo'] . ">"; ?>
@@ -303,13 +300,7 @@ $dbpass = '';
     
     
         <br>
-        <button onclick="abrirHistorico()"  id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button>
-
-        <script>
-        function abrirHistorico() {
-            window.location.href = 'paghistorico.php';
-        }
-    </script>
+        <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button>
 
     </form>
           

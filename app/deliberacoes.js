@@ -1,8 +1,7 @@
 console.log();
 
 var participantesAdicionados = [];
-var botaocont = document.getElementById('botaocontinuarata');
-// var botaohist = document.getElementById('abrirhist');
+var botaohist = document.getElementById('abrirhist');
 
 var itemList = document.getElementById('items');
 var filter = document.getElementById('filter');
@@ -70,17 +69,17 @@ document.getElementById('addItemButton').addEventListener('click', function() {
         return;
     }
 
-    // Cria uma div para a list-group-item do texto digitado
+    //Div para a list-group-item do texto digitado
     var textListItemDiv = document.createElement('div');
-    textListItemDiv.className = 'form-control border rounded';
+    textListItemDiv.className = 'black text-break form-control border rounded';
     textListItemDiv.textContent = newItem;
 
-    // Cria uma div para a list-group-item do facilitador selecionado
+    //Div para a list-group-item do facilitador selecionado
     var facilitatorListItemDiv = document.createElement('div');
     facilitatorListItemDiv.className = 'form-control bg-body-secondary border rounded';
     facilitatorListItemDiv.textContent = selectedFacilitator;
 
-    // Adiciona as divs da list-group-item ao contêiner
+    // Juntar as Divs
     var itemList = document.getElementById('inputContainer');
     itemList.appendChild(textListItemDiv);
     itemList.appendChild(facilitatorListItemDiv);
@@ -161,39 +160,33 @@ document.getElementById('addItemButton').addEventListener('click', function() {
 //     });
 // }
 
-
-
 function addDeliberacoes() {
-    console.log(participantesAdicionados);
+    var deliberador = document.querySelector('.item').value;
+    var deliberacoes = document.querySelector('.facilitator-select').value;
 
     $.ajax({
-        url: 'registrarfacilitadores.php',
+        url: 'registrardeliberadores.php',
         method: 'POST',
         data: {
-            particadd: JSON.stringify(participantesAdicionados)
+           deliberaDores: deliberador, 
+           deliberAcoes: deliberacoes, 
         },
         success: function(response) {
-            console.log("(4.2) Deu bom! AJAX está enviando os participantes");
+            console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
             console.log(response);
 
-            var ultimoID = response.ultimoID;
-            var participantesAdicionados = response.participantesAdicionados;
-
-            var url = 'pagdeliberacoes.php' +
-                '?ultimoID=' + encodeURIComponent(ultimoID) +
-                '&participantesAdicionados=' + encodeURIComponent(participantesAdicionados);
-
-            window.location.href = url;
+            console.log(deliberacoes);
+            console.log(deliberador);
 
             Swal.fire({
                 title: "Perfeito!",
-                text: "Seus participantes foram registrados",
-                icon: "success"
+                text: "Seus Deliberadores foram registrados",
+                icon: "success",
             });
 
-            // Limpa a lista de participantes adicionados
-            participantesAdicionados = [];
-            atualizarListaParticipantes();
+            var url = 'paghistorico.php';
+            window.location.href = url;
+
         },
         error: function(error) {
             console.error('Erro na solicitação AJAX:', error);
@@ -201,8 +194,5 @@ function addDeliberacoes() {
     });
 }
 
-function atualizarListaParticipantes() {
-    itemList.innerHTML = ''; // Limpa a lista visualmente
-}
+botaohist.addEventListener('click', addDeliberacoes);
 
-// botaocont.addEventListener('click', addDeliberacoes);
