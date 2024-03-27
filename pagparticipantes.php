@@ -166,7 +166,10 @@ $local = $_GET['local'];
     <i class="fa-solid fa-circle-info"></i>
     <h5>Participantes</h5>
 </div>
-  </h2>                                                                                                                                       
+  </h2>                                                                                                       
+  <div id="espaçovazio" class="col">
+    <input>
+  </div>                                
         <main class="container-fluid ">
         <div class="row">
           <form id="addForm">

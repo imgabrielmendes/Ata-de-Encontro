@@ -53,11 +53,13 @@ function gravando() {
     var data = document.getElementById("datainicio").value;
 
     if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() === "" || conteudo.trim() === "") {
+
         Swal.fire({
             title: "Erro no registro",
             text: "Preencha todas as caixas obrigatórias",
             icon: "error"
         });
+
         console.log("(X) Puxou a function, mas está faltando informações");
         console.log(objetivoSelecionado).values;
         console.log(local);
@@ -88,6 +90,7 @@ function gravando() {
                 objetivos: objetivoSelecionado,
                 local: local,
             },
+            
             success: function (teste) {
                 console.log("(2) Deu bom! AJAX está enviando");
                 console.log(teste);

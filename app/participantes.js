@@ -9,6 +9,7 @@ var filter = document.getElementById('filter');
 var addItemButton = document.getElementById('addItemButton');
 var mensagemInfo = document.getElementById('infoMessage');
 
+
 //LINKANDO AS VARÍAVEIS QUE VÃO SER ENVIADO JUNTO COM PARTICIPANTES
 
 

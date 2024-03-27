@@ -173,7 +173,8 @@ $pegarlocal=$puxarform->pegarlocais();
 
                         <option value="<?php echo $facnull['nome_facilitador'] ." "."<". $facnull ['cargo'].">"; ?>"
                         data-tokens="<?php echo $facnull['nome_facilitador']?>">
-                        <?php echo $facnull['nome_facilitador']." "."<". $facnull ['cargo'].">"; ?>
+
+                        <?php echo $facnull['nome_facilitador']; ?>
                         
                 </option>
                 
