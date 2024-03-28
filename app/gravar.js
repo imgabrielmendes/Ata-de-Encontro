@@ -1,5 +1,6 @@
 
 
+
 // Pegar inputs 
 var gravarinformacoes = document.getElementById("botaoregistrar");
 
@@ -138,5 +139,3 @@ function gravando() {
 
 // Botões
 gravarinformacoes.addEventListener('click', gravando);
-
-

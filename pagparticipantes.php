@@ -57,19 +57,16 @@ $local = $_GET['local'];
 
 <body>
 
-  <!--BARRA DE NAVEGAÇÃO-->
-  <header>
-    <nav class="navbar shadow ">
-      <div id="container">
+  <!--BARRA DE NAVEGAÇÃO--><header>
+    <nav class="navbar shadow">
+      <div id="container" style="background-color: #001f3f;">
         <div class="container_align">
-          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php"  style="background-color: #20315f;">
-            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"  style="background-color: #20315f;"></a>
+          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
+            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"></a>
           <h1 id="tittle" class="text-center">2° FASE</h1>
         </div>
       </div>
     </nav>
-  </header>
-
   <!--FORMULÁRIO-->
 
   <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
@@ -141,11 +138,11 @@ $local = $_GET['local'];
                 <input type="checkbox" disabled checked> <?php echo $objetivoSelecionado; ?>
             </div>
 
-            <div class="row">
+            <div>
                 <div class="col">
                   <b>Tema:</b> 
                 </div>
-                <div class="row">
+                <div>
                 <div class="col-12">
                   <ul class="form-control bg-body-secondary"><?php echo $conteudo; ?></ul>
                   </div></div>       
@@ -160,57 +157,51 @@ $local = $_GET['local'];
 <!-----------------------------2° FASE-------------------------------->
 <br>
 <div class="accordion">
-<div class="accordion-item shadow">
-  <h2 class="accordion-header">
-    <div class="accordion-button shadow-sm text-white" style="background-color: #1c8f69;;">
-    <i class="fa-solid fa-circle-info"></i>
-    <h5>Participantes</h5>
-</div>
-  </h2>                                                                                                       
-  <div id="espaçovazio" class="col">
-    <input>
-  </div>                                
-        <main class="container-fluid ">
-        <div class="row">
-          <form id="addForm">
-              <div class="form-group ">
-                  <br>
-                  <div  id="items" class="col-12 list-group"></div>
-
-                    
-                  
-                  <label for="item"><b>Informe os participantes<b></label>
-                  <div class="row">
-                    <div class="col-11"> 
-<select id="item" class="form-control" placeholder="Participantes...">
-    <?php foreach ($pegarfa as $facnull) : ?>
-        <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
-        
-            <?php echo "<b>".$facnull['nome_facilitador'] ."</b>" . " <" . $facnull['cargo'] . ">"; ?>
-        </option>
-    <?php endforeach ?>
-</select>
-
-
-
-                </div>
-                  <div class="col-1">
-                  <button type="button" id="addItemButton" class="btn btn-primary ">+</button>
-                  </div> 
-                </div>
-                  </div>
-                       
-             
-          </form>
-          <div  class="row">
-          <div class="col">
-           <button style="width: 30%; padding:0px;margin:5px; background-color:white; color:#353535; border:none;" id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
-              Clique aqui para cadastrar usúario 
-            </button>
-       </div>
+  <div class="accordion-item shadow">
+    <h2 class="accordion-header">
+      <div class="accordion-button shadow-sm text-white" style="background-color: #1c8f69;;">
+        <i class="fa-solid fa-circle-info"></i>
+        <h5>Participantes</h5>
       </div>
-    </div>
+    </h2>
+    <main class="container-fluid ">
+      <div class="row">
+        <form id="addForm">
+          <div class="form-group ">
+            <br>
+            <div id="items" class="col-12 list-group"></div>
+
+            <label for="item"><b>Informe os participantes</b></label>
+            <div class="row">
+              <div class="col-11">
+                <select id="item" class="form-control" placeholder="Participantes...">
+                  <?php foreach ($pegarfa as $facnull) : ?>
+                    <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
+                      <?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>
+                    </option>
+                  <?php endforeach ?>
+                </select>
+              </div>
+              <div class="col-1">
+                <button type="button" id="addItemButton" class="btn btn-primary ">+</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <!-- Botão para cadastrar usuário -->
+      <div class="row">
+        <div class="col">
+          <button style="width: 30%; padding:0px;margin:5px; background-color:white; color:#353535; border:none;" id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
+            Clique aqui para cadastrar usuário
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
 <br>
+
            
       <!--BOTÕES-->
       <div class="container d-flex justify-content-center">

@@ -197,4 +197,3 @@ function addDeliberacoes() {
 }
 
 botaohist.addEventListener('click', addDeliberacoes);
-
