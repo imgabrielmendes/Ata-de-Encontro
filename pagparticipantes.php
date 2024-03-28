@@ -59,12 +59,12 @@ $local = $_GET['local'];
 
   <!--BARRA DE NAVEGAÇÃO-->
   <header>
-    <nav class="navbar shadow ">
-      <div id="container">
+    <nav class="navbar shadow">
+      <div id="container" style="background-color: #001f3f;">
         <div class="container_align">
-          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php"  style="background-color: #20315f;">
-            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"  style="background-color: #20315f;"></a>
-          <h1 id="tittle" class="text-center">2° FASE</h1>
+          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
+            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"></a>
+            <h1 id="tittle" class="text-center">2° FASE</h1>
         </div>
       </div>
     </nav>
@@ -141,11 +141,11 @@ $local = $_GET['local'];
                 <input type="checkbox" disabled checked> <?php echo $objetivoSelecionado; ?>
             </div>
 
-            <div class="row">
+            <div>
                 <div class="col">
                   <b>Tema:</b> 
                 </div>
-                <div class="row">
+                <div>
                 <div class="col-12">
                   <ul class="form-control bg-body-secondary"><?php echo $conteudo; ?></ul>
                   </div></div>       

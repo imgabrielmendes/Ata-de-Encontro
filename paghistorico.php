@@ -49,12 +49,12 @@
 
   <!--BARRA DE NAVEGAÇÃO-->
   <header>
-    <nav class="navbar shadow ">
-      <div id="container">
+    <nav class="navbar shadow">
+      <div id="container" style="background-color: #001f3f;">
         <div class="container_align">
-          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php"  style="background-color: #20315f;">
-            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"  style="background-color: #20315f;"></a>
-          <h1 id="tittle" class="text-center">Histórico</h1>
+          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
+            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"></a>
+          <h1 id="tittle" class="text-center">Hitórico</h1>
         </div>
       </div>
     </nav>
@@ -65,12 +65,12 @@
   <div class="box box-primary">
     <main class="container d-flex justify-content-center align-items-center">
       <div class="form-group col-12">
-        <div class="row"> 
+        <div class="text-center" class="row"> 
 
           <!----LEGENDA DA TABELA------->
         <caption id="caption" style="caption-side: top;display: flex;padding-top: 0;font-size: 14px;"
     class="text-uppercase pb-0 mr-0">
-    <div class="collapse show">
+    <div  class="collapse show">
         <ul class="d-flex flex-wrap row text-right" style="list-style-type: none;justify-content: right;">
             <li class="col">
                 <span class='badge bg-primary'>ABERTA</span>
@@ -119,7 +119,7 @@
 </div> -->
 
 
-<div class="form-group col-10">
+<div class="text-center" class="form-group col-10">
       <div class="row">
       <div class="container">
       <div class="col">
