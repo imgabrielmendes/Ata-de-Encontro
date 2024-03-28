@@ -127,7 +127,7 @@
 <table  id="myTable" class="table table-striped">
   <thead>
     <tr class="col">
-      <th>Solicitação</th>
+      <th style="">Solicitação</th>
       <th>objetivo</th>
       <th>facilitador</th>
       <th>tema</th>
@@ -308,12 +308,26 @@ buttons.forEach(function(button) {
     var buttonText = button.textContent.trim();
 
     // Add or remove classes based on the text content
-    if (buttonText === 'Aberta') {
-        button.style.backgroundColor = 'green';
-    } else if (buttonText === 'Fechada') {
-        button.style.backgroundColor = 'red';
+    if (buttonText === 'ABERTA') {
+      button.classList.remove('btn-danger');
+      button.classList.add('btn-success');
+      var abe = document.createElement('span');
+      abe.className = 'badge bg-primary';
+      abe.textContent = 'ABERTA';
+      button.appendChild(abe);
+      
+
+    } else if (buttonText === 'FECHADA') {
+      button.classList.remove('btn-danger');
+      button.classList.add('btn-success');
+      var fec = document.createElement('span');
+      fec.className = 'badge bg-success';
+      fec.textContent = 'FECHADA';
+      button.appendChild(fec);
+        
     }
 });
+
 
     
 </script>
