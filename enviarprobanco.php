@@ -9,23 +9,24 @@ session_start();
     $horainicio=$_POST['horai'];
     $objetivoSelecionado= $_POST['objetivos'];
     $local= $_POST['local'];
+    $horaterm=$_POST['horat'].':00';
+    $tempoes=$_POST['tempoestimado'];
 
     // $horaterm= $_POST['datainic'] . ' ' .$_POST['horat'] .':00';
-    $horaterm=$_POST['horat'].':00';
     // $horaterm='7777-77-77';
 
 
     //$objetivoSelecionado= $_POST['objetivos']; NÃO LINKADO AINDA
-    if ($facilitadores !=="" && $data !=="" && $horainicio !=="" && $horaterm !=="" && $conteudo !== "" && $objetivoSelecionado !=="" && $local !=="") {
+    if ($facilitadores !=="" && $data !=="" && $horainicio !=="" && $horaterm !=="" && $conteudo !== "" && $objetivoSelecionado !=="" && $local !=="" && $tempoes !=="")  {
 
-        $enviarbanco = "INSERT INTO assunto (facilitador , data_solicitada, tema,objetivo , hora_inicial, hora_termino, local, status) VALUES ('$facilitadores','$data','$conteudo','$objetivoSelecionado', '$data', '$horaterm','$local','ABERTA')";
+        $enviarbanco = "INSERT INTO assunto (facilitador , data_solicitada, tema,objetivo , hora_inicial, hora_termino, tempo_estimado, local, status) VALUES ('$facilitadores','$data','$conteudo','$objetivoSelecionado', '$data', '$horaterm','$tempoes','$local','ABERTA')";
 
         if (mysqli_query($conexao, $enviarbanco)) {
 
             var_dump($data);
             var_dump($horainicio);
             var_dump($horaterm);
-            var_dump ("*Tempo estimado");
+            var_dump ($tempoes);
             var_dump($objetivoSelecionado);
             var_dump($local);
             var_dump($facilitadores);

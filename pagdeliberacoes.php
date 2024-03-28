@@ -222,12 +222,9 @@ $dbpass = '';
             // Decodifica a string JSON para um array
             $participantesArray = json_decode($pegarfa[0]['participantes']);
 
-            // Itera sobre os participantes
             foreach ($participantesArray as $participanteNome) {
-                // Remove as aspas e espaços em branco do início e do final da string
-                $participanteNome = trim($participanteNome, '" ');
 
-                // Exibe o participante
+                $participanteNome = trim($participanteNome, '" ');
             ?>
                 <div class='form-control bg-body-secondary border rounded'>
                     <li><b><?php echo $participanteNome; ?></b></li>
@@ -281,8 +278,9 @@ $dbpass = '';
             <div class="mb-2">
                 <select id="deliberador" class="form-control facilitator-select" placeholder="Participantes...">
                     <?php foreach ($pegarde as $facnull) : ?>
-                        <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
-                            <?= "<b>".$facnull['nome_facilitador'] ."</b>" . " <" . $facnull['cargo'] . ">"; ?>
+                        <option value="<?= $facnull['nome_facilitador']; ?>">
+
+                            <?= $facnull['nome_facilitador']; ?>
                         </option>
                     <?php endforeach ?>
                 </select>

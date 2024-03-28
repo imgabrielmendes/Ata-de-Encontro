@@ -150,6 +150,7 @@
 <!--barra de pesquisa para filtro-->
 <input type="text" id="filtroInput" onkeyup="filtrarRegistros()" placeholder="Filtrar registros...">
 <script>
+  
     // Função para filtrar registros
     function filtrarRegistros() {
         var input, filtro, tabela, linhas, celula, texto;

@@ -14,7 +14,7 @@ var gravarinformacoes = document.getElementById("botaoregistrar");
 var data = document.getElementById("datainicio");
 var horainicio = document.getElementById("horainicio").value;
 var horaterm = document.getElementById("horaterm").value;
-var tempoes = document.getElementById("iddoinput"); //FALTANDO
+var tempoes = document.getElementById("tempoestim").value;
 
 // 2° LINHAS
 var objetivomarc = document.getElementsByName("objetivo");
@@ -52,7 +52,7 @@ function gravando() {
     var conteudo = temaprincipal.value;
     var data = document.getElementById("datainicio").value;
 
-    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() === "" || conteudo.trim() === "") {
+    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() === "" || conteudo.trim() === "" || tempoes.trim()==="") {
 
         Swal.fire({
             title: "Erro no registro",
@@ -89,21 +89,21 @@ function gravando() {
                 datainic: data,
                 objetivos: objetivoSelecionado,
                 local: local,
+                tempoestimado: tempoes,
             },
             
-            success: function (teste) {
+            success: function () {
                 console.log("(2) Deu bom! AJAX está enviando");
-                console.log(teste);
-                // console.log(idDaLinha);
+
                 // Redirecionando para pagparticipantes.php
                 window.location.href = 'pagparticipantes.php' +
-                    '?facilitadores=' + encodeURIComponent(facilitadores) +
-                    '&conteudo=' + encodeURIComponent(conteudo) +
-                    '&horainicio=' + encodeURIComponent(horainicio) +
-                    '&horaterm=' + encodeURIComponent(horaterm) +
-                    '&data=' + encodeURIComponent(data) +
-                    '&objetivoSelecionado=' + encodeURIComponent(objetivoSelecionado) +
-                    '&local=' + encodeURIComponent(local);
+                '?facilitadores=' + encodeURIComponent(facilitadores) +
+                '&conteudo=' + encodeURIComponent(conteudo) +
+                '&horainicio=' + encodeURIComponent(horainicio) +
+                '&horaterm=' + encodeURIComponent(horaterm) +
+                '&data=' + encodeURIComponent(data) +
+                '&objetivoSelecionado=' + encodeURIComponent(objetivoSelecionado) +
+                '&local=' + encodeURIComponent(local) ;                
             },
             error: function (error) {
                 console.error('Erro na solicitação AJAX:', error);
@@ -123,6 +123,7 @@ function gravando() {
                 datainic: data,
                 objetivos: objetivoSelecionado,
                 local: local,
+                tempoestimado: tempoes,
             },
             success: function (response) {
                 console.log("(3) Deu bom! AJAX está enviando para pagdeliberacoes.php");

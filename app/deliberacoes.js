@@ -85,6 +85,7 @@ document.getElementById('addItemButton').addEventListener('click', function() {
     var itemList = document.getElementById('inputContainer');
     itemList.appendChild(textListItemDiv);
     itemList.appendChild(facilitatorListItemDiv);
+    var espaco = document.createElement("<br>");
 
     // Limpa a caixa de texto
     document.querySelector('.item').value = "";

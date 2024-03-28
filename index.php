@@ -118,7 +118,7 @@ $pegarlocal=$puxarform->pegarlocais();
  <!---ABA DE TEMPO ESTIMADO ---->
           <div class="col-3">
             <label for="form-control"> <b> Tempo Estimado (horas):</b> </label>
-            <input class="form-control" type="input" id="tempoestim" name="appt" min="13:00" max="12:00">
+            <input value="1" class="form-control" type="number" id="tempoestim" name="appt" min="0" max="5">
           </div>
           <br>
 
@@ -171,7 +171,7 @@ $pegarlocal=$puxarform->pegarlocais();
           <optgroup label="Selecione Facilitadores">
               <?php foreach ($pegarfa as $facnull) : ?>
 
-                        <option value="<?php echo $facnull['nome_facilitador'] ." "."<". $facnull ['cargo'].">"; ?>"
+                        <option value="<?php echo $facnull['nome_facilitador']; ?>"
                         data-tokens="<?php echo $facnull['nome_facilitador']?>">
 
                         <?php echo $facnull['nome_facilitador']; ?>

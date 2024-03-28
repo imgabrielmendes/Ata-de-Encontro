@@ -20,6 +20,7 @@ $horaterm = $_GET['horaterm'];
 $data = $_GET['data'];
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
+// $tempoes = $_GET['tempoestimado'];
 
 // echo "Facilitadores - $facilitadores, 
 //       Conteúdo - $conteudo, 
@@ -27,7 +28,8 @@ $local = $_GET['local'];
 //       Horário de Término - $horaterm, 
 //       Data - $data, 
 //       Objetivos - $objetivoSelecionado, 
-//       Local - $local";
+//       Local - $local,
+//       Tempo Estim - $tempoes";
 
 ?>
 <!DOCTYPE html>
@@ -119,7 +121,7 @@ $local = $_GET['local'];
                   <!---ABA DE TEMPO ESTIMADO ---->
                   <div class="col-3">
                     <label for="form-control"> <b>Tempo Estimado:</b> </label>
-                    <ul class="form-control bg-body-secondary">Colocar resultado</ul>
+                    <ul class="form-control bg-body-secondary">dasds</ul>
                   </div>
           </div>
 
@@ -166,10 +168,7 @@ $local = $_GET['local'];
     <i class="fa-solid fa-circle-info"></i>
     <h5>Participantes</h5>
 </div>
-  </h2>                                                                                                       
-  <div id="espaçovazio" class="col">
-    <input>
-  </div>                                
+  </h2>                                                                                 
         <main class="container-fluid ">
         <div class="row">
           <form id="addForm">
@@ -184,9 +183,9 @@ $local = $_GET['local'];
                     <div class="col-11"> 
 <select id="item" class="form-control" placeholder="Participantes...">
     <?php foreach ($pegarfa as $facnull) : ?>
-        <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
+        <option value="<?= $facnull['nome_facilitador']; ?>">
         
-            <?php echo "<b>".$facnull['nome_facilitador'] ."</b>" . " <" . $facnull['cargo'] . ">"; ?>
+            <?php echo "<b>".$facnull['nome_facilitador']."</b>"; ?>
         </option>
     <?php endforeach ?>
 </select>
