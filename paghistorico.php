@@ -49,11 +49,11 @@
 
   <!--BARRA DE NAVEGAÇÃO-->
   <header>
-    <nav class="navbar shadow ">
-      <div id="container">
+    <nav class="navbar shadow">
+      <div id="container" style="background-color: #001f3f;">
         <div class="container_align">
-          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php"  style="background-color: #20315f;">
-            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"  style="background-color: #20315f;"></a>
+          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
+            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"></a>
           <h1 id="tittle" class="text-center">Histórico</h1>
         </div>
       </div>
@@ -65,7 +65,8 @@
   <div class="box box-primary">
     <main class="container d-flex justify-content-center align-items-center">
       <div class="form-group col-12">
-        <div class="row"> 
+        <div class="row">
+        <div class="text-center" class="row"> 
 
           <!----LEGENDA DA TABELA------->
         <caption id="caption" style="caption-side: top;display: flex;padding-top: 0;font-size: 14px;"
@@ -119,7 +120,7 @@
 </div> -->
 
 
-<div class="form-group col-10">
+<div class="text-center" class="form-group col-10">
       <div class="row">
       <div class="container">
       <div class="col">
@@ -308,10 +309,22 @@ buttons.forEach(function(button) {
     var buttonText = button.textContent.trim();
 
     // Add or remove classes based on the text content
-    if (buttonText === 'Aberta') {
-        button.style.backgroundColor = 'green';
-    } else if (buttonText === 'Fechada') {
-        button.style.backgroundColor = 'red';
+    if (buttonText === 'ABERTA') {
+      button.classList.remove('btn-danger');
+      button.classList.add('btn-success');
+      var abe = document.createElement('span');
+      abe.className = 'badge bg-primary';
+      abe.textContent = 'ABERTA';
+      button.appendChild(abe);
+
+
+    } else if (buttonText === 'FECHADA') {
+      button.classList.remove('btn-danger');
+      button.classList.add('btn-success');
+      var fec = document.createElement('span');
+      fec.className = 'badge bg-success';
+      fec.textContent = 'FECHADA';
+      button.appendChild(fec);
     }
 });
 
