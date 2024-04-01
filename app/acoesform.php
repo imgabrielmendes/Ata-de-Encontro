@@ -92,7 +92,9 @@ class AcoesForm {
             $stmt->execute();
     
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
- 
+            
+            // Retorna os resultados como JSON
+            echo json_encode($resultados);
         } catch (\PDOException $e) {
             throw $e;
         }
@@ -192,7 +194,7 @@ class AcoesForm {
             $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 
             //SELECT * FROM facilitadores
-            $sql = "SELECT nome_facilitador , matricula FROM facilitadores;";
+            $sql = "SELECT nome_facilitador , cargo FROM facilitadores;";
 
             $stmt = $pdo->prepare($sql);
             $stmt->execute();
@@ -248,5 +250,3 @@ class AcoesForm {
     }
 
   }
-
-

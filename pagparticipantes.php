@@ -20,7 +20,6 @@ $horaterm = $_GET['horaterm'];
 $data = $_GET['data'];
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
-// $tempoes = $_GET['tempoestimado'];
 
 // echo "Facilitadores - $facilitadores, 
 //       Conteúdo - $conteudo, 
@@ -28,8 +27,7 @@ $local = $_GET['local'];
 //       Horário de Término - $horaterm, 
 //       Data - $data, 
 //       Objetivos - $objetivoSelecionado, 
-//       Local - $local,
-//       Tempo Estim - $tempoes";
+//       Local - $local";
 
 ?>
 <!DOCTYPE html>
@@ -42,7 +40,7 @@ $local = $_GET['local'];
   <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
 
   <!---------------------------------------------------------------->
-  <!-- <script src="view/js/popper.min.js" crossorigin="anonymous"></script> -->
+  <script src="view/js/popper.min.js" crossorigin="anonymous"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -54,19 +52,19 @@ $local = $_GET['local'];
   <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
 
   
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" /> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" />
 </head>
 
 <body>
 
   <!--BARRA DE NAVEGAÇÃO-->
   <header>
-    <nav class="navbar shadow ">
-      <div id="container">
+    <nav class="navbar shadow">
+      <div id="container" style="background-color: #001f3f;">
         <div class="container_align">
-          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php"  style="background-color: #20315f;">
-            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"  style="background-color: #20315f;"></a>
-          <h1 id="tittle" class="text-center">2° FASE</h1>
+          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
+            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"></a>
+            <h1 id="tittle" class="text-center"> 2° FASE</h1>
         </div>
       </div>
     </nav>
@@ -121,7 +119,7 @@ $local = $_GET['local'];
                   <!---ABA DE TEMPO ESTIMADO ---->
                   <div class="col-3">
                     <label for="form-control"> <b>Tempo Estimado:</b> </label>
-                    <ul class="form-control bg-body-secondary">dasds</ul>
+                    <ul class="form-control bg-body-secondary">Colocar resultado</ul>
                   </div>
           </div>
 
@@ -143,11 +141,11 @@ $local = $_GET['local'];
                 <input type="checkbox" disabled checked> <?php echo $objetivoSelecionado; ?>
             </div>
 
-            <div class="row">
+            <div>
                 <div class="col">
                   <b>Tema:</b> 
                 </div>
-                <div class="row">
+                <div>
                 <div class="col-12">
                   <ul class="form-control bg-body-secondary"><?php echo $conteudo; ?></ul>
                   </div></div>       
@@ -168,32 +166,28 @@ $local = $_GET['local'];
     <i class="fa-solid fa-circle-info"></i>
     <h5>Participantes</h5>
 </div>
-  </h2>                                                                                 
+  </h2>                                                                                                                                       
         <main class="container-fluid ">
         <div class="row">
           <form id="addForm">
               <div class="form-group ">
                   <br>
                   <div  id="items" class="col-12 list-group"></div>
-
-                    
+                   
                   
                   <label for="item"><b>Informe os participantes<b></label>
                   <div class="row">
                     <div class="col-11"> 
-        <select id="item" class="form-control" placeholder="Participantes...">
-
-        <optgroup>sasasasas</optgroup>
-          <?php foreach ($pegarfa as $facnull) : ?>
-              <option value="<?= $facnull['nome_facilitador']; ?>">
-              
-                  <?php echo "<b>".$facnull['nome_facilitador']."</b>"; ?>
-              </option>
-          <?php endforeach ?>
-
-      </select>
-                
-    </div>
+                    <select id="item" class="form-control" placeholder="Participantes...">
+                      <?php foreach ($pegarfa as $facnull) : ?>
+                          <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
+                              <?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>
+                             
+                            </option>
+                            
+                      <?php endforeach ?>
+                  </select>
+                </div>
                   <div class="col-1">
                   <button type="button" id="addItemButton" class="btn btn-primary ">+</button>
                   </div> 
@@ -292,7 +286,7 @@ $local = $_GET['local'];
          
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
     <script src="app/participantes.js"></script>
 
