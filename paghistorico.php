@@ -151,7 +151,6 @@
 <!--barra de pesquisa para filtro-->
 <input type="text" id="filtroInput" onkeyup="filtrarRegistros()" placeholder="Filtrar registros...">
 <script>
-  
     // Função para filtrar registros
     function filtrarRegistros() {
         var input, filtro, tabela, linhas, celula, texto;
@@ -213,21 +212,28 @@
             <tbody>
                 <?php
                 // Exibe os dados em cada linha da tabela
+                
                 if ($result->num_rows > 0) {
-                    while($row = $result->fetch_assoc()) {
-                        echo "<tr>";
-                        echo "<td>" . $row["data_solicitada"] . "</td>";
-                        echo "<td>" . $row["objetivo"] . "</td>";
-                        echo "<td>" . $row["facilitador"] . "</td>";
-                        echo "<td>" . $row["tema"] . "</td>";
-                        echo "<td>" . $row["local"] . "</td>";
-                        echo '<td class="status_button" >' . $row['status'] . '</td>';
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='3'>Nenhum resultado encontrado.</td></tr>";
-                }
-                $conn->close();
+                  while ($row = $result->fetch_assoc()) {
+                      echo "<tr>";
+                      echo "<td>" . $row["data_solicitada"] . "</td>";
+                      echo "<td>" . $row["objetivo"] . "</td>";
+                      echo "<td>" . $row["facilitador"] . "</td>";
+                      echo "<td>" . $row["tema"] . "</td>";
+                      echo "<td>" . $row["local"] . "</td>";
+                      echo "<td class='status_button'>";
+                      if ($row['status'] === 'ABERTA') {
+                          echo "<span class='badge bg-primary'>ABERTA</span>";
+                      } elseif ($row['status'] === 'FECHADA') {
+                          echo "<span class='badge bg-success'>FECHADA</span>";
+                      }
+                      echo "</td>";
+                      echo "</tr>";
+                  }
+              } else {
+                  echo "<tr><td colspan='6'>Nenhum resultado encontrado.</td></tr>";
+              }
+              $conn->close();
                 ?>
                 </tbody>
 
@@ -301,33 +307,25 @@ var table = document.getElementById("myTable");
         }
     }
 
-   // Get all buttons with the class 'status-button'
-   var buttons = document.querySelectorAll('.status_button');
+   // Get all buttons with the class 'status_button'
+var buttons = document.querySelectorAll('.status_button');
 
 // Loop through each button
 buttons.forEach(function(button) {
-    // Check the text content of the button
+    // Check if a badge span already exists, remove it if found
+    var existingBadge = button.querySelector('.badge');
+
+
+    var badge = document.createElement('span');
+    badge.className = 'badge';
+
     var buttonText = button.textContent.trim();
 
-    // Add or remove classes based on the text content
-    if (buttonText === 'ABERTA') {
-      button.classList.remove('btn-danger');
-      button.classList.add('btn-success');
-      var abe = document.createElement('span');
-      abe.className = 'badge bg-primary';
-      abe.textContent = 'ABERTA';
-      button.appendChild(abe);
+    
 
-
-    } else if (buttonText === 'FECHADA') {
-      button.classList.remove('btn-danger');
-      button.classList.add('btn-success');
-      var fec = document.createElement('span');
-      fec.className = 'badge bg-success';
-      fec.textContent = 'FECHADA';
-      button.appendChild(fec);
-    }
+    button.appendChild(badge);
 });
+
 
     
 </script>
