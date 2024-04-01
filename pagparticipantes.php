@@ -42,7 +42,7 @@ $local = $_GET['local'];
   <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
 
   <!---------------------------------------------------------------->
-  <script src="view/js/popper.min.js" crossorigin="anonymous"></script>
+  <!-- <script src="view/js/popper.min.js" crossorigin="anonymous"></script> -->
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -181,18 +181,19 @@ $local = $_GET['local'];
                   <label for="item"><b>Informe os participantes<b></label>
                   <div class="row">
                     <div class="col-11"> 
-<select id="item" class="form-control" placeholder="Participantes...">
-    <?php foreach ($pegarfa as $facnull) : ?>
-        <option value="<?= $facnull['nome_facilitador']; ?>">
-        
-            <?php echo "<b>".$facnull['nome_facilitador']."</b>"; ?>
-        </option>
-    <?php endforeach ?>
-</select>
+        <select id="item" class="form-control" placeholder="Participantes...">
 
+        <optgroup>sasasasas</optgroup>
+          <?php foreach ($pegarfa as $facnull) : ?>
+              <option value="<?= $facnull['nome_facilitador']; ?>">
+              
+                  <?php echo "<b>".$facnull['nome_facilitador']."</b>"; ?>
+              </option>
+          <?php endforeach ?>
 
-
-                </div>
+      </select>
+                
+    </div>
                   <div class="col-1">
                   <button type="button" id="addItemButton" class="btn btn-primary ">+</button>
                   </div> 

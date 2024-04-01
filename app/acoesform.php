@@ -92,9 +92,7 @@ class AcoesForm {
             $stmt->execute();
     
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            
-            // Retorna os resultados como JSON
-            echo json_encode($resultados);
+ 
         } catch (\PDOException $e) {
             throw $e;
         }

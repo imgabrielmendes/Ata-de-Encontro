@@ -32,9 +32,12 @@ if ($conn->connect_error) {
             echo $enviarbanco;
             
         } else {
+
             echo "Erro ao inserir registro: " . $conn->error;
         }
+        
     } else {
+
         echo "Nenhum ID encontrado na tabela assunto";
         echo "Dados não recebidos.";
 

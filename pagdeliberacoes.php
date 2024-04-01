@@ -11,7 +11,8 @@ $puxarform= new AcoesForm;
 $facilitadores=$puxarform->selecionarFacilitadores();
 
 $testandodeli=$puxarform->selecionarDeliberadores();
-echo $testandodeli;
+// echo $testandodeli;
+
 //funções de encotrar pessoas
 $pegarfa=$puxarform->ultimosParticipantes();
 $pegarde=$puxarform->pegarfacilitador();
@@ -49,6 +50,7 @@ $dbpass = '';
       $data = substr($row["data_solicitada"], 0,10);
       $objetivoSelecionado = $row["objetivo"];
       $local = $row["local"];
+
   } else {
       echo "Nenhum resultado encontrado";
   }
@@ -59,7 +61,6 @@ $dbpass = '';
 } catch (\PDOException $e) {
   echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
 }
-
 
 // echo "Facilitadores - $facilitadores, 
 //       Conteúdo - $conteudo, 

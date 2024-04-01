@@ -42,7 +42,7 @@ $pegarlocal=$puxarform->pegarlocais();
   <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
 
   <!---------------------------------------------------------------->
-  <script src="view/js/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+  <!-- <script src="view/js/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script> -->
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

@@ -14,7 +14,7 @@ var gravarinformacoes = document.getElementById("botaoregistrar");
 var data = document.getElementById("datainicio");
 var horainicio = document.getElementById("horainicio").value;
 var horaterm = document.getElementById("horaterm").value;
-var tempoes = document.getElementById("tempoestim").value;
+// var tempoes = document.getElementById("tempoestim").value;
 
 // 2° LINHAS
 var objetivomarc = document.getElementsByName("objetivo");
@@ -26,6 +26,9 @@ var facilitadores = document.getElementById("selecionandofacilitador").value;
 // 4° LINHA
 var temaprincipal = document.getElementById("temaprincipal");
 
+// Botões
+gravarinformacoes.addEventListener('click', gravando);
+
 function gravando() {
 
     // var idDaLinha = response.idDaLinha; // Puxando a id
@@ -33,7 +36,7 @@ function gravando() {
     var data = document.getElementById("datainicio").value;
     var horainicio = document.getElementById("horainicio").value;
     var horaterm = document.getElementById("horaterm").value;
-    var tempoes = document.getElementById("tempoestim").value;
+    // var tempoes = document.getElementById("tempoestim").value;
 
     var objetivomarc = document.getElementsByName("objetivo");
     var objetivoSelecionado = null;
@@ -52,7 +55,7 @@ function gravando() {
     var conteudo = temaprincipal.value;
     var data = document.getElementById("datainicio").value;
 
-    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() === "" || conteudo.trim() === "" || tempoes.trim()==="") {
+    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() === "" || conteudo.trim() === "" ) {
 
         Swal.fire({
             title: "Erro no registro",
@@ -64,11 +67,16 @@ function gravando() {
         console.log(objetivoSelecionado).values;
         console.log(local);
         console.log(facilitadores);
-    } else {
+
+    } 
+    
+    else {
+
         Swal.fire({
             title: "Ata registrada com sucesso!",
             icon: "success"
         });
+    }
 
         // window.alert("Identifiquei, o texto foi: " + facilitadores + conteudo + ", o objetivo é: " + objetivoSelecionado + ", o horário é: " + horainicio + " e a data é: " + data);
 
@@ -80,8 +88,6 @@ function gravando() {
             url: 'enviarprobanco.php',
             method: 'POST',
             data: {
-
-                // idLinha: idDaLinha,
                 facilitadores: facilitadores,
                 texto: conteudo,
                 horai: horainicio,
@@ -89,55 +95,28 @@ function gravando() {
                 datainic: data,
                 objetivos: objetivoSelecionado,
                 local: local,
-                tempoestimado: tempoes,
+                // tempoestimado: tempoes,
             },
             
             success: function () {
-                console.log("(2) Deu bom! AJAX está enviando");
+            console.log("(2) Deu bom! AJAX está enviando");
 
-                // Redirecionando para pagparticipantes.php
-                window.location.href = 'pagparticipantes.php' +
+
+        setTimeout(function() {
+            window.location.href = 'pagparticipantes.php' +
                 '?facilitadores=' + encodeURIComponent(facilitadores) +
                 '&conteudo=' + encodeURIComponent(conteudo) +
                 '&horainicio=' + encodeURIComponent(horainicio) +
                 '&horaterm=' + encodeURIComponent(horaterm) +
                 '&data=' + encodeURIComponent(data) +
                 '&objetivoSelecionado=' + encodeURIComponent(objetivoSelecionado) +
-                '&local=' + encodeURIComponent(local) ;                
-            },
-            error: function (error) {
-                console.error('Erro na solicitação AJAX:', error);
-                console.log(facilitadores);
-            },
-        });
+                '&local=' + encodeURIComponent(local);
+        }, 1500);
+    },
 
-        // Segunda solicitação AJAX para pagdeliberacoes.php
-        $.ajax({
-            url: 'pagparticipantes.php',
-            method: 'POST',
-            data: {
-                facilitadores: facilitadores,
-                texto: conteudo,
-                horai: horainicio,
-                horat: horaterm,
-                datainic: data,
-                objetivos: objetivoSelecionado,
-                local: local,
-                tempoestimado: tempoes,
-            },
-            success: function (response) {
-                console.log("(3) Deu bom! AJAX está enviando para pagdeliberacoes.php");
-                console.log(response);
-            },
-            error: function (error) {
-                console.error('Erro na solicitação AJAX para pagdeliberacoes.php:', error);
-            }        
-        });
-
-    }
+    error: function (error) {
+        console.error('Erro na solicitação AJAX:', error);
+        console.log(facilitadores);
+    },
+});
 }
-
-// Botões
-gravarinformacoes.addEventListener('click', gravando);
-
-

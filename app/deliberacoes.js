@@ -163,6 +163,8 @@ document.getElementById('addItemButton').addEventListener('click', function() {
 //     });
 // }
 
+botaohist.addEventListener('click', addDeliberacoes);
+
 function addDeliberacoes() {
     var deliberador = document.querySelector('.item').value;
     var deliberacoes = document.querySelector('.facilitator-select').value;
@@ -174,6 +176,7 @@ function addDeliberacoes() {
            deliberaDores: deliberador, 
            deliberAcoes: deliberacoes, 
         },
+
         success: function(response) {
             console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
             console.log(response);
@@ -187,15 +190,15 @@ function addDeliberacoes() {
                 icon: "success",
             });
 
-            var url = 'paghistorico.php';
-            window.location.href = url;
-
+            // Definindo o redirecionamento após 1500 milissegundos (1.5 segundos)
+            setTimeout(function() {
+                var url = 'paghistorico.php';
+                window.location.href = url;
+            }, 1500);
         },
+        
         error: function(error) {
             console.error('Erro na solicitação AJAX:', error);
         }
     });
 }
-
-botaohist.addEventListener('click', addDeliberacoes);
-
