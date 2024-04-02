@@ -1,5 +1,6 @@
 console.log();
 
+var participantesAdicionados = [];
 var botaocont = document.getElementById('botaocontinuarata');
 // var botaohist = document.getElementById('abrirhist');
 
@@ -26,7 +27,7 @@ addItemButton.addEventListener('click', function() {
     } else {
         
         var li = document.createElement('li');
-        li.className = 'list-group-item bg-body-secondary border rounded';
+        li.className = 'list-group-item';
         li.appendChild(document.createTextNode(newItem));
 
         var deleteBtn = document.createElement('button');
@@ -58,14 +59,7 @@ addItemButton.addEventListener('click', function() {
     }
 });
 
-/// -------------------------------------------------------//
-
-// Declare participantesAdicionados fora da função addDeliberacoes
-
-var participantesAdicionados = [];
-
 function addDeliberacoes() {
-
     console.log("adadasdasdsad");
     console.log(participantesAdicionados);
 
@@ -75,36 +69,29 @@ function addDeliberacoes() {
         data: {
             particadd: JSON.stringify(participantesAdicionados)
         },
-
         success: function(response) {
-
             console.log("(4.2) Deu bom! AJAX está enviando os participantes");
-            console.log("Response:", response); // Adicionado para depuração
-            
+            console.log(response);
+
             var ultimoID = response.ultimoID;
-            participantesAdicionados = response.participantesAdicionados;
+            var participantesAdicionados = response.participantesAdicionados;
 
-            setTimeout(function() {
-                console.log("Redirecionando..."); // Adicionado para depuração
-
-                window.location.href = 'pagdeliberacoes.php' +
+            var url = 'pagdeliberacoes.php' +
                 '?ultimoID=' + encodeURIComponent(ultimoID) +
                 '&participantesAdicionados=' + encodeURIComponent(participantesAdicionados);
 
-            }, 1500);
+            window.location.href = url;
 
             Swal.fire({
                 title: "Perfeito!",
                 text: "Seus participantes foram registrados",
                 icon: "success"
             });
-          
+
             // Limpa a lista de participantes adicionados
             participantesAdicionados = [];
             atualizarListaParticipantes();
-
         },
-
         error: function(error) {
             console.error('Erro na solicitação AJAX:', error);
         }

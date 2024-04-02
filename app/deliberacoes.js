@@ -81,7 +81,6 @@ document.getElementById('addItemButton').addEventListener('click', function() {
     var itemList = document.getElementById('inputContainer');
     itemList.appendChild(textListItemDiv);
     itemList.appendChild(facilitatorListItemDiv);
-    var espaco = document.createElement("<br>");
 
     // Limpa a caixa de texto
     document.querySelector('.item').value = "";
@@ -100,7 +99,6 @@ function addDeliberacoes() {
            deliberaDores: deliberador, 
            deliberAcoes: deliberacoes, 
         },
-
         success: function(response) {
             console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
             console.log(response);
@@ -120,9 +118,10 @@ function addDeliberacoes() {
                 window.location.href = url;
             }, 1500);
         },
-        
         error: function(error) {
             console.error('Erro na solicitação AJAX:', error);
         }
     });
 }
+
+botaohist.addEventListener('click', addDeliberacoes);
