@@ -8,18 +8,14 @@ var filter = document.getElementById('filter');
 var addItemButton = document.getElementById('addItemButton');
 var mensagemInfo = document.getElementById('infoMessage');
 
-
-
 //LINKANDO AS VARÍAVEIS QUE VÃO SER ENVIADO JUNTO COM PARTICIPANTES
 
-// Adiciona um evento de clique ao botão "addItemButton"
 // Adiciona um evento de clique ao botão "addItemButton"
 addItemButton.addEventListener('click', function() {
     var newItem = document.getElementById('item').value.trim();
     
     // Obtém o elemento <select>
     var selectElement = document.getElementById('selectFacilitators');
-    
     // Obtém o valor selecionado
     var selectedFacilitator = selectElement.value;
     
@@ -91,78 +87,6 @@ document.getElementById('addItemButton').addEventListener('click', function() {
     document.querySelector('.item').value = "";
 });
 
-
-// addItemButton.addEventListener('click', function() {
-//     var newItem = document.getElementById('item').value.trim();
-//     if (newItem === "") {
-//         Swal.fire({
-//             title: "Você não adicionou um participante",
-//             text: "Adicione pelo menos 1 participante para a ata",
-//             icon: "error"
-//         });
-//     } else {
-//         // Remove a caixa de texto existente
-//         var inputField = document.getElementById('item');
-//         inputField.parentNode.removeChild(inputField);
-
-//         // Cria uma label
-//         var labelElement = document.createElement('label');
-//         labelElement.className = 'list-group-item';
-//         labelElement.textContent = newItem;
-
-//         // Adiciona a label à lista
-//         itemList.appendChild(labelElement);
-
-//         // Cria um elemento <select>
-//         var selectElement = document.createElement('select');
-//         selectElement.className = 'form-control';
-
-//         // Faz uma requisição AJAX para obter os dados dos facilitadores
-//         $.ajax({
-//             url: 'acoesform.php?acao=selecionarDeliberadores',
-//             method: 'GET',
-//             dataType: 'json',
-//             success: function(data) {
-//                 // Adiciona as opções dinâmicas ao <select>
-//                 data.forEach(function(facilitadores) {
-//                     var option = document.createElement('option');
-//                     option.value = facilitadores.nome_facilitador; 
-//                     option.textContent = facilitadores.nome_facilitador;
-//                     selectElement.appendChild(option);
-//                 });
-//             },
-//             error: function(xhr, status, error) {
-//                 console.error('Erro ao buscar dados:', error);
-//             }
-//         });
-//         // Adiciona o <select> após a lista
-//         itemList.parentNode.insertBefore(selectElement, itemList.nextSibling);
-//     }
-// });
-
-///----------------------------------------------------------------------------------------
-
-// function pegarFacilitadores() {
-//     // Faz uma requisição AJAX para obter os dados dos facilitadores
-//     fetch('acoesform.php?acao=selecionarDeliberadores')
-//     .then(response => {
-//         // Verifica se a resposta da requisição foi bem-sucedida
-//         if (!response.ok) {
-//             throw new Error('Erro ao buscar dados do servidor.');
-//         }
-//         // Retorna os dados como JSON
-//         return response.json();
-//     })
-//     .then(data => {
-//         // Manipula os dados retornados
-//         console.log(data); // Aqui você pode fazer o que desejar com os dados
-//     })
-//     .catch(error => {
-//         // Trata erros da requisição
-//         console.error('Erro ao buscar dados:', error);
-//     });
-// }
-
 botaohist.addEventListener('click', addDeliberacoes);
 
 function addDeliberacoes() {
@@ -190,7 +114,7 @@ function addDeliberacoes() {
                 icon: "success",
             });
 
-            // Definindo o redirecionamento após 1500 milissegundos (1.5 segundos)
+            // Definindo o redirecionamento após 1.5 segundos
             setTimeout(function() {
                 var url = 'paghistorico.php';
                 window.location.href = url;
