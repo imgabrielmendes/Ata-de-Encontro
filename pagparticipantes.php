@@ -180,8 +180,8 @@ $local = $_GET['local'];
                     <div class="col-11"> 
                     <select id="item" class="form-control" placeholder="Participantes...">
                       <?php foreach ($pegarfa as $facnull) : ?>
-                          <option value="<?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>">
-                              <?= $facnull['nome_facilitador'] . " <" . $facnull['cargo'] . ">"; ?>
+                          <option value="<?= $facnull['nome_facilitador']; ?>">
+                              <?= $facnull['nome_facilitador']; ?>
                              
                             </option>
                             
