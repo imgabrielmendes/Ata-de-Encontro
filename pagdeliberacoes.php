@@ -248,7 +248,7 @@ $dbpass = '';
   </div>
 
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
-
+<br>
 <div class="accordion">
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
@@ -289,15 +289,24 @@ $dbpass = '';
         </div>
         <div class="col-2">
             <ul id="caixadeselecaodel"></ul>
-            <button type="button" id="addItemButton" class="btn btn-primary mt-2">+</button>
+            <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
         </div>
     </div>
-    <script>
-        
-    </script>
+    
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="view/img/check.svg" class="rounded me-2" alt="..." style="width: 20px";>
+          <strong class="me-auto">Perfeito!</strong>
+          <small>Agora</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          A deliberação foi atribuída.
+        </div>
+      </div>
+    </div>
 
-    
-    
         <br>
         <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button>
 

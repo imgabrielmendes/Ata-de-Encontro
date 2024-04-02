@@ -13,7 +13,7 @@ var mensagemInfo = document.getElementById('infoMessage');
 //LINKANDO AS VARÍAVEIS QUE VÃO SER ENVIADO JUNTO COM PARTICIPANTES
 
 // Adiciona um evento de clique ao botão "addItemButton"
-// Adiciona um evento de clique ao botão "addItemButton"
+
 addItemButton.addEventListener('click', function() {
     var newItem = document.getElementById('item').value.trim();
     
@@ -29,7 +29,10 @@ addItemButton.addEventListener('click', function() {
             text: "Adicione pelo menos 1 participante para a ata",
             icon: "error"
         });
-    } else {
+    } 
+    
+    else {
+                
         // Remove a caixa de texto existente
         var inputField = document.getElementById('item');
         inputField.parentNode.removeChild(inputField);
@@ -61,15 +64,69 @@ addItemButton.addEventListener('click', function() {
 });
 
 document.getElementById('addItemButton').addEventListener('click', function() {
+
     // Captura o texto digitado e o facilitador selecionado
     var newItem = document.querySelector('.item').value.trim();
     var selectedFacilitator = document.querySelector('.facilitator-select').value;
 
     // Verifica se o texto e o facilitador foram preenchidos
-    if (newItem === "" || selectedFacilitator === "") {
-        alert("Por favor, preencha todos os campos.");
+    if (newItem === "") {
+
+          Swal.fire({
+            title: "Você não adicionou uma deliberação",
+            icon: "error"
+        });
+        
         return;
     }
+
+    if (selectedFacilitator === "") {
+
+        Swal.fire({
+          title: "Você não adicionou um participante",
+          text: "Adicione pelo menos 1 participante para a ata",
+          icon: "error"
+      });
+      
+      return;
+  }
+
+    // Local que vai enviar as informações para o banco
+    else {
+
+        const toastLiveExample = document.getElementById('liveToast')
+        
+
+        var deliberador = document.querySelector('.item').value;
+        var deliberacoes = document.querySelector('.facilitator-select').value;
+
+        
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+        toastBootstrap.show();
+          
+        
+        $.ajax({
+            url: 'registrardeliberadores.php',
+            method: 'POST',
+            data: {
+               deliberaDores: deliberador, 
+               deliberAcoes: deliberacoes, 
+            },
+    
+            success: function(response) {
+                console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
+                console.log(response);
+    
+                console.log(deliberacoes);
+                console.log(deliberador);
+            },
+            
+            error: function(error) {
+                console.error('Erro na solicitação AJAX:', error);
+            }
+        });
+    }
+    
 
     //Div para a list-group-item do texto digitado
     var textListItemDiv = document.createElement('div');
@@ -85,120 +142,26 @@ document.getElementById('addItemButton').addEventListener('click', function() {
     var itemList = document.getElementById('inputContainer');
     itemList.appendChild(textListItemDiv);
     itemList.appendChild(facilitatorListItemDiv);
-    var espaco = document.createElement("<br>");
 
     // Limpa a caixa de texto
     document.querySelector('.item').value = "";
+
 });
 
-
-// addItemButton.addEventListener('click', function() {
-//     var newItem = document.getElementById('item').value.trim();
-//     if (newItem === "") {
-//         Swal.fire({
-//             title: "Você não adicionou um participante",
-//             text: "Adicione pelo menos 1 participante para a ata",
-//             icon: "error"
-//         });
-//     } else {
-//         // Remove a caixa de texto existente
-//         var inputField = document.getElementById('item');
-//         inputField.parentNode.removeChild(inputField);
-
-//         // Cria uma label
-//         var labelElement = document.createElement('label');
-//         labelElement.className = 'list-group-item';
-//         labelElement.textContent = newItem;
-
-//         // Adiciona a label à lista
-//         itemList.appendChild(labelElement);
-
-//         // Cria um elemento <select>
-//         var selectElement = document.createElement('select');
-//         selectElement.className = 'form-control';
-
-//         // Faz uma requisição AJAX para obter os dados dos facilitadores
-//         $.ajax({
-//             url: 'acoesform.php?acao=selecionarDeliberadores',
-//             method: 'GET',
-//             dataType: 'json',
-//             success: function(data) {
-//                 // Adiciona as opções dinâmicas ao <select>
-//                 data.forEach(function(facilitadores) {
-//                     var option = document.createElement('option');
-//                     option.value = facilitadores.nome_facilitador; 
-//                     option.textContent = facilitadores.nome_facilitador;
-//                     selectElement.appendChild(option);
-//                 });
-//             },
-//             error: function(xhr, status, error) {
-//                 console.error('Erro ao buscar dados:', error);
-//             }
-//         });
-//         // Adiciona o <select> após a lista
-//         itemList.parentNode.insertBefore(selectElement, itemList.nextSibling);
-//     }
-// });
-
-///----------------------------------------------------------------------------------------
-
-// function pegarFacilitadores() {
-//     // Faz uma requisição AJAX para obter os dados dos facilitadores
-//     fetch('acoesform.php?acao=selecionarDeliberadores')
-//     .then(response => {
-//         // Verifica se a resposta da requisição foi bem-sucedida
-//         if (!response.ok) {
-//             throw new Error('Erro ao buscar dados do servidor.');
-//         }
-//         // Retorna os dados como JSON
-//         return response.json();
-//     })
-//     .then(data => {
-//         // Manipula os dados retornados
-//         console.log(data); // Aqui você pode fazer o que desejar com os dados
-//     })
-//     .catch(error => {
-//         // Trata erros da requisição
-//         console.error('Erro ao buscar dados:', error);
-//     });
-// }
 
 botaohist.addEventListener('click', addDeliberacoes);
 
 function addDeliberacoes() {
-    var deliberador = document.querySelector('.item').value;
-    var deliberacoes = document.querySelector('.facilitator-select').value;
-
-    $.ajax({
-        url: 'registrardeliberadores.php',
-        method: 'POST',
-        data: {
-           deliberaDores: deliberador, 
-           deliberAcoes: deliberacoes, 
-        },
-
-        success: function(response) {
-            console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
-            console.log(response);
-
-            console.log(deliberacoes);
-            console.log(deliberador);
-
-            Swal.fire({
-                title: "Perfeito!",
-                text: "Seus Deliberadores foram registrados",
-                icon: "success",
-            });
-
-            // Definindo o redirecionamento após 1500 milissegundos (1.5 segundos)
-            setTimeout(function() {
-                var url = 'paghistorico.php';
-                window.location.href = url;
-            }, 1500);
-        },
-        
-        error: function(error) {
-            console.error('Erro na solicitação AJAX:', error);
-        }
+     
+    Swal.fire({
+        title: "Perfeito!",
+        text: "Seus Deliberadores foram registrados",
+        icon: "success",
     });
+
+    setTimeout(function() {
+        var url = 'paghistorico.php';
+        window.location.href = url;
+    }, 1500);
+
 }
