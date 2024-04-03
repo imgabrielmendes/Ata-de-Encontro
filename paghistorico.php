@@ -1,9 +1,10 @@
 <?php
+
 namespace formulario;
 
-include ("vendor/autoload.php");
-include_once ("app/acoesform.php");
-include ("conexao.php");
+include("vendor/autoload.php");
+include_once("app/acoesform.php");
+include("conexao.php");
 
 $puxarform = new AcoesForm;
 $facilitadores = $puxarform->selecionarFacilitadores();
@@ -28,6 +29,7 @@ if ($conn->connect_error) {
 // Consulta SQL para selecionar os dados
 $sql = "SELECT data_registro, facilitador, tema, objetivo, local, status FROM assunto ORDER BY `data_registro` DESC";
 $result = $conn->query($sql);
+
 
 ?>
 
@@ -71,16 +73,16 @@ $result = $conn->query($sql);
 
     <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
     <div class="box box-primary">
-        <main class="container d-flex justify-content-center align-items-center">
+        <main class="container d-flex justify-content-center align-items-center" class="text-center">
             <div class="form-group col-12">
                 <div class="row">
                     <div class="text-center" class="row">
 
-                       
+
                         <!---- PRIMEIRA LINHA DO REGISTRO ---->
 
                         <table id="myTable" class="table table-striped">
-                            <thead>
+                            <thead class="text-center">
                                 <tr class="col">
                                     <th>Solicitação</th>
                                     <th>objetivo</th>
@@ -92,106 +94,107 @@ $result = $conn->query($sql);
                             </thead>
                             <tbody>
 
-                               <!-- Filtro de Registro -->
-<div class="accordion" id="accordionPanelsStayOpenExample">
-    <div class="accordion-item">
-        <h2 class="accordion-header">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                Filtro de Registro
-            </button>
-        </h2>
-        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
-            <div class="accordion-body">
-                <div class="row">
-                    <div class="col-10">
-                        <input class="form-control" type="text" id="filtroInput" onkeyup="filtrarTabela()" placeholder="Filtrar registros...">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-3">
-                        <b><label class="checkbox-label"><input type="checkbox" id="objetivoCheckbox" onchange="filtrarRegistros()"> Objetivo</label></b>
-                        <select class="form-control" id="objetivoSelect" onchange="filtrarRegistros()">
-                            <option value="">Selecione o objetivo</option>
-                            <option value="Reunião">Reunião</option>
-                            <option value="Treinamento">Treinamento</option>
-                            <option value="Consulta">Consulta</option>
-                        </select>
-                    </div>
-                    <div class="col-3">
-                        <b><label class="checkbox-label"><input type="checkbox" id="solicitacaoCheckbox" onchange="filtrarRegistros()"> Solicitação</label></b>
-                        <input class="form-control" type="date" id="solicitacaoInput" onchange="filtrarRegistros()">
-                    </div>
-                    <div class="col-3">
-                        <b><label class="checkbox-label"><input type="checkbox" id="statusCheckbox" onchange="filtrarRegistros()"> Status</label></b>
-                        <select class="form-control" id="statusSelect" onchange="filtrarRegistros()">
-                            <option value="">Selecione o status</option>
-                            <option value="Aberta">Aberta</option>
-                            <option value="Fechada">Fechada</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Popper.js (Bootstrap 5 dependency) -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-0hSUFLnE+2JoAOqJV+6DJ0zVrLy5FN3+35DSBkc/cbsuKdHTGDVZ+3rOVjXkHlD2" crossorigin="anonymous"></script>
-<!-- Bootstrap 5 JavaScript bundle (Bootstrap 5 dependency) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fqjz4im2C1iNlkj5wXaUr2ASKuwVV7h6XpSHfu6I8ELW8JwU5vZfK8ZbZSFfnEMH" crossorigin="anonymous"></script>
+                                <!-- Filtro de Registro -->
+                                <div class="accordion" id="accordionPanelsStayOpenExample" class="text-center">
+                                    <div class="accordion-item" class="text-center">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                                                Filtro de Registro
+                                            </button>
+                                        </h2>
+                                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" class="text-center">
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <input class="form-control" type="text" id="filtroInput" onkeyup="filtrarTabela()" placeholder="Filtrar registros...">
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <div class="row">
+                                                    <div class="col-4" style="text-align: left;">
+                                                        <b>Objetivo</b>
+                                                        <select class="form-control" id="objetivoSelect" onchange="filtrarRegistros()">
+                                                            <option value="">Selecione o objetivo</option>
+                                                            <option value="Reunião">Reunião</option>
+                                                            <option value="Treinamento">Treinamento</option>
+                                                            <option value="Consulta">Consulta</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4" style="text-align: left;">
+                                                        <b>Solicitação</b>
+                                                        <input class="form-control" type="date" id="solicitacaoInput" onchange="filtrarRegistros()">
+                                                    </div>
+                                                    <div class="col-4" style="text-align: left;">
+                                                        <b>Status</b>
+                                                        <select class="form-control" id="statusSelect" onchange="filtrarRegistros()">
+                                                            <option value="">Selecione o status</option>
+                                                            <option value="Aberta">Aberta</option>
+                                                            <option value="Fechada">Fechada</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+<br>
+                                <!-- jQuery -->
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                                <!-- Popper.js (Bootstrap 5 dependency) -->
+                                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-0hSUFLnE+2JoAOqJV+6DJ0zVrLy5FN3+35DSBkc/cbsuKdHTGDVZ+3rOVjXkHlD2" crossorigin="anonymous"></script>
+                                <!-- Bootstrap 5 JavaScript bundle (Bootstrap 5 dependency) -->
+                                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fqjz4im2C1iNlkj5wXaUr2ASKuwVV7h6XpSHfu6I8ELW8JwU5vZfK8ZbZSFfnEMH" crossorigin="anonymous"></script>
 
-                                </tbody>
+                            </tbody>
 
+                            <?php
+                            // Conexão com o banco de dados (substitua os valores pelos seus próprios)
+                            $servername = "localhost";
+                            $username = "root";
+                            $password = "";
+                            $dbname = "atareu";
+
+                            // Cria a conexão
+                            $conn = new \mysqli($servername, $username, $password, $dbname);
+
+                            // Checa a conexão
+                            if ($conn->connect_error) {
+                                die("Falha na conexão: " . $conn->connect_error);
+                            }
+
+                            // Consulta SQL para selecionar os dados
+                            $sql = "SELECT data_solicitada, facilitador, tema, objetivo, local, status FROM assunto ORDER BY data_registro DESC";
+
+                            $result = $conn->query($sql);
+                            ?>
+
+                            <tbody class="text-center">
                                 <?php
-                                                // Conexão com o banco de dados (substitua os valores pelos seus próprios)
-                                                $servername = "localhost";
-                                                $username = "root";
-                                                $password = "";
-                                                $dbname = "atareu";
+                                // Exibe os dados em cada linha da tabela
+                                if ($result->num_rows > 0) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        echo "<tr>";
+                                        echo "<td>" . substr($row["data_solicitada"], 8, 2) . "/" . substr($row["data_solicitada"], 5, 2) . "/" . substr($row["data_solicitada"], 0, 4) . "</td>";
+                                        echo "<td>" . $row["objetivo"] . "</td>";
+                                        echo "<td>" . $row["facilitador"] . "</td>";
+                                        echo "<td>" . $row["tema"] . "</td>";
+                                        echo "<td>" . $row["local"] . "</td>";
+                                        echo "<td class='status_button'>";
 
-                                                // Cria a conexão
-                                                $conn = new \mysqli($servername, $username, $password, $dbname);
+                                        if ($row['status'] === 'ABERTA') {
+                                            echo "<span class='badge bg-primary'>ABERTA</span>";
+                                        } elseif ($row['status'] === 'FECHADA') {
+                                            echo "<span class='badge bg-success'>FECHADA</span>";
+                                        }
 
-                                                // Checa a conexão
-                                                if ($conn->connect_error) {
-                                                    die("Falha na conexão: " . $conn->connect_error);
-                                                }
-
-                                                // Consulta SQL para selecionar os dados
-                                                $sql = "SELECT data_solicitada, facilitador, tema, objetivo, local, status FROM assunto ORDER BY data_registro DESC";
-
-                                                $result = $conn->query($sql);
-                                                ?>
-
-                                            <tbody>
-                                                <?php
-                                                    // Exibe os dados em cada linha da tabela
-                                                    if ($result->num_rows > 0) {
-                                                        while ($row = $result->fetch_assoc()) {
-                                                            echo "<tr>";
-echo "<td>" . $row["data_solicitada"] . "</td>";
-echo "<td>" . $row["objetivo"] . "</td>";
-echo "<td>" . $row["facilitador"] . "</td>";
-echo "<td>" . $row["tema"] . "</td>";
-echo "<td>" . $row["local"] . "</td>";
-echo "<td class='status_button'>";
-
-if ($row['status'] === 'ABERTA') {
-    echo "<span class='badge bg-primary'>ABERTA</span>";
-} elseif ($row['status'] === 'FECHADA') {
-    echo "<span class='badge bg-success'>FECHADA</span>";
-}
-
-echo "</td>";
-echo "</tr>";
-
-                                                        }
-                                                    } else {
-                                                        echo "<tr><td colspan='6'>Nenhum resultado encontrado.</td></tr>";
-                                                    }
-                                                    $conn->close();
-                                                ?>
+                                        echo "</td>";
+                                        echo "</tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='6'>Nenhum resultado encontrado.</td></tr>";
+                                }
+                                $conn->close();
+                                ?>
                         </table>
                     </div>
                 </div>
@@ -200,14 +203,14 @@ echo "</tr>";
         <!-----------------------------2° FASE-------------------------------->
 
         <!-- Modal -->
-        <div id="myModal" class="modal"  >
+        <div id="myModal" class="modal">
             <div class="modal-content">
                 <span class="close" style="position: absolute; top: 10px; right: 20px;" onclick="fecharModal()">&times;</span>
                 <div id="modalContent" class="accordion">
                     <br>
                     <div>
                         <h2>
-                            <h5>Informações de Registro da Ata</h5>
+                            <h5 class="text-center">Informações de Registro da Ata</h5>
                             <i class="fas fa-plus"></i>
                             <br>
                         </h2>
@@ -223,30 +226,27 @@ echo "</tr>";
                                         </div>
                                         <div class="col-3">
                                             <label><b>Objetivo:</b></label>
-                                            <ul class="form-control bg-body-secondary border rounded"
-                                                id="modal_objetivo"></ul>
+                                            <ul class="form-control bg-body-secondary border rounded" id="modal_objetivo"></ul>
                                         </div>
                                         <div class="col-3">
                                             <label><b>Facilitador:</b></label>
-                                            <ul class="form-control bg-body-secondary"
-                                                id="modal_facilitador"></ul>
+                                            <ul class="form-control bg-body-secondary" id="modal_facilitador"></ul>
                                         </div>
                                         <div class="col-3">
                                             <label><b>Local:</b></label>
-                                            <ul class="form-control bg-body-secondary border rounded"
-                                                id="modal_local"></ul>
+                                            <ul class="form-control bg-body-secondary border rounded" id="modal_local"></ul>
                                         </div>
                                         <div class="col">
                                             <b>Tema:</b>
                                             <div class="col-12">
-                                                <ul class="form-control bg-body-secondary" id="modal_tema"></ul>
+                                                <ul class="form-control bg-body-secondary" id="modal_tema"><?php echo $conteudo; ?></ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                </div>
-                </div>
+                        </div>
+                    </div>
                 </div>
 
 
@@ -289,26 +289,33 @@ echo "</tr>";
 
                 // Iterar sobre todas as linhas da tabela
                 for (var i = 0; i < linhas.length; i++) {
+                    var encontrou = false; // Flag para indicar se o filtro foi encontrado em alguma célula da linha
+
                     celula = linhas[i].getElementsByTagName("td");
 
                     // Iterar sobre todas as células da linha atual
                     for (var j = 0; j < celula.length; j++) {
                         if (celula[j]) {
-                            // Converta o texto da célula para maiúsculas e verifique se ele contém o filtro
+                            // Converta o texto da célula para maiúsculas
                             texto = celula[j].innerText.toUpperCase() || celula[j].textContent.toUpperCase();
 
-                            // Se o texto da célula contiver o filtro, exiba a linha; caso contrário, oculte-a
+                            // Se o texto da célula contiver o filtro, defina a flag como verdadeira
                             if (texto.indexOf(filtro) > -1) {
-                                linhas[i].style.display = "";
-                                break;
-                            } else {
-                                linhas[i].style.display = "none";
+                                encontrou = true;
+                                break; // Não é necessário continuar verificando outras células se o filtro foi encontrado
                             }
                         }
+                    }
 
+                    // Exibir ou ocultar a linha com base na flag encontrou
+                    if (encontrou) {
+                        linhas[i].style.display = "";
+                    } else {
+                        linhas[i].style.display = "none";
                     }
                 }
             }
+
 
             // Função para filtrar registros com base nos critérios selecionados
             function filtrarRegistros() {
@@ -316,17 +323,10 @@ echo "</tr>";
                 tabela = document.getElementById("myTable");
                 linhas = tabela.getElementsByTagName("tr");
 
-                // Obter o estado dos checkboxes
-                var objetivoChecked = document.getElementById("objetivoCheckbox").checked;
-                var solicitacaoChecked = document.getElementById("solicitacaoCheckbox").checked;
-                var statusChecked = document.getElementById("statusCheckbox").checked;
-
-                // Filtrar por Objetivo
-                var selectedObjective = objetivoChecked ? document.getElementById("objetivoSelect").value.toUpperCase() : "";
-                // Filtrar por Solicitação
-                var selectedSolicitacao = solicitacaoChecked ? document.getElementById("solicitacaoInput").value.toUpperCase() : "";
-                // Filtrar por Status
-                var selectedStatus = statusChecked ? document.getElementById("statusSelect").value.toUpperCase() : "";
+                // Obter os valores selecionados nos selects
+                var selectedObjective = document.getElementById("objetivoSelect").value.toUpperCase();
+                var selectedSolicitacao = document.getElementById("solicitacaoInput").value.toUpperCase();
+                var selectedStatus = document.getElementById("statusSelect").value.toUpperCase();
 
                 // Iterar sobre todas as linhas da tabela e verificar se atendem aos critérios de filtro
                 for (i = 1; i < linhas.length; i++) {
@@ -334,15 +334,15 @@ echo "</tr>";
                     var celulas = linhas[i].getElementsByTagName("td");
 
                     // Filtrar por Objetivo
-                    if (objetivoChecked && celulas[1].innerText.toUpperCase() !== selectedObjective) {
+                    if (selectedObjective && celulas[1].innerText.toUpperCase() !== selectedObjective) {
                         atendeFiltro = false;
                     }
                     // Filtrar por Solicitação
-                    if (solicitacaoChecked && celulas[0].innerText.toUpperCase() !== selectedSolicitacao) {
+                    if (selectedSolicitacao && celulas[0].innerText.substring(0, 10) !== selectedSolicitacao) {
                         atendeFiltro = false;
                     }
                     // Filtrar por Status
-                    if (statusChecked && celulas[5].innerText.toUpperCase() !== selectedStatus) {
+                    if (selectedStatus && celulas[5].innerText.toUpperCase() !== selectedStatus) {
                         atendeFiltro = false;
                     }
 
@@ -355,12 +355,14 @@ echo "</tr>";
                 }
             }
 
+
+
             // Adiciona um evento de clique a todas as células da tabela
-            window.onload = function () {
+            window.onload = function() {
                 var table = document.getElementById("myTable");
                 var linhas = table.getElementsByTagName("tr");
                 for (var i = 0; i < linhas.length; i++) {
-                    linhas[i].addEventListener("click", function () {
+                    linhas[i].addEventListener("click", function() {
                         // Obter os dados da linha clicada
                         var data_solicitada = this.cells[0].innerText;
                         var objetivo = this.cells[1].innerText;
@@ -384,9 +386,10 @@ echo "</tr>";
             };
         </script>
 
-<script src="view/js/bootstrap.js"></script>
-      
+        <script src="view/js/bootstrap.js"></script>
+
     </div>
     </div>
-    </body>
-    </html>
+</body>
+
+</html>
