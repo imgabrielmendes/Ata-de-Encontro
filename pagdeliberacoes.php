@@ -270,22 +270,24 @@ $dbpass = '';
         <div class="col">
           
               <br>
-              <label><b>Informe o texto principal e o deliberador(es):</b></label>
-              <textarea id="deliberacoes" class="form-control item" placeholder="Informe o texto"></textarea>
+              <label style="height: 35px;"><b>Informe o texto principal:</b></label>
+              <textarea id="deliberacoes" class="form-control item" placeholder="Informe aqui..." style="height: 110px;"></textarea>
             </div>
 
             <div class="col">
-            <!-- Primeira caixa de texto e select de facilitadores -->
-            <div class="mb-2">
-                <select id="deliberador" class="form-control facilitator-select" placeholder="Participantes...">
-                    <?php foreach ($pegarde as $facnull) : ?>
-                        <option value="<?= $facnull['nome_facilitador']; ?>">
+    <!-- Primeira caixa de texto e select de facilitadores -->
+    <div class="mb-2">
+        <select id="deliberador" class="form-control facilitator-select" placeholder="Participantes...">
+            <option value="" disabled selected>Selecione um facilitador...</option>
+            <?php foreach ($pegarde as $facnull) : ?>
+                <option value="<?= $facnull['nome_facilitador']; ?>">
+                    <?= $facnull['nome_facilitador']; ?>
+                </option>
+            <?php endforeach ?>
+        </select>
+ 
+</div>
 
-                            <?= $facnull['nome_facilitador']; ?>
-                        </option>
-                    <?php endforeach ?>
-                </select>
-            </div>
         </div>
         <div class="col-2">
             <ul id="caixadeselecaodel"></ul>
@@ -303,6 +305,20 @@ $dbpass = '';
         </div>
         <div class="toast-body">
           A deliberação foi atribuída.
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast2" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="view\img\x.svg" class="rounded me-2" alt="..." style="width: 15px";>
+          <strong class="me-auto">Perfeito!</strong>
+          <small>Agora</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          Atribuição excluída.
         </div>
       </div>
     </div>

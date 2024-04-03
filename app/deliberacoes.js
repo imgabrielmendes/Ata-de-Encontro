@@ -13,7 +13,6 @@ var mensagemInfo = document.getElementById('infoMessage');
 //LINKANDO AS VARÍAVEIS QUE VÃO SER ENVIADO JUNTO COM PARTICIPANTES
 
 // Adiciona um evento de clique ao botão "addItemButton"
-
 addItemButton.addEventListener('click', function() {
     var newItem = document.getElementById('item').value.trim();
     
@@ -29,10 +28,7 @@ addItemButton.addEventListener('click', function() {
             text: "Adicione pelo menos 1 participante para a ata",
             icon: "error"
         });
-    } 
-    
-    else {
-                
+    } else {
         // Remove a caixa de texto existente
         var inputField = document.getElementById('item');
         inputField.parentNode.removeChild(inputField);
@@ -60,6 +56,20 @@ addItemButton.addEventListener('click', function() {
 
         // Adiciona a div da list-group-item de facilitador à lista
         itemList.appendChild(facilitatorListItemDiv);
+
+        // Adiciona um botão de exclusão para o item
+        var deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Excluir';
+        deleteButton.className = 'btn btn-danger btn-sm ml-2 delete-item';
+        deleteButton.addEventListener('click', function() {
+            // Remove o item e o facilitador associado
+            itemList.removeChild(textListItemDiv);
+            itemList.removeChild(facilitatorListItemDiv);
+            deleteButton.remove(); // Remove o botão de exclusão
+        });
+
+        // Adiciona o botão de exclusão à lista de itens
+        itemList.appendChild(deleteButton);
     }
 });
 
@@ -126,7 +136,28 @@ document.getElementById('addItemButton').addEventListener('click', function() {
             }
         });
     }
+
     
+        // Adiciona um botão de exclusão para o item
+        var deleteButton = document.createElement('button');
+        deleteButton.textContent = 'x';
+        deleteButton.className = 'col btn btn-danger btn-mt mt-2';
+        deleteButton.style.right = '9px'; 
+        deleteButton.style.top = '0px'; 
+        deleteButton.style.width = '37px'; 
+        deleteButton.style.height = '37px'; 
+    
+        deleteButton.addEventListener('click', function() {           
+            // Remove o item e o facilitador associado
+            itemList.removeChild(textListItemDiv);
+            itemList.removeChild(facilitatorListItemDiv);
+            deleteButton.remove(); // Remove o botão de exclusão
+        
+            const toastLiveExample = document.getElementById('liveToast2');
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+            toastBootstrap.show();
+
+            });
 
     //Div para a list-group-item do texto digitado
     var textListItemDiv = document.createElement('div');
@@ -138,20 +169,18 @@ document.getElementById('addItemButton').addEventListener('click', function() {
     facilitatorListItemDiv.className = 'form-control bg-body-secondary border rounded';
     facilitatorListItemDiv.textContent = selectedFacilitator;
 
+
     // Juntar as Divs
     var itemList = document.getElementById('inputContainer');
     itemList.appendChild(textListItemDiv);
     itemList.appendChild(facilitatorListItemDiv);
+    itemList.appendChild(deleteButton);
 
-    // Limpa a caixa de texto
-    document.querySelector('.item').value = "";
-
+  
 });
 
-
-botaohist.addEventListener('click', addDeliberacoes);
-
-function addDeliberacoes() {
+botaohist.addEventListener('click', irparaHist);
+function irparaHist() {
      
     Swal.fire({
         title: "Perfeito!",
