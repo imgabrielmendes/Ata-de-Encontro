@@ -96,17 +96,19 @@ $result = $conn->query($sql);
 
                                 <!-- Filtro de Registro -->
                                 <div class="accordion" id="accordionPanelsStayOpenExample" class="text-center">
-                                    <div class="accordion-item" class="text-center">
+                                    <div class="accordion-item text-center">
                                         <h2 class="accordion-header">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                                                Filtro de Registro
+                                             <button class="accordion-button shadow-sm text-white text-center" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background-color: #1c8f69 ">
+                                                <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                                <i class="fa-solid fa-circle-info"></i>
+                                                <h5>Histórico de Atas</h5>
                                             </button>
                                         </h2>
                                         <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" class="text-center">
                                             <div class="accordion-body">
                                                 <div class="row">
-                                                    <div class="col-12">
-                                                        <input class="form-control" type="text" id="filtroInput" onkeyup="filtrarTabela()" placeholder="Filtrar registros...">
+                                                    <div class="form-control col-12">
+                                                        <input  class="form-control" type="text" id="filtroInput" onkeyup="filtrarTabela()" placeholder="Filtrar registros...">
                                                     </div>
                                                 </div>
                                                 <br>
@@ -204,57 +206,70 @@ $result = $conn->query($sql);
 
         <!-- Modal -->
         <div id="myModal" class="modal">
-            <div class="modal-content">
-                <span class="close" style="position: absolute; top: 10px; right: 20px;" onclick="fecharModal()">&times;</span>
-                <div id="modalContent" class="accordion">
+    <div class="modal-content">
+        <span class="close" style="position: absolute; top: 10px; right: 20px;" onclick="fecharModal()">&times;</span>
+        <div id="modalContent" class="accordion">
+            <br>
+            <div>
+                <h2>
+                    <h5 class="text-center">Informações de Registro da Ata</h5>
+                    <i class="fas fa-plus"></i>
                     <br>
-                    <div>
-                        <h2>
-                            <h5 class="text-center">Informações de Registro da Ata</h5>
-                            <i class="fas fa-plus"></i>
-                            <br>
-                        </h2>
-                        <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
-                            <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
-                                <div class="col-md-12 text-center">
-                                    <div class="row">
-                                        <!---- PRIMEIRA LINHA DO REGISTRO ---->
-                                        <br>
-                                        <div class="col-3">
-                                            <label><b>Solicitação:</b></label>
-                                            <ul class="form-control bg-body-secondary" id="modal_solicitacao"></ul>
-                                        </div>
-                                        <div class="col-3">
-                                            <label><b>Objetivo:</b></label>
-                                            <ul class="form-control bg-body-secondary border rounded" id="modal_objetivo"></ul>
-                                        </div>
-                                        <div class="col-3">
-                                            <label><b>Facilitador:</b></label>
-                                            <ul class="form-control bg-body-secondary" id="modal_facilitador"></ul>
-                                        </div>
-                                        <div class="col-3">
-                                            <label><b>Local:</b></label>
-                                            <ul class="form-control bg-body-secondary border rounded" id="modal_local"></ul>
-                                        </div>
-                                        <div class="col">
-                                            <b>Tema:</b>
-                                            <div class="col-12">
-                                                <ul class="form-control bg-body-secondary" id="modal_tema"><?php echo $conteudo; ?></ul>
-                                            </div>
-                                        </div>
+                </h2>
+                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+                    <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+                        <div class="col-md-12 text-center">
+                            <div class="row">
+                                <!---- PRIMEIRA LINHA DO REGISTRO ---->
+                                <br>
+                                <div class="col-4">
+                                    <label><b>Solicitação:</b></label>
+                                    <ul class="form-control bg-body-secondary" id="modal_solicitacao"></ul>
+                                </div>
+                                <div class="col-4">
+                                    <label><b>Objetivo:</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_objetivo"></ul>
+                                </div>
+                                <div class="col-4">
+                                    <label><b>Facilitador:</b></label>
+                                    <ul class="form-control bg-body-secondary" id="modal_facilitador"></ul>
+                                </div>
+                                <div class="col-4">
+                                    <label><b>Local:</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_local"></ul>
+                                </div>
+                                <div class="col-4">
+                                    <b>Tema:</b>
+                                    <div class="col-12">
+                                        <ul class="form-control bg-body-secondary" id="modal_tema"><?php echo $conteudo; ?></ul>
                                     </div>
                                 </div>
+                                <div class="col-4">
+                                    <label><b>Status:</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_status"></ul>
+                                </div> 
+                                <!-- Nova div para facilitador -->
+                                <div class="col-6">
+                                    <label><b>Facilitador:</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_facilitador"></ul>
+                                </div>
+                                <!-- Nova div para deliberações -->
+                                <div class="col-6">
+                                    <label><b>Deliberações:</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_deliberacoes"></ul>
+                                </div>                     
                             </div>
                         </div>
                     </div>
                 </div>
-
-
             </div>
         </div>
+    </div>
+</div>
 
+
+                                
         <script>
-            // Função para abrir o modal com os detalhes da linha clicada
             function abrirModalDetalhes(row) {
                 // Preencher os campos da modal com os dados da linha clicada
                 document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
@@ -262,15 +277,40 @@ $result = $conn->query($sql);
                 document.getElementById("modal_facilitador").innerText = row.facilitador;
                 document.getElementById("modal_local").innerText = row.local;
                 document.getElementById("modal_tema").innerText = row.tema;
-                // Exibir o modal
+                document.getElementById("modal_status").innerText = row.status;
+
+
+                fetch('id= deliberacoes')
+                    .then(response => response.text())
+                    .then(data => {
+                        // Preencher as deliberações na div correspondente do modal
+                        document.getElementById("modal_deliberacoes").innerHTML = data;
+                    })
+                    .catch(error => {
+                        console.error('Ocorreu um erro ao obter os dados:', error);
+                });
+                // Adicionar classe de animação ao abrir o modal
                 var modal = document.getElementById("myModal");
+                modal.style.top = "-100%"; // Define a posição inicial do modal fora da tela// Define a cor de fundo inicial sem opacidade
                 modal.style.display = "block";
+
+                // Aguardar um pequeno intervalo antes de aplicar a transição apenas no modal
+                setTimeout(function() {
+                    modal.style.transition = "top 0.5s ease"; // Adiciona uma transição suave de 0.5 segundos apenas para a posição do modal
+                    modal.style.top = "0"; // Desloca o modal para a posição inicial
+                }, 50); // Aguarda 50ms antes de aplicar a transição
             }
 
             // Função para fechar o modal
             function fecharModal() {
                 var modal = document.getElementById("myModal");
-                modal.style.display = "none";
+                modal.style.transition = "top 0.5s ease"; // Adiciona uma transição suave de 0.5 segundos apenas para a posição do modal
+                modal.style.top = "-100%"; // Desloca o modal para fora da tela
+
+                // Aguardar a transição antes de ocultar o modal
+                setTimeout(function() {
+                    modal.style.display = "none"; // Oculta o modal após a transição
+                }, 500); // Aguarda 500ms antes de ocultar o modal
             }
         </script>
 
@@ -367,8 +407,10 @@ $result = $conn->query($sql);
                         var data_solicitada = this.cells[0].innerText;
                         var objetivo = this.cells[1].innerText;
                         var facilitador = this.cells[2].innerText;
-                        var local = this.cells[3].innerText;
-                        var tema = this.cells[4].innerText;
+                        var local = this.cells[4].innerText;
+                        var tema = this.cells[3].innerText;
+                        var status = this.cells[5].innerText;
+
 
                         // Criar um objeto com os dados da linha clicada
                         var rowData = {
@@ -376,7 +418,8 @@ $result = $conn->query($sql);
                             objetivo: objetivo,
                             facilitador: facilitador,
                             local: local,
-                            tema: tema
+                            tema: tema,
+                            status: status
                         };
 
                         // Chamar a função para abrir o modal e passar os dados da linha clicada como argumento
@@ -387,9 +430,7 @@ $result = $conn->query($sql);
         </script>
 
         <script src="view/js/bootstrap.js"></script>
-
-    </div>
+        </div>
     </div>
 </body>
-
 </html>
