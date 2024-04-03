@@ -150,12 +150,12 @@ function gravaremail(){
         if (caixadenome !=="" && caixadeemail !=="" && caixacargo !=="") 
 
         $.ajax({
-            url: 'registrarfacilitadores.php',
+            url: 'registrarpessoas.php',
             method: 'POST',
             data: {
                caixaname: caixadenome,
                caixaemail: caixadeemail,
-               caixacargo: caixacargo,
+               caixamatri: caixacargo,
             },
 
             success: function (response) {
