@@ -1,14 +1,22 @@
+var facilitadoresSelecionados = []; // Definido fora da função gravando()
 
+new MultiSelectTag('selecionandofacilitador', {
+    rounded: true, 
+    shadow: false,     
+    placeholder: 'Search', 
+    tagColor: {
+        textColor: '#1C1C1C',
+        borderColor: '#4F4F4F',
+        bgColor: '#F0F0F0',
+    },
+    onChange: function(values) {
+        console.log(values);
+        facilitadoresSelecionados = values; // Atribuição dos valores
+    }
+});
 
 // Pegar inputs 
 var gravarinformacoes = document.getElementById("botaoregistrar");
-
-// Pegar caixas do fomulário
-
-// PEGAR A ID
-// var linhaSelecionada = document.querySelector('#suaTabela tr.selecionado');
-// var idDaLinha = linhaSelecionada.getAttribute('id');
-
 
 //1° LINHAS
 var data = document.getElementById("datainicio");
@@ -21,17 +29,12 @@ var objetivomarc = document.getElementsByName("objetivo");
 var objetivoSelecionado = null;
 
 //3° LINHA
-var facilitadores = document.getElementById("selecionandofacilitador").value;
-
-// 4° LINHA
 var temaprincipal = document.getElementById("temaprincipal");
 
 // Botões
 gravarinformacoes.addEventListener('click', gravando);
 
 function gravando() {
-
-    // var idDaLinha = response.idDaLinha; // Puxando a id
 
     var data = document.getElementById("datainicio").value;
     var horainicio = document.getElementById("horainicio").value;
@@ -49,7 +52,7 @@ function gravando() {
     }
 
     var local = document.getElementById("pegarlocal").value;
-    var facilitadores = document.getElementById("selecionandofacilitador").value;
+    // var facilitadores = document.getElementById("selecionandofacilitador").value;
     var temaprincipal = document.getElementById("temaprincipal");
 
     var conteudo = temaprincipal.value;
@@ -64,7 +67,7 @@ function gravando() {
         });
 
         console.log("(X) Puxou a function, mas está faltando informações");
-        console.log(objetivoSelecionado).values;
+        console.log(objetivoSelecionado);
         console.log(local);
         console.log(facilitadores);
 
@@ -78,45 +81,41 @@ function gravando() {
         });
     }
 
-        // window.alert("Identifiquei, o texto foi: " + facilitadores + conteudo + ", o objetivo é: " + objetivoSelecionado + ", o horário é: " + horainicio + " e a data é: " + data);
+    console.log("(1) A função 'gravando()' foi chamada");
 
-        console.log("(1) A função 'gravando()' foi chamada");
-        console.log(facilitadores);
-
-        // Primeira solicitação AJAX para enviarprobanco.php
-        $.ajax({
-            url: 'enviarprobanco.php',
-            method: 'POST',
-            data: {
-                facilitadores: facilitadores,
-                texto: conteudo,
-                horai: horainicio,
-                horat: horaterm,
-                datainic: data,
-                objetivos: objetivoSelecionado,
-                local: local,
-                // tempoestimado: tempoes,
-            },
-            
-            success: function () {
+    // Primeira solicitação AJAX para enviarprobanco.php
+    $.ajax({
+        url: 'enviarprobanco.php',
+        method: 'POST',
+        data: {
+            facilitadores: JSON.stringify(facilitadoresSelecionados),
+            texto: conteudo,
+            horai: horainicio,
+            horat: horaterm,
+            datainic: data,
+            objetivos: objetivoSelecionado,
+            local: local,
+            // tempoestimado: tempoes,
+        },
+        
+        success: function () {
             console.log("(2) Deu bom! AJAX está enviando");
 
-
-        setTimeout(function() {
-            window.location.href = 'pagparticipantes.php' +
-                '?facilitadores=' + encodeURIComponent(facilitadores) +
+            setTimeout(function() {
+                window.location.href = 'pagparticipantes.php' +
+                '?facilitadores=' + encodeURIComponent(JSON.stringify(facilitadoresSelecionados)) +
                 '&conteudo=' + encodeURIComponent(conteudo) +
                 '&horainicio=' + encodeURIComponent(horainicio) +
                 '&horaterm=' + encodeURIComponent(horaterm) +
                 '&data=' + encodeURIComponent(data) +
                 '&objetivoSelecionado=' + encodeURIComponent(objetivoSelecionado) +
                 '&local=' + encodeURIComponent(local);
-        }, 1500);
-    },
+            }, 1500);
+        },
 
-    error: function (error) {
-        console.error('Erro na solicitação AJAX:', error);
-        console.log(facilitadores);
-    },
-});
+        error: function (error) {
+            console.error('Erro na solicitação AJAX:', error);
+            console.log(facilitadores);
+        },
+    });
 }

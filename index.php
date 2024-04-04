@@ -53,6 +53,8 @@ $pegarlocal=$puxarform->pegarlocais();
   <link rel="stylesheet" href="view/css/bootstrap.css">
   <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+
   <!-- <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
@@ -167,20 +169,17 @@ $pegarlocal=$puxarform->pegarlocais();
           <div class="col-4"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
           <br>     
           <div class="col-8">
-          <select class=" col-8 form-control" id="selecionandofacilitador" name="facilitador">
-          <optgroup label="Selecione Facilitadores">
-              <?php foreach ($pegarfa as $facnull) : ?>
-
-                        <option value="<?php echo $facnull['nome_facilitador']; ?>"
-                        data-tokens="<?php echo $facnull['nome_facilitador']?>">
-
-                        <?php echo $facnull['nome_facilitador']; ?>
-                        
-                </option>
-                
-                <?php endforeach ?>
-                </option> 
+          <select class="col-8 form-control" id="selecionandofacilitador" name="facilitador" multiple>
+              <optgroup label="Selecione Facilitadores">
+                  <?php foreach ($pegarfa as $facnull) : ?>
+                      <option value="<?php echo $facnull['nome_facilitador']; ?>"
+                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                          <?php echo $facnull['nome_facilitador']; ?>
+                      </option>
+                  <?php endforeach ?>
+              </optgroup>
           </select>
+
           </div>
  
           <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
@@ -207,12 +206,31 @@ $pegarlocal=$puxarform->pegarlocais();
 
               <br><br>
 
-      <script src="app/gravar.js"></script>
       <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
       integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"></script> -->
+      <script src="view\js\multi-select-tag.js"></script>
+
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+      <!-- <script>
+          new MultiSelectTag('selecionandofacilitador', {
+            rounded: true, 
+            shadow: false,     
+            placeholder: 'Search', 
+            tagColor: {
+                textColor: '#1C1C1C',
+                borderColor: '#4F4F4F',
+                bgColor: '#F0F0F0',
+            },
+            onChange: function(values) {
+                console.log(values);
+            }
+        });
+      </script> -->
+            <script src="app/gravar.js"></script>
+
 </body>
 
 </html>
