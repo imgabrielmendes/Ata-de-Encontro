@@ -106,16 +106,17 @@ $result = $conn->query($sql);
                                         </h2>
                                         <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" class="text-center">
                                             <div class="accordion-body">
-                                                <div class="row">
-                                                    <div class="form-control col-12">
-                                                        <input  class="form-control" type="text" id="filtroInput" onkeyup="filtrarTabela()" placeholder="Filtrar registros...">
-                                                    </div>
-                                                </div>
+                                            <div class="col">
+               <br>
+               <input id="temaprincipal" class="form-control" type="text" onkeyup="filtrarTabela()" placeholder="Filtrar registros..."/>
+             </div>
+                                                        <!-- <input style="border: 1px solid #0000;" class="form-control item" type="text" id="filtroInput" onkeyup="filtrarTabela()" placeholder="Filtrar registros..."> -->
+                                                       
                                                 <br>
                                                 <div class="row">
                                                     <div class="col-4" style="text-align: left;">
                                                         <b>Objetivo</b>
-                                                        <select class="form-control" id="objetivoSelect" onchange="filtrarRegistros()">
+                                                        <select class="form-control" id="objetivoSelect" onchange="filtrarRegistros(event)">
                                                             <option value="">Selecione o objetivo</option>
                                                             <option value="Reunião">Reunião</option>
                                                             <option value="Treinamento">Treinamento</option>
@@ -124,11 +125,11 @@ $result = $conn->query($sql);
                                                     </div>
                                                     <div class="col-4" style="text-align: left;">
                                                         <b>Solicitação</b>
-                                                        <input class="form-control" type="date" id="solicitacaoInput" onchange="filtrarRegistros()">
+                                                        <input class="form-control" type="date" id="solicitacaoInput" onchange="filtrarRegistros(event)">
                                                     </div>
                                                     <div class="col-4" style="text-align: left;">
                                                         <b>Status</b>
-                                                        <select class="form-control" id="statusSelect" onchange="filtrarRegistros()">
+                                                        <select class="form-control" id="statusSelect" onchange="filtrarRegistros(event)">
                                                             <option value="">Selecione o status</option>
                                                             <option value="Aberta">Aberta</option>
                                                             <option value="Fechada">Fechada</option>
@@ -140,12 +141,7 @@ $result = $conn->query($sql);
                                     </div>
                                 </div>
 <br>
-                                <!-- jQuery -->
-                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                                <!-- Popper.js (Bootstrap 5 dependency) -->
-                                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-0hSUFLnE+2JoAOqJV+6DJ0zVrLy5FN3+35DSBkc/cbsuKdHTGDVZ+3rOVjXkHlD2" crossorigin="anonymous"></script>
-                                <!-- Bootstrap 5 JavaScript bundle (Bootstrap 5 dependency) -->
-                                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fqjz4im2C1iNlkj5wXaUr2ASKuwVV7h6XpSHfu6I8ELW8JwU5vZfK8ZbZSFfnEMH" crossorigin="anonymous"></script>
+                               
 
                             </tbody>
 
@@ -200,76 +196,16 @@ $result = $conn->query($sql);
                         </table>
                     </div>
                 </div>
-            </div>
-        </main>
+           
         <!-----------------------------2° FASE-------------------------------->
 
         <!-- Modal -->
-        <div id="myModal" class="modal">
-    <div class="modal-content">
-        <span class="close" style="position: absolute; top: 10px; right: 20px;" onclick="fecharModal()">&times;</span>
-        <div id="modalContent" class="accordion">
-            <br>
-            <div>
-                <h2>
-                    <h5 class="text-center">Informações de Registro da Ata</h5>
-                    <i class="fas fa-plus"></i>
-                    <br>
-                </h2>
-                <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
-                    <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
-                        <div class="col-md-12 text-center">
-                            <div class="row">
-                                <!---- PRIMEIRA LINHA DO REGISTRO ---->
-                                <br>
-                                <div class="col-4">
-                                    <label><b>Solicitação:</b></label>
-                                    <ul class="form-control bg-body-secondary" id="modal_solicitacao"></ul>
-                                </div>
-                                <div class="col-4">
-                                    <label><b>Objetivo:</b></label>
-                                    <ul class="form-control bg-body-secondary border rounded" id="modal_objetivo"></ul>
-                                </div>
-                                <div class="col-4">
-                                    <label><b>Facilitador:</b></label>
-                                    <ul class="form-control bg-body-secondary" id="modal_facilitador"></ul>
-                                </div>
-                                <div class="col-4">
-                                    <label><b>Local:</b></label>
-                                    <ul class="form-control bg-body-secondary border rounded" id="modal_local"></ul>
-                                </div>
-                                <div class="col-4">
-                                    <b>Tema:</b>
-                                    <div class="col-12">
-                                        <ul class="form-control bg-body-secondary" id="modal_tema"><?php echo $conteudo; ?></ul>
-                                    </div>
-                                </div>
-                                <div class="col-4">
-                                    <label><b>Status:</b></label>
-                                    <ul class="form-control bg-body-secondary border rounded" id="modal_status"></ul>
-                                </div> 
-                                <!-- Nova div para facilitador -->
-                                <div class="col-6">
-                                    <label><b>Facilitador:</b></label>
-                                    <ul class="form-control bg-body-secondary border rounded" id="modal_facilitador"></ul>
-                                </div>
-                                <!-- Nova div para deliberações -->
-                                <div class="col-6">
-                                    <label><b>Deliberações:</b></label>
-                                    <ul class="form-control bg-body-secondary border rounded" id="modal_deliberacoes"></ul>
-                                </div>                     
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-                                
-        <script>
+        
+  </div>
+          </main>                               
+     
+        </div> 
+         <script>
             function abrirModalDetalhes(row) {
                 // Preencher os campos da modal com os dados da linha clicada
                 document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
@@ -320,7 +256,7 @@ $result = $conn->query($sql);
                 var input, filtro, tabela, linhas, celula, texto;
 
                 // Obter o valor digitado no campo de entrada
-                input = document.getElementById("filtroInput");
+                input = document.getElementById("temaprincipal");
                 filtro = input.value.toUpperCase();
 
                 // Obter a tabela e suas linhas
@@ -357,43 +293,50 @@ $result = $conn->query($sql);
             }
 
 
-            // Função para filtrar registros com base nos critérios selecionados
-            function filtrarRegistros() {
-                var tabela, linhas, i;
-                tabela = document.getElementById("myTable");
-                linhas = tabela.getElementsByTagName("tr");
+            /// Função para filtrar registros com base nos critérios selecionados
+function filtrarRegistros(event) {
+    event.preventDefault(); // Impede o comportamento padrão do evento
 
-                // Obter os valores selecionados nos selects
-                var selectedObjective = document.getElementById("objetivoSelect").value.toUpperCase();
-                var selectedSolicitacao = document.getElementById("solicitacaoInput").value.toUpperCase();
-                var selectedStatus = document.getElementById("statusSelect").value.toUpperCase();
+    var tabela, linhas, i;
+    tabela = document.getElementById("myTable");
+    linhas = tabela.getElementsByTagName("tr");
 
-                // Iterar sobre todas as linhas da tabela e verificar se atendem aos critérios de filtro
-                for (i = 1; i < linhas.length; i++) {
-                    var atendeFiltro = true; // Define se a linha atende aos critérios de filtro
-                    var celulas = linhas[i].getElementsByTagName("td");
+    // Obter os valores selecionados nos selects
+    var selectedObjective = document.getElementById("objetivoSelect"). value.toUpperCase();
+    var selectedSolicitacao = document.getElementById("solicitacaoInput").value.toUpperCase();
+    var selectedStatus = document.getElementById("statusSelect").value.toUpperCase();
 
-                    // Filtrar por Objetivo
-                    if (selectedObjective && celulas[1].innerText.toUpperCase() !== selectedObjective) {
-                        atendeFiltro = false;
-                    }
-                    // Filtrar por Solicitação
-                    if (selectedSolicitacao && celulas[0].innerText.substring(0, 10) !== selectedSolicitacao) {
-                        atendeFiltro = false;
-                    }
-                    // Filtrar por Status
-                    if (selectedStatus && celulas[5].innerText.toUpperCase() !== selectedStatus) {
-                        atendeFiltro = false;
-                    }
+    
+    // Iterar sobre todas as linhas da tabela e verificar se atendem aos critérios de filtro
+    for (i = 1; i < linhas.length; i++) {
+        var atendeFiltro = true; // Define se a linha atende aos critérios de filtro
+        var celulas = linhas[i].getElementsByTagName("td");
 
-                    // Se a linha atender aos critérios de filtro, exibi-la; caso contrário, ocultá-la
-                    if (atendeFiltro) {
-                        linhas[i].style.display = "";
-                    } else {
-                        linhas[i].style.display = "none";
-                    }
-                }
-            }
+        // Filtrar por Objetivo
+        if (selectedObjective && celulas[1].innerText.toUpperCase() !== selectedObjective) {
+            atendeFiltro = false;
+        }
+        // Filtrar por Solicitação
+        if (selectedSolicitacao && celulas[0].innerText.substring(0, 10)!== selectedSolicitacao) {
+            atendeFiltro = false;
+        }
+        // Filtrar por Status
+        if (selectedStatus && celulas[5].innerText.toUpperCase() !== selectedStatus) {
+            atendeFiltro = false;
+        }
+
+        // Se a linha atender aos critérios de filtro, exibi-la; caso contrário, ocultá-la
+        if (atendeFiltro) {
+            linhas[i].style.display = "";
+        } else {
+            linhas[i].style.display = "none";
+        }
+    }
+
+   
+
+
+}
 
 
 
@@ -430,7 +373,11 @@ $result = $conn->query($sql);
         </script>
 
         <script src="view/js/bootstrap.js"></script>
-        </div>
-    </div>
+        <script src="app/gravar.js"></script>
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+      integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"></script> -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </body>
 </html>
