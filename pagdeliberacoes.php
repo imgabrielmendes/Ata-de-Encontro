@@ -16,9 +16,10 @@ $testandodeli=$puxarform->selecionarDeliberadores();
 //funções de encotrar pessoas
 $pegarfa=$puxarform->ultimosParticipantes();
 $pegarde=$puxarform->pegarfacilitador();
-
 $participantesArray = $pegarfa;
 // ARRUMAR UM JEITO DE DIMINUIR ISSO
+
+$pegarrespons = $puxarform->ultimosResponsaveis();
 
 try {
 
@@ -44,6 +45,9 @@ $dbpass = '';
 
       $row = $stmt->fetch(\PDO::FETCH_ASSOC);
       $facilitadores = $row["facilitador"];
+      $facilitadoresArray = json_decode($facilitadores, true);   
+      $facilitadoresString = implode(", ", $facilitadoresArray);
+
       $conteudo = $row["tema"];
       $horainicio = substr($row["hora_inicial"], 0,5);
       $horaterm = substr($row["hora_termino"], 0,5);
@@ -62,13 +66,13 @@ $dbpass = '';
   echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
 }
 
-// echo "Facilitadores - $facilitadores, 
-//       Conteúdo - $conteudo, 
-//       Horário de Início - $horainicio, 
-//       Horário de Término - $horaterm, 
-//       Data - $data, 
-//       Objetivos - $objetivoSelecionado, 
-//       Local - $local";
+echo "Facilitadores - $facilitadoresString, 
+      Conteúdo - $conteudo, 
+      Horário de Início - $horainicio, 
+      Horário de Término - $horaterm, 
+      Data - $data, 
+      Objetivos - $objetivoSelecionado, 
+      Local - $local";
 
 ?>
 <!DOCTYPE html>
@@ -167,7 +171,7 @@ $dbpass = '';
           <div class="row">
             <div class="col-6 ">
               <label><b> Facilitador(res) responsável:</b></label>
-              <ul class="form-control bg-body-secondary"><?php echo $facilitadores; ?></ul>            
+              <ul class="form-control bg-body-secondary"><?php echo $facilitadoresString; ?></ul>            
             </div>
           
  

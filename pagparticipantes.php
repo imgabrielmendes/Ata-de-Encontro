@@ -10,7 +10,8 @@ $puxarform= new AcoesForm;
 $facilitadores=$puxarform->selecionarFacilitadores();
 $pegarfa=$puxarform->pegarfacilitador();
 $pegarid= $puxarform->puxarId();
-var_dump($pegarid);
+
+$pegarrespons = $puxarform->ultimosResponsaveis();
 
 //PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
 $facilitadores = $_GET['facilitadores'];
@@ -21,13 +22,18 @@ $data = $_GET['data'];
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
 
-// echo "Facilitadores - $facilitadores, 
-//       Conteúdo - $conteudo, 
-//       Horário de Início - $horainicio, 
-//       Horário de Término - $horaterm, 
-//       Data - $data, 
-//       Objetivos - $objetivoSelecionado, 
-//       Local - $local";
+// Convertendo a string JSON de $facilitadores para um array
+$facilitadoresArray = json_decode($facilitadores, true);   
+$facilitadoresString = implode(", ", $facilitadoresArray);
+
+    // Usando $facilitadoresString na sua string de saída
+    echo "Facilitadores - $facilitadoresString, 
+          Conteúdo - $conteudo, 
+          Horário de Início - $horainicio, 
+          Horário de Término - $horaterm, 
+          Data - $data, 
+          Objetivos - $objetivoSelecionado, 
+          Local - $local";
 
 ?>
 <!DOCTYPE html>
@@ -126,7 +132,7 @@ $local = $_GET['local'];
           <div class="row">
             <div class="col-6 ">
               <label><b> Facilitador(res) responsável:</b></label>
-              <ul class="form-control bg-body-secondary"><?php echo $facilitadores; ?></ul>            
+              <ul class="form-control bg-body-secondary"><?php echo $facilitadoresString; ?></ul>  
             </div>
           
  

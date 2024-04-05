@@ -3,7 +3,7 @@ include 'database.php';
 session_start();
 
 // Verifica se a variável 'texto' foi enviada através do método POST
-    $facilitadoresSelecionados=$_POST['facilitadores'];
+    $facilitadoresSelecionados = $_POST['facilitadores'];
     $data= $_POST['datainic'] . ' '.$_POST['horai'] . ':00';
 	$conteudo=$_POST['texto'];
     $horainicio=$_POST['horai'];
@@ -11,9 +11,6 @@ session_start();
     $local= $_POST['local'];
     $horaterm=$_POST['horat'].':00';
     // $tempoes=$_POST['tempoestimado'];
-
-    // $horaterm= $_POST['datainic'] . ' ' .$_POST['horat'] .':00';
-    // $horaterm='7777-77-77';
 
     if ($facilitadoresSelecionados !=="" && $data !=="" && $horainicio !=="" && $horaterm !=="" && $conteudo !== "" && $objetivoSelecionado !=="" && $local !=="")  {
 

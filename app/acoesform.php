@@ -205,7 +205,38 @@ class AcoesForm {
         } catch (\PDOException $e) {
             throw $e;
         }
-    }    
+    } 
+    
+    public function ultimosResponsaveis(){
+
+        try { 
+            //ARRUMAR UM JEITO DE DIMINUIR ISSO
+            $dbhost = 'localhost';
+            $dbname = 'atareu';
+            $dbuser = 'root';
+            $dbpass = '';
+
+            // Conexão com o banco de dados usando PDO
+            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
+            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+
+            //SELECT * FROM facilitadores
+            $sql = "SELECT facilitador FROM assunto
+                    ORDER BY data_registro DESC 
+                    LIMIT 1";
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute();
+
+            //print_r($sql);
+
+            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $resultados;
+
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+    }
     
     function obterUltimoRegistro() {
         // ARRUMAR UM JEITO DE DIMINUIR ISSO
