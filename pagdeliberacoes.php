@@ -100,6 +100,9 @@ echo "Facilitadores - $facilitadoresString,
   <link rel="stylesheet" href="view/css/bootstrap-grid.min.css">
   <link rel="stylesheet" href="view/css/bootstrap.css">
   <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+
 </head>
 
 <body>
@@ -281,15 +284,16 @@ echo "Facilitadores - $facilitadoresString,
             <div class="col">
     <!-- Primeira caixa de texto e select de facilitadores -->
     <div class="mb-2">
-        <select id="deliberador" class="form-control facilitator-select" placeholder="Participantes...">
-            <option value="" disabled selected>Selecione um facilitador...</option>
-            <?php foreach ($pegarde as $facnull) : ?>
-                <option value="<?= $facnull['nome_facilitador']; ?>">
-                    <?= $facnull['nome_facilitador']; ?>
-                </option>
-            <?php endforeach ?>
+        <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
+        <optgroup label="Selecione Facilitadores">
+                  <?php foreach ($pegarde as $facnull) : ?>
+                      <option value="<?php echo $facnull['nome_facilitador']; ?>"
+                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                          <?php echo $facnull['nome_facilitador']; ?>
+                      </option>
+                  <?php endforeach ?>
+              </optgroup>
         </select>
- 
 </div>
 
         </div>
@@ -354,11 +358,12 @@ echo "Facilitadores - $facilitadoresString,
 
 </div>
        
-      
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="view\js\multi-select-tag.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
     <script src="app/deliberacoes.js"></script>
+
 </body>
 
 </html>

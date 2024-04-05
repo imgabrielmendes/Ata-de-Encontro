@@ -210,26 +210,11 @@ $pegarlocal=$puxarform->pegarlocais();
       integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"></script> -->
+      
       <script src="view\js\multi-select-tag.js"></script>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-
-      <!-- <script>
-          new MultiSelectTag('selecionandofacilitador', {
-            rounded: true, 
-            shadow: false,     
-            placeholder: 'Search', 
-            tagColor: {
-                textColor: '#1C1C1C',
-                borderColor: '#4F4F4F',
-                bgColor: '#F0F0F0',
-            },
-            onChange: function(values) {
-                console.log(values);
-            }
-        });
-      </script> -->
-            <script src="app/gravar.js"></script>
+      <script src="app/gravar.js"></script>
 
 </body>
 

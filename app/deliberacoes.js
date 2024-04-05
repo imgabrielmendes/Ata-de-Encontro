@@ -1,3 +1,21 @@
+var deliberadoresSelecionados = [];
+
+new MultiSelectTag('deliberador', {
+    rounded: true, 
+    shadow: false,     
+    placeholder: 'Search', 
+    tagColor: {
+        textColor: '#1C1C1C',
+        borderColor: '#4F4F4F',
+        bgColor: '#F0F0F0',
+    },
+    onChange: function(values) {
+        console.log(values);
+        deliberadoresSelecionados = values;
+    }
+});
+
+
 console.log();
 
 var participantesAdicionados = [];
@@ -62,10 +80,12 @@ addItemButton.addEventListener('click', function() {
         deleteButton.textContent = 'Excluir';
         deleteButton.className = 'btn btn-danger btn-sm ml-2 delete-item';
         deleteButton.addEventListener('click', function() {
+
             // Remove o item e o facilitador associado
             itemList.removeChild(textListItemDiv);
             itemList.removeChild(facilitatorListItemDiv);
             deleteButton.remove(); // Remove o botão de exclusão
+
         });
 
         // Adiciona o botão de exclusão à lista de itens
@@ -147,7 +167,8 @@ document.getElementById('addItemButton').addEventListener('click', function() {
         deleteButton.style.width = '37px'; 
         deleteButton.style.height = '37px'; 
     
-        deleteButton.addEventListener('click', function() {           
+        deleteButton.addEventListener('click', function() {  
+                     
             // Remove o item e o facilitador associado
             itemList.removeChild(textListItemDiv);
             itemList.removeChild(facilitatorListItemDiv);
