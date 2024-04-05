@@ -1,5 +1,4 @@
-var facilitadoresSelecionados = []; // Definido fora da função gravando()
-
+var facilitadoresSelecionados = [];
 new MultiSelectTag('selecionandofacilitador', {
     rounded: true, 
     shadow: false,     
@@ -11,7 +10,7 @@ new MultiSelectTag('selecionandofacilitador', {
     },
     onChange: function(values) {
         console.log(values);
-        facilitadoresSelecionados = values; // Atribuição dos valores
+        facilitadoresSelecionados = values;
     }
 });
 

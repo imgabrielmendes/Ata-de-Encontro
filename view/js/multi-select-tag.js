@@ -229,13 +229,15 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         for(var i = 0; i < options.length; i++) {
             element.options[i].selected = options[i].selected
             if(options[i].selected) {
-                selected_values.push({label: options[i].label, value: options[i].value})
+                selected_values.push(options[i].label); // Apenas os valores são adicionados ao array
             }
         }
+
         if (fireEvent && customs.hasOwnProperty('onChange')) {
             customs.onChange(selected_values)
         }
     }
+    
 
     function getOptions() {
         // Map element options
