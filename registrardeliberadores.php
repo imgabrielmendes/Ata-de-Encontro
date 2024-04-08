@@ -14,7 +14,8 @@ if ($conn->connect_error) {
 }
 
     $deliberador = $_POST['deliberaDores'];
-    $deliberacoes =$_POST['deliberAcoes'];
+    // $deliberacoes =$_POST['deliberAcoes'];
+    $newItem = $_POST['newItem'];
 
     $sql = "SELECT id FROM assunto ORDER BY id DESC LIMIT 1";
     $result = $conn->query($sql);
@@ -24,7 +25,7 @@ if ($conn->connect_error) {
         $ultimoID = $row["id"];
 
         // Insere os dados na tabela participantes
-        $enviarbanco = "INSERT INTO deliberacoes (id_ata, deliberacoes, deliberadores) VALUES ('$ultimoID', '$deliberador','$deliberacoes')";
+        $enviarbanco = "INSERT INTO deliberacoes (id_ata, deliberacoes, deliberadores) VALUES ('$ultimoID', '$newItem','$deliberador')";
 
         if ($conn->query($enviarbanco) === TRUE) {
 
