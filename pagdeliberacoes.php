@@ -165,9 +165,36 @@ echo "Facilitadores - $facilitadoresString,
 
                   <!---ABA DE TEMPO ESTIMADO ---->
                   <div class="col-3">
-                    <label for="form-control"> <b>Tempo Estimado:</b> </label>
-                    <ul class="form-control bg-body-secondary">Colocar resultado</ul>
-                  </div>
+                    <label for="form-control"><b>Tempo Estimado:</b></label>
+                    <?php
+                    // Verifica se as variáveis estão definidas antes de calcular o tempo estimado
+                    if (isset($horainicio) && isset($horaterm)) {
+                        // Calcula a diferença de tempo em minutos
+                        $inicio = strtotime($horainicio);
+                        $termino = strtotime($horaterm);
+                        $diferencaMinutos = ($termino - $inicio) / 60;
+
+                        // Calcula horas e minutos
+                        $horas = floor($diferencaMinutos / 60);
+                        $minutos = $diferencaMinutos % 60;
+
+                        // Formata os números com dois dígitos
+                        $horas_formatado = sprintf("%02d", $horas);
+                        $minutos_formatado = sprintf("%02d", $minutos);
+
+                        // Exibe o tempo estimado no formato "00:00"
+                        echo "<div class='form-control bg-body-secondary tempo-estimado'>" . $horas_formatado . ":" . $minutos_formatado . "</div>";
+                    } else {
+                        echo "Horário de início e/ou término não definidos.";
+                    }
+                    ?>
+                    <style>
+                        .tempo-estimado {
+                            width: 100%;
+                        }
+                    </style>
+                </div>
+
           </div>
 
           <div class="row">
@@ -269,7 +296,7 @@ echo "Facilitadores - $facilitadoresString,
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
     <div class="col-md-12 text-center">               
     </div>     
-    <span id="inputContainer"></span>
+    <span class="col-4" id="inputContainer"></span>
         <form id="addForm">
           
         <div class="form-group">
@@ -296,10 +323,17 @@ echo "Facilitadores - $facilitadoresString,
 </div>
 
         </div>
-        <div class="col-2">
-            <ul id="caixadeselecaodel"></ul>
-            <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
-        </div>
+        <div class="row">
+          <div class="col-10"></div>
+          <div class="col-2 d-flex justify-content-end">
+              <div class="d-flex flex-column align-items-end">
+                  <ul id="caixadeselecaodel"></ul>
+                  <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
+              </div>
+    </div>
+</div>
+
+
     </div>
     
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -331,7 +365,10 @@ echo "Facilitadores - $facilitadoresString,
     </div>
 
         <br>
-        <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button>
+        <!-- <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
+        <div class="d-flex justify-content-center">
+            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Atualizar a ata</button>
+        </div>
 
     </form>
           

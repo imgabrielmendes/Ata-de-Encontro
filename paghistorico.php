@@ -182,7 +182,7 @@ $result = $conn->query($sql);
                                         echo "<tr>";
                                         echo "<td>" . substr($row["data_solicitada"], 8, 2) . "/" . substr($row["data_solicitada"], 5, 2) . "/" . substr($row["data_solicitada"], 0, 4) . "</td>";
                                         echo "<td>" . $row["objetivo"] . "</td>";
-                                        echo "<td>" . $row["facilitador"] . "</td>";
+                                        echo "<td>" . trim(str_replace(array('[', ']', '"'), ' ', $row["facilitador"])) . "</td>";
                                         echo "<td>" . $row["tema"] . "</td>";
                                         echo "<td>" . $row["local"] . "</td>";
                                         echo "<td class='status_button'>";
@@ -246,18 +246,26 @@ $result = $conn->query($sql);
                                                 </div>
                                                
                                                 <!-- Nova div para deliberações -->
-                                                <div class="col-6">
-                                                    <label><b>Deliberações:</b></label>
-                                                    <ul class="form-control bg-body-secondary border rounded" id="modal_deliberacoes">
-                                                        <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
-                                                            <optgroup label="Selecione Facilitadores">
-                                                                <?php foreach ($pegarde as $facnull) : ?>
-                                                                    <option value="<?php echo $facnull['nome_facilitador']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                                                                        <?php echo $facnull['nome_facilitador']; ?>
-                                                                    </option>
-                                                                <?php endforeach ?>
-                                                            </optgroup>
-                                                        </select>
+                                                <div class="col-12">
+                                                    <label><b>Participantes:</b></label>
+                                                    <ul class="form-control bg-body-secondary border rounded" id="modal_participantes">
+                                                    <?php
+// Decodifica a string JSON para um array
+$participantesArray = json_decode($pegarfa[0]['participantes']);
+
+// Verifica se o array está vazio
+if (!empty($participantesArray)) {
+    // Se não estiver vazio, exibe a mensagem informando que há participantes
+    echo "O array de participantes não está vazio.";
+} else {
+    // Se estiver vazio, exibe a mensagem informando que não há participantes
+    echo "O array de participantes está vazio.";
+}
+?>
+
+
+
+
                                                     </ul>
                                                 </div>
                                             </div>
@@ -283,6 +291,7 @@ function abrirModalDetalhes(row) {
     document.getElementById("modal_local").innerText = row.local;
     document.getElementById("modal_tema").innerText = row.tema;
     document.getElementById("modal_status").innerText = row.status;
+   
 
     // Fetch para obter as deliberações (se necessário)
     // fetch('id= deliberacoes')
