@@ -105,7 +105,7 @@ $facilitadoresString = implode(", ", $facilitadoresArray);
           <div class="row">
             <br>
                   <div class="col-3">
-                    <label>Data*</label>
+                    <label><b>Data*:</b></label>
                     <ul class="form-control bg-body-secondary"> <?php echo $data;  ?> </ul>
                   </div>
           
@@ -124,9 +124,37 @@ $facilitadoresString = implode(", ", $facilitadoresArray);
 
                   <!---ABA DE TEMPO ESTIMADO ---->
                   <div class="col-3">
-                    <label for="form-control"> <b>Tempo Estimado:</b> </label>
-                    <ul class="form-control bg-body-secondary">Colocar resultado</ul>
-                  </div>
+                    <label for="form-control"><b>Tempo Estimado:</b></label>
+                    <?php
+                    // Verifica se as variáveis estão definidas antes de calcular o tempo estimado
+                    if (isset($horainicio) && isset($horaterm)) {
+                        // Calcula a diferença de tempo em minutos
+                        $inicio = strtotime($horainicio);
+                        $termino = strtotime($horaterm);
+                        $diferencaMinutos = ($termino - $inicio) / 60;
+
+                        // Calcula horas e minutos
+                        $horas = floor($diferencaMinutos / 60);
+                        $minutos = $diferencaMinutos % 60;
+
+                        // Formata os números com dois dígitos
+                        $horas_formatado = sprintf("%02d", $horas);
+                        $minutos_formatado = sprintf("%02d", $minutos);
+
+                        // Exibe o tempo estimado no formato "00:00"
+                        echo "<div class='form-control bg-body-secondary tempo-estimado'>" . $horas_formatado . ":" . $minutos_formatado . "</div>";
+                    } else {
+                        echo "Horário de início e/ou término não definidos.";
+                    }
+                    ?>
+                    <style>
+                        .tempo-estimado {
+                            width: 100%;
+                        }
+                    </style>
+                </div>
+
+
           </div>
 
           <div class="row">
@@ -178,9 +206,8 @@ $facilitadoresString = implode(", ", $facilitadoresArray);
           <form id="addForm">
               <div class="form-group ">
                   <br>
-                  <div  id="items" class="col-12 list-group"></div>
-                   
-                  
+                  <div id="items" class="col-12 list-group">                    
+              </div>
                   <label for="item"><b>Informe os participantes<b></label>
                   <div class="row">
                     <div class="col-11"> 
@@ -199,7 +226,7 @@ $facilitadoresString = implode(", ", $facilitadoresArray);
                   </div> 
                 </div>
                   </div>
-                       
+              
              
           </form>
           <div  class="row">
