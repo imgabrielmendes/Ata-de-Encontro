@@ -297,7 +297,7 @@ echo "Facilitadores - $facilitadoresString,
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
     <div class="col-md-12 text-center">               
     </div>     
-    <span id="inputContainer"></span>
+    <span class="col-4" id="inputContainer"></span>
         <form id="addForm">
           
         <div class="form-group">
@@ -324,10 +324,17 @@ echo "Facilitadores - $facilitadoresString,
 </div>
 
         </div>
-        <div class="col-2">
-            <ul id="caixadeselecaodel"></ul>
-            <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
-        </div>
+        <div class="row">
+          <div class="col-10"></div>
+          <div class="col-2 d-flex justify-content-end">
+              <div class="d-flex flex-column align-items-end">
+                  <ul id="caixadeselecaodel"></ul>
+                  <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
+              </div>
+    </div>
+</div>
+
+
     </div>
     
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
@@ -359,7 +366,10 @@ echo "Facilitadores - $facilitadoresString,
     </div>
 
         <br>
-        <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button>
+        <!-- <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
+        <div class="d-flex justify-content-center">
+            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Atualizar a ata</button>
+        </div>
 
     </form>
           
