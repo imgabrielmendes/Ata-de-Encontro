@@ -2,40 +2,40 @@
 include 'database.php';
 session_start();
 
-// Verifica se a variável 'texto' foi enviada através do método POST
-    $facilitadoresSelecionados = $_POST['facilitadores'];
-    $data= $_POST['datainic'] . ' '.$_POST['horai'] . ':00';
-	$conteudo=$_POST['texto'];
-    $horainicio=$_POST['horai'];
-    $objetivoSelecionado= $_POST['objetivos'];
-    $local= $_POST['local'];
-    $horaterm=$_POST['horat'].':00';
-    // $tempoes=$_POST['tempoestimado'];
+$facilitadoresSelecionados = $_POST['facilitadores'];
+$data = $_POST['datainic'] . ' ' . $_POST['horai'] . ':00';
+$conteudo = $_POST['texto'];
+$objetivoSelecionado = $_POST['objetivos'];
+$local = $_POST['local'];
+$horaterm = $_POST['horat'] . ':00';
 
-    if ($facilitadoresSelecionados !=="" && $data !=="" && $horainicio !=="" && $horaterm !=="" && $conteudo !== "" && $objetivoSelecionado !=="" && $local !=="")  {
+if ($facilitadoresSelecionados !== "" && $data !== "" && $horaterm !== "" && $conteudo !== "" && $objetivoSelecionado !== "" && $local !== "") {
 
-        $enviarbanco = "INSERT INTO assunto (facilitador , data_solicitada, tema,objetivo , hora_inicial, hora_termino, local, status) VALUES ('$facilitadoresSelecionados','$data','$conteudo','$objetivoSelecionado', '$data', '$horaterm','$local','ABERTA')";
+    // Inserir dados na tabela 'assunto'
+    $enviarbanco = "INSERT INTO assunto (facilitador , data_solicitada, tema,objetivo , hora_inicial, hora_termino, local, status) VALUES ('$facilitadoresSelecionados','$data','$conteudo','$objetivoSelecionado', '$data', '$horaterm','$local','ABERTA')";
 
-        if (mysqli_query($conexao, $enviarbanco)) {
+    $stmt = $conexao->prepare($enviarbanco);
+    $stmt->execute();
 
-            var_dump($data);
-            var_dump($horainicio);
-            var_dump($horaterm);
-            var_dump ($tempoes);
-            var_dump($objetivoSelecionado);
-            var_dump($local);
-            var_dump($facilitadoresSelecionados);
-            var_dump($conteudo);
-
-            var_dump("(3) RECEBEU E ENVIOU PRO BANCO");
-
-        } else {
-            var_dump($facilitadoresSelecionados);
-            echo "(X) A marcação do AJAX não foi identificada";
-            
-        } 
-        
-    };
-
+    // Pegar o ID inserido na primeira consulta
     
+    $id_assunto = $conexao->insert_id;
+
+    $enviarbanco2 = "INSERT INTO ata_has_fac (id_ata, facilitadores) VALUES ('$id_assunto', '$facilitadoresSelecionados')";
+    $stmt2 = $conexao->prepare($enviarbanco2);
+    $stmt2->execute();
+
+    if ($stmt && $stmt2) {
+        echo "(3) RECEBEU E ENVIOU PRO BANCO";
+    } else {
+        echo "(X) A marcação do AJAX não foi identificada";
+    }
+
+    $stmt->close();
+    $stmt2->close();
+
+    } 
+       else { echo "(X) Algum dos campos está vazio.";
+    }
+
 ?>

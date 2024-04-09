@@ -172,7 +172,7 @@ $pegarlocal=$puxarform->pegarlocais();
           <select class="col-8 form-control" id="selecionandofacilitador" name="facilitador" multiple>
               <optgroup label="Selecione Facilitadores">
                   <?php foreach ($pegarfa as $facnull) : ?>
-                      <option value="<?php echo $facnull['nome_facilitador']; ?>"
+                      <option value="<?php echo $facnull['id']; ?>"
                           data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
                           <?php echo $facnull['nome_facilitador']; ?>
                       </option>
@@ -205,11 +205,6 @@ $pegarlocal=$puxarform->pegarlocais();
               </script>
 
               <br><br>
-
-      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
-      integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"></script> -->
       
       <script src="view\js\multi-select-tag.js"></script>
 

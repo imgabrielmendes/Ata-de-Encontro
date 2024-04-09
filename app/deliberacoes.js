@@ -29,7 +29,6 @@ var mensagemInfo = document.getElementById('infoMessage');
 
 //LINKANDO AS VARÍAVEIS QUE VÃO SER ENVIADO JUNTO COM PARTICIPANTES
 
-// Adiciona um evento de clique ao botão "addItemButton"
 addItemButton.addEventListener('click', function() {
     var newItem = document.getElementById('item').value.trim();
     

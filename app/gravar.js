@@ -68,7 +68,7 @@ function gravando() {
         console.log("(X) Puxou a function, mas está faltando informações");
         console.log(objetivoSelecionado);
         console.log(local);
-        console.log(facilitadores);
+        // console.log(facilitadores);
 
     } 
     
@@ -114,7 +114,7 @@ function gravando() {
 
         error: function (error) {
             console.error('Erro na solicitação AJAX:', error);
-            console.log(facilitadores);
+            // console.log(facilitadores);
         },
     });
 }

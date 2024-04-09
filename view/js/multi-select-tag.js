@@ -229,7 +229,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         for(var i = 0; i < options.length; i++) {
             element.options[i].selected = options[i].selected
             if(options[i].selected) {
-                selected_values.push(options[i].label); // Apenas os valores são adicionados ao array
+                selected_values.push(options[i].value); // Apenas os valores são adicionados ao array
             }
         }
 

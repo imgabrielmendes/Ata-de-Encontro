@@ -47,7 +47,6 @@ $dbpass = '';
       $facilitadores = $row["facilitador"];
       $facilitadoresArray = json_decode($facilitadores, true);   
       $facilitadoresString = implode(", ", $facilitadoresArray);
-
       $conteudo = $row["tema"];
       $horainicio = substr($row["hora_inicial"], 0,5);
       $horaterm = substr($row["hora_termino"], 0,5);
