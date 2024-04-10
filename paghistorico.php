@@ -98,6 +98,7 @@ $result = $conn->query($sql);
                                     <th>tema</th>
                                     <th>local</th>
                                     <th>status</th>
+                                    <th>atualização</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -174,18 +175,17 @@ $result = $conn->query($sql);
                             $result = $conn->query($sql);
                             ?>
 
-                            <tbody class="text-center">
-                                <?php
-                                // Exibe os dados em cada linha da tabela
+                        <tbody class="text-center">
+                            <?php
                                 if ($result->num_rows > 0) {
                                     while ($row = $result->fetch_assoc()) {
-                                        echo "<tr>";
-                                        echo "<td>" . substr($row["data_solicitada"], 8, 2) . "/" . substr($row["data_solicitada"], 5, 2) . "/" . substr($row["data_solicitada"], 0, 4) . "</td>";
-                                        echo "<td>" . $row["objetivo"] . "</td>";
-                                        echo "<td>" . trim(str_replace(array('[', ']', '"'), ' ', $row["facilitador"])) . "</td>";
-                                        echo "<td>" . $row["tema"] . "</td>";
-                                        echo "<td>" . $row["local"] . "</td>";
-                                        echo "<td class='status_button'>";
+                                        echo "<tr class='align-middle'>";
+                                        echo "<td class='text-center'>" . substr($row["data_solicitada"], 8, 2) . "/" . substr($row["data_solicitada"], 5, 2) . "/" . substr($row["data_solicitada"], 0, 4) . "</td>";
+                                        echo "<td class='text-center'>" . $row["objetivo"] . "</td>";
+                                        echo "<td class='text-center'>" . trim(str_replace(array('[', ']', '"'), ' ', $row["facilitador"])) . "</td>";
+                                        echo "<td class='text-center'>" . $row["tema"] . "</td>";
+                                        echo "<td class='text-center'>" . $row["local"] . "</td>";
+                                        echo "<td class='text-center status_button'>";
 
                                         if ($row['status'] === 'ABERTA') {
                                             echo "<span class='badge bg-primary'>ABERTA</span>";
@@ -194,14 +194,19 @@ $result = $conn->query($sql);
                                         }
 
                                         echo "</td>";
+
+                                        // Adicionando o botão de atualização
+                                        echo "<td class='text-center'><a href='pagatribuida.php'><button type='button' class='btn btn-warning' style='color: white;'>+</button></a></td>";
+
+
                                         echo "</tr>";
                                     }
                                 } else {
-                                    echo "<tr><td colspan='6'>Nenhum resultado encontrado.</td></tr>";
+                                    echo "<tr><td colspan='7' class='text-center align-middle'>Nenhum resultado encontrado.</td></tr>";
                                 }
                                 $conn->close();
-                                ?>
-                        </table>
+                            ?>
+                        </tbody>
                     </div>
                 </div>
 
@@ -247,27 +252,30 @@ $result = $conn->query($sql);
                                                
                                                 <!-- Nova div para deliberações -->
                                                 <div class="col-12">
-                                                    <label><b>Participantes:</b></label>
-                                                    <ul class="form-control bg-body-secondary border rounded" id="modal_participantes">
-                                                    <?php
-// Decodifica a string JSON para um array
-$participantesArray = json_decode($pegarfa[0]['participantes']);
+    <label for="form-control"><b>Participantes</b></label>
+    <div class="form-control bg-body-secondary">
+        <?php 
+        // Decodifica a string JSON para um array
+        foreach ($pegarfa as $item) {
+            $participantesArray = json_decode($item['participantes']);
+            $numParticipantes = count($participantesArray);
+            $counter = 0;
 
-// Verifica se o array está vazio
-if (!empty($participantesArray)) {
-    // Se não estiver vazio, exibe a mensagem informando que há participantes
-    echo "O array de participantes não está vazio.";
-} else {
-    // Se estiver vazio, exibe a mensagem informando que não há participantes
-    echo "O array de participantes está vazio.";
-}
-?>
+            foreach ($participantesArray as $participanteNome) {
+                $participanteNome = trim($participanteNome, '" ');
+                echo "<span>$participanteNome</span>";
+                
+                // Adiciona vírgula entre os participantes, exceto no último
+                if ($counter < $numParticipantes - 1) {
+                    echo ", ";
+                }
+                $counter++;
+            }
+        }
+        ?>
+    </div>
+</div>
 
-
-
-
-                                                    </ul>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -283,34 +291,19 @@ if (!empty($participantesArray)) {
 
     </div>
     <script>
-        // Função para preencher os campos do modal
-function abrirModalDetalhes(row) {
-    document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
-    document.getElementById("modal_objetivo").innerText = row.objetivo;
-    document.getElementById("modal_facilitador").innerText = row.facilitador;
-    document.getElementById("modal_local").innerText = row.local;
-    document.getElementById("modal_tema").innerText = row.tema;
-    document.getElementById("modal_status").innerText = row.status;
-   
-
-    // Fetch para obter as deliberações (se necessário)
-    // fetch('id= deliberacoes')
-    //     .then(response => response.text())
-    //     .then(data => {
-    //         document.getElementById("modal_deliberacoes").innerHTML = data;
-    //     })
-    //     .catch(error => {
-    //         console.error('Ocorreu um erro ao obter os dados:', error);
-    // });
-
-    // Abrir o modal
-    var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
-        backdrop: 'static', // Impede o fechamento clicando fora do modal
-        keyboard: false // Impede o fechamento pressionando a tecla Esc
-    });
-    myModal.show();
-}
-
+        function abrirModalDetalhes(row) {
+            document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
+            document.getElementById("modal_objetivo").innerText = row.objetivo;
+            document.getElementById("modal_facilitador").innerText = row.facilitador;
+            document.getElementById("modal_local").innerText = row.local;
+            document.getElementById("modal_tema").innerText = row.tema;
+            document.getElementById("modal_status").innerText = row.status;
+            var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+                backdrop: 'static', // Impede o fechamento clicando fora do modal
+                keyboard: false // Impede o fechamento pressionando a tecla Esc
+            });
+            myModal.show();
+        }
     </script>
 
     <script>
