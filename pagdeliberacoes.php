@@ -65,13 +65,13 @@ $dbpass = '';
   echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
 }
 
-echo "Facilitadores - $facilitadoresString, 
-      Conteúdo - $conteudo, 
-      Horário de Início - $horainicio, 
-      Horário de Término - $horaterm, 
-      Data - $data, 
-      Objetivos - $objetivoSelecionado, 
-      Local - $local";
+// echo "Facilitadores - $facilitadoresString, 
+//       Conteúdo - $conteudo, 
+//       Horário de Início - $horainicio, 
+//       Horário de Término - $horaterm, 
+//       Data - $data, 
+//       Objetivos - $objetivoSelecionado, 
+//       Local - $local";
 
 ?>
 <!DOCTYPE html>

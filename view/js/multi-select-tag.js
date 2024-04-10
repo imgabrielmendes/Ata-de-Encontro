@@ -192,7 +192,6 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
     }
 
     function enableItemSelection() {
-        // Add click listener to the list items
         for(var li of ul.children) {
             li.addEventListener('click', (e) => {
                 options.find((o) => o.value == e.target.dataset.value).selected = true
@@ -205,7 +204,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
     }
 
     function isTagSelected(val) {
-        // If the item is already selected
+
         for(var child of inputContainer.children) {
             if(!child.classList.contains('input-body') && child.firstChild.dataset.value == val) {
                 return true
@@ -215,7 +214,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
     }
     
     function removeTag(val) {
-        // Remove selected item
+    
         for(var child of inputContainer.children) {
             if(!child.classList.contains('input-body') && child.firstChild.dataset.value == val) {
                 inputContainer.removeChild(child)
@@ -224,7 +223,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
     }
 
     function setValues(fireEvent=true) {
-        // Update element final values
+
         selected_values = []
         for(var i = 0; i < options.length; i++) {
             element.options[i].selected = options[i].selected

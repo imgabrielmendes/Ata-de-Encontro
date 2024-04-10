@@ -94,9 +94,7 @@ $pegarlocal=$puxarform->pegarlocais();
             <h2>Formulário de Solicitação </h2>
           </div>
           <br><br><br>
-
-
-
+          
           <!---ABA DE DATA---->
           <div class="col-3">
             <label><b>Data*</b></label>

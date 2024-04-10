@@ -2,7 +2,7 @@
 
 namespace formulario;
 
-include ("vendor/autoload.php");
+// include ("vendor/autoload.php");
 include_once ("app/acoesform.php");
 include ("conexao.php");
 
@@ -27,13 +27,13 @@ $facilitadoresArray = json_decode($facilitadores, true);
 $facilitadoresString = implode(", ", $facilitadoresArray);
 
     // Usando $facilitadoresString na sua string de saída
-    echo "Facilitadores - $facilitadoresString, 
-          Conteúdo - $conteudo, 
-          Horário de Início - $horainicio, 
-          Horário de Término - $horaterm, 
-          Data - $data, 
-          Objetivos - $objetivoSelecionado, 
-          Local - $local";
+    // echo "Facilitadores - $facilitadoresString, 
+    //       Conteúdo - $conteudo, 
+    //       Horário de Início - $horainicio, 
+    //       Horário de Término - $horaterm, 
+    //       Data - $data, 
+    //       Objetivos - $objetivoSelecionado, 
+    //       Local - $local";
 
 ?>
 <!DOCTYPE html>
