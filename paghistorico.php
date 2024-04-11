@@ -90,17 +90,6 @@ $result = $conn->query($sql);
                         <!---- PRIMEIRA LINHA DO REGISTRO ---->
 
                         <table id="myTable" class="table table-striped">
-                            <thead class="text-center">
-                                <tr class="col">
-                                    <th>Solicitação</th>
-                                    <th>objetivo</th>
-                                    <th>facilitador</th>
-                                    <th>tema</th>
-                                    <th>local</th>
-                                    <th>status</th>
-                                    <th>atualização</th>
-                                </tr>
-                            </thead>
                             <tbody>
 
                                 <!-- Filtro de Registro -->
@@ -175,136 +164,196 @@ $result = $conn->query($sql);
                             $result = $conn->query($sql);
                             ?>
 
-                        <tbody class="text-center">
-                            <?php
-                                if ($result->num_rows > 0) {
-                                    while ($row = $result->fetch_assoc()) {
-                                        echo "<tr class='align-middle'>";
-                                        echo "<td class='text-center'>" . substr($row["data_solicitada"], 8, 2) . "/" . substr($row["data_solicitada"], 5, 2) . "/" . substr($row["data_solicitada"], 0, 4) . "</td>";
-                                        echo "<td class='text-center'>" . $row["objetivo"] . "</td>";
-                                        echo "<td class='text-center'>" . trim(str_replace(array('[', ']', '"'), ' ', $row["facilitador"])) . "</td>";
-                                        echo "<td class='text-center'>" . $row["tema"] . "</td>";
-                                        echo "<td class='text-center'>" . $row["local"] . "</td>";
-                                        echo "<td class='text-center status_button'>";
+<style>
+    .btn-unstyled {
+        background: none;
+        border: none;
+        padding: 0;
+        color: inherit;
+        cursor: pointer;
+    }
 
-                                        if ($row['status'] === 'ABERTA') {
-                                            echo "<span class='badge bg-primary'>ABERTA</span>";
-                                        } elseif ($row['status'] === 'FECHADA') {
-                                            echo "<span class='badge bg-success'>FECHADA</span>";
-                                        }
+    .btn-unstyled:focus {
+        outline: none;
+    }
 
-                                        echo "</td>";
+    /* Estilo para linhas alternadas */
+    .table tbody tr:nth-child(odd) {
+        background-color: #f2f2f2; /* Define uma cor de fundo para as linhas ímpares */
+    }
+</style>
 
-                                        // Adicionando o botão de atualização
-                                        echo "<td class='text-center'><a href='pagatribuida.php'><button type='button' class='btn btn-warning' style='color: white;'>+</button></a></td>";
+<table table id="myTable" class="table table-striped">
+<thead>
+    <tr>
+        <th class="text-center">Data</th>
+        <th class="text-center">Objetivo</th>
+        <th class="text-center">Facilitador</th>
+        <th class="text-center">Tema</th>
+        <th class="text-center">Local</th>
+        <th class="text-center">Status</th>
+        <th class="text-center">Ação</th>
+    </tr>
+</thead>
 
 
-                                        echo "</tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='7' class='text-center align-middle'>Nenhum resultado encontrado.</td></tr>";
-                                }
-                                $conn->close();
-                            ?>
-                        </tbody>
+<tbody class="text-center">
+    <?php
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            // Remover aspas duplas e colchetes do facilitador
+            $facilitador = str_replace(array('[', ']', '"'), '', $row["facilitador"]);
+
+            echo "<tr>";
+            
+            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . substr($row["data_solicitada"], 8, 2) . "/" . substr($row["data_solicitada"], 5, 2) . "/" . substr($row["data_solicitada"], 0, 4) . "</td>";
+            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
+            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $facilitador . "</td>";
+            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
+            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
+            echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
+
+            // Botão sem funcionalidade
+            echo "<td class='text-center align-middle'><a href='pagatribuida.php'><button type='button' class='btn btn-warning' style='color: white;'>+</button></a></td>";
+
+            echo "</tr>";
+        }
+    } else {
+        echo "<tr><td colspan='7' class='align-middle'>Nenhum resultado encontrado.</td></tr>";
+    }
+    $conn->close();
+    ?>
+</tbody>
+
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Adicionar evento de clique aos elementos de status da tabela
+        const statusCells = document.querySelectorAll('.status-cell');
+        statusCells.forEach(function(cell) {
+            cell.addEventListener('click', function() {
+                // Obter os dados da linha correspondente
+                const rowData = JSON.parse(cell.getAttribute('data-row'));
+                // Abrir o modal com os dados da linha
+                abrirModalDetalhes(rowData);
+            });
+        });
+    });
+</script>
+
+</table>
+
+
+
                     </div>
                 </div>
 
                 <!-- Modal -->
                 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Informações de Registro da Ata</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="accordion">
-                                    <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
-                                        <div class="col-md text-center">
-                                            <div class="row">
-                                                <div class="col-4">
-                                                    <label><b>Solicitação:</b></label>
-                                                    <ul class="form-control bg-body-secondary" id="modal_solicitacao"></ul>
-                                                </div>
-                                                <div class="col-4">
-                                                    <label><b>Objetivo:</b></label>
-                                                    <ul class="form-control bg-body-secondary border rounded" id="modal_objetivo"></ul>
-                                                </div>
-                                                <div class="col-4">
-                                                    <label><b>Facilitador:</b></label>
-                                                    <ul class="form-control bg-body-secondary" id="modal_facilitador"></ul>
-                                                </div>
-                                                <div class="col-4">
-                                                    <label><b>Local:</b></label>
-                                                    <ul class="form-control bg-body-secondary border rounded" id="modal_local"></ul>
-                                                </div>
-                                                <div class="col-4">
-                                                    <b>Tema:</b>
-                                                    <div class="col-12">
-                                                        <ul class="form-control bg-body-secondary" id="modal_tema"></ul>
-                                                    </div>
-                                                </div>
-                                                <div class="col-4">
-                                                    <label><b>Status:</b></label>
-                                                    <ul class="form-control bg-body-secondary border rounded" id="modal_status"></ul>
-                                                </div>
-                                               
-                                                <!-- Nova div para deliberações -->
-                                                <div class="col-12">
-    <label for="form-control"><b>Participantes</b></label>
-    <div class="form-control bg-body-secondary">
-        <?php 
-        // Decodifica a string JSON para um array
-        foreach ($pegarfa as $item) {
-            $participantesArray = json_decode($item['participantes']);
-            $numParticipantes = count($participantesArray);
-            $counter = 0;
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Informações de Registro da Ata</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="accordion">
+                    <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+                        <div class="col-md text-center">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label><b>Solicitação:</b></label>
+                                    <ul class="form-control bg-body-secondary" id="modal_solicitacao"></ul>
+                                </div>
+                                <div class="col-4">
+                                    <label><b>Objetivo:</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_objetivo"></ul>
+                                </div>
+                                <div class="col-4">
+                                    <label><b>Facilitador:</b></label>
+                                    <ul class="form-control bg-body-secondary" id="modal_facilitador"></ul>
+                                </div>
+                                <div class="col-4">
+                                    <label><b>Local:</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_local"></ul>
+                                </div>
+                                <div class="col-4">
+                                    <b>Tema:</b>
+                                    <div class="col-12">
+                                        <ul class="form-control bg-body-secondary" id="modal_tema"></ul>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <label><b>Status:</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_status"></ul>
+                                </div>
+                               
+                                <!-- Nova div para deliberações -->
+                                <div class="col-12">
+                                    <label for="form-control"><b>Participantes</b></label>
+                                    <div class="form-control bg-body-secondary">
+                                        <?php 
+                                        // Decodifica a string JSON para um array
+                                        foreach ($pegarfa as $item) {
+                                            $participantesArray = json_decode($item['participantes']);
+                                            $numParticipantes = count($participantesArray);
+                                            $counter = 0;
 
-            foreach ($participantesArray as $participanteNome) {
-                $participanteNome = trim($participanteNome, '" ');
-                echo "<span>$participanteNome</span>";
-                
-                // Adiciona vírgula entre os participantes, exceto no último
-                if ($counter < $numParticipantes - 1) {
-                    echo ", ";
-                }
-                $counter++;
-            }
-        }
-        ?>
-    </div>
-</div>
-
-                                            </div>
-                                        </div>
+                                            foreach ($participantesArray as $participanteNome) {
+                                                $participanteNome = trim($participanteNome, '" ');
+                                                echo "<span>$participanteNome</span>";
+                                                
+                                                // Adiciona vírgula entre os participantes, exceto no último
+                                                if ($counter < $numParticipantes - 1) {
+                                                    echo ", ";
+                                                }
+                                                $counter++;
+                                            }
+                                        }
+                                        ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
-
-        </main>
-
+        </div>
     </div>
+</div>
+
     <script>
-        function abrirModalDetalhes(row) {
-            document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
-            document.getElementById("modal_objetivo").innerText = row.objetivo;
-            document.getElementById("modal_facilitador").innerText = row.facilitador;
-            document.getElementById("modal_local").innerText = row.local;
-            document.getElementById("modal_tema").innerText = row.tema;
-            document.getElementById("modal_status").innerText = row.status;
-            var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
-                backdrop: 'static', // Impede o fechamento clicando fora do modal
-                keyboard: false // Impede o fechamento pressionando a tecla Esc
+    function abrirModalDetalhes(row) {
+        document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
+        document.getElementById("modal_objetivo").innerText = row.objetivo;
+        document.getElementById("modal_facilitador").innerText = row.facilitador;
+        document.getElementById("modal_local").innerText = row.local;
+        document.getElementById("modal_tema").innerText = row.tema;
+        document.getElementById("modal_status").innerText = row.status;
+        var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
+            backdrop: 'static', // Impede o fechamento clicando fora do modal
+            keyboard: false // Impede o fechamento pressionando a tecla Esc
+        });
+        myModal.show();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const buttons = document.querySelectorAll('.btn-warning');
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                if (!this.closest('.no-modal')) {
+                    abrirModalDetalhes(JSON.parse(this.dataset.row));
+                }
             });
-            myModal.show();
-        }
-    </script>
+        });
+    });
+</script>
+
+</script>
+
 
     <script>
         // Função para filtrar a tabela com base no input de filtro

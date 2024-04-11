@@ -168,80 +168,54 @@ echo "Facilitadores - $facilitadoresString,
 
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
           <div class="row">
-            <br>
-                <div class="col-4">
-                    <label><b>Solicitação</b></label>
-                    <ul class="form-control bg-body-secondary"><?php echo date("d/m/Y", strtotime($data)); ?></ul>
-                </div>
-      
-                  <!---ABA DE HORÁRIO INICIO---->
-                  <div class="col-4">
-                    <label for="nomeMedico"><b>Objetivo:</b></label>
-                    <br>
-                    <ul class="form-control bg-body-secondary"><?php echo $objetivoSelecionado; ?></ul>
-                  </div>
-
-                  <!---ABA DE HORÁRIO TERMINO---->
-                  <div class="col-4">
-                    <label for="form-control"> <b>Facilitador</b> </label>
-                    <ul class="form-control bg-body-secondary">
-                        <?php 
-                        // Verifica se a variável $facilitadores não está vazia
-                        if (!empty($facilitadores)) {
-                            // Substitui os caracteres "[" "]" e '"' por um espaço em branco e remove os espaços em branco extras com a função trim()
-                            $facilitador_formatted = trim(str_replace(array('[', ']', '"'), ' ', $facilitadores));
-
-                            // Imprime o facilitador formatado dentro da <div>
-                            echo $facilitador_formatted;
-                        }
-                        ?>
-                    </ul>
-                </div>
-                  <div class="col-4">
-                    <label for="form-control"> <b>Local</b> </label>
-                    <ul class="form-control bg-body-secondary"><?php echo $local; ?></ul>
-                  </div>
-
-                  <div class="col-4">
-                    <label for="form-control"><b>Tema</b></label>
-                    <ul class="form-control bg-body-secondary"><?php echo $row["tema"]; ?></ul>
-                </div>            
-                  <div class="col-4">
-                    <label for="form-control"> <b>Status</b> </label>
-                    <ul class="form-control bg-body-secondary"></ul>
-                  </div>
-
-                  <div class="col-12">
-                    <label for="form-control"><b>Participantes</b></label>
-                    <div class="form-control bg-body-secondary">
-                        <?php 
-                        // Decodifica a string JSON para um array
-                        $participantesArray = json_decode($pegarfa[0]['participantes']);
-                        $numParticipantes = count($participantesArray);
-                        $counter = 0;
-
-                        foreach ($participantesArray as $participanteNome) {
-                            $participanteNome = trim($participanteNome, '" ');
-                            echo "<span>$participanteNome</span>";
-                            
-                            // Adiciona vírgula entre os participantes, exceto no último
-                            if ($counter < $numParticipantes - 1) {
-                                echo ", ";
-                            }
-                            $counter++;
-                        }
-                        ?>
-                    </div>
-                </div>
-
-
-
-          </div>
-
-    
-            </div>
+<?php
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // Remover aspas duplas e colchetes do facilitador
+        $facilitador = str_replace(array('[', ']', '"'), '', $row["facilitador"]);
+?>
+    <br>
+    <div class="col-4">
+        <label><b>Solicitação</b></label>
+        <ul class="form-control bg-body-secondary"><?php echo date("d/m/Y", strtotime($row["data_solicitada"])); ?></ul>
     </div>
+    <div class="col-4">
+        <label for="nomeMedico"><b>Objetivo:</b></label>
+        <br>
+        <ul class="form-control bg-body-secondary"><?php echo $row["objetivo"]; ?></ul>
+    </div>
+    <div class="col-4">
+        <label for="form-control"> <b>Facilitador</b> </label>
+        <ul class="form-control bg-body-secondary"><?php echo $facilitador; ?></ul>
+    </div>
+    <div class="col-4">
+        <label for="form-control"> <b>Local</b> </label>
+        <ul class="form-control bg-body-secondary"><?php echo $row["local"]; ?></ul>
+    </div>
+    <div class="col-4">
+        <label for="form-control"><b>Tema</b></label>
+        <ul class="form-control bg-body-secondary"><?php echo $row["tema"]; ?></ul>
+    </div>
+    <div class="col-4">
+        <label for="form-control"> <b>Status</b> </label>
+        <ul class="form-control bg-body-secondary">
+            <?php echo ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>"); ?>
+        </ul>
+    </div>
+    <div class="col-12">
+        <label for="form-control"><b>Participantes</b></label>
+        <div class="form-control bg-body-secondary">
+        </div>
+    </div>
+<?php
+    }
+} else {
+    echo "<div class='col-12'><p class='text-center'>Nenhum resultado encontrado.</p></div>";
+}
+$conn->close();
+?>
 </div>
+
 
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
 <div class="accordion" id="accordionPanelsStayOpenExample">
