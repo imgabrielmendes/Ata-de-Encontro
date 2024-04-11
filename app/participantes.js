@@ -1,3 +1,19 @@
+var ParticipantesAdicionadosvalor = [];
+new MultiSelectTag('participantesadicionados', {
+    rounded: true, 
+    shadow: false,     
+    placeholder: 'Search', 
+    tagColor: {
+        textColor: '#1C1C1C',
+        borderColor: '#4F4F4F',
+        bgColor: '#F0F0F0',
+    },
+    onChange: function(values) {
+        console.log(values);
+        ParticipantesAdicionadosvalor = values;
+    }
+});
+
 console.log();
 
 var botaocont = document.getElementById('botaocontinuarata');
@@ -12,68 +28,63 @@ var mensagemInfo = document.getElementById('infoMessage');
 //LINKANDO AS VARÍAVEIS QUE VÃO SER ENVIADO JUNTO COM PARTICIPANTES
 
 
-addItemButton.addEventListener('click', function() {
+// addItemButton.addEventListener('click', function() {
 
-    var newItem = document.getElementById('item').value.trim();
-    if (newItem === "") {
+//     var newItem = document.getElementById('item').value.trim();
+//     if (newItem === "") {
 
-        Swal.fire({
-            title: "Você não adicionou um participante",
-            text: "Adicione pelo menos 1 participante para a ata",
-            icon: "error"
-        });
+//         Swal.fire({
+//             title: "Você não adicionou um participante",
+//             text: "Adicione pelo menos 1 participante para a ata",
+//             icon: "error"
+//         });
 
-    } else {
+//     } else {
         
-        var li = document.createElement('li');
-        li.className = 'list-group-item bg-body-secondary border rounded';
-        li.appendChild(document.createTextNode(newItem));
+//         var li = document.createElement('li');
+//         li.className = 'list-group-item bg-body-secondary border rounded';
+//         li.appendChild(document.createTextNode(newItem));
 
-        var deleteBtn = document.createElement('button');
-        deleteBtn.className = 'col btn btn-danger  delete';
-        deleteBtn.style.color = '#ffffff'; 
-        deleteBtn.style.right = '9px'; 
-        deleteBtn.style.top = '0px'; 
-        deleteBtn.style.width = '37px'; 
-        deleteBtn.style.height = '37px'; 
-        deleteBtn.style.position = 'absolute';
+//         var deleteBtn = document.createElement('button');
+//         deleteBtn.className = 'col btn btn-danger  delete';
+//         deleteBtn.style.color = '#ffffff'; 
+//         deleteBtn.style.right = '9px'; 
+//         deleteBtn.style.top = '0px'; 
+//         deleteBtn.style.width = '37px'; 
+//         deleteBtn.style.height = '37px'; 
+//         deleteBtn.style.position = 'absolute';
 
-        deleteBtn.appendChild(document.createTextNode('X'));
-        deleteBtn.addEventListener('click', function() {
-            if (confirm('Tem certeza?')) {
+//         deleteBtn.appendChild(document.createTextNode('X'));
+//         deleteBtn.addEventListener('click', function() {
+//             if (confirm('Tem certeza?')) {
                 
-                itemList.removeChild(li);
-                var index = participantesAdicionados.indexOf(newItem);
-                if (index !== -1) {
-                    participantesAdicionados.splice(index, 1);
-                }
-            }
-        });
+//                 itemList.removeChild(li);
+//                 var index = participantesAdicionados.indexOf(newItem);
+//                 if (index !== -1) {
+//                     participantesAdicionados.splice(index, 1);
+//                 }
+//             }
+//         });
 
-        li.appendChild(deleteBtn);
-        itemList.appendChild(li);
+//         li.appendChild(deleteBtn);
+//         itemList.appendChild(li);
 
-        participantesAdicionados.push(newItem);
-        document.getElementById('item').value = '';
-    }
-});
+//         participantesAdicionados.push(newItem);
+//         document.getElementById('item').value = '';
+//     }
+// });
 
 /// -------------------------------------------------------//
 
 // Declare participantesAdicionados fora da função addDeliberacoes
 
-var participantesAdicionados = [];
-
 function addDeliberacoes() {
-
-    console.log("adadasdasdsad");
-    console.log(participantesAdicionados);
 
     $.ajax({
         url: 'registrarfacilitadores.php',
         method: 'POST',
         data: {
-            particadd: JSON.stringify(participantesAdicionados)
+            particadd: JSON.stringify(ParticipantesAdicionadosvalor)
         },
 
         success: function(response) {
@@ -82,14 +93,14 @@ function addDeliberacoes() {
             console.log("Response:", response); // Adicionado para depuração
             
             var ultimoID = response.ultimoID;
-            participantesAdicionados = response.participantesAdicionados;
+            // participantesAdicionados = response.participantesAdicionados;
 
             setTimeout(function() {
                 console.log("Redirecionando..."); // Adicionado para depuração
 
                 window.location.href = 'pagdeliberacoes.php' +
                 '?ultimoID=' + encodeURIComponent(ultimoID) +
-                '&participantesAdicionados=' + encodeURIComponent(participantesAdicionados);
+                '&participantesAdicionados=' + encodeURIComponent(ParticipantesAdicionadosvalor);
 
             }, 1500);
 
@@ -100,7 +111,7 @@ function addDeliberacoes() {
             });
           
             // Limpa a lista de participantes adicionados
-            participantesAdicionados = [];
+            ParticipantesAdicionadosvalor = [];
             atualizarListaParticipantes();
 
         },

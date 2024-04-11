@@ -57,6 +57,7 @@ $facilitadoresString = implode(", ", $facilitadoresArray);
   <link rel="stylesheet" href="view/css/bootstrap.css">
   <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
 
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" />
 </head>
@@ -211,18 +212,19 @@ $facilitadoresString = implode(", ", $facilitadoresArray);
                   <label for="item"><b>Informe os participantes<b></label>
                   <div class="row">
                     <div class="col-11"> 
-                    <select id="item" class="form-control" placeholder="Participantes...">
-                      <?php foreach ($pegarfa as $facnull) : ?>
-                          <option value="<?= $facnull['nome_facilitador']; ?>">
-                              <?= $facnull['nome_facilitador']; ?>
-                             
-                            </option>
-                            
-                      <?php endforeach ?>
-                  </select>
+                    <select class="col-8 form-control" id="participantesadicionados" name="facilitador" multiple>
+              <optgroup label="Selecione Facilitadores">
+                  <?php foreach ($pegarfa as $facnull) : ?>
+                      <option value="<?php echo $facnull['id']; ?>"
+                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                          <?php echo $facnull['nome_facilitador']; ?>
+                      </option>
+                  <?php endforeach ?>
+              </optgroup>
+          </select>
                 </div>
                   <div class="col-1">
-                  <button type="button" id="addItemButton" class="btn btn-primary ">+</button>
+                  <!-- <button type="button" id="addItemButton" class="btn btn-primary ">+</button> -->
                   </div> 
                 </div>
                   </div>
@@ -317,6 +319,7 @@ $facilitadoresString = implode(", ", $facilitadoresArray);
 </div>
            <!-------------------- BOTÃO DA MODAL ------------------->
          
+    <script src="view\js\multi-select-tag.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
