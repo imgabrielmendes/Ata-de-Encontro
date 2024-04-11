@@ -128,15 +128,15 @@ function atualizarListaParticipantes() {
 
 ///------------BOTÃO DE REGISTRAR EMAIL DENTRO DA MODAL------------------------------
 
-var caixadenome = document.getElementById("caixanome").value;
-var caixadeemail = document.getElementById("caixadeemail").value;
-var caixacargo = document.getElementById("caixacargo").value
+var caixadenome = document.getElementById("caixanome").values;
+var caixadeemail = document.getElementById("caixadeemail").values;
+var caixamatricula = document.getElementById("caixamatricula").values;
 
 var botaoemail = document.getElementById("registraremail");
 
 function gravaremail(){
    
-    if (caixadenome.trim() ==="" || caixadeemail.trim() ==="" || caixacargo.trim()==="")
+    if (caixadenome.trim() ==="" || caixadeemail.trim() ==="" || caixamatricula.trim()==="")
     {
         
         Swal.fire({
@@ -144,6 +144,7 @@ function gravaremail(){
             text: "Preencha todas as caixas do formulário",
             icon: "error"
           });
+
           console.log ("(X) Puxou a function da modal, mas não preencheu todas as informações")
     } 
     
@@ -155,10 +156,10 @@ function gravaremail(){
             icon: "success"
           });
 
-        // window.alert ("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail);
+        window.alert ("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail);
         console.log ("(3.1) As informações de email foram enviadas");
 
-        if (caixadenome !=="" && caixadeemail !=="" && caixacargo !=="") 
+        if (caixadenome !=="" && caixadeemail !=="" && caixamatricula !=="") 
 
         $.ajax({
             url: 'registrarpessoas.php',
@@ -166,7 +167,7 @@ function gravaremail(){
             data: {
                caixaname: caixadenome,
                caixaemail: caixadeemail,
-               caixamatri: caixacargo,
+               caixamatricula: caixamatricula,
             },
 
             success: function (response) {
@@ -179,7 +180,7 @@ function gravaremail(){
                 console.error('Erro na solicitação AJAX:', error);
             }
         });
-    }
+    };
 
 };
     

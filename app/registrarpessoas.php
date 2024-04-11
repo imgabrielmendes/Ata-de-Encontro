@@ -5,12 +5,12 @@ session_start();
 // Verifica se a variável 'texto' foi enviada através do método POST
     $caixanome=$_POST['caixaname'];
     $caixadeemail= $_POST['caixadeemail'];
-	$caixacargo=$_POST['caixamatri'];
+	$caixamatricula=$_POST['caixamatricula'];
   
-    if ($caixanome !=="" && $caixadeemail !=="" && $caixacargo !=="")  
+    if ($caixanome !=="" && $caixadeemail !=="" && $caixamatricula !=="")  
     {
 
-        $enviarbanco = "INSERT INTO facilitadores (nome_facilitador , email_facilitador, email_facilitador) VALUES ('$caixanome', '$caixadeemail','$caixacargo')";
+        $enviarbanco = "INSERT INTO facilitadores (nome_facilitador , email_facilitador, matricula) VALUES ('$caixanome', '$caixadeemail','$caixamatricula')";
 
         if (mysqli_query($conexao, $enviarbanco)) {
 

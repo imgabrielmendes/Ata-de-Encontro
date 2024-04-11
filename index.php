@@ -41,9 +41,6 @@ $pegarlocal=$puxarform->pegarlocais();
   <title>Ata de encontro - HRG</title>
   <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
 
-  <!---------------------------------------------------------------->
-  <!-- <script src="view/js/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script> -->
-
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <link rel="stylesheet" href="view/css/styles.css">
@@ -55,13 +52,6 @@ $pegarlocal=$puxarform->pegarlocais();
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
 
-  <!-- <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
-  integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
-  crossorigin="anonymous"
-  referrerpolicy="no-referrer"
-/> -->
 </head>
 
 <body>

@@ -127,6 +127,7 @@ $facilitadoresString = implode(", ", $facilitadoresArray);
                   <div class="col-3">
                     <label for="form-control"><b>Tempo Estimado:</b></label>
                     <?php
+                    
                     // Verifica se as variáveis estão definidas antes de calcular o tempo estimado
                     if (isset($horainicio) && isset($horaterm)) {
                         // Calcula a diferença de tempo em minutos
@@ -296,10 +297,10 @@ $facilitadoresString = implode(", ", $facilitadoresArray);
                                   <input type="text" class="form-control" id="caixadeemail">
                                 </div>
 
-                                <label type="email" for="recipient-name" class="col-form-label">Informe o Cargo</label>
-
-                                <input type="text" class="form-control" id="caixacargo">
-
+                                <label type="email" for="recipient-name" class="col-form-label">Informe a sua matricula: </label>
+                              <div class="col-6">
+                                <input type="text" maxlength="4" class="col-5 form-control" id="caixamatricula">
+                              </div>
                               </form>
 
                             </div>

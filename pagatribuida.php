@@ -83,13 +83,7 @@ echo "Facilitadores - $facilitadoresString,
   <title>Ata de encontro - HRG</title>
   <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
 
-  <!---------------------------------------------------------------->
   <script src="view/js/popper.min.js" crossorigin="anonymous"></script>
-
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" /> -->
-
-  <!-- <link rel="stylesheet" href="view/fontawesome/css/fontawesome.css"> -->
-
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

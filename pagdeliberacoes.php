@@ -41,12 +41,23 @@ $dbpass = '';
   $stmt = $pdo->prepare($sql);
   $stmt->execute();
 
+  $sql2 = "SELECT id_ata FROM participantes 
+  ORDER BY id_ata DESC 
+  LIMIT 1";
+
+// Preparar e executar a consulta
+$stmt2 = $pdo->prepare($sql2);
+$stmt2->execute();
+
+print_r($stmt2);
+
   if ($stmt->rowCount() > 0) {
 
       $row = $stmt->fetch(\PDO::FETCH_ASSOC);
       $facilitadores = $row["facilitador"];
-      $facilitadoresArray = json_decode($facilitadores, true);   
-      $facilitadoresString = implode(", ", $facilitadoresArray);
+      // $facilitadoresArray = json_decode($facilitadores, true);   
+      // $facilitadoresString = implode(", ", $facilitadoresArray);
+
       $conteudo = $row["tema"];
       $horainicio = substr($row["hora_inicial"], 0,5);
       $horaterm = substr($row["hora_termino"], 0,5);
