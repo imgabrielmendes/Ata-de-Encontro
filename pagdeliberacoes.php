@@ -11,15 +11,14 @@ $puxarform= new AcoesForm;
 $facilitadores=$puxarform->selecionarFacilitadores();
 
 $testandodeli=$puxarform->selecionarDeliberadores();
-// echo $testandodeli;
 
-//funções de encotrar pessoas
 $pegarfa=$puxarform->ultimosParticipantes();
 $pegarde=$puxarform->pegarfacilitador();
 $participantesArray = $pegarfa;
-// ARRUMAR UM JEITO DE DIMINUIR ISSO
 
 $pegarrespons = $puxarform->ultimosResponsaveis();
+
+$participantesAdicionados = $_GET['participantesAdicionados'];
 
 try {
 
@@ -49,15 +48,13 @@ $dbpass = '';
 $stmt2 = $pdo->prepare($sql2);
 $stmt2->execute();
 
-print_r($stmt2);
 
   if ($stmt->rowCount() > 0) {
 
       $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-      $facilitadores = $row["facilitador"];
+      // $facilitadores = $row["facilitador"];
       // $facilitadoresArray = json_decode($facilitadores, true);   
       // $facilitadoresString = implode(", ", $facilitadoresArray);
-
       $conteudo = $row["tema"];
       $horainicio = substr($row["hora_inicial"], 0,5);
       $horaterm = substr($row["hora_termino"], 0,5);
@@ -263,19 +260,11 @@ print_r($stmt2);
     <div class="row">
     <div class="col">
         <div>
-            <?php 
-            // Decodifica a string JSON para um array
-            $participantesArray = json_decode($pegarfa[0]['participantes']);
-
-            foreach ($participantesArray as $participanteNome) {
-
-                $participanteNome = trim($participanteNome, '" ');
-            ?>
                 <div style = "margin: 6px" class='form-control bg-body-secondary border rounded'>
-                    <li><b><?php echo $participanteNome; ?></b></li>
+                    <li><b><?php echo $participantesAdicionados; ?></b></li>
                 </div>
             <?php
-            }
+            
             ?>
         </div>
     </div>

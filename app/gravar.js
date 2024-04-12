@@ -1,4 +1,6 @@
 var facilitadoresSelecionados = [];
+var facilitadoresSelecionadosLabel = [];
+
 new MultiSelectTag('selecionandofacilitador', {
     rounded: true, 
     shadow: false,     
@@ -8,9 +10,13 @@ new MultiSelectTag('selecionandofacilitador', {
         borderColor: '#4F4F4F',
         bgColor: '#F0F0F0',
     },
-    onChange: function(values) {
-        console.log(values);
-        facilitadoresSelecionados = values;
+    onChange: function(selected_ids, selected_names) {
+
+        facilitadoresSelecionados = selected_ids;
+        facilitadoresSelecionadosLabel = selected_names;
+
+        console.log(facilitadoresSelecionados);
+        console.log(facilitadoresSelecionadosLabel);
     }
 });
 
@@ -66,8 +72,8 @@ function gravando() {
         });
 
         console.log("(X) Puxou a function, mas está faltando informações");
-        console.log(objetivoSelecionado);
-        console.log(local);
+        // console.log(objetivoSelecionado);
+        // console.log(local);
         // console.log(facilitadores);
 
     } 
@@ -102,13 +108,14 @@ function gravando() {
 
             setTimeout(function() {
                 window.location.href = 'pagparticipantes.php' +
-                '?facilitadores=' + encodeURIComponent(JSON.stringify(facilitadoresSelecionados)) +
+                '?facilitadores=' + encodeURIComponent(JSON.stringify(facilitadoresSelecionadosLabel)) +
                 '&conteudo=' + encodeURIComponent(conteudo) +
                 '&horainicio=' + encodeURIComponent(horainicio) +
                 '&horaterm=' + encodeURIComponent(horaterm) +
                 '&data=' + encodeURIComponent(data) +
                 '&objetivoSelecionado=' + encodeURIComponent(objetivoSelecionado) +
                 '&local=' + encodeURIComponent(local);
+                
             }, 1500);
         },
 

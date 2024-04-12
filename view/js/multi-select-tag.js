@@ -222,18 +222,24 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         }
     }
 
-    function setValues(fireEvent=true) {
-
-        selected_values = []
-        for(var i = 0; i < options.length; i++) {
-            element.options[i].selected = options[i].selected
-            if(options[i].selected) {
-                selected_values.push(options[i].value); // Apenas os valores são adicionados ao array
+    function setValues(fireEvent = true) {
+        var selected_ids = [];
+        var selected_names = [];
+    
+        for (var i = 0; i < options.length; i++) {
+            element.options[i].selected = options[i].selected;
+            if (options[i].selected) {
+                selected_ids.push(options[i].value);
+                selected_names.push(options[i].label);
             }
         }
-
+    
         if (fireEvent && customs.hasOwnProperty('onChange')) {
-            customs.onChange(selected_values)
+            // Chamando o evento onChange com as duas arrays separadas
+            customs.onChange(selected_ids, selected_names);
+            
+            // console.log(selected_ids);
+            // console.log(selected_names);
         }
     }
     

@@ -1,4 +1,6 @@
 var ParticipantesAdicionadosvalor = [];
+var participantesAdicionadosLabel = [];
+
 new MultiSelectTag('participantesadicionados', {
     rounded: true, 
     shadow: false,     
@@ -8,75 +10,25 @@ new MultiSelectTag('participantesadicionados', {
         borderColor: '#4F4F4F',
         bgColor: '#F0F0F0',
     },
-    onChange: function(values) {
-        console.log(values);
-        ParticipantesAdicionadosvalor = values;
+    onChange: function(selected_ids, selected_names) {
+
+        ParticipantesAdicionadosvalor = selected_ids;
+        participantesAdicionadosLabel = selected_names;
+
+        console.log(ParticipantesAdicionadosvalor);
+        console.log(participantesAdicionadosLabel);
     }
+    
 });
 
 console.log();
 
 var botaocont = document.getElementById('botaocontinuarata');
-// var botaohist = document.getElementById('abrirhist');
 
 var itemList = document.getElementById('items');
 var filter = document.getElementById('filter');
 var addItemButton = document.getElementById('addItemButton');
 var mensagemInfo = document.getElementById('infoMessage');
-
-
-//LINKANDO AS VARÍAVEIS QUE VÃO SER ENVIADO JUNTO COM PARTICIPANTES
-
-
-// addItemButton.addEventListener('click', function() {
-
-//     var newItem = document.getElementById('item').value.trim();
-//     if (newItem === "") {
-
-//         Swal.fire({
-//             title: "Você não adicionou um participante",
-//             text: "Adicione pelo menos 1 participante para a ata",
-//             icon: "error"
-//         });
-
-//     } else {
-        
-//         var li = document.createElement('li');
-//         li.className = 'list-group-item bg-body-secondary border rounded';
-//         li.appendChild(document.createTextNode(newItem));
-
-//         var deleteBtn = document.createElement('button');
-//         deleteBtn.className = 'col btn btn-danger  delete';
-//         deleteBtn.style.color = '#ffffff'; 
-//         deleteBtn.style.right = '9px'; 
-//         deleteBtn.style.top = '0px'; 
-//         deleteBtn.style.width = '37px'; 
-//         deleteBtn.style.height = '37px'; 
-//         deleteBtn.style.position = 'absolute';
-
-//         deleteBtn.appendChild(document.createTextNode('X'));
-//         deleteBtn.addEventListener('click', function() {
-//             if (confirm('Tem certeza?')) {
-                
-//                 itemList.removeChild(li);
-//                 var index = participantesAdicionados.indexOf(newItem);
-//                 if (index !== -1) {
-//                     participantesAdicionados.splice(index, 1);
-//                 }
-//             }
-//         });
-
-//         li.appendChild(deleteBtn);
-//         itemList.appendChild(li);
-
-//         participantesAdicionados.push(newItem);
-//         document.getElementById('item').value = '';
-//     }
-// });
-
-/// -------------------------------------------------------//
-
-// Declare participantesAdicionados fora da função addDeliberacoes
 
 function addDeliberacoes() {
 
@@ -93,14 +45,13 @@ function addDeliberacoes() {
             console.log("Response:", response); // Adicionado para depuração
             
             var ultimoID = response.ultimoID;
-            // participantesAdicionados = response.participantesAdicionados;
 
             setTimeout(function() {
                 console.log("Redirecionando..."); // Adicionado para depuração
 
                 window.location.href = 'pagdeliberacoes.php' +
                 '?ultimoID=' + encodeURIComponent(ultimoID) +
-                '&participantesAdicionados=' + encodeURIComponent(ParticipantesAdicionadosvalor);
+                '&participantesAdicionados=' + encodeURIComponent(participantesAdicionadosLabel);
 
             }, 1500);
 
@@ -184,6 +135,5 @@ function gravaremail(){
 
 };
     
-
 botaocont.addEventListener('click', addDeliberacoes);
 botaoemail.addEventListener('click', gravaremail);

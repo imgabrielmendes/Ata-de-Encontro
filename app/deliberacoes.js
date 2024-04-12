@@ -1,4 +1,5 @@
-var deliberadoresSelecionados = [];
+var deliberadoresSelecionadosNUM = [];
+var deliberadoresSelecionadosLabel = []
 
 new MultiSelectTag('deliberador', {
     rounded: true, 
@@ -9,9 +10,13 @@ new MultiSelectTag('deliberador', {
         borderColor: '#4F4F4F',
         bgColor: '#F0F0F0',
     },
-    onChange: function(values) {
-        console.log(values);
-        deliberadoresSelecionados = values;
+    onChange: function(selected_ids, selected_names) {
+
+        deliberadoresSelecionadosNUM = selected_ids;
+        participantesAdicionadosLabel = selected_names;
+
+        console.log(deliberadoresSelecionadosNUM);
+        console.log(deliberadoresSelecionadosLabel);
     }
 });
 
@@ -144,7 +149,7 @@ document.getElementById('addItemButton').addEventListener('click', function() {
             url: 'registrardeliberadores.php',
             method: 'POST',
             data: {
-               deliberaDores: JSON.stringify(deliberadoresSelecionados), 
+               deliberaDores: JSON.stringify(deliberadoresSelecionadosNUM), 
                deliberAcoes: deliberacoes, 
                newItem: newItem,
 
