@@ -10,6 +10,7 @@ new MultiSelectTag('participantesadicionados', {
         borderColor: '#4F4F4F',
         bgColor: '#F0F0F0',
     },
+    
     onChange: function(selected_ids, selected_names) {
 
         ParticipantesAdicionadosvalor = selected_ids;

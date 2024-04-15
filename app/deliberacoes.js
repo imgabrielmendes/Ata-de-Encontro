@@ -1,5 +1,5 @@
 var deliberadoresSelecionadosNUM = [];
-var deliberadoresSelecionadosLabel = []
+var deliberadoresSelecionadosLabel = [];
 
 new MultiSelectTag('deliberador', {
     rounded: true, 
@@ -13,7 +13,7 @@ new MultiSelectTag('deliberador', {
     onChange: function(selected_ids, selected_names) {
 
         deliberadoresSelecionadosNUM = selected_ids;
-        participantesAdicionadosLabel = selected_names;
+        deliberadoresSelecionadosLabel = selected_names;
 
         console.log(deliberadoresSelecionadosNUM);
         console.log(deliberadoresSelecionadosLabel);
@@ -41,7 +41,7 @@ addItemButton.addEventListener('click', function() {
     // var selectElement = document.getElementById('selectFacilitators');
     
     // Obtém o valor selecionado
-    var selectedFacilitator = document.querySelector('.facilitator-select').value;
+    // var selectedFacilitator = document.querySelector('.facilitator-select').value;
     
     if (newItem === "") {
         Swal.fire({
@@ -111,8 +111,7 @@ document.getElementById('addItemButton').addEventListener('click', function() {
     // Captura o texto digitado e o facilitador selecionado
     var newItem = document.querySelector('.item').value.trim();
     
-    var selectedValues = deliberadoresSelecionados
-    var selectedFacilitator = document.querySelector('.facilitator-select').value;
+    // var selectedFacilitator = document.querySelector('.facilitator-select').value;
 
     // Verifica se o texto e o facilitador foram preenchidos
     if (newItem === "") {
@@ -124,7 +123,7 @@ document.getElementById('addItemButton').addEventListener('click', function() {
         return;
     }
 
-    if (selectedFacilitator === "") {
+    if (deliberadoresSelecionadosLabel === "") {
 
         Swal.fire({
           title: "Você não adicionou um participante",
@@ -160,7 +159,7 @@ document.getElementById('addItemButton').addEventListener('click', function() {
                 console.log(response);
 
                 console.log("AAAAAAAAAAAAA");
-                console.log(deliberadoresSelecionados);
+                console.log(deliberadoresSelecionadosNUM);
 
 
             },
@@ -201,7 +200,7 @@ document.getElementById('addItemButton').addEventListener('click', function() {
     //Div para a list-group-item do facilitador selecionado
     var facilitatorListItemDiv = document.createElement('div');
     facilitatorListItemDiv.className = 'form-control bg-body-secondary border rounded';
-    facilitatorListItemDiv.textContent = selectedFacilitator;
+    facilitatorListItemDiv.textContent = deliberadoresSelecionadosLabel;
 
     // Juntar as Divs
     var itemList = document.getElementById('inputContainer');

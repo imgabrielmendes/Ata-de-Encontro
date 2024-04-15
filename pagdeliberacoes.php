@@ -1,87 +1,46 @@
 <?php
-
 namespace formulario;
 
-// include ("vendor/autoload.php");
 include_once ("app/acoesform.php");
 include ("conexao.php");
 
-//Testar conexao com banco de dados
 $puxarform= new AcoesForm;
-$facilitadores=$puxarform->selecionarFacilitadores();
-
-$testandodeli=$puxarform->selecionarDeliberadores();
-
-$pegarfa=$puxarform->ultimosParticipantes();
 $pegarde=$puxarform->pegarfacilitador();
-$participantesArray = $pegarfa;
 
-$pegarrespons = $puxarform->ultimosResponsaveis();
-
-$participantesAdicionados = $_GET['participantesAdicionados'];
-
-try {
-
-$dbhost = 'localhost';
-$dbname = 'atareu';
-$dbuser = 'root';
-$dbpass = '';
-
-
-  $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
-  $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-  $sql = "SELECT facilitador, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
-          FROM assunto 
-          ORDER BY data_registro DESC 
-          LIMIT 1";
-
-  // Preparar e executar a consulta
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute();
-
-  $sql2 = "SELECT id_ata FROM participantes 
-  ORDER BY id_ata DESC 
-  LIMIT 1";
-
-// Preparar e executar a consulta
-$stmt2 = $pdo->prepare($sql2);
-$stmt2->execute();
-
-
-  if ($stmt->rowCount() > 0) {
-
-      $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-      // $facilitadores = $row["facilitador"];
-      // $facilitadoresArray = json_decode($facilitadores, true);   
-      // $facilitadoresString = implode(", ", $facilitadoresArray);
-      $conteudo = $row["tema"];
-      $horainicio = substr($row["hora_inicial"], 0,5);
-      $horaterm = substr($row["hora_termino"], 0,5);
-      $data = substr($row["data_solicitada"], 0,10);
-      $objetivoSelecionado = $row["objetivo"];
-      $local = $row["local"];
-
-  } else {
-      echo "Nenhum resultado encontrado";
-  }
-
-  // Fechar a conexão
-  $pdo = null;
-
-} catch (\PDOException $e) {
-  echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+$testando=$puxarform->puxandoUltimosFacilitadores();
+foreach ($testando as $facilitador) {
+  // echo "ID: " . $facilitador['id'] . "<br>";
+  // echo "Matrícula: " . $facilitador['matricula'] . "<br>";
+  // echo "Nome: " . $facilitador['nome_facilitador'] . "<br>";
+  // echo "<br>";
 }
 
-// echo "Facilitadores - $facilitadoresString, 
-//       Conteúdo - $conteudo, 
-//       Horário de Início - $horainicio, 
-//       Horário de Término - $horaterm, 
-//       Data - $data, 
-//       Objetivos - $objetivoSelecionado, 
-//       Local - $local";
+// echo $facilitador;
+// print_r ($facilitador);
+
+$participantesAdicionados = $_GET['participantesAdicionados'];
+$participantesArray = explode(",", $participantesAdicionados);
+foreach ($participantesArray as $participante) {
+    echo $participante . "<br>";
+}
+
+$formulario= $puxarform->pegarUltimaAta();
+$conteudo = $_SESSION['conteudo'];
+$horainicio = $_SESSION['horainicio'];
+$horaterm = $_SESSION['horaterm'];
+$data = $_SESSION['data'];
+$objetivoSelecionado = $_SESSION['objetivoSelecionado'];
+$local = $_SESSION['local'];
+
+// echo "Conteúdo: " . $conteudo . "<br>";
+// echo "Hora de início: " . $horainicio . "<br>";
+// echo "Hora de término: " . $horaterm . "<br>";
+// echo "Data: " . $data . "<br>";
+// echo "Objetivo Selecionado: " . $objetivoSelecionado . "<br>";
+// echo "Local: " . $local . "<br>";
 
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -208,7 +167,9 @@ $stmt2->execute();
           <div class="row">
             <div class="col-6 ">
               <label><b> Facilitador(res) responsável:</b></label>
-              <ul class="form-control bg-body-secondary"><?php echo $facilitadoresString; ?></ul>            
+              <ul class="form-control bg-body-secondary">
+              <?php foreach ($testando as $facilitador) { echo $facilitador ['nome_facilitador'] . ", " ;}
+                ?></ul>            
             </div>
           
  
@@ -261,7 +222,13 @@ $stmt2->execute();
     <div class="col">
         <div>
                 <div style = "margin: 6px" class='form-control bg-body-secondary border rounded'>
-                    <li><b><?php echo $participantesAdicionados; ?></b></li>
+
+                    <?php 
+                    foreach ($participantesArray as $participante) {
+                    // Remover espaços em branco extras no início e no fim de cada participante
+                    $participante = trim($participante);
+                    echo "<li><b>{$participante}</b></li>";
+                } ?>
                 </div>
             <?php
             
@@ -295,7 +262,14 @@ $stmt2->execute();
 <div class="accordion-collapse collapse show">
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
     <div class="col-md-12 text-center">               
-    </div>     
+    </div>
+    <div class="row">
+    <div class ="col">
+        <label style="height: 35px;"><b>Informe o texto principal:</b></label>
+        <textarea class="form-control"></textarea>
+
+              </div>
+    </div>   
     <span class="col-4" id="inputContainer"></span>
         <form id="addForm">
           
@@ -303,17 +277,19 @@ $stmt2->execute();
         <div class="col">
           
               <br>
-              <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-              <textarea id="deliberacoes" class="form-control item" placeholder="Informe aqui..." style="height: 110px;"></textarea>
+              <ul class="list-group list-group-flush"></ul>
+              <label class="h4" style="height: 35px;"><b>DELIBERAÇÕES</b></label>
+              
+              <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 110px;"></textarea>
             </div>
 
-            <div class="col">
+    <div class="col">
     <!-- Primeira caixa de texto e select de facilitadores -->
     <div class="mb-2">
         <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
         <optgroup label="Selecione Facilitadores">
                   <?php foreach ($pegarde as $facnull) : ?>
-                      <option value="<?php echo $facnull['nome_facilitador']; ?>"
+                      <option value="<?php echo $facnull['id']; ?>"
                           data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
                           <?php echo $facnull['nome_facilitador']; ?>
                       </option>

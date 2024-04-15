@@ -1,283 +1,168 @@
 <?php
 namespace formulario;
 
-//include ("conexao.php");
-
-$puxarclas = new AcoesForm;
-
-$acoesForm = new AcoesForm();
-$resultados = $acoesForm->selecionarFacilitadores();
-$apenascargos= $acoesForm->pegarfacilitador();
-
-
-//print_r($apenascargos);
-
 class AcoesForm {
 
-    public function pegarlocais(){
-
-        
+    private $pdo;
+    public function __construct() {
         try {
-                   
-            //ARRUMAR UM JEITO DE DIMINUIR ISSO
             $dbhost = 'localhost';
             $dbname = 'atareu';
             $dbuser = 'root';
             $dbpass = '';
 
             // Conexão com o banco de dados usando PDO
-            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-            //SELECT * FROM facilitadores
-            $sql = "SELECT locais FROM locais;";
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
-
-            //print_r($sql);
-
-            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            return $resultados;
-
+            $this->pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
+            $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         } catch (\PDOException $e) {
             throw $e;
         }
+    }
 
+    public function pegarlocais() {
+        try {
+            $sql = "SELECT locais FROM locais";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            return $resultados;
+        } catch (\PDOException $e) {
+            throw $e;
+        }
     }
 
     public function selecionarFacilitadores() {
         try {
-        
-            include_once ("database.php");
-
-            //ARRUMAR UM JEITO DE DIMINUIR ISSO
-            $dbhost = 'localhost';
-            $dbname = 'atareu';
-            $dbuser = 'root';
-            $dbpass = '';
-
-            // Conexão com o banco de dados usando PDO
-            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
             $sql = "SELECT * FROM facilitadores";
-            $stmt = $pdo->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
-
-            
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             return $resultados;
-
         } catch (\PDOException $e) {
             throw $e;
         }
     }
 
-    public function selecionarDeliberadores() {
+    public function puxarId() {
         try {
-            include_once ("database.php");
-    
-            $dbhost = 'localhost';
-            $dbname = 'atareu';
-            $dbuser = 'root';
-            $dbpass = '';
-    
-            // Conexão com o banco de dados usando PDO
-            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-    
-            $sql = "SELECT nome_facilitador FROM facilitadores";
-            $stmt = $pdo->prepare($sql);
+            $sql = "SELECT id FROM assunto ORDER BY id DESC LIMIT 1";
+            $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
-    
-            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
- 
-        } catch (\PDOException $e) {
-            throw $e;
-        }
-    }
-    
-    
-    
-    
-    //FUNÇÃO CADASTRAR DA MODAL
-    public function cadastrarfacilitador($nomefacilitador, $email, $cargo)
-    {
-
-        $sql = "INSERT INTO facilitadores (nome_facilitador, email_facilitador, cargo) VALUES (?, ?, ?)";
-        $stmt = Conexao::getConnMy()->prepare($sql);
-        $stmt->bindValue(1, $nomefacilitador['nome_facilitador']);
-        $stmt->bindValue(2, $email['email_facilitador']);
-        $stmt->bindValue(3, $cargo['cargo']);
-        
-    }
-    
-    public function ultimosParticipantes(){
-
-        try { 
-            //ARRUMAR UM JEITO DE DIMINUIR ISSO
-            $dbhost = 'localhost';
-            $dbname = 'atareu';
-            $dbuser = 'root';
-            $dbpass = '';
-
-            // Conexão com o banco de dados usando PDO
-            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-            //SELECT * FROM facilitadores
-            $sql = "SELECT participantes FROM participantes
-                    ORDER BY id DESC 
-                    LIMIT 1";
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
-
-            //print_r($sql);
-
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             return $resultados;
-
-        } catch (\PDOException $e) {
-            throw $e;
-        }
-    }
-
-    public function puxarId(){
-
-        try {
-                   
-            //ARRUMAR UM JEITO DE DIMINUIR ISSO
-            $dbhost = 'localhost';
-            $dbname = 'atareu';
-            $dbuser = 'root';
-            $dbpass = '';
-
-            // Conexão com o banco de dados usando PDO
-            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-            //SELECT * FROM facilitadores
-            $sql = "SELECT id FROM assunto
-                    ORDER BY id DESC 
-                    LIMIT 1";
-
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute();
-
-            //print_r($sql);
-
-            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            return $resultados;
-
         } catch (\PDOException $e) {
             throw $e;
         }
     } 
-    
 
     public function pegarfacilitador() {
-
         try {
-                   
-            //ARRUMAR UM JEITO DE DIMINUIR ISSO
-            $dbhost = 'localhost';
-            $dbname = 'atareu';
-            $dbuser = 'root';
-            $dbpass = '';
-
-            // Conexão com o banco de dados usando PDO
-            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-            //SELECT * FROM facilitadores
-            $sql = "SELECT id, nome_facilitador, matricula FROM facilitadores;";
-
-            $stmt = $pdo->prepare($sql);
+            $sql = "SELECT id, nome_facilitador, matricula FROM facilitadores";
+            $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
-
-            //print_r($sql);
-
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             return $resultados;
-
         } catch (\PDOException $e) {
             throw $e;
         }
     } 
     
-    public function ultimosResponsaveis(){
-
+    public function ultimosResponsaveis() {
         try { 
-            //ARRUMAR UM JEITO DE DIMINUIR ISSO
-            $dbhost = 'localhost';
-            $dbname = 'atareu';
-            $dbuser = 'root';
-            $dbpass = '';
-
-            // Conexão com o banco de dados usando PDO
-            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-            //SELECT * FROM facilitadores
-            $sql = "SELECT facilitador FROM assunto
-                    ORDER BY data_registro DESC 
-                    LIMIT 1";
-
-            $stmt = $pdo->prepare($sql);
+            $sql = "SELECT facilitador FROM assunto ORDER BY data_registro DESC LIMIT 1";
+            $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
-
-            //print_r($sql);
-
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
             return $resultados;
-
         } catch (\PDOException $e) {
             throw $e;
         }
     }
     
-    function obterUltimoRegistro() {
-        // ARRUMAR UM JEITO DE DIMINUIR ISSO
-        $dbhost = 'localhost';
-        $dbname = 'atareu';
-        $dbuser = 'root';
-        $dbpass = '';
-    
+    public function obterUltimoRegistro() {
         try {
-            // Conexão com o banco de dados usando PDO
-            $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
-            $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-    
-            // Consulta SQL para selecionar os últimos valores da tabela
             $sql = "SELECT facilitador, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
                     FROM assunto 
                     ORDER BY data_registro DESC 
                     LIMIT 1";
-                    
-    
-            // Preparar e executar a consulta
-            $stmt = $pdo->prepare($sql);
+            $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
-    
-            // Verificar se há linhas retornadas
             if ($stmt->rowCount() > 0) {
-                // Exibir os dados encontrados
                 $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-                return $row; // Retornar os dados encontrados
+                return $row;
             } else {
-                return false; // Se nenhum registro for encontrado, retornar false
+                return false;
             }
-    
-            // Fechar a conexão
-            $pdo = null;
         } catch (\PDOException $e) {
-            // Se houver um erro, lançar uma exceção
-            throw new \Exception("Erro ao conectar ao banco de dados: " . $e->getMessage());
+            throw $e;
         }
     }
 
-  }
 
 
+    public function pegarUltimaAta() {
+        session_start();
+        try {
+            $sql = "SELECT facilitador, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
+                    FROM assunto 
+                    ORDER BY data_registro DESC 
+                    LIMIT 1";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+
+            if ($stmt->rowCount() > 0) {
+                $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+                $_SESSION['conteudo'] = $row["tema"];
+                $_SESSION['horainicio'] = substr($row["hora_inicial"], 0, 5);
+                $_SESSION['horaterm'] = substr($row["hora_termino"], 0, 5);
+                $_SESSION['data'] = substr($row["data_solicitada"], 0, 10);
+                $_SESSION['objetivoSelecionado'] = $row["objetivo"];
+                $_SESSION['local'] = $row["local"];
+
+            } else {
+                echo "Nenhum resultado encontrado";
+            }
+        } catch (\PDOException $e) {
+            echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+        }
+    }
+
+    public function puxandoUltimosFacilitadores() {
+        try {
+            
+            $sql1 = "SELECT id FROM assunto ORDER BY id DESC LIMIT 1";
+            $stmt1 = $this->pdo->prepare($sql1);
+            $stmt1->execute();
+            $lastAtaId = $stmt1->fetchColumn();
+    
+            // Em seguida, usamos esse ID para obter os registros da tabela de associação
+            $sql2 = "SELECT id_ata, facilitadores FROM ata_has_fac WHERE id_ata = ?";
+            $stmt2 = $this->pdo->prepare($sql2);
+            $stmt2->execute([$lastAtaId]);
+            $resultadosAtaFacilitadores = $stmt2->fetchAll(\PDO::FETCH_ASSOC);
+    
+            // Agora, usamos os IDs dos facilitadores para obter suas informações
+            $facilitadores = [];
+
+            foreach ($resultadosAtaFacilitadores as $resultado) {
+
+                $facilitadorId = $resultado['facilitadores'];
+                $sql3 = "SELECT id, matricula, nome_facilitador FROM facilitadores WHERE id = ?";
+                $stmt3 = $this->pdo->prepare($sql3);
+                $stmt3->execute([$facilitadorId]);
+                $facilitadorInfo = $stmt3->fetch(\PDO::FETCH_ASSOC);
+
+                if ($facilitadorInfo) {
+                    $facilitadores[] = $facilitadorInfo;
+                }
+            }
+    
+            return $facilitadores;
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+    }
+    
+
+}

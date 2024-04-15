@@ -13,7 +13,7 @@ if ($conn->connect_error) {
     die("Erro ao conectar ao banco de dados: " . $conn->connect_error);
 }
 
-$deliberador = $_POST['deliberaDores'];
+$deliberadoresSelecionados = json_decode($_POST['deliberaDores'], true);
 $newItem = $_POST['newItem'];
 
 $sql = "SELECT id FROM assunto ORDER BY id DESC LIMIT 1";
@@ -23,11 +23,13 @@ if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $ultimoID = $row["id"];
 
-    // Iterar sobre cada valor do array $deliberador
-    foreach ($deliberador as $deliberadorValue) {
-        // Insira os dados na tabela deliberacoes
+    foreach ($deliberadoresSelecionados as $deliberadorValue) {
+
         $enviarbanco = "INSERT INTO deliberacoes (id_ata, deliberacoes, deliberadores) VALUES ('$ultimoID', '$newItem', '$deliberadorValue')";
-        
+
+        $alterarstatus = "UPDATE assunto SET status = 'FECHADA' WHERE id = $sql";
+        print_r($alterarstatus);
+
         if ($conn->query($enviarbanco) === TRUE) {
             echo "Novo registro inserido com sucesso para o deliberador $deliberadorValue.<br>";
         } else {
@@ -39,6 +41,5 @@ if ($result->num_rows > 0) {
     echo "Dados não recebidos.<br>";
 }
 
-// Fecha a conexão com o banco de dados
 $conn->close();
 ?>

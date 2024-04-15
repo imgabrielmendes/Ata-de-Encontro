@@ -2,7 +2,6 @@
 
 namespace formulario;
 
-// include ("vendor/autoload.php");
 include_once ("app/acoesform.php");
 include ("conexao.php");
 

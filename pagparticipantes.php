@@ -2,29 +2,26 @@
 
 namespace formulario;
 
-// include ("vendor/autoload.php");
 include_once ("app/acoesform.php");
 include ("conexao.php");
 
 $puxarform= new AcoesForm;
 $facilitadores=$puxarform->selecionarFacilitadores();
 $pegarfa=$puxarform->pegarfacilitador();
-$pegarid= $puxarform->puxarId();
 
 $pegarrespons = $puxarform->ultimosResponsaveis();
 
 //PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
 $facilitadores = $_GET['facilitadores'];
+$facilitadoresArray = json_decode($facilitadores, true);   
+$facilitadoresString = implode(", ", $facilitadoresArray);
+
 $conteudo = $_GET['conteudo'];
 $horainicio = $_GET['horainicio'];
 $horaterm = $_GET['horaterm'];
 $data = $_GET['data'];
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
-
-// Convertendo a string JSON de $facilitadores para um array
-$facilitadoresArray = json_decode($facilitadores, true);   
-$facilitadoresString = implode(", ", $facilitadoresArray);
 
     // Usando $facilitadoresString na sua string de saída
     // echo "Facilitadores - $facilitadoresString, 

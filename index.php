@@ -2,7 +2,6 @@
 
 namespace formulario;
 
-// include ("vendor/autoload.php");
 include_once ("app/acoesform.php");
 include ("conexao.php");
 
@@ -16,19 +15,6 @@ $pegarfa=$puxarform->pegarfacilitador();
 
 // Puxar local
 $pegarlocal=$puxarform->pegarlocais();
-
-
-
-// o numero 2 significa que foi iniciado, o 1 signifca que não
-// $status= session_start();
-// $name = session_name();
-
-// echo "<pre>"; print_r($status); echo "</pre>";
-// echo "<pre>"; print_r($name); echo "</pre>";
-
-
-// $start=session_start();
-// echo "<pre>"; print_r($arrayStatus[$status] ?? ''); echo "</pre>";
 
 ?>
 

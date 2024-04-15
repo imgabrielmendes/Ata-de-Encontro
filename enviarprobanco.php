@@ -22,6 +22,7 @@ if ($facilitadoresSelecionados !== null && $data !== "" && $horaterm !== "" && $
     $stmt->execute();
 
     if ($stmt) {
+        
         $id_ata = $conexao->insert_id;
 
         foreach ($facilitadoresSelecionados as $facilitador) {

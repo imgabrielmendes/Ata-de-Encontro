@@ -235,7 +235,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
         }
     
         if (fireEvent && customs.hasOwnProperty('onChange')) {
-            // Chamando o evento onChange com as duas arrays separadas
+
             customs.onChange(selected_ids, selected_names);
             
             // console.log(selected_ids);
@@ -245,7 +245,7 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
     
 
     function getOptions() {
-        // Map element options
+
         return [...element.options].map((op) => {
             return {
                 value: op.value,
