@@ -66,22 +66,10 @@ class AcoesForm {
             throw $e;
         }
     } 
-    
-    public function ultimosResponsaveis() {
-        try { 
-            $sql = "SELECT facilitador FROM assunto ORDER BY data_registro DESC LIMIT 1";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute();
-            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-            return $resultados;
-        } catch (\PDOException $e) {
-            throw $e;
-        }
-    }
-    
+        
     public function obterUltimoRegistro() {
         try {
-            $sql = "SELECT facilitador, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
+            $sql = "SELECT tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
                     FROM assunto 
                     ORDER BY data_registro DESC 
                     LIMIT 1";
@@ -103,7 +91,7 @@ class AcoesForm {
     public function pegarUltimaAta() {
         session_start();
         try {
-            $sql = "SELECT facilitador, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
+            $sql = "SELECT  tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
                     FROM assunto 
                     ORDER BY data_registro DESC 
                     LIMIT 1";

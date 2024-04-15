@@ -14,7 +14,7 @@ if ($facilitadoresSelecionados !== null && $data !== "" && $horaterm !== "" && $
 
     $conexao->begin_transaction();
 
-    $enviarbanco = "INSERT INTO assunto (data_registro, tema, objetivo, hora_inicial, hora_termino, local, status) VALUES (?, ?, ?, ?, ?, ?, 'ABERTA')";
+    $enviarbanco = "INSERT INTO assunto (data_solicitada, tema, objetivo, hora_inicial, hora_termino, local, status) VALUES (?, ?, ?, ?, ?, ?, 'ABERTA')";
     
     $stmt = $conexao->prepare($enviarbanco);
     $stmt->bind_param("ssssss", $data, $conteudo, $objetivoSelecionado, $data, $horaterm, $local);

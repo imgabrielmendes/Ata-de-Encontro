@@ -266,7 +266,7 @@ $local = $_SESSION['local'];
     <div class="row">
     <div class ="col">
         <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-        <textarea class="form-control"></textarea>
+        <textarea id="textoprinc" class="form-control"></textarea>
 
               </div>
     </div>   

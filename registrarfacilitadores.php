@@ -17,13 +17,12 @@ if ($result) {
         $row = $result->fetch_assoc();
         $ultimoID = $row["id"];
 
-        // Recebe os valores do POST
         $ParticipantesAdicionados = json_decode($_POST['particadd']);
 
         if (!empty($ParticipantesAdicionados)) {
-            // Itera sobre os participantes adicionados e insere cada um no banco de dados
+
             foreach ($ParticipantesAdicionados as $participante) {
-                // Inserir dados na tabela 'participantes'
+
                 $enviarBancoParticipantes = "INSERT INTO participantes (id_ata, participantes) VALUES (?, ?)";
                 $stmtParticipantes = $conn->prepare($enviarBancoParticipantes);
                 $stmtParticipantes->bind_param("ss", $ultimoID, $participante);

@@ -23,7 +23,6 @@ new MultiSelectTag('deliberador', {
 console.log();
 
 var participantesAdicionados = [];
-var botaohist = document.getElementById('abrirhist');
 
 var itemList = document.getElementById('items');
 var filter = document.getElementById('filter');
@@ -210,18 +209,47 @@ document.getElementById('addItemButton').addEventListener('click', function() {
 
 });
 
+var botaohist = document.getElementById('abrirhist');
 botaohist.addEventListener('click', irparaHist);
+
 function irparaHist() {
-     
-    Swal.fire({
-        title: "Perfeito!",
-        text: "Seus Deliberadores foram registrados",
-        icon: "success",
-    });
 
-    setTimeout(function() {
-        var url = 'paghistorico.php';
-        window.location.href = url;
-        }, 1500);
+    console.log("Ok, a função de ir para histórico e registrar texto foi puxada");
 
+    var textoprincipal = document.getElementById('textoprinc').value;
+    console.log(textoprincipal);
+
+    if (textoprincipal === "") {
+
+        Swal.fire({
+            title: "Informe o texto principal para prosseguir",
+            icon: "error"
+        });
+
+    } else {
+
+        Swal.fire({
+            title: "Perfeito!",
+            text: "Seus Deliberadores foram registrados",
+            icon: "success",
+        });
+
+        $.ajax({
+            url: 'registrartextop.php',
+            method: 'POST',
+            data: {
+                textoprincipal: textoprincipal,  
+            },
+            dataType: "json",
+            success: function() {
+                console.log ("AJAX DO TEXTO FOI PUXADO");
+                
+                setTimeout(function() {
+                    var url = 'paghistorico.php';
+                    window.location.href = url;
+                }, 1500);
+            }
+            
+        });
+    }
 }

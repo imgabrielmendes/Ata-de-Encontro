@@ -9,8 +9,6 @@ $puxarform= new AcoesForm;
 $facilitadores=$puxarform->selecionarFacilitadores();
 $pegarfa=$puxarform->pegarfacilitador();
 
-$pegarrespons = $puxarform->ultimosResponsaveis();
-
 //PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
 $facilitadores = $_GET['facilitadores'];
 $facilitadoresArray = json_decode($facilitadores, true);   

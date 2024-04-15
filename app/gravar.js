@@ -24,7 +24,7 @@ new MultiSelectTag('selecionandofacilitador', {
 var gravarinformacoes = document.getElementById("botaoregistrar");
 
 //1° LINHAS
-var data = document.getElementById("datainicio");
+var data = document.getElementById("datainicio").value;
 var horainicio = document.getElementById("horainicio").value;
 var horaterm = document.getElementById("horaterm").value;
 // var tempoes = document.getElementById("tempoestim").value;
@@ -84,7 +84,7 @@ function gravando() {
             title: "Ata registrada com sucesso!",
             icon: "success"
         });
-    }
+    
 
     console.log("(1) A função 'gravando()' foi chamada");
 
@@ -124,4 +124,4 @@ function gravando() {
             // console.log(facilitadores);
         },
     });
-}
+}}
