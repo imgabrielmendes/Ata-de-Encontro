@@ -2,75 +2,44 @@
 
 namespace formulario;
 
-include_once ("app/acoesform.php");
-include ("conexao.php");
+// include("vendor/autoload.php");
+include_once("app/acoesform.php");
+include("conexao.php");
 
-//Testar conexao com banco de dados
-$puxarform= new AcoesForm;
-$facilitadores=$puxarform->selecionarFacilitadores();
-
-$testandodeli=$puxarform->selecionarDeliberadores();
-// echo $testandodeli;
+$puxarform = new AcoesForm;
+$facilitadores = $puxarform->selecionarFacilitadores();
+$pegarfa = $puxarform->pegarfacilitador();
+// $testandodeli = $puxarform->selecionarDeliberadores();
+$pegarid = $puxarform->puxarId();
 
 //funções de encotrar pessoas
-$pegarfa=$puxarform->ultimosParticipantes();
-$pegarde=$puxarform->pegarfacilitador();
+// $pegarfa = $puxarform->puxandoUltimosFacilitadores();
 $participantesArray = $pegarfa;
-// ARRUMAR UM JEITO DE DIMINUIR ISSO
-
 $pegarrespons = $puxarform->ultimosResponsaveis();
 
-try {
+$pegarde=$puxarform->pegarfacilitador();
+// ARRUMAR UM JEIT
+var_dump($pegarid);
 
-$dbhost = 'localhost';
-$dbname = 'atareu';
-$dbuser = 'root';
-$dbpass = '';
+//Conexão com o banco de dados (substitua os valores pelos seus próprios)
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "atareu";
 
+//Cria a conexão
+$conn = new \mysqli($servername, $username, $password, $dbname);
 
-  $pdo = new \PDO("mysql:host={$dbhost};dbname={$dbname}", $dbuser, $dbpass);
-  $pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-
-  $sql = "SELECT facilitador, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
-          FROM assunto 
-          ORDER BY data_registro DESC 
-          LIMIT 1";
-
-  // Preparar e executar a consulta
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute();
-
-  if ($stmt->rowCount() > 0) {
-
-      $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-      $facilitadores = $row["facilitador"];
-      $facilitadoresArray = json_decode($facilitadores, true);   
-      $facilitadoresString = implode(", ", $facilitadoresArray);
-      $conteudo = $row["tema"];
-      $horainicio = substr($row["hora_inicial"], 0,5);
-      $horaterm = substr($row["hora_termino"], 0,5);
-      $data = substr($row["data_solicitada"], 0,10);
-      $objetivoSelecionado = $row["objetivo"];
-      $local = $row["local"];
-
-  } else {
-      echo "Nenhum resultado encontrado";
-  }
-
-  // Fechar a conexão
-  $pdo = null;
-
-} catch (\PDOException $e) {
-  echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+// Checa a conexão
+if ($conn->connect_error) {
+    die("Falha na conexão: " . $conn->connect_error);
 }
 
-echo "Facilitadores - $facilitadoresString, 
-      Conteúdo - $conteudo, 
-      Horário de Início - $horainicio, 
-      Horário de Término - $horaterm, 
-      Data - $data, 
-      Objetivos - $objetivoSelecionado, 
-      Local - $local";
+// Consulta SQL para selecionar os dados
+$sql = "SELECT data_registro, facilitador, tema, objetivo, local, status FROM assunto ORDER BY `data_registro` DESC";
+$result = $conn->query($sql);
+
+
 
 ?>
 <!DOCTYPE html>
@@ -161,53 +130,106 @@ echo "Facilitadores - $facilitadoresString,
 
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
           <div class="row">
-<?php
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        // Remover aspas duplas e colchetes do facilitador
-        $facilitador = str_replace(array('[', ']', '"'), '', $row["facilitador"]);
-?>
-    <br>
-    <div class="col-4">
-        <label><b>Solicitação</b></label>
-        <ul class="form-control bg-body-secondary"><?php echo date("d/m/Y", strtotime($row["data_solicitada"])); ?></ul>
-    </div>
-    <div class="col-4">
-        <label for="nomeMedico"><b>Objetivo:</b></label>
-        <br>
-        <ul class="form-control bg-body-secondary"><?php echo $row["objetivo"]; ?></ul>
-    </div>
-    <div class="col-4">
-        <label for="form-control"> <b>Facilitador</b> </label>
-        <ul class="form-control bg-body-secondary"><?php echo $facilitador; ?></ul>
-    </div>
-    <div class="col-4">
-        <label for="form-control"> <b>Local</b> </label>
-        <ul class="form-control bg-body-secondary"><?php echo $row["local"]; ?></ul>
-    </div>
-    <div class="col-4">
-        <label for="form-control"><b>Tema</b></label>
-        <ul class="form-control bg-body-secondary"><?php echo $row["tema"]; ?></ul>
-    </div>
-    <div class="col-4">
-        <label for="form-control"> <b>Status</b> </label>
-        <ul class="form-control bg-body-secondary">
-            <?php echo ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>"); ?>
-        </ul>
-    </div>
-    <div class="col-12">
-        <label for="form-control"><b>Participantes</b></label>
-        <div class="form-control bg-body-secondary">
-        </div>
-    </div>
-<?php
-    }
-} else {
-    echo "<div class='col-12'><p class='text-center'>Nenhum resultado encontrado.</p></div>";
-}
-$conn->close();
-?>
-</div>
+          <?php
+              if ($result) {
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $ultimoID = $row["id"];
+            
+                    // Recebe os valores do POST
+                    $ParticipantesAdicionados = json_decode($_POST['participantes']);
+            
+                    if (!empty($ParticipantesAdicionados)) {
+                        // Itera sobre os participantes adicionados e insere cada um no banco de dados
+                        foreach ($ParticipantesAdicionados as $participante) {
+                            // Inserir dados na tabela 'participantes'
+                            $enviarBancoParticipantes = "INSERT INTO participantes (id_ata, participantes) VALUES (?, ?)";
+                            $stmtParticipantes = $conn->prepare($enviarBancoParticipantes);
+                            $stmtParticipantes->bind_param("ss", $ultimoID, $participante);
+                            $stmtParticipantes->execute();
+            
+                            if ($stmtParticipantes) {
+                                echo "Novo registro inserido com sucesso para o participante: $participante <br>";
+                            } else {
+                                echo "Erro ao inserir registro para o participante: $participante <br>";
+                            }
+            
+                            $stmtParticipantes->close();
+                        }
+                    } else {
+                        echo "Nenhum participante adicionado.";
+                    }
+                } 
+              ?>
+                  <br>
+                  <div class="col-4">
+                      <label><b>Solicitação</b></label>
+                      <ul class="form-control bg-body-secondary"><?php echo date("d/m/Y", strtotime($row["data_solicitada"])); ?></ul>
+                  </div>
+                  <div class="col-4">
+                      <label for="nomeMedico"><b>Objetivo:</b></label>
+                      <br>
+                      <ul class="form-control bg-body-secondary"><?php echo $row["objetivo"]; ?></ul>
+                  </div>
+                  <div class="col-4">
+                      <label for="form-control"> <b>Facilitador</b> </label>
+                      <ul class="form-control bg-body-secondary">
+                          <?php
+                          // Verifica se o JSON 'facilitadores' foi enviado via POST
+                          if (isset($_POST['facilitadores'])) {
+                              // Decodifica o JSON para obter os facilitadores selecionados
+                              $facilitadoresSelecionados = json_decode($_POST['facilitadores']);
+
+                              // Verifica se o JSON foi decodificado com sucesso
+                              if ($facilitadoresSelecionados !== null) {
+                                  // Itera sobre os facilitadores selecionados e os exibe
+                                  foreach ($facilitadoresSelecionados as $facilitador) {
+                                      echo "<li>" . $facilitador . "</li>";
+                                  }
+                              } else {
+                                  echo "<li>Erro ao decodificar o JSON 'facilitadores'.</li>";
+                              }
+                          } else {
+                              echo "<li>Nenhum facilitador selecionado.</li>";
+                          }
+                          ?>
+                      </ul>
+                  </div>
+
+
+                  <div class="col-4">
+                      <label for="form-control"> <b>Local</b> </label>
+                      <ul class="form-control bg-body-secondary"><?php echo $row["local"]; ?></ul>
+                  </div>
+                  <div class="col-4">
+                      <label for="form-control"><b>Tema</b></label>
+                      <ul class="form-control bg-body-secondary"><?php echo $row["tema"]; ?></ul>
+                  </div>
+                  <div class="col-4">
+                      <label for="form-control"> <b>Status</b> </label>
+                      <ul class="form-control bg-body-secondary"><?php echo $row['status']; ?></ul>
+                  </div>
+                  <div class="col-12">
+                      <label for="form-control"><b>Participantes</b></label>
+                      <div id="participantesSalvos" class="form-control bg-body-secondary">
+                          <?php
+                          // Iterar sobre os participantes salvos e exibi-los na div
+                          foreach ($participantesSalvos as $participante) {
+                              echo "<p>" . $participante . "</p>";
+                          }
+                          ?>
+                      </div>
+                  </div>
+
+
+              <?php
+              } else {
+                  echo "<div class='col-12'><p class='text-center'>Nenhum resultado encontrado.</p></div>";
+              }
+              $conn->close();
+              ?>
+
+                </div>
 
 
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
