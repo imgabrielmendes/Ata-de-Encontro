@@ -225,7 +225,6 @@ $local = $_SESSION['local'];
 
                     <?php 
                     foreach ($participantesArray as $participante) {
-                    // Remover espaços em branco extras no início e no fim de cada participante
                     $participante = trim($participante);
                     echo "<li><b>{$participante}</b></li>";
                 } ?>
@@ -266,7 +265,7 @@ $local = $_SESSION['local'];
     <div class="row">
     <div class ="col">
         <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-        <textarea id="textoprinc" class="form-control"></textarea>
+        <textarea id="textoprinc" style="height: 110px;" class="form-control"></textarea>
 
               </div>
     </div>   
@@ -280,7 +279,7 @@ $local = $_SESSION['local'];
               <ul class="list-group list-group-flush"></ul>
               <label class="h4" style="height: 35px;"><b>DELIBERAÇÕES</b></label>
               
-              <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 110px;"></textarea>
+              <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;"></textarea>
             </div>
 
     <div class="col">

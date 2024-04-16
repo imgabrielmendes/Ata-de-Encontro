@@ -74,24 +74,30 @@ $pegarlocal=$puxarform->pegarlocais();
           <!---ABA DE DATA---->
           <div class="col-3">
             <label><b>Data*</b></label>
-            <input id="datainicio" class="form-control col-12 col-md-6" placeholder="dd-mm-aaaa" type="date">
+            <input id="datainicio" class="form-control col-12 col-md-6" placeholder="dd-mm-aaaa" min="2024-04-01" type="date">
           </div>
+          
+              <!--CONDIÇÃO PARA QUE O USUARIO NÃO COLOQUE DIAS ANTERIORES--->
+              <script>
+                var hoje = new Date().toISOString().split('T')[0];
+                document.getElementById("datainicio").setAttribute("min", hoje);
+              </script>
 
 
           <!---ABA DE HORÁRIO INICIO---->
           <div class="col-3">
             <label for="nomeMedico"><b>Horário de Início*:</b></label>
             <br>
-            <input class="form-control col-12 col-md-6" type="time" id="horainicio" name="appt" min="09:00" max="18:00">
+            <input class="form-control col-12 col-md-6" type="time" id="horainicio" name="appt" min="" max="18:00">
           </div>
 
- <!---ABA DE HORÁRIO TERMINO---->
+          <!---ABA DE HORÁRIO TERMINO---->
           <div class="col-3">
             <label for="form-control"> <b> Horário de Término:</b> </label>
             <input class="form-control" type="time" id="horaterm" name="appt" min="13:00" max="12:00">
           </div>
 
- <!---ABA DE TEMPO ESTIMADO ---->
+          <!---ABA DE TEMPO ESTIMADO ---->
           <div class="col-3">
             <label for="form-control"> <b> Tempo Estimado (horas):</b> </label>
             <input value="1" class="form-control" type="number" id="tempoestim" name="appt" min="0" max="5">
@@ -122,19 +128,15 @@ $pegarlocal=$puxarform->pegarlocais();
           <!--- ABA DE SELECIONAR LOCAL ---->
           <div class="col-4">
             <label for="nomeFacilitador"><b>Informe o Local</b></label>
-            
             <select class="form-control" id="pegarlocal">
-              
               <option disabled> - Informe o Local - </option>
+              <option> 
               
-              <option> <?php foreach ($pegarlocal as $locais) : ?>
+              <?php foreach ($pegarlocal as $locais) : ?>
               <option value="<?php echo $locais['locais'] ?>" data-tokens="<?php echo $locais['locais']; ?>">
-
-              <?php echo $locais['locais'] ?>
-
-              <?php endforeach ?>
-
+              <?php echo $locais['locais'] ?> <?php endforeach ?>
               </option>
+
             </select>
           </div>
 
@@ -169,20 +171,60 @@ $pegarlocal=$puxarform->pegarlocais();
             <div class="col  "><br>
               <div class="btn-atas">
                 
-              <button id="botaoregistrar" type="button" class="btn btn-success">
-                        salvar
-                </button>
-      
+              <button id="botaoregistrar" type="button" class="btn btn-success">salvar</button>
+
+              <button id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
               </div>
-              <script>
+              
+              <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h1 class="col modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
 
-              </script>
+                              <form>
+                                <div class="mb-3">
 
-              <br><br>
-      
+                                  <label class="col-form-label">Nome completo:</label>
+                                  <input type="text" class="form-control" id="caixanome">
+                                </div>
+
+                                <div class="mb-3">
+                                  <label class="col-form-label">Informe o Email</label>
+                                  <input type="email" class="form-control" id="caixadeemail">
+                                </div>
+
+                                <div class="row">
+                                <label class="col-4 form-label">Matricula: </label>
+                                <label id="labelcargo" class="col-8 form-label">Cargo: </label>
+                                <div class="col-4">
+                                <input type="text" maxlength="4" class="form-control" id="caixamatricula">
+                                </div>  
+
+                                <div class="col-8">
+                                <input type="text" class="col-5 form-control" id="caixacargo">
+                              </div></div>
+                              </form>
+
+                            </div>
+
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                              <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
       <script src="view\js\multi-select-tag.js"></script>
-
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+      <script src="view/js/bootstrap.js"></script>
       <script src="app/gravar.js"></script>
 
 </body>

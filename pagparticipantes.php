@@ -203,27 +203,22 @@ $local = $_GET['local'];
           <form id="addForm">
               <div class="form-group ">
                   <br>
-                  <div id="items" class="col-12 list-group">                    
+                  <div id="items" class="list-group">                    
               </div>
                   <label for="item"><b>Informe os participantes<b></label>
+
                   <div class="row">
-                    <div class="col-11"> 
-                    <select class="col-8 form-control" id="participantesadicionados" name="facilitador" multiple>
-              <optgroup label="Selecione Facilitadores">
-                  <?php foreach ($pegarfa as $facnull) : ?>
-                      <option value="<?php echo $facnull['id']; ?>"
-                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                          <?php echo $facnull['nome_facilitador']; ?>
-                      </option>
-                  <?php endforeach ?>
-              </optgroup>
-          </select>
-                </div>
-                  <div class="col-1">
-                  <!-- <button type="button" id="addItemButton" class="btn btn-primary ">+</button> -->
-                  </div> 
-                </div>
-                  </div>
+                    <div class="col" style="widht: 50px;"> 
+                    <select class="col form-control" id="participantesadicionados" name="facilitador" multiple style="width: 100px;">
+                      <optgroup label="Selecione Facilitadores">
+                          <?php foreach ($pegarfa as $facnull) : ?>
+                              <option value="<?php echo $facnull['id']; ?>"
+                                  data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                                  <?php echo $facnull['nome_facilitador']; ?>
+                              </option> <?php endforeach ?>
+                       </optgroup>
+                    </select>
+        </div>
               
              
           </form>
@@ -283,25 +278,31 @@ $local = $_GET['local'];
                               <form>
                                 <div class="mb-3">
 
-                                  <label type="email" for="recipient-name" class="col-form-label">Nome completo:</label>
+                                  <label class="col-form-label">Nome completo:</label>
                                   <input type="text" class="form-control" id="caixanome">
                                 </div>
 
                                 <div class="mb-3">
-                                  <label type="email" for="recipient-name" class="col-form-label">Informe o Email</label>
-                                  <input type="text" class="form-control" id="caixadeemail">
+                                  <label class="col-form-label">Informe o Email</label>
+                                  <input type="email" class="form-control" id="caixadeemail">
                                 </div>
 
-                                <label type="email" for="recipient-name" class="col-form-label">Informe a sua matricula: </label>
-                              <div class="col-6">
-                                <input type="text" maxlength="4" class="col-5 form-control" id="caixamatricula">
-                              </div>
+                                <div class="row">
+                                <label class="col-4 form-label">Matricula: </label>
+                                <label id="labelcargo" class="col-8 form-label">Cargo: </label>
+                                <div class="col-4">
+                                <input type="text" maxlength="4" class="form-control" id="caixamatricula">
+                                </div>  
+
+                                <div class="col-8">
+                                <input type="text" class="col-5 form-control" id="caixacargo">
+                              </div></div>
                               </form>
 
                             </div>
+
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-
                               <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
 
                             </div>

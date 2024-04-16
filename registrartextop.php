@@ -15,7 +15,7 @@ if ($conn->connect_error) {
 }
 
 var_dump("OK, puxou");
-$textoprincipal = $_POST['textoprincipal'];
+$textoprincipal = $_POST['textoprincipal1'];
 
 $sql = "SELECT id FROM assunto ORDER BY id DESC LIMIT 1";
 $result = $conn->query($sql);

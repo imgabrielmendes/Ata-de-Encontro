@@ -238,18 +238,17 @@ function irparaHist() {
             url: 'registrartextop.php',
             method: 'POST',
             data: {
-                textoprincipal: textoprincipal,  
+                textoprincipal1: textoprincipal,  
             },
-            dataType: "json",
             success: function() {
+
                 console.log ("AJAX DO TEXTO FOI PUXADO");
                 
                 setTimeout(function() {
                     var url = 'paghistorico.php';
                     window.location.href = url;
                 }, 1500);
-            }
-            
+            }            
         });
     }
 }

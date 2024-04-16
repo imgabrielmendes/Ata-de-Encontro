@@ -125,3 +125,65 @@ function gravando() {
         },
     });
 }}
+
+///------------BOTÃO DE REGISTRAR EMAIL DENTRO DA MODAL------------------------------
+
+var botaoemail = document.getElementById("registraremail");
+botaoemail.addEventListener('click', gravaremail);
+
+function gravaremail(){
+
+    var caixadenome = document.getElementById("caixanome").value;
+    var caixadeemail = document.getElementById("caixadeemail").value;
+    var caixamatricula = document.getElementById("caixamatricula").value;
+   
+    if (caixadenome.trim() === "" || caixadeemail.trim() === "" || caixamatricula.trim() === "")
+    {
+        
+        Swal.fire({
+            title: "Erro no registro",
+            text: "Preencha todas as caixas do formulário",
+            icon: "error"
+          });
+
+          console.log ("(X) Puxou a function da modal, mas não preencheu todas as informações")
+          console.log ("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail)
+    } 
+    
+    else {
+
+        Swal.fire({
+            title: "Cadastrado com sucesso!",
+            text: "Atualize a página e continue a operação",
+            icon: "success"
+          });
+
+        console.log ("(3.1) As informações de email foram enviadas");
+        // console.log (caixamatricula + " " +caixadenome + " " + caixadeemail)
+
+        if (caixadenome !=="" && caixadeemail !=="" && caixamatricula !=="") 
+
+        $.ajax({
+            url: 'registrarpessoas.php',
+            method: 'POST',
+            data: {
+               caixaname: caixadenome,
+               caixaemail: caixadeemail,
+               caixamatricula: caixamatricula,
+            },
+
+            success: function (response) {
+                console.log("(3.2) Deu bom! AJAX está enviando");
+                console.log (caixamatricula + " " +caixadenome + " " + caixadeemail)
+                console.log(response);
+
+                
+            },
+            error: function (error) {
+                // console.log('Erro na solicitação AJAX:', error);
+            }
+        });
+    };
+
+};
+ 

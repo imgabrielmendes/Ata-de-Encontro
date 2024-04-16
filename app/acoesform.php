@@ -57,7 +57,7 @@ class AcoesForm {
 
     public function pegarfacilitador() {
         try {
-            $sql = "SELECT id, nome_facilitador, matricula FROM facilitadores";
+            $sql = "SELECT id, nome_facilitador, matricula FROM facilitadores ORDER BY nome_facilitador ASC ";
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
