@@ -9,15 +9,10 @@ include("conexao.php");
 $puxarform = new AcoesForm;
 $facilitadores = $puxarform->selecionarFacilitadores();
 $pegarfa = $puxarform->pegarfacilitador();
-$testandodeli = $puxarform->selecionarDeliberadores();
 $pegarid = $puxarform->puxarId();
 
 //funções de encotrar pessoas
-$pegarfa = $puxarform->ultimosParticipantes();
 $participantesArray = $pegarfa;
-$pegarrespons = $puxarform->ultimosResponsaveis();
-
-$pegarde=$puxarform->pegarfacilitador();
 // ARRUMAR UM JEIT
 var_dump($pegarid);
 
@@ -36,10 +31,19 @@ if ($conn->connect_error) {
 }
 
 // Consulta SQL para selecionar os dados
-$sql = "SELECT data_registro, facilitador, tema, objetivo, local, status FROM assunto ORDER BY `data_registro` DESC";
+$sql = "SELECT data_registro, tema, objetivo, local, status FROM assunto ORDER BY `data_registro` DESC";
 $result = $conn->query($sql);
 
 
+$participantesteste=$puxarform->puxandoUltimosParticipantes();
+foreach ($participantesteste as $participantesFacilitadores) {
+ 
+  echo "Nome: " . $participantesFacilitadores['nome_facilitador'] . "<br>";
+  echo "<br>";
+}
+
+// echo $facilitador;
+// print_r ($participantesFacilitadores);
 
 ?>
 
@@ -159,7 +163,7 @@ $result = $conn->query($sql);
                             }
 
                             // Consulta SQL para selecionar os dados
-                            $sql = "SELECT data_solicitada, facilitador, tema, objetivo, local, status FROM assunto ORDER BY data_registro DESC";
+                            $sql = "SELECT id ,data_solicitada, tema, objetivo, local, status FROM assunto ORDER BY data_registro DESC";
 
                             $result = $conn->query($sql);
                             ?>
@@ -295,25 +299,19 @@ $result = $conn->query($sql);
                                 <div class="col-12">
                                     <label for="form-control"><b>Participantes</b></label>
                                     <div class="form-control bg-body-secondary">
-                                        <?php 
-                                        // Decodifica a string JSON para um array
-                                        foreach ($pegarfa as $item) {
-                                            $participantesArray = json_decode($item['participantes']);
-                                            $numParticipantes = count($participantesArray);
-                                            $counter = 0;
+                                       <?php 
+                                    
+                                    foreach ($participantesteste as $participantesFacilitadores) {
+                                       
+                                        echo "('Nome: " . $participantesFacilitadores['nome_facilitador'] . "');";
+                                        
+                                    }
+                                    
 
-                                            foreach ($participantesArray as $participanteNome) {
-                                                $participanteNome = trim($participanteNome, '" ');
-                                                echo "<span>$participanteNome</span>";
-                                                
-                                                // Adiciona vírgula entre os participantes, exceto no último
-                                                if ($counter < $numParticipantes - 1) {
-                                                    echo ", ";
-                                                }
-                                                $counter++;
-                                            }
-                                        }
-                                        ?>
+                                        
+                                    
+                                    ?>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -333,6 +331,7 @@ $result = $conn->query($sql);
         document.getElementById("modal_local").innerText = row.local;
         document.getElementById("modal_tema").innerText = row.tema;
         document.getElementById("modal_status").innerText = row.status;
+
         var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
             backdrop: 'static', // Impede o fechamento clicando fora do modal
             keyboard: false // Impede o fechamento pressionando a tecla Esc
