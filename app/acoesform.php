@@ -151,6 +151,44 @@ class AcoesForm {
             throw $e;
         }
     }
+    public function puxandoUltimosParticipantes() {
+    try {
+        // 1. Obtém o ID do último participante
+        $sql1 = "SELECT id_ata FROM ata_has_fac ORDER BY id DESC";
+        $stmt1 = $this->pdo->prepare($sql1);
+        $stmt1->execute();
+        $lastAtaId = $stmt1->fetchColumn();
     
-
-}
+        // 2. Obtém os participantes (facilitadores) associados à última ata
+        $sql2 = "SELECT id_ata, facilitadores FROM ata_has_fac WHERE id_ata = ?";
+        $stmt2 = $this->pdo->prepare($sql2);
+        $stmt2->execute([$lastAtaId]);
+        $resultadosAtaParticipantes = $stmt2->fetchAll(\PDO::FETCH_ASSOC);
+    
+        // 3. Obtém as informações detalhadas dos participantes (facilitadores)
+        $participantesFacilitadores = [];
+    
+        foreach ($resultadosAtaParticipantes as $resultado) {
+            $participanteId = $resultado['facilitadores'];
+    
+            // 4. Consulta para obter informações detalhadas do participante (facilitador) com base no ID
+            $sql3 = "SELECT id, matricula, nome_facilitador FROM facilitadores WHERE id = ?";
+            $stmt3 = $this->pdo->prepare($sql3);
+            $stmt3->execute([$participanteId]);
+            $participanteInfo = $stmt3->fetch(\PDO::FETCH_ASSOC);
+    
+            // 5. Armazena as informações dos participantes (facilitadores)
+            if ($participanteInfo) {
+                $participantesFacilitadores[] = $participanteInfo;
+            }
+        }
+    
+        // 6. Retorna o array de participantes (facilitadores)
+        return $participantesFacilitadores;
+    } catch (\PDOException $e) {
+        // Em caso de erro, lança a exceção
+        throw $e;
+    }}
+    
+    
+       }
