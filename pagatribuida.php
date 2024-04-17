@@ -15,7 +15,7 @@ $pegarid = $puxarform->puxarId();
 //funções de encotrar pessoas
 // $pegarfa = $puxarform->puxandoUltimosFacilitadores();
 $participantesArray = $pegarfa;
-// $pegarrespons = $puxarform->ultimosResponsaveis();
+
 
 $pegarde=$puxarform->pegarfacilitador();
 // ARRUMAR UM JEIT

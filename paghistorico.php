@@ -10,11 +10,19 @@ $puxarform = new AcoesForm;
 $facilitadores = $puxarform->selecionarFacilitadores();
 $pegarfa = $puxarform->pegarfacilitador();
 $pegarid = $puxarform->puxarId();
-
+$participantes = $puxarform->puxandoUltimosParticipantes();
 //funções de encotrar pessoas
 $participantesArray = $pegarfa;
 // ARRUMAR UM JEIT
 var_dump($pegarid);
+
+
+$idAta = 557;
+
+$nomesFacilitadores = $puxarform->obterFacilitadoresPorIDAta($idAta);
+
+
+
 
 //Conexão com o banco de dados (substitua os valores pelos seus próprios)
 $servername = "localhost";
@@ -191,7 +199,7 @@ foreach ($participantesteste as $participantesFacilitadores) {
 <thead>
     <tr>
         <th class="text-center">Data</th>
-        <th class="text-center">Objetivo</th>
+        <th class="text-center">Objetivo</th>     
         <th class="text-center">Facilitador</th>
         <th class="text-center">Tema</th>
         <th class="text-center">Local</th>
@@ -202,61 +210,40 @@ foreach ($participantesteste as $participantesFacilitadores) {
 
 
 <tbody class="text-center">
-    <?php
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            // Remover aspas duplas e colchetes do facilitador
-            $facilitador = str_replace(array('[', ']', '"'), '', $row["facilitador"]);
-
-            echo "<tr>";
-            
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . substr($row["data_solicitada"], 8, 2) . "/" . substr($row["data_solicitada"], 5, 2) . "/" . substr($row["data_solicitada"], 0, 4) . "</td>";
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $facilitador . "</td>";
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
-            echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
-
-            // Botão sem funcionalidade
-            echo "<td class='text-center align-middle'><a href='pagatribuida.php'><button type='button' class='btn btn-warning' style='color: white;'>+</button></a></td>";
-
-            echo "</tr>";
+<?php
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $idAta = $row["id"];
+        $facilitadores = $puxarform->pegarfacilitadorPorAta($idAta);
+        $nomesFacilitadores = [];
+        foreach ($facilitadores as $facilitador) {
+            $nomesFacilitadores[] = $facilitador['nome_facilitador'];
         }
-    } else {
-        echo "<tr><td colspan='7' class='align-middle'>Nenhum resultado encontrado.</td></tr>";
+        echo "<tr>";
+        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . substr($row["data_solicitada"], 8, 2) . "/" . substr($row["data_solicitada"], 5, 2) . "/" . substr($row["data_solicitada"], 0, 4) . "</td>";
+        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
+        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . implode(", ", $nomesFacilitadores) . "</td>";
+        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
+        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
+        echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
+        echo "<td class='text-center align-middle'>";
+        echo "<a href='pagatribuida.php?facilitador=" . urlencode($facilitadores[0]['nome_facilitador']) . "'>";
+        echo "<button type='button' class='btn btn-warning' style='color: white;'>+</button>";
+        echo "</a>";
+        echo "</td>";
+        echo "</tr>";
     }
-    $conn->close();
-    ?>
+} else {
+    echo "<tr><td colspan='7' class='align-middle'>Nenhum resultado encontrado.</td></tr>";
+}
+$conn->close();
+?>
+
 </tbody>
-
-
-
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Adicionar evento de clique aos elementos de status da tabela
-        const statusCells = document.querySelectorAll('.status-cell');
-        statusCells.forEach(function(cell) {
-            cell.addEventListener('click', function() {
-                // Obter os dados da linha correspondente
-                const rowData = JSON.parse(cell.getAttribute('data-row'));
-                // Abrir o modal com os dados da linha
-                abrirModalDetalhes(rowData);
-            });
-        });
-    });
-</script>
-
 </table>
-
-
-
-                    </div>
-                </div>
-
-                <!-- Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    </div>
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -278,8 +265,14 @@ foreach ($participantesteste as $participantesFacilitadores) {
                                 </div>
                                 <div class="col-4">
                                     <label><b>Facilitador:</b></label>
-                                    <ul class="form-control bg-body-secondary" id="modal_facilitador"></ul>
+                                    <ul class="form-control bg-body-secondary" id="modal_facilitador">
+                                        <?php
+                                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . implode(", ", $nomesFacilitadores) . "</td>";
+                                        ?>
+                                    </ul>
+
                                 </div>
+
                                 <div class="col-4">
                                     <label><b>Local:</b></label>
                                     <ul class="form-control bg-body-secondary border rounded" id="modal_local"></ul>
@@ -295,24 +288,9 @@ foreach ($participantesteste as $participantesFacilitadores) {
                                     <ul class="form-control bg-body-secondary border rounded" id="modal_status"></ul>
                                 </div>
                                
-                                <!-- Nova div para deliberações -->
                                 <div class="col-12">
                                     <label for="form-control"><b>Participantes</b></label>
-                                    <div class="form-control bg-body-secondary">
-                                       <?php 
-                                    
-                                    foreach ($participantesteste as $participantesFacilitadores) {
-                                       
-                                        echo "('Nome: " . $participantesFacilitadores['nome_facilitador'] . "');";
-                                        
-                                    }
-                                    
-
-                                        
-                                    
-                                    ?>
-                                        
-                                    </div>
+                                    <div class="form-control bg-body-secondary" id="modal_participantes"></div>
                                 </div>
                             </div>
                         </div>
@@ -339,16 +317,7 @@ foreach ($participantesteste as $participantesFacilitadores) {
         myModal.show();
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        const buttons = document.querySelectorAll('.btn-warning');
-        buttons.forEach(button => {
-            button.addEventListener('click', function () {
-                if (!this.closest('.no-modal')) {
-                    abrirModalDetalhes(JSON.parse(this.dataset.row));
-                }
-            });
-        });
-    });
+    ;
 </script>
 
 </script>
