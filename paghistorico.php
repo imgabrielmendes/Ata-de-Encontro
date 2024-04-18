@@ -10,7 +10,7 @@ $puxarform = new AcoesForm;
 $facilitadores = $puxarform->selecionarFacilitadores();
 $pegarfa = $puxarform->pegarfacilitador();
 $pegarid = $puxarform->puxarId();
-
+$resultados = $puxarform->pegandoTudo();
 //funções de encotrar pessoas
 $participantesArray = $pegarfa;
 // ARRUMAR UM JEIT
@@ -43,7 +43,7 @@ foreach ($participantesteste as $participantesFacilitadores) {
 }
 
 // echo $facilitador;
-// print_r ($participantesFacilitadores);
+print_r($resultados);
 
 ?>
 
@@ -203,48 +203,34 @@ foreach ($participantesteste as $participantesFacilitadores) {
 
 <tbody class="text-center">
     <?php
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            // Tratamento do campo facilitador
-            $facilitadores = explode(",", $row["facilitador"]);
-            $facilitadoresFormatted = implode(", ", $facilitadores);
-            
-
+    // Verifica se há resultados retornados pela função pegandoTudo()
+    $results = $puxarform->pegandoTudo();
+    if ($results) {
+        foreach ($results as $row) {
             echo "<tr>";
-            // Adicione o tratamento do facilitador aqui
+            // Exibindo a data formatada
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . substr($row["data_solicitada"], 8, 2) . "/" . substr($row["data_solicitada"], 5, 2) . "/" . substr($row["data_solicitada"], 0, 4) . "</td>";
+            // Exibindo o objetivo
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
-
             // Exibindo os facilitadores
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
-            // Consulta SQL para obter os facilitadores desta ATA
-            $sqlFacilitadores = "SELECT F.nome_facilitador FROM facilitadores AS F INNER JOIN ata_has_fac AS AF ON F.id = AF.facilitadores WHERE AF.id_ata = ?";
-            $stmtFacilitadores = $conn->prepare($sqlFacilitadores);
-            $stmtFacilitadores->bind_param("s", $row['id']);
-            $stmtFacilitadores->execute();
-            $resultFacilitadores = $stmtFacilitadores->get_result();
-            $facilitadoresArray = array();
-            while ($rowFacilitador = $resultFacilitadores->fetch_assoc()) {
-                $facilitadoresArray[] = $rowFacilitador['nome_facilitador'];
-            }
-            echo implode(", ", $facilitadoresArray);
+            $facilitadores = explode(",", $row["facilitador"]);
+            $facilitadoresFormatted = implode(", ", $facilitadores);
+            echo $facilitadoresFormatted;
             echo "</td>";
-
+            // Exibindo o tema
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
+            // Exibindo o local
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
+            // Exibindo o status
             echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
-
             // Botão sem funcionalidade
             echo "<td class='text-center align-middle'><a href='pagatribuida.php'><button type='button' class='btn btn-warning' style='color: white;'>+</button></a></td>";
-
             echo "</tr>";
-
-            $stmtFacilitadores->close(); // Fechar a declaração preparada
         }
     } else {
         echo "<tr><td colspan='7' class='align-middle'>Nenhum resultado encontrado.</td></tr>";
     }
-    $conn->close();
     ?>
 </tbody>
 
@@ -284,27 +270,9 @@ foreach ($participantesteste as $participantesFacilitadores) {
                                     <ul class="form-control bg-body-secondary border rounded" id="modal_objetivo"></ul>
                                 </div>
                                 <div class="col-4">
-    <label><b>Facilitador:</b></label>
-    <ul class="form-control bg-body-secondary" id="modal_facilitador">
-        <?php
-        // Consulta SQL para obter os facilitadores associados a esta ATA
-        $sqlFacilitadoresModal = "SELECT F.nome_facilitador FROM facilitadores AS F INNER JOIN ata_has_fac AS AF ON F.id = AF.facilitadores WHERE AF.id_ata = ?";
-        $stmtFacilitadoresModal = $conn->prepare($sqlFacilitadoresModal);
-        $stmtFacilitadoresModal->bind_param("s", $idAta); // Lembre-se de definir $idAta corretamente
-        $stmtFacilitadoresModal->execute();
-        $resultFacilitadoresModal = $stmtFacilitadoresModal->get_result();
-        if ($resultFacilitadoresModal->num_rows > 0) {
-            while ($rowFacilitadorModal = $resultFacilitadoresModal->fetch_assoc()) {
-                echo "<li>" . $rowFacilitadorModal['nome_facilitador'] . "</li>";
-            }
-        } else {
-            echo "<li>Nenhum facilitador associado a esta ATA.</li>";
-        }
-        $stmtFacilitadoresModal->close(); // Fechar a declaração preparada
-        ?>
-    </ul>
-</div>
-
+                                    <label><b>Facilitador:</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_facilitador"></ul>
+                                </div>
                                 <div class="col-4">
                                     <label><b>Local:</b></label>
                                     <ul class="form-control bg-body-secondary border rounded" id="modal_local"></ul>

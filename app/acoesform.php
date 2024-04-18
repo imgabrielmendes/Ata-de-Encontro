@@ -185,35 +185,27 @@ class AcoesForm {
     }}
 
     public function pegandoTudo(){
-
-
-
-        $sql="SELECT 
-        A.id,
-        A.data_solicitada,
-        A.objetivo,
-        F.nome_facilitador as facilitador,
-        A.tema,
-        A.local,
-        A.status
-        
-        FROM assunto as A
-        
-             INNER JOIN ata_has_fac as B
-                ON A.id = B.id_ata
-                
-             INNER JOIN facilitadores as F
-                ON B.facilitadores = F.id;";
-
-                $stmt = $this->pdo->prepare($sql);
-                $stmt->execute();
-                if ($stmt->rowCount() > 0) {
-                    $row = $stmt->fetch(\PDO::FETCH_ASSOC);
-                    return $row;
-                } else {
-                    return false;
-                }
+        try {
+            $sql = "SELECT 
+                        A.id,
+                        A.data_solicitada,
+                        A.objetivo,
+                        F.nome_facilitador as facilitador,
+                        A.tema,
+                        A.local,
+                        A.status
+                    FROM assunto as A
+                    INNER JOIN ata_has_fac as B ON A.id = B.id_ata
+                    INNER JOIN facilitadores as F ON B.facilitadores = F.id";
             
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+            
+            // Retorna todos os resultados
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            throw $e;
+        }
     }
     
     
