@@ -10,11 +10,18 @@ $puxarform = new AcoesForm;
 $facilitadores = $puxarform->selecionarFacilitadores();
 $pegarfa = $puxarform->pegarfacilitador();
 $pegarid = $puxarform->puxarId();
+$resultados = $puxarform->pegandoTudo();
+$participantes = $puxarform->puxandoUltimosParticipantes($id_ata);
 
-//funções de encotrar pessoas
-$participantesArray = $pegarfa;
-// ARRUMAR UM JEIT
-var_dump($pegarid);
+
+// // Exiba os participantes
+// if ($participantes) {
+//     foreach ($participantes as $participante) {
+//         echo "Nome: " . $participante['nome_facilitador'] . "<br>";
+//     }
+// } else {
+//     echo "Nenhum participante encontrado.";
+// }
 
 //Conexão com o banco de dados (substitua os valores pelos seus próprios)
 $servername = "localhost";
@@ -35,15 +42,17 @@ $sql = "SELECT data_registro, tema, objetivo, local, status FROM assunto ORDER B
 $result = $conn->query($sql);
 
 
-$participantesteste=$puxarform->puxandoUltimosParticipantes();
-foreach ($participantesteste as $participantesFacilitadores) {
- 
-  echo "Nome: " . $participantesFacilitadores['nome_facilitador'] . "<br>";
-  echo "<br>";
-}
+$participantes = $puxarform->puxandoUltimosParticipantes($row['id']); // Obtém os participantes da ata
+            if (!empty($participantes)) {
+                // Itera sobre os participantes e exibe seus nomes
+                foreach ($participantes as $participante) {
+                    echo $participante . "<br>";
+                }
+            } else {
+                echo "Nenhum participante";
+            }
 
-// echo $facilitador;
-// print_r ($participantesFacilitadores);
+print_r($participantes);
 
 ?>
 
@@ -197,35 +206,57 @@ foreach ($participantesteste as $participantesFacilitadores) {
         <th class="text-center">Local</th>
         <th class="text-center">Status</th>
         <th class="text-center">Ação</th>
+        <th class="text-center">Participantes</th>
     </tr>
 </thead>
 
 
 <tbody class="text-center">
     <?php
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            // Remover aspas duplas e colchetes do facilitador
-            $facilitador = str_replace(array('[', ']', '"'), '', $row["facilitador"]);
-
+    // Verifica se há resultados retornados pela função pegandoTudo()
+    $results = $puxarform->pegandoTudo();
+    if ($results) {
+        foreach ($results as $row) {
             echo "<tr>";
-            
+            // Exibindo a data formatada
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . substr($row["data_solicitada"], 8, 2) . "/" . substr($row["data_solicitada"], 5, 2) . "/" . substr($row["data_solicitada"], 0, 4) . "</td>";
+            // Exibindo o objetivo
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $facilitador . "</td>";
+            // Exibindo os facilitadores
+            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
+            $facilitadores = explode(",", $row["facilitador"]);
+            $facilitadoresFormatted = implode(", ", $facilitadores);
+            echo $facilitadoresFormatted;
+            echo "</td>";
+            // Exibindo o tema
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
+            // Exibindo o local
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
+            // Exibindo os participantes
+            
+            echo "</td>";
+            // Exibindo o status
             echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
-
             // Botão sem funcionalidade
             echo "<td class='text-center align-middle'><a href='pagatribuida.php'><button type='button' class='btn btn-warning' style='color: white;'>+</button></a></td>";
+            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
+            $participantes = $puxarform->puxandoUltimosParticipantes($row['id']); // Obtém os participantes da ata
 
+            if (!empty($participantes) && is_array($participantes)) {
+                // Itera sobre os participantes e exibe seus nomes
+                foreach ($participantes as $participante) {
+                    echo $participante . "<br>";
+                }
+            } else {
+                echo "Nenhum participante";
+            }
+            
             echo "</tr>";
+            
         }
     } else {
         echo "<tr><td colspan='7' class='align-middle'>Nenhum resultado encontrado.</td></tr>";
     }
-    $conn->close();
     ?>
 </tbody>
 
@@ -233,20 +264,9 @@ foreach ($participantesteste as $participantesFacilitadores) {
 
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Adicionar evento de clique aos elementos de status da tabela
-        const statusCells = document.querySelectorAll('.status-cell');
-        statusCells.forEach(function(cell) {
-            cell.addEventListener('click', function() {
-                // Obter os dados da linha correspondente
-                const rowData = JSON.parse(cell.getAttribute('data-row'));
-                // Abrir o modal com os dados da linha
-                abrirModalDetalhes(rowData);
-            });
-        });
-    });
-</script>
+
+
+
 
 </table>
 
@@ -278,7 +298,7 @@ foreach ($participantesteste as $participantesFacilitadores) {
                                 </div>
                                 <div class="col-4">
                                     <label><b>Facilitador:</b></label>
-                                    <ul class="form-control bg-body-secondary" id="modal_facilitador"></ul>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_facilitador"></ul>
                                 </div>
                                 <div class="col-4">
                                     <label><b>Local:</b></label>
@@ -297,22 +317,44 @@ foreach ($participantesteste as $participantesFacilitadores) {
                                
                                 <!-- Nova div para deliberações -->
                                 <div class="col-12">
+<<<<<<< HEAD
+                                    <label><b>Participantes:</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_participantes"></ul>
+=======
                                     <label for="form-control"><b>Participantes</b></label>
                                     <div class="form-control bg-body-secondary">
-                                       <?php 
-                                    
-                                    foreach ($participantesteste as $participantesFacilitadores) {
-                                       
-                                        echo "('Nome: " . $participantesFacilitadores['nome_facilitador'] . "');";
-                                        
-                                    }
-                                    
+    <?php
+    // Verifique se o ID da ata foi enviado via POST
+    if (isset($_POST['id_ata'])) {
+        // Pegue o valor do ID da ata do POST
+        $id_ata = $_POST['id_ata'];
 
-                                        
-                                    
-                                    ?>
-                                        
-                                    </div>
+        // Consulta SQL para recuperar os IDs das atas do banco de dados
+        $sql = "SELECT DISTINCT id_ata FROM facilitadores";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        
+        // Exibe os participantes para cada id_ata solicitado
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $id_ata = $row['id_ata'];
+            if ($id_ata == $id_ata) {
+                // Chame a função pegarParticipantes com o ID da ata
+              
+                $participantes = $puxarform->pegarParticipantes($id_ata);
+                // Exiba o resultado dentro do elemento <div>
+                echo "<p>Os participantes da ATA $id_ata são: $participantes</p>";
+            }
+        }
+    } else {
+        // Se o ID da ata não foi enviado via POST, exiba uma mensagem de erro
+        echo "<p>ID da ATA não especificado.</p>";
+    }
+    ?>
+</div>
+
+
+
+>>>>>>> 0aaa13af214c2a49fa9661da1ac2c568ab3d567f
                                 </div>
                             </div>
                         </div>
@@ -323,7 +365,7 @@ foreach ($participantesteste as $participantesFacilitadores) {
     </div>
 </div>
 
-    <script>
+<script>
     function abrirModalDetalhes(row) {
         document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
         document.getElementById("modal_objetivo").innerText = row.objetivo;
@@ -331,6 +373,25 @@ foreach ($participantesteste as $participantesFacilitadores) {
         document.getElementById("modal_local").innerText = row.local;
         document.getElementById("modal_tema").innerText = row.tema;
         document.getElementById("modal_status").innerText = row.status;
+
+        // Verificar se a lista de participantes está presente
+        if (row.participantes) {
+            // Limpar a lista de participantes
+            document.getElementById("modal_participantes").innerHTML = '';
+
+            // Dividir a string de participantes em um array
+            var participantes = row.participantes.split(',');
+
+            // Adicionar cada participante à lista
+            participantes.forEach(participante => {
+                var li = document.createElement('li');
+                li.textContent = participante.trim(); // Remover espaços em branco extras
+                document.getElementById("modal_participantes").appendChild(li);
+            });
+        } else {
+            // Se não houver participantes, exibir mensagem de "Nenhum participante"
+            document.getElementById("modal_participantes").innerHTML = '<li>Nenhum participante</li>';
+        }
 
         var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
             backdrop: 'static', // Impede o fechamento clicando fora do modal
