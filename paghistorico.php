@@ -284,27 +284,9 @@ foreach ($participantesteste as $participantesFacilitadores) {
                                     <ul class="form-control bg-body-secondary border rounded" id="modal_objetivo"></ul>
                                 </div>
                                 <div class="col-4">
-    <label><b>Facilitador:</b></label>
-    <ul class="form-control bg-body-secondary" id="modal_facilitador">
-        <?php
-        // Consulta SQL para obter os facilitadores associados a esta ATA
-        $sqlFacilitadoresModal = "SELECT F.nome_facilitador FROM facilitadores AS F INNER JOIN ata_has_fac AS AF ON F.id = AF.facilitadores WHERE AF.id_ata = ?";
-        $stmtFacilitadoresModal = $conn->prepare($sqlFacilitadoresModal);
-        $stmtFacilitadoresModal->bind_param("s", $idAta); // Lembre-se de definir $idAta corretamente
-        $stmtFacilitadoresModal->execute();
-        $resultFacilitadoresModal = $stmtFacilitadoresModal->get_result();
-        if ($resultFacilitadoresModal->num_rows > 0) {
-            while ($rowFacilitadorModal = $resultFacilitadoresModal->fetch_assoc()) {
-                echo "<li>" . $rowFacilitadorModal['nome_facilitador'] . "</li>";
-            }
-        } else {
-            echo "<li>Nenhum facilitador associado a esta ATA.</li>";
-        }
-        $stmtFacilitadoresModal->close(); // Fechar a declaração preparada
-        ?>
-    </ul>
-</div>
-
+                                    <label><b>Facilitador:</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_facilitador"></ul>
+                                </div>
                                 <div class="col-4">
                                     <label><b>Local:</b></label>
                                     <ul class="form-control bg-body-secondary border rounded" id="modal_local"></ul>
