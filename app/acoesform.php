@@ -137,9 +137,36 @@ class AcoesForm {
     
         return $participantes; // Retorna o array de participantes
     }
+<<<<<<< HEAD
     
     
 
+=======
+    public function pegarParticipantes($id_ata) {
+        $sql = "SELECT F.nome_facilitador
+                FROM facilitadores as F
+                INNER JOIN ata_has_fac as AF ON F.id = AF.facilitadores
+                WHERE AF.id_ata = :id_ata";
+        
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $participantes = ''; // Inicializa a string de participantes
+    
+        // Itera sobre os resultados da consulta e concatena os nomes dos participantes
+        while ($row = $stmt->fetchColumn()) {
+            $participantes .= $row . ', '; // Concatena o nome do participante
+        }
+    
+        // Remove a vírgula extra no final da string
+        $participantes = rtrim($participantes, ', ');
+    
+        // Retorna a string contendo os nomes dos participantes
+        return $participantes;
+    }
+    
+>>>>>>> 0aaa13af214c2a49fa9661da1ac2c568ab3d567f
 
     public function pegandoTudo(){
         try {

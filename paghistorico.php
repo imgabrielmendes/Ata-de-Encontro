@@ -41,19 +41,7 @@ if ($conn->connect_error) {
 $sql = "SELECT data_registro, tema, objetivo, local, status FROM assunto ORDER BY `data_registro` DESC";
 $result = $conn->query($sql);
 
-// Verifica se há resultados
-// if ($result->num_rows > 0) {
-//     // Exibe os dados de cada linha
-//     while ($row = $result->fetch_assoc()) {
-//         echo "Data: " . $row["data_registro"] . "<br>";
-//         echo "Tema: " . $row["tema"] . "<br>";
-//         echo "Objetivo: " . $row["objetivo"] . "<br>";
-//         echo "Local: " . $row["local"] . "<br>";
-//         echo "Status: " . $row["status"] . "<br>";
-//     }
-// } else {
-//     echo "Nenhum resultado encontrado.";
-// }
+
 $participantes = $puxarform->puxandoUltimosParticipantes($row['id']); // Obtém os participantes da ata
             if (!empty($participantes)) {
                 // Itera sobre os participantes e exibe seus nomes
@@ -64,7 +52,6 @@ $participantes = $puxarform->puxandoUltimosParticipantes($row['id']); // Obtém 
                 echo "Nenhum participante";
             }
 
-// echo $facilitador;
 print_r($participantes);
 
 ?>
@@ -330,8 +317,44 @@ print_r($participantes);
                                
                                 <!-- Nova div para deliberações -->
                                 <div class="col-12">
+<<<<<<< HEAD
                                     <label><b>Participantes:</b></label>
                                     <ul class="form-control bg-body-secondary border rounded" id="modal_participantes"></ul>
+=======
+                                    <label for="form-control"><b>Participantes</b></label>
+                                    <div class="form-control bg-body-secondary">
+    <?php
+    // Verifique se o ID da ata foi enviado via POST
+    if (isset($_POST['id_ata'])) {
+        // Pegue o valor do ID da ata do POST
+        $id_ata = $_POST['id_ata'];
+
+        // Consulta SQL para recuperar os IDs das atas do banco de dados
+        $sql = "SELECT DISTINCT id_ata FROM facilitadores";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        
+        // Exibe os participantes para cada id_ata solicitado
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $id_ata = $row['id_ata'];
+            if ($id_ata == $id_ata) {
+                // Chame a função pegarParticipantes com o ID da ata
+              
+                $participantes = $puxarform->pegarParticipantes($id_ata);
+                // Exiba o resultado dentro do elemento <div>
+                echo "<p>Os participantes da ATA $id_ata são: $participantes</p>";
+            }
+        }
+    } else {
+        // Se o ID da ata não foi enviado via POST, exiba uma mensagem de erro
+        echo "<p>ID da ATA não especificado.</p>";
+    }
+    ?>
+</div>
+
+
+
+>>>>>>> 0aaa13af214c2a49fa9661da1ac2c568ab3d567f
                                 </div>
                             </div>
                         </div>
