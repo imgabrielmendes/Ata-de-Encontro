@@ -116,73 +116,30 @@ class AcoesForm {
         }
     }
 
-    public function puxandoUltimosFacilitadores() {
-        try {
-            
-            $sql1 = "SELECT id FROM assunto ORDER BY id DESC LIMIT 1";
-            $stmt1 = $this->pdo->prepare($sql1);
-            $stmt1->execute();
-            $lastAtaId = $stmt1->fetchColumn();
     
-            // Em seguida, usamos esse ID para obter os registros da tabela de associação
-            $sql2 = "SELECT id_ata, facilitadores FROM ata_has_fac WHERE id_ata = ?";
-            $stmt2 = $this->pdo->prepare($sql2);
-            $stmt2->execute([$lastAtaId]);
-            $resultadosAtaFacilitadores = $stmt2->fetchAll(\PDO::FETCH_ASSOC);
     
-            // Agora, usamos os IDs dos facilitadores para obter suas informações
-            $facilitadores = [];
-
-            foreach ($resultadosAtaFacilitadores as $resultado) {
-
-                $facilitadorId = $resultado['facilitadores'];
-                $sql3 = "SELECT id, matricula, nome_facilitador FROM facilitadores WHERE id = ?";
-                $stmt3 = $this->pdo->prepare($sql3);
-                $stmt3->execute([$facilitadorId]);
-                $facilitadorInfo = $stmt3->fetch(\PDO::FETCH_ASSOC);
-
-                if ($facilitadorInfo) {
-                    $facilitadores[] = $facilitadorInfo;
-                }
-            }
+    public function puxandoUltimosParticipantes($id_ata) {
+        $sql = "SELECT F.nome_facilitador
+                FROM facilitadores as F
+                INNER JOIN ata_has_fac as AF ON F.id = AF.facilitadores
+                WHERE AF.id_ata = :id_ata";
+        
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $participantes = []; // Inicializa um array para armazenar os nomes dos participantes
     
-            return $facilitadores;
-        } catch (\PDOException $e) {
-            throw $e;
+        // Itera sobre os resultados da consulta e armazena os nomes dos participantes no array
+        while ($row = $stmt->fetchColumn()) {
+            $participantes[] = $row; // Adiciona o nome do participante ao array
         }
+    
+        return $participantes; // Retorna o array de participantes
     }
-    public function puxandoUltimosParticipantes() {
-    try {
-        $sql1 = "SELECT id_ata FROM ata_has_fac ORDER BY id DESC";
-        $stmt1 = $this->pdo->prepare($sql1);
-        $stmt1->execute();
-        $lastAtaId = $stmt1->fetchColumn();
     
-        $sql2 = "SELECT id_ata, facilitadores FROM ata_has_fac WHERE id_ata = ?";
-        $stmt2 = $this->pdo->prepare($sql2);
-        $stmt2->execute([$lastAtaId]);
-        $resultadosAtaParticipantes = $stmt2->fetchAll(\PDO::FETCH_ASSOC);
     
-        $participantesFacilitadores = [];
-    
-        foreach ($resultadosAtaParticipantes as $resultado) {
-            $participanteId = $resultado['facilitadores'];
-    
-            $sql3 = "SELECT id, matricula, nome_facilitador FROM facilitadores WHERE id = ?";
-            $stmt3 = $this->pdo->prepare($sql3);
-            $stmt3->execute([$participanteId]);
-            $participanteInfo = $stmt3->fetch(\PDO::FETCH_ASSOC);
-    
-            if ($participanteInfo) {
-                $participantesFacilitadores[] = $participanteInfo;
-            }
-        }
-    
-        return $participantesFacilitadores;
-    } catch (\PDOException $e) {
 
-        throw $e;
-    }}
 
     public function pegandoTudo(){
         try {
@@ -190,13 +147,18 @@ class AcoesForm {
                         A.id,
                         A.data_solicitada,
                         A.objetivo,
-                        F.nome_facilitador as facilitador,
+                        GROUP_CONCAT(F.nome_facilitador SEPARATOR ', ') as facilitador,
                         A.tema,
                         A.local,
                         A.status
-                    FROM assunto as A
-                    INNER JOIN ata_has_fac as B ON A.id = B.id_ata
-                    INNER JOIN facilitadores as F ON B.facilitadores = F.id";
+                    FROM 
+                        assunto as A
+                    INNER JOIN 
+                        ata_has_fac as B ON A.id = B.id_ata
+                    INNER JOIN 
+                        facilitadores as F ON B.facilitadores = F.id
+                    GROUP BY 
+                        A.id";
             
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
@@ -207,6 +169,8 @@ class AcoesForm {
             throw $e;
         }
     }
+    
+    
     
     
        }

@@ -11,10 +11,17 @@ $facilitadores = $puxarform->selecionarFacilitadores();
 $pegarfa = $puxarform->pegarfacilitador();
 $pegarid = $puxarform->puxarId();
 $resultados = $puxarform->pegandoTudo();
-//funções de encotrar pessoas
-$participantesArray = $pegarfa;
-// ARRUMAR UM JEIT
-var_dump($pegarid);
+$participantes = $puxarform->puxandoUltimosParticipantes($id_ata);
+
+
+// // Exiba os participantes
+// if ($participantes) {
+//     foreach ($participantes as $participante) {
+//         echo "Nome: " . $participante['nome_facilitador'] . "<br>";
+//     }
+// } else {
+//     echo "Nenhum participante encontrado.";
+// }
 
 //Conexão com o banco de dados (substitua os valores pelos seus próprios)
 $servername = "localhost";
@@ -34,16 +41,31 @@ if ($conn->connect_error) {
 $sql = "SELECT data_registro, tema, objetivo, local, status FROM assunto ORDER BY `data_registro` DESC";
 $result = $conn->query($sql);
 
-
-$participantesteste=$puxarform->puxandoUltimosParticipantes();
-foreach ($participantesteste as $participantesFacilitadores) {
- 
-  echo "Nome: " . $participantesFacilitadores['nome_facilitador'] . "<br>";
-  echo "<br>";
-}
+// Verifica se há resultados
+// if ($result->num_rows > 0) {
+//     // Exibe os dados de cada linha
+//     while ($row = $result->fetch_assoc()) {
+//         echo "Data: " . $row["data_registro"] . "<br>";
+//         echo "Tema: " . $row["tema"] . "<br>";
+//         echo "Objetivo: " . $row["objetivo"] . "<br>";
+//         echo "Local: " . $row["local"] . "<br>";
+//         echo "Status: " . $row["status"] . "<br>";
+//     }
+// } else {
+//     echo "Nenhum resultado encontrado.";
+// }
+$participantes = $puxarform->puxandoUltimosParticipantes($row['id']); // Obtém os participantes da ata
+            if (!empty($participantes)) {
+                // Itera sobre os participantes e exibe seus nomes
+                foreach ($participantes as $participante) {
+                    echo $participante . "<br>";
+                }
+            } else {
+                echo "Nenhum participante";
+            }
 
 // echo $facilitador;
-print_r($resultados);
+print_r($participantes);
 
 ?>
 
@@ -197,6 +219,7 @@ print_r($resultados);
         <th class="text-center">Local</th>
         <th class="text-center">Status</th>
         <th class="text-center">Ação</th>
+        <th class="text-center">Participantes</th>
     </tr>
 </thead>
 
@@ -222,17 +245,34 @@ print_r($resultados);
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
             // Exibindo o local
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
+            // Exibindo os participantes
+            
+            echo "</td>";
             // Exibindo o status
             echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
             // Botão sem funcionalidade
             echo "<td class='text-center align-middle'><a href='pagatribuida.php'><button type='button' class='btn btn-warning' style='color: white;'>+</button></a></td>";
+            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
+            $participantes = $puxarform->puxandoUltimosParticipantes($row['id']); // Obtém os participantes da ata
+
+            if (!empty($participantes) && is_array($participantes)) {
+                // Itera sobre os participantes e exibe seus nomes
+                foreach ($participantes as $participante) {
+                    echo $participante . "<br>";
+                }
+            } else {
+                echo "Nenhum participante";
+            }
+            
             echo "</tr>";
+            
         }
     } else {
         echo "<tr><td colspan='7' class='align-middle'>Nenhum resultado encontrado.</td></tr>";
     }
     ?>
 </tbody>
+
 
 
 
@@ -290,22 +330,8 @@ print_r($resultados);
                                
                                 <!-- Nova div para deliberações -->
                                 <div class="col-12">
-                                    <label for="form-control"><b>Participantes</b></label>
-                                    <div class="form-control bg-body-secondary">
-                                       <?php 
-                                    
-                                    foreach ($participantesteste as $participantesFacilitadores) {
-                                       
-                                        echo "('Nome: " . $participantesFacilitadores['nome_facilitador'] . "');";
-                                        
-                                    }
-                                    
-
-                                        
-                                    
-                                    ?>
-                                        
-                                    </div>
+                                    <label><b>Participantes:</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_participantes"></ul>
                                 </div>
                             </div>
                         </div>
@@ -316,7 +342,7 @@ print_r($resultados);
     </div>
 </div>
 
-    <script>
+<script>
     function abrirModalDetalhes(row) {
         document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
         document.getElementById("modal_objetivo").innerText = row.objetivo;
@@ -324,6 +350,25 @@ print_r($resultados);
         document.getElementById("modal_local").innerText = row.local;
         document.getElementById("modal_tema").innerText = row.tema;
         document.getElementById("modal_status").innerText = row.status;
+
+        // Verificar se a lista de participantes está presente
+        if (row.participantes) {
+            // Limpar a lista de participantes
+            document.getElementById("modal_participantes").innerHTML = '';
+
+            // Dividir a string de participantes em um array
+            var participantes = row.participantes.split(',');
+
+            // Adicionar cada participante à lista
+            participantes.forEach(participante => {
+                var li = document.createElement('li');
+                li.textContent = participante.trim(); // Remover espaços em branco extras
+                document.getElementById("modal_participantes").appendChild(li);
+            });
+        } else {
+            // Se não houver participantes, exibir mensagem de "Nenhum participante"
+            document.getElementById("modal_participantes").innerHTML = '<li>Nenhum participante</li>';
+        }
 
         var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
             backdrop: 'static', // Impede o fechamento clicando fora do modal
