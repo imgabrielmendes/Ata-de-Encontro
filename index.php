@@ -9,12 +9,8 @@ include ("conexao.php");
 //Testar conexao com banco de dados
 $puxarform= new AcoesForm;
 $facilitadores=$puxarform->selecionarFacilitadores();
-$tudo= $puxarform->pegandoTudo();
-print_r($tudo);
-
 //funções de encotrar pessoas
 $pegarfa=$puxarform->pegarfacilitador();
-
 // Puxar local
 $pegarlocal=$puxarform->pegarlocais();
 

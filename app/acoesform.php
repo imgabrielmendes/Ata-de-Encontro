@@ -186,8 +186,6 @@ class AcoesForm {
 
     public function pegandoTudo(){
 
-
-
         $sql="SELECT 
         A.id,
         A.data_solicitada,
