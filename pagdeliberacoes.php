@@ -7,7 +7,7 @@ include ("conexao.php");
 $puxarform= new AcoesForm;
 $pegarde=$puxarform->pegarfacilitador();
 
-$testando=$puxarform->puxandoUltimosFacilitadores();
+$testando=$puxarform->puxandoUltimosParticipantes();
 foreach ($testando as $facilitador) {
   // echo "ID: " . $facilitador['id'] . "<br>";
   // echo "Matrícula: " . $facilitador['matricula'] . "<br>";
