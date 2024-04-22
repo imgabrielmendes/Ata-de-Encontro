@@ -317,10 +317,10 @@ print_r($participantes);
                                
                                 <!-- Nova div para deliberações -->
                                 <div class="col-12">
-<<<<<<< HEAD
+
                                     <label><b>Participantes:</b></label>
                                     <ul class="form-control bg-body-secondary border rounded" id="modal_participantes"></ul>
-=======
+
                                     <label for="form-control"><b>Participantes</b></label>
                                     <div class="form-control bg-body-secondary">
     <?php
@@ -352,9 +352,6 @@ print_r($participantes);
     ?>
 </div>
 
-
-
->>>>>>> 0aaa13af214c2a49fa9661da1ac2c568ab3d567f
                                 </div>
                             </div>
                         </div>

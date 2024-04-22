@@ -7,7 +7,7 @@ include ("conexao.php");
 $puxarform= new AcoesForm;
 $pegarde=$puxarform->pegarfacilitador();
 
-$testando=$puxarform->puxandoUltimosParticipantes();
+$testando=$puxarform->puxandoUltimosParticipantes($id_ata);
 foreach ($testando as $facilitador) {
   // echo "ID: " . $facilitador['id'] . "<br>";
   // echo "Matrícula: " . $facilitador['matricula'] . "<br>";
@@ -168,7 +168,10 @@ $local = $_SESSION['local'];
             <div class="col-6 ">
               <label><b> Facilitador(res) responsável:</b></label>
               <ul class="form-control bg-body-secondary">
-              <?php foreach ($testando as $facilitador) { echo $facilitador ['nome_facilitador'] . ", " ;}
+              <?php var_dump($testando);
+                foreach ($testando as $facilitador) {
+                    echo $facilitador['nome_facilitador'] . ", ";
+                }
                 ?></ul>            
             </div>
           
