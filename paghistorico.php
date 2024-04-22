@@ -13,6 +13,9 @@ $pegarid = $puxarform->puxarId();
 $resultados = $puxarform->pegandoTudo();
 $participantes = $puxarform->puxandoUltimosParticipantes($id_ata);
 
+// Chamada da função buscarParticipantesPorIdAta() com $id_ata definido
+$puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+
 
 // // Exiba os participantes
 // if ($participantes) {
@@ -42,18 +45,17 @@ $sql = "SELECT data_registro, tema, objetivo, local, status FROM assunto ORDER B
 $result = $conn->query($sql);
 
 
-$participantes = $puxarform->puxandoUltimosParticipantes($row['id']); // Obtém os participantes da ata
-            if (!empty($participantes)) {
-                // Itera sobre os participantes e exibe seus nomes
-                foreach ($participantes as $participante) {
-                    echo $participante . "<br>";
-                }
-            } else {
-                echo "Nenhum participante";
-            }
+if (!is_null($participantes) && is_array($participantes)) {
+    foreach ($participantes as $row) {
+        // Seu código aqui
+    }
+} else {
+    echo "Nenhum resultado encontrado.";
+}
+
 
 print_r($participantes);
-
+print_r($puxaparticipantes);
 ?>
 
 <!DOCTYPE html>
@@ -240,18 +242,28 @@ print_r($participantes);
             // Botão sem funcionalidade
             echo "<td class='text-center align-middle'><a href='pagatribuida.php'><button type='button' class='btn btn-warning' style='color: white;'>+</button></a></td>";
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
-            $participantes = $puxarform->puxandoUltimosParticipantes($row['id']); // Obtém os participantes da ata
 
-            if (!empty($participantes) && is_array($participantes)) {
-                // Itera sobre os participantes e exibe seus nomes
-                foreach ($participantes as $participante) {
-                    echo $participante . "<br>";
+            if (isset($row['id'])) {
+                $id_ata = $row['id'];
+
+                // Obtém os participantes da ata com base no ID
+                $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+
+                // Verifica se existem participantes e se é um array
+                if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
+                    // Itera sobre os participantes e exibe seus nomes
+                    foreach ($puxaparticipantes as $participante) {
+                        echo $participante . "<br>";
+                    }
+                } else {
+                    echo "Nenhum participante";
                 }
             } else {
-                echo "Nenhum participante";
+                echo "ID da ata não disponível";
             }
-            
+
             echo "</tr>";
+
             
         }
     } else {
@@ -324,30 +336,23 @@ print_r($participantes);
                                     <label for="form-control"><b>Participantes</b></label>
                                     <div class="form-control bg-body-secondary">
     <?php
-    // Verifique se o ID da ata foi enviado via POST
-    if (isset($_POST['id_ata'])) {
-        // Pegue o valor do ID da ata do POST
-        $id_ata = $_POST['id_ata'];
+     if (isset($row['id'])) {
+        $id_ata = $row['id'];
 
-        // Consulta SQL para recuperar os IDs das atas do banco de dados
-        $sql = "SELECT DISTINCT id_ata FROM facilitadores";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        
-        // Exibe os participantes para cada id_ata solicitado
-        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
-            $id_ata = $row['id_ata'];
-            if ($id_ata == $id_ata) {
-                // Chame a função pegarParticipantes com o ID da ata
-              
-                $participantes = $puxarform->pegarParticipantes($id_ata);
-                // Exiba o resultado dentro do elemento <div>
-                echo "<p>Os participantes da ATA $id_ata são: $participantes</p>";
+        // Obtém os participantes da ata com base no ID
+        $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+
+        // Verifica se existem participantes e se é um array
+        if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
+            // Itera sobre os participantes e exibe seus nomes
+            foreach ($puxaparticipantes as $participante) {
+                echo $participante . "<br>";
             }
+        } else {
+            echo "Nenhum participante";
         }
     } else {
-        // Se o ID da ata não foi enviado via POST, exiba uma mensagem de erro
-        echo "<p>ID da ATA não especificado.</p>";
+        echo "ID da ata não disponível";
     }
     ?>
 </div>
@@ -363,6 +368,36 @@ print_r($participantes);
 </div>
 
 <script>
+    $(document).ready(function() {
+    // Quando um modal for aberto
+    $('[id^=myModal]').on('shown.bs.modal', function () {
+        // Obtém o ID da ata associado ao modal
+        var idAta = $(this).data('ata-id');
+        
+        // Verifica se o ID da ata está disponível
+        if (idAta) {
+            // Faz uma requisição AJAX para buscar os participantes da ata
+            $.ajax({
+                url: 'buscar_participantes.php', // Substitua pelo caminho do seu arquivo PHP
+                type: 'POST',
+                data: { ata_id: idAta },
+                success: function(response) {
+                    // Exibe os participantes da ata dentro do modal
+                    $('#modal_participantes').html(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
+        } else {
+            // Exibe uma mensagem se o ID da ata não estiver disponível
+            $('#modal_participantes').html('ID da ata não disponível');
+        }
+    });
+});
+
+
+
     function abrirModalDetalhes(row) {
         document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
         document.getElementById("modal_objetivo").innerText = row.objetivo;
