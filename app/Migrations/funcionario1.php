@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Migrations;
+namespace App\Migrations\Funcionario;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 class Funcionario
