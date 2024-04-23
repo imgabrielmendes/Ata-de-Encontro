@@ -1,5 +1,2 @@
 {
-    "require": {
-        "doctrine/orm": "^3.1"
-    }
 }
