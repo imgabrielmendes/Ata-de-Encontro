@@ -171,6 +171,7 @@ class AcoesForm {
     
         return $participantes; // Retorna o array de participantes
     }
+    
 
     
 
@@ -202,7 +203,6 @@ class AcoesForm {
 
     public function buscarParticipantesPorIdAta($id_ata) {
         try {
-            // Consulta SQL para selecionar os nomes dos facilitadores associados aos participantes da ata com o ID especificado
             $sql = "SELECT F.nome_facilitador
                     FROM facilitadores AS F
                     WHERE F.id IN (SELECT participantes FROM participantes WHERE id_ata = :id_ata)";
@@ -223,13 +223,7 @@ class AcoesForm {
             throw $e;
         }
     }
-
-
-
-
-
-    
-
+ 
         public function pegandoTudo(){
             try {
                 $sql = "SELECT 

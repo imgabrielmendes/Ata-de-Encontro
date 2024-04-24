@@ -15,6 +15,7 @@ $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
 $ultimaata = $puxarform->pegarUltimaAta();
 
 
+
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -31,7 +32,7 @@ if ($conn->connect_error) {
 
 
 
-// print_r($resultados);
+print_r($puxaparticipantes);
 
 ?>
 
