@@ -13,20 +13,9 @@ $pegarid = $puxarform->puxarId();
 $resultados = $puxarform->pegandoTudo();
 $participantes = $puxarform->puxandoUltimosParticipantes($id_ata);
 
-// Chamada da função buscarParticipantesPorIdAta() com $id_ata definido
+
 $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
 
-
-// // Exiba os participantes
-// if ($participantes) {
-//     foreach ($participantes as $participante) {
-//         echo "Nome: " . $participante['nome_facilitador'] . "<br>";
-//     }
-// } else {
-//     echo "Nenhum participante encontrado.";
-// }
-
-//Conexão com o banco de dados (substitua os valores pelos seus próprios)
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -100,14 +89,8 @@ print_r($puxaparticipantes);
             <div class="form-group col-12">
                 <div class="row">
                     <div class="text-center" class="row">
-
-
-                        <!---- PRIMEIRA LINHA DO REGISTRO ---->
-
                         <table id="myTable" class="table table-striped">
                             <tbody>
-
-                                <!-- Filtro de Registro -->
                                 <div class="accordion" id="accordionPanelsStayOpenExample" class="text-center">
                                     <div class="accordion-item text-center">
                                         <h2 class="accordion-header">
@@ -154,50 +137,7 @@ print_r($puxaparticipantes);
                                     </div>
                                 </div>
                                 <br>
-
-
-                            </tbody>
-
-                            <?php
-                            // Conexão com o banco de dados (substitua os valores pelos seus próprios)
-                            $servername = "localhost";
-                            $username = "root";
-                            $password = "";
-                            $dbname = "atareu";
-
-                            // Cria a conexão
-                            $conn = new \mysqli($servername, $username, $password, $dbname);
-
-                            // Checa a conexão
-                            if ($conn->connect_error) {
-                                die("Falha na conexão: " . $conn->connect_error);
-                            }
-
-                            // Consulta SQL para selecionar os dados
-                            $sql = "SELECT id ,data_solicitada, tema, objetivo, local, status FROM assunto ORDER BY data_registro DESC";
-
-                            $result = $conn->query($sql);
-                            ?>
-
-<style>
-    .btn-unstyled {
-        background: none;
-        border: none;
-        padding: 0;
-        color: inherit;
-        cursor: pointer;
-    }
-
-    .btn-unstyled:focus {
-        outline: none;
-    }
-
-    /* Estilo para linhas alternadas */
-    .table tbody tr:nth-child(odd) {
-        background-color: #f2f2f2; /* Define uma cor de fundo para as linhas ímpares */
-    }
-</style>
-
+    </tbody>                  
 <table table id="myTable" class="table table-striped">
 <thead>
     <tr>
@@ -211,11 +151,8 @@ print_r($puxaparticipantes);
         <th class="text-center">Participantes</th>
     </tr>
 </thead>
-
-
 <tbody class="text-center">
     <?php
-    // Verifica se há resultados retornados pela função pegandoTudo()
     $results = $puxarform->pegandoTudo();
     if ($results) {
         foreach ($results as $row) {
