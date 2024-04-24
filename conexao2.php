@@ -4,7 +4,7 @@ use \PDOException;
 
 
 $dbhost = "localhost";
-$dbname = "crud";
+$dbname = "atareu";
 $dbuser = "root";
 $dbpass = "";
 
