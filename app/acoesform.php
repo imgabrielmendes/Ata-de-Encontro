@@ -230,34 +230,35 @@ class AcoesForm {
 
     
 
-    public function pegandoTudo(){
-        try {
-            $sql = "SELECT 
-                        A.id,
-                        A.data_solicitada,
-                        A.objetivo,
-                        GROUP_CONCAT(F.nome_facilitador SEPARATOR ', ') as facilitador,
-                        A.tema,
-                        A.local,
-                        A.status
-                    FROM 
-                        assunto as A
-                    INNER JOIN 
-                        ata_has_fac as B ON A.id = B.id_ata
-                    INNER JOIN 
-                        facilitadores as F ON B.facilitadores = F.id
-                    GROUP BY 
-                        A.id";
-            
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute();
-            
-            // Retorna todos os resultados
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
-            throw $e;
+        public function pegandoTudo(){
+            try {
+                $sql = "SELECT 
+                            A.id,
+                            DATE_FORMAT(A.data_solicitada, '%d/%m/%Y') as data_solicitada_formatada,
+                            A.objetivo,
+                            GROUP_CONCAT(F.nome_facilitador SEPARATOR ', ') as facilitador,
+                            A.tema,
+                            A.local,
+                            A.status
+                        FROM 
+                            assunto as A
+                        INNER JOIN 
+                            ata_has_fac as B ON A.id = B.id_ata
+                        INNER JOIN 
+                            facilitadores as F ON B.facilitadores = F.id
+                        GROUP BY 
+                            A.id";
+                
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->execute();
+                
+                // Retorna todos os resultados
+                return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+            } catch (\PDOException $e) {
+                throw $e;
+            }
         }
-    }
+        
     
     
     

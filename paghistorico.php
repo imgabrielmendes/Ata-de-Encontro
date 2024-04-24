@@ -11,10 +11,9 @@ $facilitadores = $puxarform->selecionarFacilitadores();
 $pegarfa = $puxarform->pegarfacilitador();
 $pegarid = $puxarform->puxarId();
 $resultados = $puxarform->pegandoTudo();
-$participantes = $puxarform->puxandoUltimosParticipantes($id_ata);
+$puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
+$ultimaata = $puxarform->pegarUltimaAta();
 
-
-$puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
 
 $servername = "localhost";
 $username = "root";
@@ -29,22 +28,11 @@ if ($conn->connect_error) {
     die("Falha na conexão: " . $conn->connect_error);
 }
 
-// Consulta SQL para selecionar os dados
-$sql = "SELECT data_registro, tema, objetivo, local, status FROM assunto ORDER BY `data_registro` DESC";
-$result = $conn->query($sql);
 
 
-if (!is_null($participantes) && is_array($participantes)) {
-    foreach ($participantes as $row) {
-        // Seu código aqui
-    }
-} else {
-    echo "Nenhum resultado encontrado.";
-}
 
+// print_r($resultados);
 
-print_r($participantes);
-print_r($puxaparticipantes);
 ?>
 
 <!DOCTYPE html>
@@ -157,38 +145,24 @@ print_r($puxaparticipantes);
     if ($results) {
         foreach ($results as $row) {
             echo "<tr>";
-            // Exibindo a data formatada
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . substr($row["data_solicitada"], 8, 2) . "/" . substr($row["data_solicitada"], 5, 2) . "/" . substr($row["data_solicitada"], 0, 4) . "</td>";
-            // Exibindo o objetivo
+            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_solicitada_formatada"] . "</td>";
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
-            // Exibindo os facilitadores
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
             $facilitadores = explode(",", $row["facilitador"]);
             $facilitadoresFormatted = implode(", ", $facilitadores);
             echo $facilitadoresFormatted;
             echo "</td>";
-            // Exibindo o tema
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
-            // Exibindo o local
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
-            // Exibindo os participantes
-            
             echo "</td>";
-            // Exibindo o status
             echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
-            // Botão sem funcionalidade
             echo "<td class='text-center align-middle'><a href='pagatribuida.php'><button type='button' class='btn btn-warning' style='color: white;'>+</button></a></td>";
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
 
             if (isset($row['id'])) {
                 $id_ata = $row['id'];
-
-                // Obtém os participantes da ata com base no ID
                 $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-
-                // Verifica se existem participantes e se é um array
                 if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
-                    // Itera sobre os participantes e exibe seus nomes
                     foreach ($puxaparticipantes as $participante) {
                         echo $participante . "<br>";
                     }
@@ -199,7 +173,7 @@ print_r($puxaparticipantes);
                 echo "ID da ata não disponível";
             }
 
-            echo "</tr>";
+            echo "</>";
 
             
         }
@@ -266,34 +240,10 @@ print_r($puxaparticipantes);
                                
                                 <!-- Nova div para deliberações -->
                                 <div class="col-12">
-
-                                    <label><b>Participantes:</b></label>
-                                    <ul class="form-control bg-body-secondary border rounded" id="modal_participantes"></ul>
-
                                     <label for="form-control"><b>Participantes</b></label>
-                                    <div class="form-control bg-body-secondary">
-    <?php
-     if (isset($row['id'])) {
-        $id_ata = $row['id'];
-
-        // Obtém os participantes da ata com base no ID
-        $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-
-        // Verifica se existem participantes e se é um array
-        if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
-            // Itera sobre os participantes e exibe seus nomes
-            foreach ($puxaparticipantes as $participante) {
-                echo $participante . "<br>";
-            }
-        } else {
-            echo "Nenhum participante";
-        }
-    } else {
-        echo "ID da ata não disponível";
-    }
-    ?>
-</div>
-
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_participantes"></ul>
+                                
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -305,62 +255,17 @@ print_r($puxaparticipantes);
 </div>
 
 <script>
-    $(document).ready(function() {
-    // Quando um modal for aberto
-    $('[id^=myModal]').on('shown.bs.modal', function () {
-        // Obtém o ID da ata associado ao modal
-        var idAta = $(this).data('ata-id');
-        
-        // Verifica se o ID da ata está disponível
-        if (idAta) {
-            // Faz uma requisição AJAX para buscar os participantes da ata
-            $.ajax({
-                url: 'buscar_participantes.php', // Substitua pelo caminho do seu arquivo PHP
-                type: 'POST',
-                data: { ata_id: idAta },
-                success: function(response) {
-                    // Exibe os participantes da ata dentro do modal
-                    $('#modal_participantes').html(response);
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        } else {
-            // Exibe uma mensagem se o ID da ata não estiver disponível
-            $('#modal_participantes').html('ID da ata não disponível');
-        }
-    });
-});
-
-
+   
 
     function abrirModalDetalhes(row) {
-        document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
+        document.getElementById("modal_solicitacao").innerText = row.data_solicitada_formatada;
         document.getElementById("modal_objetivo").innerText = row.objetivo;
         document.getElementById("modal_facilitador").innerText = row.facilitador;
         document.getElementById("modal_local").innerText = row.local;
         document.getElementById("modal_tema").innerText = row.tema;
         document.getElementById("modal_status").innerText = row.status;
+        document.getElementById("modal_participantes").innerText = row.participante;
 
-        // Verificar se a lista de participantes está presente
-        if (row.participantes) {
-            // Limpar a lista de participantes
-            document.getElementById("modal_participantes").innerHTML = '';
-
-            // Dividir a string de participantes em um array
-            var participantes = row.participantes.split(',');
-
-            // Adicionar cada participante à lista
-            participantes.forEach(participante => {
-                var li = document.createElement('li');
-                li.textContent = participante.trim(); // Remover espaços em branco extras
-                document.getElementById("modal_participantes").appendChild(li);
-            });
-        } else {
-            // Se não houver participantes, exibir mensagem de "Nenhum participante"
-            document.getElementById("modal_participantes").innerHTML = '<li>Nenhum participante</li>';
-        }
 
         var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
             backdrop: 'static', // Impede o fechamento clicando fora do modal
@@ -368,20 +273,9 @@ print_r($puxaparticipantes);
         });
         myModal.show();
     }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const buttons = document.querySelectorAll('.btn-warning');
-        buttons.forEach(button => {
-            button.addEventListener('click', function () {
-                if (!this.closest('.no-modal')) {
-                    abrirModalDetalhes(JSON.parse(this.dataset.row));
-                }
-            });
-        });
-    });
+ 
 </script>
 
-</script>
 
 
     <script>
