@@ -37,7 +37,6 @@ include "conexao2.php";
                 <?php
                 $sql = "SELECT * FROM crud";
                 $result = mysqli_query($conn, $sql);
-                print_r($result);
 
                 if ($result && mysqli_num_rows($result) > 0) {               
                     while($row = mysqli_fetch_assoc($result)) {
@@ -55,7 +54,7 @@ include "conexao2.php";
                         echo "<td>" . $password . "</td>";
                         echo "<td>
                                 <button class='btn btn-primary'>
-                                    <a class='text-light' href='admin.php? updateid=".$id."'>Update</a>
+                                    <a class='text-light' href='update.php? updateid=".$id."'>Update</a>
                                 </button>
                                 <button class='btn btn-danger'>
                                     <a class='text-light' href='delete.php?delteteid=".$id."'>Delete</a>
