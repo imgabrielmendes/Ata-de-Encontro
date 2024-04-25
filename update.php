@@ -10,8 +10,7 @@ $puxarform= new AcoesForm;
 $pegarfa=$puxarform->pegarfacilitador();
 $pegarlocal=$puxarform->pegarlocais();
 
-
-$sql="SELECT * FROM assunto where id=$id";
+$sql="SELECT * FROM assunto where id=$id ";
 $result = mysqli_query($conn, $sql);
 $row=mysqli_fetch_assoc($result);
 // var_dump($row);
@@ -23,8 +22,6 @@ $row=mysqli_fetch_assoc($result);
     $horainic = $row['hora_inicial'];
     $horaterm = $row['hora_termino'];
 
-
-    $id = $_GET['updateid'];
     $sql2 = "SELECT 
     fac.nome_facilitador as facilitadores,
     fac.id as idfacilitadores
@@ -35,15 +32,13 @@ $row=mysqli_fetch_assoc($result);
     where ahf.id_ata = $id";
 
     $result2 = mysqli_query($conn, $sql2);
-    $facilitadores = array(); // Inicializa um array para armazenar todos os facilitadores
-      while ($row2 = mysqli_fetch_assoc($result2)) { // Itera sobre os resultados para armazenar os facilitadores
-          $facilitadores[] = $row2; // Adiciona os facilitadores ao array
+    $facilitadores = array(); 
+
+      while ($row2 = mysqli_fetch_assoc($result2)) { 
+          $facilitadores[] = $row2;
       }
-var_dump($facilitadores);
 
-    $facilitadores = $row2['facilitadores'];
-    $idfacilitadores = $row2['idfacilitadores'];
-
+      print_r($sql2);
 
 ?>
 
@@ -58,10 +53,7 @@ var_dump($facilitadores);
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="view/css/styles.css">
-    <link rel="stylesheet" href="view/css/bootstrap.min.css">
-    <link rel="stylesheet" href="view/css/bootstrap-grid.css">
-    <link rel="stylesheet" href="view/css/bootstrap-grid.min.css">
-    <link rel="stylesheet" href="view/css/bootstrap.css">
+    
     <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
 
@@ -90,34 +82,25 @@ var_dump($facilitadores);
     </nav>
 </header>
  <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
- <div class="box box-primary">
     <main class="container_fluid d-flex justify-content-center align-items-center">
       <div class="form-group col-8">
-        <!--2° LINHA DO FORMULÁRIO DA ATA----------------------->
-        <div class="row"> <!---COLUNA NOME + DATA---->
-
-          <!--Título do formulário ----------------------->
-
+        <div class="row"> 
+ 
           <div class="col-md-12 text-center">
             <h2>Formulário de Solicitação </h2>
-
-            <?php   echo $id; ?>
-            <?php   echo $facilitadores; ?>
-
           </div>
-          <br><br><br>
-          
+
           <!---ABA DE DATA---->
           <div class="col-3">
             <label><b>Data*</b></label>
-            <input id="datainicio" class="form-control col-12 col-md-6" placeholder="dd-mm-aaaa" min="2024-04-01" type="date" value=<?php echo $datasolicitada?>>
+            <input id="datainicio" class="form-control" placeholder="dd-mm-aaaa" min="2024-04-01" type="date" value=<?php echo $datasolicitada?>>
           </div>
 
           <!---ABA DE HORÁRIO INICIO---->
           <div class="col-3">
             <label for="nomeMedico"><b>Horário de Início*:</b></label>
             <br>
-            <input class="form-control col-12 col-md-6" type="time" id="horainicio" name="appt" min="" max="18:00" value=<?php echo $horaterm?>>
+            <input class="form-control" type="time" id="horainicio" name="appt" min="" max="18:00" value=<?php echo $horaterm?>>
           </div>
 
           <!---ABA DE HORÁRIO TERMINO---->
@@ -131,24 +114,23 @@ var_dump($facilitadores);
             <label for="form-control"> <b> Tempo Estimado (horas):</b> </label>
             <input value="1" class="form-control" type="number" id="tempoestim" name="appt" min="0" max="5">
           </div>
-          <br>
 
            <!---ABA DE OBJETIVO - REUNIÃO---->
-           <div class="col-2" id="objetivo">
+          <div class="col-2  mt-4" id="objetivo">
           <label for="objetivo"> <b>Objetivo:</b> </label>
-          <select class="form-control" name="objetivo" id="objetivo">
-              <option value="Reunião" <?php if ($objetivo == 'Reunião') echo 'selected'; ?>>Reunião</option>
-              <option value="Treinamento" <?php if ($objetivo == 'Treinamento') echo 'selected'; ?>>Treinamento</option>
-              <option value="Consulta" <?php if ($objetivo == 'Consulta') echo 'selected'; ?>>Consulta</option>
-              <?php if (empty($objetivo)) : ?>
-                  <option selected disabled hidden>Objetivo não informado</option>
-              <?php endif; ?>
-          </select>
+            <select class="form-control" name="objetivo" id="objetivo">
+                <option value="Reunião" <?php if ($objetivo == 'Reunião') echo 'selected'; ?>>Reunião</option>
+                <option value="Treinamento" <?php if ($objetivo == 'Treinamento') echo 'selected'; ?>>Treinamento</option>
+                <option value="Consulta" <?php if ($objetivo == 'Consulta') echo 'selected'; ?>>Consulta</option>
+                <?php if (empty($objetivo)) : ?>
+                    <option selected disabled hidden>Objetivo não informado</option>
+                <?php endif; ?>
+            </select>
       </div>
 
 
           <!--- ABA DE SELECIONAR LOCAL ---->
-          <div class="col-3">
+          <div class="col-3 mt-4">
           <label for="local"><b>Informe o Local</b></label>
           <select class="form-control" name="local" id="local">
               <?php echo empty($pegarlocal) ? '<option selected disabled hidden>Local não informado</option>' : ''; ?>
@@ -161,16 +143,15 @@ var_dump($facilitadores);
       </div>
 
 
-          <div class="col-7"><b>Tema*:</b>
+          <div class="col-7 mt-4"><b>Tema*:</b>
             <br>
             <input id="temaprincipal" class="form-control" type="text" value="<?php echo $tema?>"/>
           </div>
 
           <!---ABA DE ADICIONAR FACILITADORES---->
-          <div class="col-4"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
-          <br>     
-          <div class="col-8">
-          <select class="col-8 form-control" id="selecionandofacilitador" name="facilitador" multiple value="<?php echo $password; ?>">
+          <div class="col-4 mt-5"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
+          <div class="col-8 mt-5">
+          <select class="form-control" id="selecionandofacilitador" name="facilitador" multiple value="<?php echo $password; ?>">
               <optgroup label="Selecione Facilitadores">
                   <?php foreach ($pegarfa as $facnull) : ?>
                       <option value="<?php echo $facnull['id']; ?>"
@@ -181,7 +162,7 @@ var_dump($facilitadores);
               </optgroup>
           </select>
   
-          <div class="col-8">
+          <div class="col-8 form-control">
           <ul>
               <?php foreach ($facilitadores as $facilitador): ?>
                   <li><?php echo $facilitador['facilitadores']; ?></li>
@@ -192,7 +173,7 @@ var_dump($facilitadores);
           <!--BOTÕES-->
           <div class="row">
 
-            <div class="col  "><br>
+            <div class="col"><br>
               <div class="btn-atas">
               <button id="btnAtualizar" class="btn btn-primary">Atualizar</button>
               <button id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
