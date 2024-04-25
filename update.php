@@ -1,55 +1,52 @@
 <?php
 namespace formulario;
+
 include 'conexao2.php';
 include_once ("app/acoesform.php");
 
 $id = $_GET['updateid'];
-
 $puxarform= new AcoesForm;
-    $facilitadores=$puxarform->selecionarFacilitadores();
-    $pegarfa=$puxarform->pegarfacilitador();
-    $pegarlocal=$puxarform->pegarlocais();
+// $facilitadores=$puxarform->selecionarFacilitadores();
+$pegarfa=$puxarform->pegarfacilitador();
+$pegarlocal=$puxarform->pegarlocais();
 
 
 $sql="SELECT * FROM assunto where id=$id";
 $result = mysqli_query($conn, $sql);
 $row=mysqli_fetch_assoc($result);
-var_dump($row);
+// var_dump($row);
 
     $datasolicitada = $row['data_solicitada'];
     $tema = $row['tema'];
-    $mobile = $row['objetivo'];
+    $objetivo = $row['objetivo'];
     $password = $row['local'];
     $horainic = $row['hora_inicial'];
     $horaterm = $row['hora_termino'];
 
-    if(isset($_POST['submit'])) {
 
-        $datasolicitada = $_POST['data_solicitada']; 
-        $tema = $_POST['tema']; 
-        $mobile = $_POST['objetivo']; 
-        $password = $_POST['local']; 
-        $horainic = $_POST['hora_inicial'];
-        $horaterm = $_POST['hora_termino']; 
-
-        $sql = "UPDATE assunto SET id='$id',
-                data_solicitada='$datasolicitada',
-                tema='$tema',
-                objetivo='$mobile',
-                local='$password',
-                hora_inicial='$horainic',
-                hora_termino='$horaterm'
-                WHERE id=$id";
+    $id = $_GET['updateid'];
+    $sql2 = "SELECT 
+    fac.nome_facilitador as facilitadores,
+    fac.id as idfacilitadores
     
-                  $result = mysqli_query($conn, $sql);
-              
-                  if ($result) {
-                      echo "Alterado com sucesso";
-                  } else {
-                      echo "Não funciona";
-                  }
-    }   
+    FROM ata_has_fac as ahf
+    INNER JOIN facilitadores as fac
+      ON fac.id = ahf.facilitadores
+    where ahf.id_ata = $id";
+
+    $result2 = mysqli_query($conn, $sql2);
+    $facilitadores = array(); // Inicializa um array para armazenar todos os facilitadores
+      while ($row2 = mysqli_fetch_assoc($result2)) { // Itera sobre os resultados para armazenar os facilitadores
+          $facilitadores[] = $row2; // Adiciona os facilitadores ao array
+      }
+var_dump($facilitadores);
+
+    $facilitadores = $row2['facilitadores'];
+    $idfacilitadores = $row2['idfacilitadores'];
+
+
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -69,9 +66,11 @@ var_dump($row);
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
 
     <script src="view\js\multi-select-tag.js"></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-      <script src="view/js/bootstrap.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="view/js/bootstrap.js"></script>
+    <script src="update.js"></script>
+
 </head>
 <body>
 <header>
@@ -90,27 +89,6 @@ var_dump($row);
         </div>
     </nav>
 </header>
-
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-            <h2>Registre-se</h2>
-            <form method="post">
-
-                <div class="mb-3">
-                    <label for="mobile" class="form-label">Telefone</label>
-                    <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Insira seu telefone" required value=<?php echo $mobile?>>
-                </div>
-                <div class="mb-3">
-                    <label for="text" class="form-label">Senha</label>
-                    <input type="text" class="form-control" id="password" name="password" placeholder="Insira sua senha" required value=<?php echo $password?>>
-                </div>
-                <button type="submit" class="btn btn-primary" name="submit">Enviar</button>
-            </form>
-        </div>
-    </div>
-</div>
-
  <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
  <div class="box box-primary">
     <main class="container_fluid d-flex justify-content-center align-items-center">
@@ -122,6 +100,10 @@ var_dump($row);
 
           <div class="col-md-12 text-center">
             <h2>Formulário de Solicitação </h2>
+
+            <?php   echo $id; ?>
+            <?php   echo $facilitadores; ?>
+
           </div>
           <br><br><br>
           
@@ -152,42 +134,38 @@ var_dump($row);
           <br>
 
            <!---ABA DE OBJETIVO - REUNIÃO---->
-          <div class="col" id="objetivo">
-            <label for="form-control"> <b>Objetivo:</b> </label>
-            <label class="form-control">
-              <input type="checkbox" class="objetivo" name="objetivo" id="reuniao" value="Reunião" > Reunião</label>
-          </div>
+           <div class="col-2" id="objetivo">
+          <label for="objetivo"> <b>Objetivo:</b> </label>
+          <select class="form-control" name="objetivo" id="objetivo">
+              <option value="Reunião" <?php if ($objetivo == 'Reunião') echo 'selected'; ?>>Reunião</option>
+              <option value="Treinamento" <?php if ($objetivo == 'Treinamento') echo 'selected'; ?>>Treinamento</option>
+              <option value="Consulta" <?php if ($objetivo == 'Consulta') echo 'selected'; ?>>Consulta</option>
+              <?php if (empty($objetivo)) : ?>
+                  <option selected disabled hidden>Objetivo não informado</option>
+              <?php endif; ?>
+          </select>
+      </div>
 
-           <!---ABA DE OBJETIVO - TREINAMENTO---->
-          <div class="col">
-            <br>
-            <label class="form-control">
-              <input type="checkbox" class="objetivo" name="objetivo" id="treinamento" value="Treinamento"> Treinamento</label>
-          </div>
-
-        <!---ABA DE OBJETIVO - CONSULTA---->
-          <div class="col">
-            <br>
-            <label class="form-control">
-              <input type="checkbox" class="objetivo" name="objetivo" id="consulta" value="Consulta"> Consulta </label>
-          </div>
 
           <!--- ABA DE SELECIONAR LOCAL ---->
-          <div class="col-4">
-            <label for="nomeFacilitador"><b>Informe o Local</b></label>
-            <select class="form-control" id="pegarlocal" value=<?php echo $password?>>
-              <option>
+          <div class="col-3">
+          <label for="local"><b>Informe o Local</b></label>
+          <select class="form-control" name="local" id="local">
+              <?php echo empty($pegarlocal) ? '<option selected disabled hidden>Local não informado</option>' : ''; ?>
               <?php foreach ($pegarlocal as $locais) : ?>
-              <option value="<?php echo $locais['locais'] ?>" data-tokens="<?php echo $password?> ?>">
-              <?php echo $locais['locais'] ?> 
-              
-              <?php endforeach ?>
-              </option>
+                  <option value="<?php echo $locais['locais']; ?>" <?php echo ($password == $locais['locais']) ? 'selected' : ''; ?>>
+                      <?php echo $locais['locais']; ?>
+                  </option>
+              <?php endforeach; ?>
+          </select>
+      </div>
 
-            </select>
+
+          <div class="col-7"><b>Tema*:</b>
+            <br>
+            <input id="temaprincipal" class="form-control" type="text" value="<?php echo $tema?>"/>
           </div>
 
-          <br><br>
           <!---ABA DE ADICIONAR FACILITADORES---->
           <div class="col-4"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
           <br>     
@@ -202,26 +180,24 @@ var_dump($row);
                   <?php endforeach ?>
               </optgroup>
           </select>
-
+  
+          <div class="col-8">
+          <ul>
+              <?php foreach ($facilitadores as $facilitador): ?>
+                  <li><?php echo $facilitador['facilitadores']; ?></li>
+              <?php endforeach; ?>
+          </ul>
           </div>
- 
-          <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
-
-          <div class="col"><b>Tema*:</b>
-            <br>
-            <input id="temaprincipal" class="form-control" type="text" value=<?php echo $tema?>/>
-          </div>
-
+          
           <!--BOTÕES-->
           <div class="row">
 
             <div class="col  "><br>
               <div class="btn-atas">
-                
-              <button id="botaoregistrar" type="button" class="btn btn-success">salvar</button>
-
+              <button id="btnAtualizar" class="btn btn-primary">Atualizar</button>
               <button id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
-              
+              <button type="submit" class="btn btn-primary" name="submit">Enviar</button>
+
             </div>  
               <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -259,7 +235,6 @@ var_dump($row);
                             </div>
 
                             <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Salvar</button>
                               <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
                             </div>
                           </div>
