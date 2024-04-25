@@ -253,8 +253,18 @@ class AcoesForm {
             }
         }
         
-    
-    
+      public  $sql4 = "SELECT 
+        part.id_ata,
+        part.participantes,
+        fac.nome_facilitador as participante
+    FROM 
+        assunto as assu
+    INNER JOIN 
+        participantes as part ON part.id_ata = assu.id
+    INNER JOIN 
+        facilitadores as fac ON fac.id = part.participantes
+    WHERE 
+        part.id_ata = 558";
     
     
        }

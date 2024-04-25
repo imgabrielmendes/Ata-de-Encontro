@@ -27,12 +27,9 @@ $conn = new \mysqli($servername, $username, $password, $dbname);
 // Checa a conexão
 if ($conn->connect_error) {
     die("Falha na conexão: " . $conn->connect_error);
-}
+}   
 
 
-
-
-print_r($puxaparticipantes);
 
 ?>
 
@@ -146,6 +143,8 @@ print_r($puxaparticipantes);
     if ($results) {
         foreach ($results as $row) {
             echo "<tr>";
+            echo "<td class='align-middle'  onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["id"] . "</td>";
+
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_solicitada_formatada"] . "</td>";
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
@@ -159,6 +158,7 @@ print_r($puxaparticipantes);
             echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
             echo "<td class='text-center align-middle'><a href='pagatribuida.php'><button type='button' class='btn btn-warning' style='color: white;'>+</button></a></td>";
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
+            echo "<td class='align-middle' id='participantes-" . $row['id'] . "'>"; 
 
             if (isset($row['id'])) {
                 $id_ata = $row['id'];
@@ -215,6 +215,7 @@ print_r($puxaparticipantes);
                                 <div class="col-4">
                                     <label><b>Solicitação:</b></label>
                                     <ul class="form-control bg-body-secondary" id="modal_solicitacao"></ul>
+                                  
                                 </div>
                                 <div class="col-4">
                                     <label><b>Objetivo:</b></label>
@@ -233,6 +234,9 @@ print_r($puxaparticipantes);
                                     <div class="col-12">
                                         <ul class="form-control bg-body-secondary" id="modal_tema"></ul>
                                     </div>
+                                    <div class="col-12">
+                                        <ul class="form-control bg-body-secondary" id="modal_id"></ul>
+                                    </div>
                                 </div>
                                 <div class="col-4">
                                     <label><b>Status:</b></label>
@@ -242,8 +246,24 @@ print_r($puxaparticipantes);
                                 <!-- Nova div para deliberações -->
                                 <div class="col-12">
                                     <label for="form-control"><b>Participantes</b></label>
-                                    <ul class="form-control bg-body-secondary border rounded" id="modal_participantes"></ul>
+                                    <ul class="form-control bg-body-secondary  border rounded" id="modal_participantes"></ul>
                                 
+<?php
+ // Exibir participantes dentro do bloco PHP
+ if (isset($row['id'])) {
+    $id_ata = $row['id'];
+    $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+    echo "<tr>";
+    echo "<td colspan='8'>";
+    if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
+        foreach ($puxaparticipantes as $participante) {
+            echo $participante . "<br>";
+        }
+    } else {
+        echo "Nenhum participante";
+    }}
+?>
+
                                     </div>
                                 </div>
                             </div>
@@ -259,14 +279,21 @@ print_r($puxaparticipantes);
    
 
     function abrirModalDetalhes(row) {
+       var id= document.getElementById("modal_id").innerText = row.id;
         document.getElementById("modal_solicitacao").innerText = row.data_solicitada_formatada;
         document.getElementById("modal_objetivo").innerText = row.objetivo;
         document.getElementById("modal_facilitador").innerText = row.facilitador;
         document.getElementById("modal_local").innerText = row.local;
         document.getElementById("modal_tema").innerText = row.tema;
         document.getElementById("modal_status").innerText = row.status;
-        document.getElementById("modal_participantes").innerText = row.participante;
+        // Dentro da função abrirModalDetalhes(row)// Obtém os participantes da ata clicada usando o ID da linha
+    var participantes = document.getElementById("participantes-" + row.id).innerText;
+    
+    // Exibe os participantes no modal
+    document.getElementById("modal_participantes").innerText = participantes;
 
+
+console.log(id);
 
         var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
             backdrop: 'static', // Impede o fechamento clicando fora do modal
