@@ -68,12 +68,8 @@ $row=mysqli_fetch_assoc($result);
     <link rel="icon" href="view/img/Logobordab.png" type="image/x-icon">
 
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-
     <link rel="stylesheet" href="view/css/styles.css">
-    
-    <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
-
     <script src="view\js\multi-select-tag.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>

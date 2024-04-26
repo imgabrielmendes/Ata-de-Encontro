@@ -27,7 +27,11 @@ include "conexao.php";
 
 <div class="container">
 
-    <div class="row">
+        <div class="col-md-12 text-center p-5">
+            <h2>Histórico de atas registradas</h2>
+          </div>
+
+    <div class="row pt-4">
         <table class="table table-light">
             <thead class="table table-dark">
                 <tr>
@@ -43,7 +47,6 @@ include "conexao.php";
             <tbody>
                 <?php
                 $sql = "SELECT * FROM assunto order by id desc";
-
                 $result = mysqli_query($conn, $sql);
 
                 if ($result && mysqli_num_rows($result) > 0) {               
