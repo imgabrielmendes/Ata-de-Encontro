@@ -124,7 +124,6 @@ if ($conn->connect_error) {
                                 </div>
                                 <br>
     </tbody>                  
-<table table id="myTable" class="table table-striped">
 <thead>
     <tr>
         <th class="text-center">Data</th>
@@ -134,7 +133,6 @@ if ($conn->connect_error) {
         <th class="text-center">Local</th>
         <th class="text-center">Status</th>
         <th class="text-center">Ação</th>
-        <th class="text-center">Participantes</th>
     </tr>
 </thead>
 <tbody class="text-center">
@@ -143,8 +141,6 @@ if ($conn->connect_error) {
     if ($results) {
         foreach ($results as $row) {
             echo "<tr>";
-            echo "<td class='align-middle'  onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["id"] . "</td>";
-
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_solicitada_formatada"] . "</td>";
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
             echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
@@ -157,15 +153,15 @@ if ($conn->connect_error) {
             echo "</td>";
             echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
             echo "<td class='text-center align-middle'><a href='pagatribuida.php'><button type='button' class='btn btn-warning' style='color: white;'>+</button></a></td>";
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
-            echo "<td class='align-middle' id='participantes-" . $row['id'] . "'>"; 
+            echo "<td class='align-middle' style='display:none;'  onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
+            echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
 
             if (isset($row['id'])) {
                 $id_ata = $row['id'];
                 $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
                 if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
                     foreach ($puxaparticipantes as $participante) {
-                        echo $participante . "<br>";
+                        echo $participante . ", <br>";
                     }
                 } else {
                     echo "Nenhum participante";
@@ -198,7 +194,7 @@ if ($conn->connect_error) {
 
                     </div>
                 </div>
-
+</div>
                 <!-- Modal -->
                 <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -234,9 +230,7 @@ if ($conn->connect_error) {
                                     <div class="col-12">
                                         <ul class="form-control bg-body-secondary" id="modal_tema"></ul>
                                     </div>
-                                    <div class="col-12">
-                                        <ul class="form-control bg-body-secondary" id="modal_id"></ul>
-                                    </div>
+                                    
                                 </div>
                                 <div class="col-4">
                                     <label><b>Status:</b></label>
@@ -249,19 +243,7 @@ if ($conn->connect_error) {
                                     <ul class="form-control bg-body-secondary  border rounded" id="modal_participantes"></ul>
                                 
 <?php
- // Exibir participantes dentro do bloco PHP
- if (isset($row['id'])) {
-    $id_ata = $row['id'];
-    $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-    echo "<tr>";
-    echo "<td colspan='8'>";
-    if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
-        foreach ($puxaparticipantes as $participante) {
-            echo $participante . "<br>";
-        }
-    } else {
-        echo "Nenhum participante";
-    }}
+
 ?>
 
                                     </div>
@@ -273,27 +255,24 @@ if ($conn->connect_error) {
             </div>
         </div>
     </div>
-</div>
+
 
 <script>
    
 
     function abrirModalDetalhes(row) {
-       var id= document.getElementById("modal_id").innerText = row.id;
-        document.getElementById("modal_solicitacao").innerText = row.data_solicitada_formatada;
+        document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
         document.getElementById("modal_objetivo").innerText = row.objetivo;
         document.getElementById("modal_facilitador").innerText = row.facilitador;
         document.getElementById("modal_local").innerText = row.local;
         document.getElementById("modal_tema").innerText = row.tema;
         document.getElementById("modal_status").innerText = row.status;
         // Dentro da função abrirModalDetalhes(row)// Obtém os participantes da ata clicada usando o ID da linha
-    var participantes = document.getElementById("participantes-" + row.id).innerText;
-    
+    var participantes = document.getElementById("participantes" + row.id).innerText;
     // Exibe os participantes no modal
     document.getElementById("modal_participantes").innerText = participantes;
 
 
-console.log(id);
 
         var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
             backdrop: 'static', // Impede o fechamento clicando fora do modal
@@ -307,6 +286,8 @@ console.log(id);
 
 
     <script>
+
+
         // Função para filtrar a tabela com base no input de filtro
         function filtrarTabela() {
             var input, filtro, tabela, linhas, celula, texto;
@@ -351,48 +332,55 @@ console.log(id);
 
         /// Função para filtrar registros com base nos critérios selecionados
         function filtrarRegistros(event) {
-            event.preventDefault(); // Impede o comportamento padrão do evento
+    var tabela, linhas, i;
+    tabela = document.getElementById("myTable");
+    linhas = tabela.getElementsByTagName("tr");
 
-            var tabela, linhas, i;
-            tabela = document.getElementById("myTable");
-            linhas = tabela.getElementsByTagName("tr");
+    // Obter os valores selecionados nos selects
+    var selectedObjective = document.getElementById("objetivoSelect").value.toUpperCase();
+    var selectedSolicitacao = document.getElementById("solicitacaoInput").value; // Removemos a conversão para maiúsculas
+    var selectedStatus = document.getElementById("statusSelect").value.toUpperCase();
 
-            // Obter os valores selecionados nos selects
-            var selectedObjective = document.getElementById("objetivoSelect").value.toUpperCase();
-            var selectedSolicitacao = document.getElementById("solicitacaoInput").value.toUpperCase();
-            var selectedStatus = document.getElementById("statusSelect").value.toUpperCase();
+    console.log("Valor de selectedSolicitacao:", selectedSolicitacao);
 
+    // Iterar sobre todas as linhas da tabela e verificar se atendem aos critérios de filtro
+    for (var i = 0; i < linhas.length; i++) {
+        var atendeFiltro = true; // Define se a linha atende aos critérios de filtro
+        var celulas = linhas[i].getElementsByTagName("td");
 
-            // Iterar sobre todas as linhas da tabela e verificar se atendem aos critérios de filtro
-            for (i = 1; i < linhas.length; i++) {
-                var atendeFiltro = true; // Define se a linha atende aos critérios de filtro
-                var celulas = linhas[i].getElementsByTagName("td");
+        console.log("Valor da célula de data:", celulas[0].innerText.toUpperCase());
 
-                // Filtrar por Objetivo
-                if (selectedObjective && celulas[1].innerText.toUpperCase() !== selectedObjective) {
-                    atendeFiltro = false;
-                }
-                // Filtrar por Solicitação
-                if (selectedSolicitacao && celulas[0].innerText.substring(0, 10) !== selectedSolicitacao) {
-                    atendeFiltro = false;
-                }
-                // Filtrar por Status
-                if (selectedStatus && celulas[5].innerText.toUpperCase() !== selectedStatus) {
-                    atendeFiltro = false;
-                }
-
-                // Se a linha atender aos critérios de filtro, exibi-la; caso contrário, ocultá-la
-                if (atendeFiltro) {
-                    linhas[i].style.display = "";
-                } else {
-                    linhas[i].style.display = "none";
-                }
-            }
-
-
-
-
+        // Filtrar por Objetivo
+        if (selectedObjective && celulas[1].innerText.toUpperCase() !== selectedObjective) {
+            atendeFiltro = false;
         }
+        // Filtrar por Solicitação
+        if (selectedSolicitacao) {
+            // Obter a data da célula no formato "dd/mm/yyyy"
+            var dataCelula = celulas[0].innerText.trim();
+            // Converter a data da célula para o formato "dd/mm/yyyy"
+            var partesDataCelula = dataCelula.split("/");
+            var dataFormatadaCelula = partesDataCelula[0] + "/" + partesDataCelula[1] + "/" + partesDataCelula[2];
+            // Verificar se a data da célula corresponde à data selecionada
+            if (dataFormatadaCelula !== selectedSolicitacao) {
+                atendeFiltro = false;
+            }
+        }
+        // Filtrar por Status
+        if (selectedStatus && celulas[6].innerText.toUpperCase() !== selectedStatus) {
+            atendeFiltro = false;
+        }
+
+        // Se a linha atender aos critérios de filtro, exibi-la; caso contrário, ocultá-la
+        if (atendeFiltro) {
+            linhas[i].style.display = "";
+        } else {
+            linhas[i].style.display = "none";
+        }
+    }
+}
+
+
 
 
 
@@ -406,8 +394,8 @@ console.log(id);
                     var data_solicitada = this.cells[0].innerText;
                     var objetivo = this.cells[1].innerText;
                     var facilitador = this.cells[2].innerText;
-                    var local = this.cells[4].innerText;
                     var tema = this.cells[3].innerText;
+                    var local = this.cells[4].innerText;
                     var status = this.cells[5].innerText;
 
 
