@@ -182,6 +182,54 @@ if ($conn->connect_error) {
 
 
 
+                <tbody>
+                <?php
+                $sql = "SELECT * FROM assunto order by id desc";
+
+                $result = mysqli_query($conn, $sql);
+
+                if ($result && mysqli_num_rows($result) > 0) {               
+                    while($row = mysqli_fetch_assoc($result)) {
+                        $id = $row['id'];
+                        $name = $row['data_solicitada'];
+                        $email = $row['tema'];
+                        $password = $row['objetivo'];
+                        $status = $row['status'];
+                        $local = $row['local'];
+
+
+                        echo "<tr>";
+                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_solicitada"] . "</td>";
+                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
+                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
+                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
+                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
+                        echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
+
+                        echo "<td>
+                                <button class='btn btn-warning' style='color: white; '>
+                                    <a class='text-center align-middle' href='pagatribuida.php? updateid=".$id."'>+</a>
+                                </button>
+                            </td>";
+                        echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='6'>Nenhum registro encontrado.</td></tr>";
+                }
+                ?>
+            </tbody>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

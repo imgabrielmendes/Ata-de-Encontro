@@ -43,12 +43,14 @@ include "conexao.php";
             <tbody>
                 <?php
                 $sql = "SELECT * FROM assunto order by id desc";
+                
 
                 $result = mysqli_query($conn, $sql);
 
                 if ($result && mysqli_num_rows($result) > 0) {               
                     while($row = mysqli_fetch_assoc($result)) {
                         $id = $row['id'];
+         
                         $name = $row['data_solicitada'];
                         $email = $row['tema'];
                         $password = $row['objetivo'];
@@ -62,6 +64,7 @@ include "conexao.php";
                         echo "<td>" . $email . "</td>";
                         echo "<td>" . $password . "</td>";
                         echo "<td>" . $local . "</td>";
+                       
                         echo "<td>" . $status . "</td>";
 
                         echo "<td>
