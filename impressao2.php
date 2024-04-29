@@ -1,27 +1,5 @@
 <?php
 namespace formulario;
-require __DIR__.'/vendor/autoload.php';
-
-use Dompdf\Dompdf;
-use Dompdf\Options;
-
-$options = new Options();
-$options->setChroot(__DIR__.'/impressao2.php');
-
-$dompdf = new Dompdf();
-
-ob_start();
-include 'impressao2.php'; 
-$html = ob_get_clean();
-
-$dompdf->loadHtml($html);
-
-$dompdf->render();
-
-header('Content-type: application/pdf');
-
-echo $dompdf->output();
-
 include 'conexao2.php';
 include_once ("app/acoesform.php");
 
@@ -109,7 +87,6 @@ $row=mysqli_fetch_assoc($result);
 
                         print_r($row4);
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -133,7 +110,7 @@ $row=mysqli_fetch_assoc($result);
         <div class="row"> 
  
           <div class="col-md-12 text-center p-5">
-            <h2>INFORMAÇÕES - ATA N°<?php echo $id ?></h2>
+            <h2>INFORMAÇÕES - ATA N°</h2>
           </div>
 
           <!---ABA DE DATA---->
@@ -146,13 +123,13 @@ $row=mysqli_fetch_assoc($result);
           <div class="col-3">
             <label for="nomeMedico"><b>Horário de Início:</b></label>
             <br>
-            <input class="form-control" type="time" id="horainicio" name="appt" min="" max="18:00" value=<?php echo $horaterm?>>
+            <input class="form-control" type="time" id="horainicio" name="appt" min="" max="18:00">
           </div>
 
           <!---ABA DE HORÁRIO TERMINO---->
           <div class="col-3">
             <label for="form-control"> <b> Horário de Término:</b> </label>
-            <input class="form-control" type="time" id="horaterm" name="appt" min="13:00" max="12:00" value=<?php echo $horainic?>>
+            <input class="form-control" type="time" id="horaterm" name="appt" min="13:00" max="12:00" >
           </div>
 
           <!---ABA DE TEMPO ESTIMADO ---->
@@ -166,12 +143,7 @@ $row=mysqli_fetch_assoc($result);
             <label for="objetivo pb-2"> <b>Objetivo:</b> </label>
 
             <select class="form-control" name="objetivo" id="objetivo">
-                <option value="Reunião" <?php if ($objetivo == 'Reunião') echo 'selected'; ?>>Reunião</option>
-                <option value="Treinamento" <?php if ($objetivo == 'Treinamento') echo 'selected'; ?>>Treinamento</option>
-                <option value="Consulta" <?php if ($objetivo == 'Consulta') echo 'selected'; ?>>Consulta</option>
-                <?php if (empty($objetivo)) : ?>
-                    <option selected disabled hidden>Objetivo não informado</option>
-                <?php endif; ?>
+
             </select>
       </div>
 
@@ -180,19 +152,15 @@ $row=mysqli_fetch_assoc($result);
           <div class="col-4 mt-4 pb-2">
           <label for="local"><b>Local:</b></label>
           <select class="form-control" name="local" id="local">
-              <?php echo empty($pegarlocal) ? '<option selected disabled hidden>Local não informado</option>' : ''; ?>
-              <?php foreach ($pegarlocal as $locais) : ?>
-                  <option value="<?php echo $locais['locais']; ?>" <?php echo ($local == $locais['locais']) ? 'selected' : ''; ?>>
-                      <?php echo $locais['locais']; ?>
+                  <option>
                   </option>
-              <?php endforeach; ?>
           </select>
       </div>
 
 
           <div class="col-6 mt-4 pb-2"><b>Tema*:</b>
             <br>
-            <input id="temaprincipal" class="form-control" type="text" value="<?php echo $tema?>"/>
+            <input id="temaprincipal" class="form-control" type="text">
           </div>
 
           <!---ABA DE ADICIONAR FACILITADORES---->
@@ -204,9 +172,7 @@ $row=mysqli_fetch_assoc($result);
           <div class="row">
           <div class="col-6 form-control mt-2">
                 <ul>
-                    <?php foreach ($facilitadores as $facilitador): ?>
-                        <li><?php echo $facilitador['facilitadores']; ?></li>
-                    <?php endforeach; ?>
+
                 </ul>   
               </div>
         
@@ -217,24 +183,21 @@ $row=mysqli_fetch_assoc($result);
 
           </div>
           <label class="h4 pt-3"><b>PARTICIPANTES:</b></label>
-          <?php foreach ($deliberacoes_array as $index => $deliberacao) : ?>
+        
           <div class="row pt-3">
               <div class="col-4">
                   <input class="form-control" value="<?php echo $deliberador_array[$index]?>" >
               </div> 
               <input class="col form-control" value="<?php echo $deliberacao ?>" >
           </div>
-          <?php endforeach; ?>
 
           <label class="h4 pt-3"><b>DELIBERAÇÕES:</b></label>
-          <?php foreach ($deliberacoes_array as $index => $deliberacao) : ?>
           <div class="row pt-3">
               <div class="col-4">
                   <input class="form-control" value="<?php echo $deliberador_array[$index]?>" >
               </div> 
               <input class="col form-control" value="<?php echo $deliberacao ?>" >
           </div>
-          <?php endforeach; ?>
 
               <div class="row">
                 <footer class="col main-footer p-4" style="margin-left: 0 !important; margin-top: 1em;">
@@ -248,4 +211,3 @@ $row=mysqli_fetch_assoc($result);
 
 </body>
 </html>
-

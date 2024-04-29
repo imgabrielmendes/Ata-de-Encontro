@@ -17,6 +17,7 @@ include "conexao.php";
         <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
         
 </head>
+
 <body>
 
     <!-- <div class="row">
