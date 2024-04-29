@@ -75,7 +75,7 @@ if ($conn->connect_error) {
             <div class="form-group col-12">
                 <div class="row">
                     <div class="text-center" class="row">
-                        <table id="myTable" class="table table-striped">
+                        <table id="" class="table table-striped">
                             <tbody>
                                 <div class="accordion" id="accordionPanelsStayOpenExample" class="text-center">
                                     <div class="accordion-item text-center">
@@ -123,8 +123,12 @@ if ($conn->connect_error) {
                                     </div>
                                 </div>
                                 <br>
-    </tbody>                  
-<thead>
+    </tbody>   </table>
+
+
+
+    <table id="myTable" class="table table-striped">
+    <thead>
     <tr>
         <th class="text-center">Data</th>
         <th class="text-center">Objetivo</th>
@@ -135,26 +139,35 @@ if ($conn->connect_error) {
         <th class="text-center">Ação</th>
     </tr>
 </thead>
-<tbody class="text-center">
-    <?php
-    $results = $puxarform->pegandoTudo();
-    if ($results) {
-        foreach ($results as $row) {
-            echo "<tr>";
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_solicitada_formatada"] . "</td>";
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
-            $facilitadores = explode(",", $row["facilitador"]);
-            $facilitadoresFormatted = implode(", ", $facilitadores);
-            echo $facilitadoresFormatted;
-            echo "</td>";
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
-            echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
-            echo "</td>";
-            echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
-            echo "<td class='text-center align-middle'><a href='pagatribuida.php'><button type='button' class='btn btn-warning' style='color: white;'>+</button></a></td>";
-            echo "<td class='align-middle' style='display:none;'  onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
-            echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
+
+                <tbody>
+
+                <?php
+                $sql = "SELECT id, DATE_FORMAT(data_solicitada, '%d/%m/%Y') AS data_formatada, objetivo, tema, local, status FROM assunto ORDER BY id DESC";
+
+
+                $result = mysqli_query($conn, $sql);
+
+                if ($result && mysqli_num_rows($result) > 0) {               
+                    while($row = mysqli_fetch_assoc($result)) {
+                        $id =  $row['id'];
+                        $name = $row['data_formatada'];
+                        $email = $row['tema'];
+                        $password = $row['objetivo'];
+                        $status = $row['status'];
+                        $local = $row['local'];
+
+
+
+                        echo "<tr>";
+                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_formatada"] . "</td>";
+                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
+                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
+                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
+                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
+                        echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
+                       echo "<td class='align-middle' style='display:none;'  onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
+                       echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
 
             if (isset($row['id'])) {
                 $id_ata = $row['id'];
@@ -162,6 +175,7 @@ if ($conn->connect_error) {
                 if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
                     foreach ($puxaparticipantes as $participante) {
                         echo $participante . ", <br>";
+                        
                     }
                 } else {
                     echo "Nenhum participante";
@@ -170,45 +184,9 @@ if ($conn->connect_error) {
                 echo "ID da ata não disponível";
             }
 
-            echo "</>";
-
-            
-        }
-    } else {
-        echo "<tr><td colspan='7' class='align-middle'>Nenhum resultado encontrado.</td></tr>";
-    }
-    ?>
-</tbody>
-
-
-
-                <tbody>
-                <?php
-                $sql = "SELECT * FROM assunto order by id desc";
-
-                $result = mysqli_query($conn, $sql);
-
-                if ($result && mysqli_num_rows($result) > 0) {               
-                    while($row = mysqli_fetch_assoc($result)) {
-                        $id = $row['id'];
-                        $name = $row['data_solicitada'];
-                        $email = $row['tema'];
-                        $password = $row['objetivo'];
-                        $status = $row['status'];
-                        $local = $row['local'];
-
-
-                        echo "<tr>";
-                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_solicitada"] . "</td>";
-                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
-                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
-                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
-                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
-                        echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
-
                         echo "<td>
                                 <button class='btn btn-warning' style='color: white; '>
-                                    <a class='text-center align-middle' href='pagatribuida.php? updateid=".$id."'>+</a>
+                                    <a style='color:white; text-decoration:none;' class='text-center align-middle' href='pagatribuida.php? updateid=".$id."'>+</a>
                                 </button>
                             </td>";
                         echo "</tr>";
@@ -218,19 +196,6 @@ if ($conn->connect_error) {
                 }
                 ?>
             </tbody>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -315,12 +280,11 @@ if ($conn->connect_error) {
         document.getElementById("modal_local").innerText = row.local;
         document.getElementById("modal_tema").innerText = row.tema;
         document.getElementById("modal_status").innerText = row.status;
-        // Dentro da função abrirModalDetalhes(row)// Obtém os participantes da ata clicada usando o ID da linha
-    var participantes = document.getElementById("participantes" + row.id).innerText;
+   
+  // Dentro da função abrirModalDetalhes(row)// Obtém os participantes da ata clicada usando o ID da linha
+  var participantes = document.getElementById("participantes" + row.id).innerText;
     // Exibe os participantes no modal
-    document.getElementById("modal_participantes").innerText = participantes;
-
-
+    document.getElementById("modal_participantes").innerText = participantes; 
 
         var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
             backdrop: 'static', // Impede o fechamento clicando fora do modal
@@ -378,9 +342,10 @@ if ($conn->connect_error) {
         }
 
 
-        /// Função para filtrar registros com base nos critérios selecionados
-        function filtrarRegistros(event) {
-    var tabela, linhas, i;
+      // Função para filtrar registros com base nos critérios selecionados
+function filtrarRegistros(event) {
+    event.preventDefault();
+    var tabela, linhas;
     tabela = document.getElementById("myTable");
     linhas = tabela.getElementsByTagName("tr");
 
@@ -389,33 +354,31 @@ if ($conn->connect_error) {
     var selectedSolicitacao = document.getElementById("solicitacaoInput").value; // Removemos a conversão para maiúsculas
     var selectedStatus = document.getElementById("statusSelect").value.toUpperCase();
 
-    console.log("Valor de selectedSolicitacao:", selectedSolicitacao);
-
     // Iterar sobre todas as linhas da tabela e verificar se atendem aos critérios de filtro
-    for (var i = 0; i < linhas.length; i++) {
+    for (var i = 1; i < linhas.length; i++) {
         var atendeFiltro = true; // Define se a linha atende aos critérios de filtro
         var celulas = linhas[i].getElementsByTagName("td");
+        var dataCelula = celulas[0].textContent.trim();
 
-        console.log("Valor da célula de data:", celulas[0].innerText.toUpperCase());
+        // Verificar se uma data foi selecionada para filtrar
+        if (selectedSolicitacao) {
+            // Converter a data da célula para o mesmo formato da data selecionada
+            var partesDataCelula = dataCelula.split("/");
+            var dataFormatadaCelula = partesDataCelula[2] + "-" + partesDataCelula[1] + "-" + partesDataCelula[0];
+            
+            // Comparar a data da célula com a data selecionada
+            if (dataFormatadaCelula !== selectedSolicitacao) {
+                atendeFiltro = false;
+            }
+        }
 
         // Filtrar por Objetivo
         if (selectedObjective && celulas[1].innerText.toUpperCase() !== selectedObjective) {
             atendeFiltro = false;
         }
-        // Filtrar por Solicitação
-        if (selectedSolicitacao) {
-            // Obter a data da célula no formato "dd/mm/yyyy"
-            var dataCelula = celulas[0].innerText.trim();
-            // Converter a data da célula para o formato "dd/mm/yyyy"
-            var partesDataCelula = dataCelula.split("/");
-            var dataFormatadaCelula = partesDataCelula[0] + "/" + partesDataCelula[1] + "/" + partesDataCelula[2];
-            // Verificar se a data da célula corresponde à data selecionada
-            if (dataFormatadaCelula !== selectedSolicitacao) {
-                atendeFiltro = false;
-            }
-        }
+
         // Filtrar por Status
-        if (selectedStatus && celulas[6].innerText.toUpperCase() !== selectedStatus) {
+        if (selectedStatus && celulas[5].innerText.toUpperCase() !== selectedStatus) {
             atendeFiltro = false;
         }
 
@@ -426,6 +389,9 @@ if ($conn->connect_error) {
             linhas[i].style.display = "none";
         }
     }
+
+    // Rola a página para o topo após aplicar o filtro
+    window.scrollTo(0, 0);
 }
 
 
