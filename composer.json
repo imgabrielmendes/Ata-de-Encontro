@@ -1,1 +1,11 @@
-
+{
+    "name": "ataencontro/pdf",
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "require": {
+        "dompdf/dompdf": "^2.0"
+    }
+}

@@ -41,7 +41,9 @@ include "conexao.php";
                     <th scope="col">objetivo</th>
                     <th scope="col">local</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Ações</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+
                 </tr>
             </thead>
             <tbody>
@@ -70,6 +72,13 @@ include "conexao.php";
                         echo "<td>
                                 <button class='btn btn-primary'>
                                     <a class='text-light' href='update.php? updateid=".$id."'>Update</a>
+                                </button>
+                            </td>";
+                       
+                        
+                        echo "<td>
+                                <button class='btn btn-success'>
+                                    <a class='text-light' href='impressao.php? updateid=".$id."'>Imprimir</a>
                                 </button>
                             </td>";
                         echo "</tr>";

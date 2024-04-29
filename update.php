@@ -1,6 +1,7 @@
 <?php
 namespace formulario;
 
+require __DIR__.'/vendor/autoload.php';
 include 'conexao2.php';
 include_once ("app/acoesform.php");
 
