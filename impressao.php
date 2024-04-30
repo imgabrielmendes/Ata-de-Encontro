@@ -1,5 +1,10 @@
 <?php
 namespace formulario;
+
+include_once ("app/acoesform.php");
+include ("conexao.php");
+
+
 require __DIR__.'/vendor/autoload.php';
 
 use Dompdf\Dompdf;
@@ -22,10 +27,8 @@ header('Content-type: application/pdf');
 
 echo $dompdf->output();
 
-include 'conexao2.php';
-include_once ("app/acoesform.php");
-
 $id = $_GET['updateid'];
+
 $puxarform= new AcoesForm;
 $pegarfa=$puxarform->pegarfacilitador();
 $pegarlocal=$puxarform->pegarlocais();
@@ -79,35 +82,35 @@ $row=mysqli_fetch_assoc($result);
                     }
                 }
 
-        $sql4="SELECT  
-        assunto.id as IDASSUNTO,
-        fac.nome_facilitador AS facilitadores_responsaveis,
-        fac_parti.nome_facilitador as nome_participantes,
-        fac_delib.nome_facilitador as deliberador,
-        delib.deliberacoes as deliberacoes,
+        // $sql4="SELECT  
+        // assunto.id as IDASSUNTO,
+        // fac.nome_facilitador AS facilitadores_responsaveis,
+        // fac_parti.nome_facilitador as nome_participantes,
+        // fac_delib.nome_facilitador as deliberador,
+        // delib.deliberacoes as deliberacoes,
         
-        text.texto_princ
+        // text.texto_princ
         
-        FROM atareu.assunto as assunto
-            INNER JOIN atareu.ata_has_fac as ahf
-                ON ahf.id_ata = assunto.id
-            INNER JOIN atareu.facilitadores as fac
-                ON fac.id = ahf.facilitadores
-                INNER JOIN atareu.participantes as parti
-                    ON parti.id_ata = assunto.id
-                INNER JOIN atareu.facilitadores AS fac_parti 
-                    ON fac_parti.id = parti.participantes
-                    INNER JOIN atareu.deliberacoes as delib
-                        ON delib.id_ata = assunto.id
-                    INNER JOIN atareu.facilitadores as fac_delib
-                        ON fac_delib.id = delib.deliberadores
-                    INNER JOIN atareu.textoprinc as text
-                        ON text.id_ata = assunto.id
-                        where delib.id_ata = $id;";
-                        $result4 = mysqli_query($conn, $sql4);
-                        $row4=mysqli_fetch_assoc($result4);
+        // FROM atareu.assunto as assunto
+        //     INNER JOIN atareu.ata_has_fac as ahf
+        //         ON ahf.id_ata = assunto.id
+        //     INNER JOIN atareu.facilitadores as fac
+        //         ON fac.id = ahf.facilitadores
+        //         INNER JOIN atareu.participantes as parti
+        //             ON parti.id_ata = assunto.id
+        //         INNER JOIN atareu.facilitadores AS fac_parti 
+        //             ON fac_parti.id = parti.participantes
+        //             INNER JOIN atareu.deliberacoes as delib
+        //                 ON delib.id_ata = assunto.id
+        //             INNER JOIN atareu.facilitadores as fac_delib
+        //                 ON fac_delib.id = delib.deliberadores
+        //             INNER JOIN atareu.textoprinc as text
+        //                 ON text.id_ata = assunto.id
+        //                 where delib.id_ata = $id;";
+        //                 $result4 = mysqli_query($conn, $sql4);
+        //                 $row4=mysqli_fetch_assoc($result4);
 
-                        print_r($row4);
+                        // print_r($row4);
 ?>
 
 <!DOCTYPE html>

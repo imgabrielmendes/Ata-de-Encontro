@@ -59,18 +59,40 @@ $local = $_GET['local'];
 
 <body>
 
-  <!--BARRA DE NAVEGAÇÃO-->
-  <header>
-    <nav class="navbar shadow">
-      <div id="container" style="background-color: #001f3f;">
-        <div class="container_align">
-          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
-            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"></a>
-            <h1 id="tittle" class="text-center"> 2° FASE</h1>
+
+<style>
+      body{
+        background-color: rgba(240, 240, 240, 0.41);
+      }
+      .content-header{
+        background-color: #001f3f;
+        }
+</style>
+
+      <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/"><img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px"></a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+            </button>
+      
+
+          <div class="collapse navbar-collapse" id="navBarCentral">
+          </div>
         </div>
-      </div>
-    </nav>
-  </header>
+      </nav>
+      <div class="content-header shadow" style="border-bottom: solid 1px gray;">
+          <div class="container-fluid">
+            <div class="row py-1">
+              <div class="col-sm-6">
+                <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Histórico de atas de encontro</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
 
   <!--FORMULÁRIO-->
 

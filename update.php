@@ -66,7 +66,7 @@ $row=mysqli_fetch_assoc($result);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - ATA</title>
-    <link rel="icon" href="view/img/Logobordab.png" type="image/x-icon">
+    <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
 
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="view/css/styles.css">
@@ -86,22 +86,40 @@ $row=mysqli_fetch_assoc($result);
       }
 
     </style>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg shadow">
-        <div class="container-fluid">
-            <!-- <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/">
-                <img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
-            </a> -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<style>
+    .{
+        background-color: #f4f6f9;
+    }
 
-            <div class="collapse navbar-collapse" id="navBarCentral">
-                <!-- Adicione aqui os elementos do menu se necessário -->
-            </div>
-        </div>
-    </nav>
-</header>
+    .content-header{
+        background-color: #001f3f;
+    }
+    </style>
+      <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/"><img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
+                </a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+      
+
+      <div class="collapse navbar-collapse" id="navBarCentral">
+      </div>
+    </div>
+  </nav>
+  <div class="content-header" style="border-bottom: solid 1px gray;">
+      <div class="container-fluid">
+        <div class="row py-1">
+          <div class="col-sm-6">
+            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Histórico de atas de encontro</h2>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div>
+    </div>
+  </header>
  <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
     <main class="container_fluid d-flex justify-content-center align-items-center">
       <div class="form-group col-8">
@@ -171,15 +189,15 @@ $row=mysqli_fetch_assoc($result);
           </div>
 
           <!---ABA DE ADICIONAR FACILITADORES---->
+    <div class="row">
 
           <div class="col-4 pt-2 pb-2"> 
             <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
           </div>
-
-          <div class="row">
+          
             <select class="col-6 form-control" id="selecionandofacilitador" name="facilitador" multiple value="">
             </div>
-
+            
                 <optgroup label="Selecione Facilitadores">
                     <?php foreach ($pegarfa as $facnull) : ?>
                         <option value="<?php echo $facnull['id']; ?>"
