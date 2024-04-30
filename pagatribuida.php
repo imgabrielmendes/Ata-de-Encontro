@@ -135,20 +135,44 @@ $result = $conn->query($sql);
 
 
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
+
           <div class="row">
-          <div class="col-4">
+          <div class="col-6">
+              <label for="form-control"><b>Data</b></label>
+            <div class="form-control bg-body-secondary">
+              <?php
+                if (isset($_GET['updateid'])) {
+                  $id_ata = $_GET['updateid'];
+                  $atas = $puxarform->pegandoTudo();
+                  $ata_encontrada = null;
+                  foreach ($atas as $ata) {
+                    if ($ata['id'] == $id_ata) {
+                      $ata_encontrada = $ata;
+                        break;
+                    }
+                  }
+                if ($ata_encontrada) {
+                  echo $ata_encontrada['data_solicitada_formatada'];
+                } else {
+                  echo "Nenhuma ATA encontrada com o ID fornecido.";
+                }
+                } else {
+                  echo "Nenhum ID de ATA fornecido.";
+                }
+                ?>
+              </div>
+              </div>
+              <div class="col-6">
+                  <label for="form-control"><b>Objetivo</b></label>
+                  <ul class="form-control bg-body-secondary"><?php echo $row['objetivo']; ?></ul>     
+              </div>
+          <div class="col-6">
             <label for="form-control"><b>Facilitadores</b></label>
             <div class="form-control bg-body-secondary">
                 <?php
-                // Verifica se o ID da ATA foi passado via GET
                 if (isset($_GET['updateid'])) {
-                    // Obtém o ID da ATA
                     $id_ata = $_GET['updateid'];
-
-                    // Pega todos os dados das ATAs, incluindo os facilitadores
                     $atas = $puxarform->pegandoTudo();
-
-                    // Procura a ATA específica pelo ID
                     $ata_encontrada = null;
                     foreach ($atas as $ata) {
                         if ($ata['id'] == $id_ata) {
@@ -158,7 +182,6 @@ $result = $conn->query($sql);
                     }
 
                     if ($ata_encontrada) {
-                        // Exibe os facilitadores associados a esta ATA
                         echo $ata_encontrada['facilitador'];
                     } else {
                         echo "Nenhuma ATA encontrada com o ID fornecido.";
@@ -169,24 +192,27 @@ $result = $conn->query($sql);
                 ?>
             </div>
         </div>
-        <div class="col-4">
-    <label for="form-control"><b>Participantes</b></label>
-    <div class="form-control bg-body-secondary">
+        <div class="col-6">
+            <label for="form-control"><b>Tema</b></label>
+            <ul class="form-control bg-body-secondary"><?php echo $row["tema"]; ?></ul>
+        </div>
+        <div class="col-6">
+            <label for="form-control"> <b>Local</b> </label>
+            <ul class="form-control bg-body-secondary"><?php echo $row["local"]; ?></ul>
+        </div>
+        <div class="col-6">
+            <label for="form-control"> <b>Status</b> </label>
+            <ul class="form-control bg-body-secondary"><?php echo $row['status']; ?></ul>
+        </div>
+        <div class="col-12">
+          <label for="form-control"><b>Participantes</b></label>
+        <div class="form-control bg-body-secondary">
         <?php
-        // Verifica se o ID da ATA foi passado via GET
         if (isset($_GET['updateid'])) {
-            // Obtém o ID da ATA
             $id_ata = $_GET['updateid'];
-
-            // Chama a função para buscar os participantes com base no ID da ATA
             $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-
-            // Verifica se há participantes encontrados
             if (!empty($participantes)) {
-                // Exibe os participantes encontrados
-                foreach ($participantes as $participante) {
-                    echo "<div>$participante</div>";
-                }
+                echo implode(', ', $participantes);
             } else {
                 echo "Nenhum participante encontrado para esta ATA.";
             }
@@ -194,146 +220,81 @@ $result = $conn->query($sql);
             echo "Nenhum ID de ATA fornecido.";
         }
         ?>
-    </div>
-</div>
-
-                  <div class="col-4">
-                      <label for="form-control"><b>Data</b></label>
-                      <div class="form-control bg-body-secondary">
-                          <?php
-                          // Verifica se o ID da ATA foi passado via GET
-                          if (isset($_GET['updateid'])) {
-                              // Obtém o ID da ATA
-                              $id_ata = $_GET['updateid'];
-
-                              // Pega todos os dados das ATAs, incluindo as datas formatadas
-                              $atas = $puxarform->pegandoTudo();
-
-                              // Procura a ATA específica pelo ID
-                              $ata_encontrada = null;
-                              foreach ($atas as $ata) {
-                                  if ($ata['id'] == $id_ata) {
-                                      $ata_encontrada = $ata;
-                                      break;
-                                  }
-                              }
-
-                              if ($ata_encontrada) {
-                                  // Exibe a data formatada da ATA encontrada
-                                  echo $ata_encontrada['data_solicitada_formatada'];
-                              } else {
-                                  echo "Nenhuma ATA encontrada com o ID fornecido.";
-                              }
-                          } else {
-                              echo "Nenhum ID de ATA fornecido.";
-                          }
-                          ?>
-                      </div>
-                  </div>
-                  <div class="col-4">
-                      <label for="form-control"> <b>Local</b> </label>
-                      <ul class="form-control bg-body-secondary"><?php echo $row["local"]; ?></ul>
-                  </div>
-                  <div class="col-4">
-                      <label for="form-control"><b>Tema</b></label>
-                      <ul class="form-control bg-body-secondary"><?php echo $row["tema"]; ?></ul>
-                  </div>
-                  <div class="col-4">
-                      <label for="form-control"> <b>Status</b> </label>
-                      <ul class="form-control bg-body-secondary"><?php echo $row['status']; ?></ul>
-                  </div>
-                  <div class="col-4">
-                      <label for="form-control"><b>Objetivo</b></label>
-                      <ul class="form-control bg-body-secondary"><?php echo $row['objetivo']; ?></ul>
-                          
-                      </div>
-                  </div>
-              <?php      
-              $conn->close();
-              ?>
         </div>
-
-
+      </div>            
+      <?php      
+        $conn->close();
+        ?>
+  </div>
+      </div>
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
-<div class="accordion" id="accordionPanelsStayOpenExample">
-
+<br>
+<div class="accordion">
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
-    <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background-color: #1c8f69;">
-
-    <i class="fas"></i>
-    <h5>Participantes Adicionados </h5>
-
-    </button>
-  </h2>
-
-<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
-<div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
-    <div class="col-md-12 text-center">         
-          
-    </div>  
-    <!---- PRIMEIRA LINHA DO REGISTRO ---->
-    <div class="row">
+    <div class="accordion-button shadow-sm text-white" style="background-color: #1c8f69;;">
+    <i class="fa-solid fa-circle-info"></i>
+    <h5>Participantes</h5>
+</div>
+  </h2>                                                                                                                                       
+        <main class="container-fluid ">
+        <div class="row">
           <form id="addForm">
               <div class="form-group ">
                   <br>
                   <div id="items" class="list-group">                    
               </div>
-                  <label for="item"></label>
+                  <label for="item"><b>Informe os participantes<b></label>
 
                   <div class="row">
                     <div class="col"> 
-                    <form id="formSalvarParticipantes" action="salvar_participantes.php" method="POST">
-    <select class="col form-control" id="participantesadicionados" name="participantes[]" multiple>
-        <optgroup label="Selecione os participantes">
-            <?php foreach ($pegarfa as $participante) : ?>
-                <option value="<?php echo $participante['id']; ?>">
-                    <?php echo $participante['nome_facilitador']; ?>
-                </option>
-            <?php endforeach ?>
-        </optgroup>
-    </select>
-    <div class="d-flex justify-content-center">
-            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Atualizar a ata</button>
-      </div>
-</form>
-
-<script>
-document.getElementById('btnSalvarParticipantes').addEventListener('click', function() {
-    var selectParticipantes = document.getElementById('participantesadicionados');
-    var participantesSelecionados = [];
-    for (var i = 0; i < selectParticipantes.options.length; i++) {
-        if (selectParticipantes.options[i].selected) {
-            participantesSelecionados.push(selectParticipantes.options[i].value);
-        }
-    }
-    
-    // Enviar os participantes selecionados para o servidor via AJAX
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'salvar_participantes.php');
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() {
-        if (xhr.status === 200) {
-            // Processar a resposta do servidor, se necessário
-            alert('Participantes salvos com sucesso!');
-        } else {
-            alert('Erro ao salvar os participantes!');
-        }
-    };
-    xhr.send('participantes=' + participantesSelecionados.join(','));
-});
-</script>
-
-              </div>       
+                    <select class="col form-control" id="participantesadicionados" name="facilitador" multiple>
+                      <optgroup label="Selecione Facilitadores">
+                          <?php foreach ($pegarfa as $facnull) : ?>
+                              <option value="<?php echo $facnull['id']; ?>"
+                                  data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                                  <?php echo $facnull['nome_facilitador']; ?>
+                              </option> <?php endforeach ?>
+                       </optgroup>
+                    </select>
+        </div>         
           </form>
-    </div>
-            
-</div>
-</div>
-</div>
-</div>
-  </div>
 
+<br>
+           
+      <!--BOTÕES-->
+      <div class="container d-flex justify-content-center">
+        <div class="row">
+
+          <div class="col">
+              <button id="botaocontinuarata" type="button" class="btn btn-success" data-bs-toggle="modal">
+                Continuar ata
+              </button>
+              <script>
+                function abrirDeliberacoes(){
+                  window.location.href = 'pagdeliberacoes.php';
+                }
+              </script>
+
+        </div>
+        <div class="col">
+                  
+              <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
+                Atualizar a ata
+              </button>
+            </div>
+            </div>
+              <script>
+        function abrirHistorico() {
+            window.location.href = 'paghistorico.php';
+        }
+    </script>
+            </div>
+        </div>
+      </div>
+
+            </div>
+</main>
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 <br>
 <div class="accordion">

@@ -143,7 +143,12 @@ if ($conn->connect_error) {
                 <tbody>
 
                 <?php
-                $sql = "SELECT id, DATE_FORMAT(data_solicitada, '%d/%m/%Y') AS data_formatada, objetivo, tema, local, status FROM assunto ORDER BY id DESC";
+                $sql = "SELECT assunto.id, DATE_FORMAT(assunto.data_solicitada, '%d/%m/%Y') AS data_formatada, assunto.objetivo, assunto.tema, assunto.local, assunto.status, GROUP_CONCAT(facilitadores.nome_facilitador SEPARATOR ', ') AS facilitadores
+                FROM assunto
+                LEFT JOIN ata_has_fac ON assunto.id = ata_has_fac.id_ata
+                LEFT JOIN facilitadores ON ata_has_fac.facilitadores = facilitadores.id
+                GROUP BY assunto.id
+                ORDER BY assunto.id DESC";
 
 
                 $result = mysqli_query($conn, $sql);
@@ -152,6 +157,7 @@ if ($conn->connect_error) {
                     while($row = mysqli_fetch_assoc($result)) {
                         $id =  $row['id'];
                         $name = $row['data_formatada'];
+                        $facilitador = $row['facilitadores'];
                         $email = $row['tema'];
                         $password = $row['objetivo'];
                         $status = $row['status'];
@@ -162,7 +168,7 @@ if ($conn->connect_error) {
                         echo "<tr>";
                         echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_formatada"] . "</td>";
                         echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
-                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
+                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["facilitadores"] . "</td>";
                         echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
                         echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
                         echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";

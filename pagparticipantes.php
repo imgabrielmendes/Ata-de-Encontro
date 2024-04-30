@@ -8,18 +8,22 @@ include ("conexao.php");
 $puxarform= new AcoesForm;
 $facilitadores=$puxarform->selecionarFacilitadores();
 $pegarfa=$puxarform->pegarfacilitador();
+$resultados = $puxarform->pegandoTudo();
+$puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
+$ultimaata = $puxarform->pegarUltimaAta();
 
-//PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
-$facilitadores = $_GET['facilitadores'];
-$facilitadoresArray = json_decode($facilitadores, true);   
-$facilitadoresString = implode(", ", $facilitadoresArray);
+$pegarid = $puxarform->puxarId();
+$sql="SELECT * FROM assunto where id=$id ";
+$result = mysqli_query($conn, $sql);
+$row=mysqli_fetch_assoc($result);
+    $datasolicitada = $row['data_solicitada'];
+    $tema = $row['tema'];
+    $objetivo = $row['objetivo'];
+    $password = $row['local'];
+    $horainic = $row['hora_inicial'];
+    $horaterm = $row['hora_termino'];
 
-$conteudo = $_GET['conteudo'];
-$horainicio = $_GET['horainicio'];
-$horaterm = $_GET['horaterm'];
-$data = $_GET['data'];
-$objetivoSelecionado = $_GET['objetivoSelecionado'];
-$local = $_GET['local'];
+
 
     // Usando $facilitadoresString na sua string de saída
     // echo "Facilitadores - $facilitadoresString, 
@@ -102,7 +106,7 @@ $local = $_GET['local'];
             <br>
                   <div class="col-3">
                     <label><b>Data*:</b></label>
-                    <ul class="form-control bg-body-secondary"> <?php echo $data;  ?> </ul>
+                    <ul class="form-control bg-body-secondary"> <?php echo $row['objetivo'];  ?> </ul>
                   </div>
           
                   <!---ABA DE HORÁRIO INICIO---->
@@ -169,7 +173,7 @@ $local = $_GET['local'];
           <div class="col-3">
               <label for="form-control"> <b>Objetivo:</b> </label>
               <label class="form-control bg-body-secondary border rounded">
-                <input type="checkbox" disabled checked> <?php echo $objetivoSelecionado; ?>
+                <input type="checkbox" disabled checked> <?php echo $row['objetivo']; ?>
             </div>
 
             <div>
