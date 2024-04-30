@@ -12,17 +12,6 @@ $resultados = $puxarform->pegandoTudo();
 $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
 $ultimaata = $puxarform->pegarUltimaAta();
 
-$pegarid = $puxarform->puxarId();
-$sql="SELECT * FROM assunto where id=$id ";
-$result = mysqli_query($conn, $sql);
-$row=mysqli_fetch_assoc($result);
-    $datasolicitada = $row['data_solicitada'];
-    $tema = $row['tema'];
-    $objetivo = $row['objetivo'];
-    $password = $row['local'];
-    $horainic = $row['hora_inicial'];
-    $horaterm = $row['hora_termino'];
-
 
 
     // Usando $facilitadoresString na sua string de saída

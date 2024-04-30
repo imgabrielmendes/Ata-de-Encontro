@@ -17,6 +17,7 @@ include "conexao.php";
         <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
         
 </head>
+
 <body>
 
     <!-- <div class="row">
@@ -27,7 +28,11 @@ include "conexao.php";
 
 <div class="container">
 
-    <div class="row">
+        <div class="col-md-12 text-center p-5">
+            <h2>Histórico de atas registradas</h2>
+          </div>
+
+    <div class="row pt-4">
         <table class="table table-light">
             <thead class="table table-dark">
                 <tr>
@@ -37,20 +42,19 @@ include "conexao.php";
                     <th scope="col">objetivo</th>
                     <th scope="col">local</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Ações</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+
                 </tr>
             </thead>
             <tbody>
                 <?php
                 $sql = "SELECT * FROM assunto order by id desc";
-                
-
                 $result = mysqli_query($conn, $sql);
 
                 if ($result && mysqli_num_rows($result) > 0) {               
                     while($row = mysqli_fetch_assoc($result)) {
                         $id = $row['id'];
-         
                         $name = $row['data_solicitada'];
                         $email = $row['tema'];
                         $password = $row['objetivo'];
@@ -64,12 +68,18 @@ include "conexao.php";
                         echo "<td>" . $email . "</td>";
                         echo "<td>" . $password . "</td>";
                         echo "<td>" . $local . "</td>";
-                       
                         echo "<td>" . $status . "</td>";
 
                         echo "<td>
                                 <button class='btn btn-primary'>
                                     <a class='text-light' href='update.php? updateid=".$id."'>Update</a>
+                                </button>
+                            </td>";
+                       
+                        
+                        echo "<td>
+                                <button class='btn btn-success'>
+                                    <a class='text-light' href='impressao.php? updateid=".$id."'>Imprimir</a>
                                 </button>
                             </td>";
                         echo "</tr>";

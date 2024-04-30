@@ -199,7 +199,34 @@ class AcoesForm {
         return $participantes;
     }
     
-
+    public function buscarDeliberacoesPorIdAta($id_ata) {
+        try {
+            $sql = "SELECT d.deliberacoes, IFNULL(f.nome_facilitador, 'N/A') AS deliberador
+                    FROM deliberacoes d
+                    LEFT JOIN facilitadores f ON d.deliberadores = f.id
+                    WHERE d.id_ata = :id_ata";
+    
+            // Prepara a consulta
+            $stmt = $this->pdo->prepare($sql);
+            
+            // Vincula o parâmetro :id_ata com o valor fornecido
+            $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
+            
+            // Executa a consulta
+            $stmt->execute();
+            
+            // Retorna os resultados como um array associativo contendo as deliberações e os nomes dos deliberadores
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            // Em caso de erro, lança uma exceção para que o erro possa ser tratado
+            throw $e;
+        }
+    }
+    
+    
+    
+    
+    
 
     public function buscarParticipantesPorIdAta($id_ata) {
         try {

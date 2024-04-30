@@ -141,66 +141,103 @@ if ($conn->connect_error) {
 </thead>
 
                 <tbody>
-
                 <?php
-                $sql = "SELECT assunto.id, DATE_FORMAT(assunto.data_solicitada, '%d/%m/%Y') AS data_formatada, assunto.objetivo, assunto.tema, assunto.local, assunto.status, GROUP_CONCAT(facilitadores.nome_facilitador SEPARATOR ', ') AS facilitadores
-                FROM assunto
-                LEFT JOIN ata_has_fac ON assunto.id = ata_has_fac.id_ata
-                LEFT JOIN facilitadores ON ata_has_fac.facilitadores = facilitadores.id
-                GROUP BY assunto.id
-                ORDER BY assunto.id DESC";
+$sql = "SELECT 
+            assunto.id, 
+            DATE_FORMAT(assunto.data_solicitada, '%d/%m/%Y') AS data_formatada, 
+            assunto.objetivo, 
+            assunto.tema, 
+            assunto.local, 
+            assunto.status, 
+            GROUP_CONCAT(facilitadores.nome_facilitador SEPARATOR ', ') AS facilitadores,
+            textoprinc.texto_princ AS deliberações
+        FROM 
+            assunto
+        LEFT JOIN 
+            ata_has_fac ON assunto.id = ata_has_fac.id_ata
+        LEFT JOIN 
+            facilitadores ON ata_has_fac.facilitadores = facilitadores.id
+        LEFT JOIN
+            textoprinc ON assunto.id = textoprinc.id_ata
+        GROUP BY 
+            assunto.id
+        ORDER BY 
+            assunto.id DESC";
 
+$result = mysqli_query($conn, $sql);
 
-                $result = mysqli_query($conn, $sql);
+if ($result && mysqli_num_rows($result) > 0) {               
+    while($row = mysqli_fetch_assoc($result)) {
+        $id =  $row['id'];
+        $data_formatada = $row['data_formatada'];
+        $objetivo = $row['objetivo'];
+        $tema = $row['tema'];
+        $local = $row['local'];
+        $status = $row['status'];
+        $facilitadores = $row['facilitadores'];
 
-                if ($result && mysqli_num_rows($result) > 0) {               
-                    while($row = mysqli_fetch_assoc($result)) {
-                        $id =  $row['id'];
-                        $name = $row['data_formatada'];
-                        $facilitador = $row['facilitadores'];
-                        $email = $row['tema'];
-                        $password = $row['objetivo'];
-                        $status = $row['status'];
-                        $local = $row['local'];
-
-
-
-                        echo "<tr>";
-                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_formatada"] . "</td>";
-                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
-                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["facilitadores"] . "</td>";
-                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
-                        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
-                        echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
-                       echo "<td class='align-middle' style='display:none;'  onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
-                       echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
-
-            if (isset($row['id'])) {
-                $id_ata = $row['id'];
-                $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-                if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
-                    foreach ($puxaparticipantes as $participante) {
-                        echo $participante . ", <br>";
-                        
-                    }
-                } else {
-                    echo "Nenhum participante";
+        echo "<tr>";
+        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_formatada"] . "</td>";
+        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
+        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["facilitadores"] . "</td>";
+        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
+        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
+        echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
+        echo "<td class='align-middle' style='display:none;'  onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
+        echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
+        if (isset($row['id'])) {
+        $id_ata = $row['id'];
+        $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+        if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
+            foreach ($puxaparticipantes as $participante) {
+                echo $participante . ", <br>";
+                
+            }
+        } else {
+            echo "Nenhum participante";
+        }
+        } else {
+        echo "ID da ata não disponível";
+        }
+        echo "<td class='align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>"; 
+        if (isset($row['id'])) {
+            $id_ata = $row['id'];
+            // Supondo que você tenha uma função chamada buscarDeliberacoesPorIdAta para buscar as deliberações
+            $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+            if (!empty($deliberacoes)) {
+                foreach ($deliberacoes as $deliberacao) {
+                    $deliberador = isset($deliberacao['deliberador']) ? $deliberacao['deliberador'] : 'N/A';
+                    echo "<div>"; // Abre um novo elemento HTML para cada deliberação
+                    echo "
+                    " . $deliberador . ": " . $deliberacao['deliberacoes'] . "<br>";
+                    echo "</div>"; // Fecha o elemento HTML para cada deliberação
+                    echo "<br>"; // Adiciona uma quebra de linha após cada bloco de exibição de deliberação
                 }
             } else {
-                echo "ID da ata não disponível";
+                echo "Nenhuma deliberação";
             }
+        } else {
+            echo "ID da ata não disponível";
+        }
 
-                        echo "<td>
-                                <button class='btn btn-warning' style='color: white; '>
-                                    <a style='color:white; text-decoration:none;' class='text-center align-middle' href='pagatribuida.php? updateid=".$id."'>+</a>
-                                </button>
-                            </td>";
-                        echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='6'>Nenhum registro encontrado.</td></tr>";
-                }
-                ?>
+
+        
+
+
+
+
+        echo "<td>
+                <button class='btn btn-warning' style='color: white; '>
+                    <a style='color:white; text-decoration:none;' class='text-center align-middle' href='pagatribuida.php? updateid=".$id."'>+</a>
+                </button>
+            </td>";
+        echo "</tr>";
+    }
+} else {
+    echo "<tr><td colspan='6'>Nenhum registro encontrado.</td></tr>";
+}
+?>
+
             </tbody>
 
 
@@ -260,12 +297,11 @@ if ($conn->connect_error) {
                                 <div class="col-12">
                                     <label for="form-control"><b>Participantes</b></label>
                                     <ul class="form-control bg-body-secondary  border rounded" id="modal_participantes"></ul>
-                                
-<?php
-
-?>
-
-                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="form-control"><b>Deliberações</b></label>
+                                    <ul class="form-control bg-body-secondary border rounded" id="modal_deliberacoes" style="height: 100px; overflow-y: auto;"></ul>
+                                </div>
                                 </div>
                             </div>
                         </div>
@@ -276,21 +312,20 @@ if ($conn->connect_error) {
     </div>
 
 
-<script>
-   
-
+    <script>
     function abrirModalDetalhes(row) {
         document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
         document.getElementById("modal_objetivo").innerText = row.objetivo;
         document.getElementById("modal_facilitador").innerText = row.facilitador;
         document.getElementById("modal_local").innerText = row.local;
         document.getElementById("modal_tema").innerText = row.tema;
-        document.getElementById("modal_status").innerText = row.status;
-   
-  // Dentro da função abrirModalDetalhes(row)// Obtém os participantes da ata clicada usando o ID da linha
-  var participantes = document.getElementById("participantes" + row.id).innerText;
-    // Exibe os participantes no modal
-    document.getElementById("modal_participantes").innerText = participantes; 
+        document.getElementById("modal_status").innerText = row.status; 
+        var deliberacoes = document.getElementById("deliberacoes" + row.id).innerText;
+        document.getElementById("modal_deliberacoes").innerText = deliberacoes; 
+
+
+        var participantes = document.getElementById("participantes" + row.id).innerText;
+        document.getElementById("modal_participantes").innerText = participantes; 
 
         var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
             backdrop: 'static', // Impede o fechamento clicando fora do modal
@@ -298,8 +333,8 @@ if ($conn->connect_error) {
         });
         myModal.show();
     }
- 
 </script>
+
 
 
 

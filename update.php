@@ -1,12 +1,12 @@
 <?php
 namespace formulario;
 
+require __DIR__.'/vendor/autoload.php';
 include 'conexao2.php';
 include_once ("app/acoesform.php");
 
 $id = $_GET['updateid'];
 $puxarform= new AcoesForm;
-// $facilitadores=$puxarform->selecionarFacilitadores();
 $pegarfa=$puxarform->pegarfacilitador();
 $pegarlocal=$puxarform->pegarlocais();
 
@@ -18,7 +18,7 @@ $row=mysqli_fetch_assoc($result);
     $datasolicitada = $row['data_solicitada'];
     $tema = $row['tema'];
     $objetivo = $row['objetivo'];
-    $password = $row['local'];
+    $local = $row['local'];
     $horainic = $row['hora_inicial'];
     $horaterm = $row['hora_termino'];
 
@@ -36,10 +36,28 @@ $row=mysqli_fetch_assoc($result);
 
       while ($row2 = mysqli_fetch_assoc($result2)) { 
           $facilitadores[] = $row2;
-      }
+      };
 
-      print_r($sql2);
+      $sql3 = "SELECT 
+              del.id_ata,
+              fac.nome_facilitador as deliberador,
+              del.deliberacoes as deliberacoes
+                FROM atareu.deliberacoes as del
+                INNER JOIN atareu.facilitadores as fac
+                    ON fac.id = del.deliberadores
+                WHERE del.id_ata = $id";
 
+                $result3 = mysqli_query($conn, $sql3);
+
+                $deliberacoes_array = array();
+                $deliberador_array = array();
+
+                if ($result3 && mysqli_num_rows($result3) > 0) {
+                    while ($row3 = mysqli_fetch_assoc($result3)) {
+                        $deliberacoes_array[] = $row3['deliberacoes'];
+                        $deliberador_array[] = $row3['deliberador'];
+                    }
+                }
 ?>
 
 <!DOCTYPE html>
@@ -51,12 +69,8 @@ $row=mysqli_fetch_assoc($result);
     <link rel="icon" href="view/img/Logobordab.png" type="image/x-icon">
 
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-
     <link rel="stylesheet" href="view/css/styles.css">
-    
-    <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
-
     <script src="view\js\multi-select-tag.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
@@ -65,6 +79,13 @@ $row=mysqli_fetch_assoc($result);
 
 </head>
 <body>
+    <style>
+
+      body{
+        background-color: rgba(240, 240, 240, 0.41);
+      }
+
+    </style>
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg shadow">
         <div class="container-fluid">
@@ -86,19 +107,19 @@ $row=mysqli_fetch_assoc($result);
       <div class="form-group col-8">
         <div class="row"> 
  
-          <div class="col-md-12 text-center">
-            <h2>Formulário de Solicitação </h2>
+          <div class="col-md-12 text-center p-5">
+            <h2>INFORMAÇÕES - ATA N°<?php echo $id ?></h2>
           </div>
 
           <!---ABA DE DATA---->
           <div class="col-3">
-            <label><b>Data*</b></label>
+            <label><b>Data</b></label>
             <input id="datainicio" class="form-control" placeholder="dd-mm-aaaa" min="2024-04-01" type="date" value=<?php echo $datasolicitada?>>
           </div>
 
           <!---ABA DE HORÁRIO INICIO---->
           <div class="col-3">
-            <label for="nomeMedico"><b>Horário de Início*:</b></label>
+            <label for="nomeMedico"><b>Horário de Início:</b></label>
             <br>
             <input class="form-control" type="time" id="horainicio" name="appt" min="" max="18:00" value=<?php echo $horaterm?>>
           </div>
@@ -116,8 +137,9 @@ $row=mysqli_fetch_assoc($result);
           </div>
 
            <!---ABA DE OBJETIVO - REUNIÃO---->
-          <div class="col-2  mt-4" id="objetivo">
-          <label for="objetivo"> <b>Objetivo:</b> </label>
+          <div class="col-2 mt-4 " id="objetivo">
+            <label for="objetivo pb-2"> <b>Objetivo:</b> </label>
+
             <select class="form-control" name="objetivo" id="objetivo">
                 <option value="Reunião" <?php if ($objetivo == 'Reunião') echo 'selected'; ?>>Reunião</option>
                 <option value="Treinamento" <?php if ($objetivo == 'Treinamento') echo 'selected'; ?>>Treinamento</option>
@@ -130,12 +152,12 @@ $row=mysqli_fetch_assoc($result);
 
 
           <!--- ABA DE SELECIONAR LOCAL ---->
-          <div class="col-3 mt-4">
-          <label for="local"><b>Informe o Local</b></label>
+          <div class="col-4 mt-4 pb-2">
+          <label for="local"><b>Local:</b></label>
           <select class="form-control" name="local" id="local">
               <?php echo empty($pegarlocal) ? '<option selected disabled hidden>Local não informado</option>' : ''; ?>
               <?php foreach ($pegarlocal as $locais) : ?>
-                  <option value="<?php echo $locais['locais']; ?>" <?php echo ($password == $locais['locais']) ? 'selected' : ''; ?>>
+                  <option value="<?php echo $locais['locais']; ?>" <?php echo ($local == $locais['locais']) ? 'selected' : ''; ?>>
                       <?php echo $locais['locais']; ?>
                   </option>
               <?php endforeach; ?>
@@ -143,87 +165,69 @@ $row=mysqli_fetch_assoc($result);
       </div>
 
 
-          <div class="col-7 mt-4"><b>Tema*:</b>
+          <div class="col-6 mt-4 pb-2"><b>Tema*:</b>
             <br>
             <input id="temaprincipal" class="form-control" type="text" value="<?php echo $tema?>"/>
           </div>
 
           <!---ABA DE ADICIONAR FACILITADORES---->
-          <div class="col-4 mt-5"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
-          <div class="col-8 mt-5">
-          <select class="form-control" id="selecionandofacilitador" name="facilitador" multiple value="<?php echo $password; ?>">
-              <optgroup label="Selecione Facilitadores">
-                  <?php foreach ($pegarfa as $facnull) : ?>
-                      <option value="<?php echo $facnull['id']; ?>"
-                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                          <?php echo $facnull['nome_facilitador']; ?>
-                      </option>
-                  <?php endforeach ?>
-              </optgroup>
-          </select>
-  
-          <div class="col-8 form-control">
-          <ul>
-              <?php foreach ($facilitadores as $facilitador): ?>
-                  <li><?php echo $facilitador['facilitadores']; ?></li>
-              <?php endforeach; ?>
-          </ul>
+
+          <div class="col-4 pt-2 pb-2"> 
+            <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
           </div>
-          
+
+          <div class="row">
+            <select class="col-6 form-control" id="selecionandofacilitador" name="facilitador" multiple value="">
+            </div>
+
+                <optgroup label="Selecione Facilitadores">
+                    <?php foreach ($pegarfa as $facnull) : ?>
+                        <option value="<?php echo $facnull['id']; ?>"
+                            data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                            <?php echo $facnull['nome_facilitador']; ?>
+                        </option>
+                    <?php endforeach ?>
+                </optgroup>
+            </select>
+    
+              <div class="col-6 form-control mt-2">
+                <ul>
+                    <?php foreach ($facilitadores as $facilitador): ?>
+                        <li><?php echo $facilitador['facilitadores']; ?></li>
+                    <?php endforeach; ?>
+                </ul>   
+              </div>
+
+          </div>
+
+          <label class="h4 pt-3"><b>DELIBERAÇÕES</b></label>
+          <?php foreach ($deliberacoes_array as $index => $deliberacao) : ?>
+          <div class="row pt-3">
+              <div class="col-4">
+                  <input class="form-control" value="<?php echo $deliberador_array[$index]?>" >
+              </div> 
+              <input class="col form-control" value="<?php echo $deliberacao ?>" >
+          </div>
+          <?php endforeach; ?>
+
           <!--BOTÕES-->
           <div class="row">
-
-            <div class="col"><br>
+            <div class="col p-4"><br>
               <div class="btn-atas">
-              <button id="btnAtualizar" class="btn btn-primary">Atualizar</button>
-              <button id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
-              <button type="submit" class="btn btn-primary" name="submit">Enviar</button>
+                <button id="btnAtualizar" class="btn btn-primary">Atualizar</button>
+                <button type="submit" class="btn btn-primary" name="submit">Enviar</button>
+          </div>
+              <div class="row">
+                <footer class="col main-footer p-4" style="margin-left: 0 !important; margin-top: 1em;">
+                  <strong>Copyright © 2021 <a href="http://www.hospitalriogrande.com.br/" target="_blank">Hospital Rio Grande</a></strong>. Todos os direitos reservados.
+                  <div class="float-right d-none d-sm-inline-block">
+                    <b>Versão</b> 0.0.1
+                </footer>
+</div>
+              </div>
 
-            </div>  
-              <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h1 class="col modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-
-                              <form>
-                                <div class="mb-3">
-
-                                  <label class="col-form-label">Nome completo:</label>
-                                  <input type="text" class="form-control" id="caixanome">
-                                </div>
-
-                                <div class="mb-3">
-                                  <label class="col-form-label">Informe o Email</label>
-                                  <input type="email" class="form-control" id="caixadeemail">
-                                </div>
-
-                                <div class="row">
-                                <label class="col-4 form-label">Matricula: </label>
-                                <label id="labelcargo" class="col-8 form-label">Cargo: </label>
-                                <div class="col-4">
-                                <input type="text" maxlength="4" class="form-control" id="caixamatricula">
-                                </div>  
-
-                                <div class="col-8">
-                                <input type="text" class="col-5 form-control" id="caixacargo">
-                              </div></div>
-                              </form>
-
-                            </div>
-
-                            <div class="modal-footer">
-                              <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <script>
-                      new MultiSelectTag('selecionandofacilitador', {
+                <script>
+                 new MultiSelectTag('selecionandofacilitador', {
                           rounded: true, 
                           shadow: false,     
                           placeholder: 'Search', 
@@ -240,8 +244,8 @@ $row=mysqli_fetch_assoc($result);
                               console.log(facilitadoresSelecionados);
                               console.log(facilitadoresSelecionadosLabel);
                           }
-                      });
-                      </script>
+                });
+                </script>
 
 </body>
 </html>
