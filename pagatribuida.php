@@ -1,7 +1,7 @@
 <?php
 
 namespace formulario;
-
+$id = $_GET['updateid'];
 // include("vendor/autoload.php");
 include_once("app/acoesform.php");
 include("conexao.php");
@@ -9,8 +9,36 @@ include("conexao.php");
 $puxarform = new AcoesForm;
 $facilitadores = $puxarform->selecionarFacilitadores();
 $pegarfa = $puxarform->pegarfacilitador();
-// $testandodeli = $puxarform->selecionarDeliberadores();
+$puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
+$resultados = $puxarform->pegandoTudo();
 $pegarid = $puxarform->puxarId();
+$sql="SELECT * FROM assunto where id=$id ";
+$result = mysqli_query($conn, $sql);
+$row=mysqli_fetch_assoc($result);
+    $datasolicitada = $row['data_solicitada'];
+    $tema = $row['tema'];
+    $objetivo = $row['objetivo'];
+    $password = $row['local'];
+    $horainic = $row['hora_inicial'];
+    $horaterm = $row['hora_termino'];
+
+    $sql2 = "SELECT 
+    fac.nome_facilitador as facilitadores,
+    fac.id as idfacilitadores
+    
+    FROM ata_has_fac as ahf
+    INNER JOIN facilitadores as fac
+      ON fac.id = ahf.facilitadores
+    where ahf.id_ata = $id";
+
+    $result2 = mysqli_query($conn, $sql2);
+    $facilitadores = array(); 
+
+      while ($row2 = mysqli_fetch_assoc($result2)) { 
+          $facilitadores[] = $row2;
+      }
+
+      print_r($sql2);
 
 //funções de encotrar pessoas
 // $pegarfa = $puxarform->puxandoUltimosFacilitadores();
@@ -104,270 +132,150 @@ $result = $conn->query($sql);
           <div class="col-md-12 text-center">         
           </div>    
           
-          
-
-          <?php
-                            // Conexão com o banco de dados (substitua os valores pelos seus próprios)
-                            $servername = "localhost";
-                            $username = "root";
-                            $password = "";
-                            $dbname = "atareu";
-
-                            // Cria a conexão
-                            $conn = new \mysqli($servername, $username, $password, $dbname);
-
-                            // Checa a conexão
-                            if ($conn->connect_error) {
-                                die("Falha na conexão: " . $conn->connect_error);
-                            }
-
-                            // Consulta SQL para selecionar os dados
-                            $sql = "SELECT id, data_registro, tema, data_solicitada, objetivo, hora_inicial, hora_termino, tempo_estimado, local, status FROM assunto ORDER BY data_registro DESC";
-
-                            $result = $conn->query($sql);
-                            ?>
 
 
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
+
           <div class="row">
-          <?php
-              if ($result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $idAta = $row["id"];
-            
-                // Consulta SQL para obter os participantes adicionados nesta ata
-                $sqlParticipantes = "SELECT participantes FROM participantes WHERE id_ata = ?";
-                $stmtParticipantes = $conn->prepare($sqlParticipantes);
-                $stmtParticipantes->bind_param("s", $idAta);
-                $stmtParticipantes->execute();
-                $resultParticipantes = $stmtParticipantes->get_result();
-            
-                if ($resultParticipantes->num_rows > 0) {
-                    // Iterar sobre os participantes adicionados
-                    while ($rowParticipantes = $resultParticipantes->fetch_assoc()) {
-                        $idFacilitador = $rowParticipantes['participantes'];
-            
-                        // Consulta SQL para buscar o nome do facilitador com base no ID
-                        $sqlNomeFacilitador = "SELECT nome_facilitador FROM facilitadores WHERE id = ?";
-                        $stmtNomeFacilitador = $conn->prepare($sqlNomeFacilitador);
-                        $stmtNomeFacilitador->bind_param("s", $idFacilitador);
-                        $stmtNomeFacilitador->execute();
-                        $resultNomeFacilitador = $stmtNomeFacilitador->get_result();
-            
-                        if ($resultNomeFacilitador->num_rows > 0) {
-                           
-                            // Iterar sobre os resultados para obter todos os nomes de facilitadores
-                            while ($rowNomeFacilitador = $resultNomeFacilitador->fetch_assoc()) {
-                                $nomeFacilitador = $rowNomeFacilitador['nome_facilitador'];
-                                
-                            }
-                        } else {
-                            echo " $idAta <br>";
+          <div class="col-6">
+              <label for="form-control"><b>Data</b></label>
+            <div class="form-control bg-body-secondary">
+              <?php
+                if (isset($_GET['updateid'])) {
+                  $id_ata = $_GET['updateid'];
+                  $atas = $puxarform->pegandoTudo();
+                  $ata_encontrada = null;
+                  foreach ($atas as $ata) {
+                    if ($ata['id'] == $id_ata) {
+                      $ata_encontrada = $ata;
+                        break;
+                    }
+                  }
+                if ($ata_encontrada) {
+                  echo $ata_encontrada['data_solicitada_formatada'];
+                } else {
+                  echo "Nenhuma ATA encontrada com o ID fornecido.";
+                }
+                } else {
+                  echo "Nenhum ID de ATA fornecido.";
+                }
+                ?>
+              </div>
+              </div>
+              <div class="col-6">
+                  <label for="form-control"><b>Objetivo</b></label>
+                  <ul class="form-control bg-body-secondary"><?php echo $row['objetivo']; ?></ul>     
+              </div>
+          <div class="col-6">
+            <label for="form-control"><b>Facilitadores</b></label>
+            <div class="form-control bg-body-secondary">
+                <?php
+                if (isset($_GET['updateid'])) {
+                    $id_ata = $_GET['updateid'];
+                    $atas = $puxarform->pegandoTudo();
+                    $ata_encontrada = null;
+                    foreach ($atas as $ata) {
+                        if ($ata['id'] == $id_ata) {
+                            $ata_encontrada = $ata;
+                            break;
                         }
-            
-                        $stmtNomeFacilitador->close();
+                    }
+
+                    if ($ata_encontrada) {
+                        echo $ata_encontrada['facilitador'];
+                    } else {
+                        echo "Nenhuma ATA encontrada com o ID fornecido.";
                     }
                 } else {
-                    echo "Nenhum participante adicionado.";
+                    echo "Nenhum ID de ATA fornecido.";
                 }
-            
-                $stmtParticipantes->close();
-            } else {
-                echo "Nenhuma ata encontrada.";
-            }
-            
-                      
-              ?>
-                  <br>
-                  <div class="col-4">
-                      <label><b>Solicitação</b></label>
-                      <ul class="form-control bg-body-secondary"><?php echo date("d/m/Y", strtotime($row["data_solicitada"])); ?></ul>
-                  </div>
-                  <div class="col-4">
-                      <label for="nomeMedico"><b>Objetivo:</b></label>
-                      <br>
-                      <ul class="form-control bg-body-secondary"><?php echo $row["objetivo"]; ?></ul>
-                  </div>
-                  <div class="col-4">
-    <label for="form-control"><b>Facilitadores</b></label>
-    <ul class="form-control bg-body-secondary">
-        <?php
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $idAta = $row["id"];
-
-            // Consulta SQL para obter os participantes adicionados nesta ata
-            $sqlNomeFacilitador = "SELECT nome_facilitador FROM facilitadores WHERE id = ? ORDER BY id DESC";
-
-            $stmtParticipantes = $conn->prepare($sqlParticipantes);
-            $stmtParticipantes->bind_param("s", $idAta);
-            $stmtParticipantes->execute();
-            $resultParticipantes = $stmtParticipantes->get_result();
-
-            $facilitadores = []; // Array para armazenar os nomes dos facilitadores
-
-            if ($resultParticipantes->num_rows > 0) {
-                // Iterar sobre os participantes adicionados
-                while ($rowParticipantes = $resultParticipantes->fetch_assoc()) {
-                    $idFacilitador = $rowParticipantes['participantes'];
-
-                    // Consulta SQL para buscar o nome do facilitador com base no ID
-                    $sqlNomeFacilitador = "SELECT nome_facilitador FROM facilitadores WHERE id = ? ORDER BY id DESC";
-
-                    $stmtNomeFacilitador = $conn->prepare($sqlNomeFacilitador);
-                    $stmtNomeFacilitador->bind_param("s", $idFacilitador);
-                    $stmtNomeFacilitador->execute();
-                    $resultNomeFacilitador = $stmtNomeFacilitador->get_result();
-
-                    if ($resultNomeFacilitador->num_rows > 0) {
-                        // Iterar sobre os resultados para obter todos os nomes de facilitadores
-                        while ($rowNomeFacilitador = $resultNomeFacilitador->fetch_assoc()) {
-                            $nomeFacilitador = $rowNomeFacilitador['nome_facilitador'];
-                            $facilitadores[] = $nomeFacilitador; // Adiciona o facilitador ao array
-                        }
-                    }
-
-                    $stmtNomeFacilitador->close();
-                }
-
-                // Imprime os facilitadores formatados
-                echo implode(", ", $facilitadores);
-            } else {
-                echo "Nenhum facilitador encontrado para a ATA com ID $idAta <br>";
-            }
-
-            $stmtParticipantes->close();
-        } else {
-            echo "Nenhuma ATA encontrada.";
-        }
-        ?>
-    </ul>
-</div>
-
-
-
-                  <div class="col-4">
-                      <label for="form-control"> <b>Local</b> </label>
-                      <ul class="form-control bg-body-secondary"><?php echo $row["local"]; ?></ul>
-                  </div>
-                  <div class="col-4">
-                      <label for="form-control"><b>Tema</b></label>
-                      <ul class="form-control bg-body-secondary"><?php echo $row["tema"]; ?></ul>
-                  </div>
-                  <div class="col-4">
-                      <label for="form-control"> <b>Status</b> </label>
-                      <ul class="form-control bg-body-secondary"><?php echo $row['status']; ?></ul>
-                  </div>
-
-                  <?php
-                      if ($result->num_rows > 0) {
-                          $row = $result->fetch_assoc();
-                          $ultimoID = $row["id"];
-
-                          // Consulta SQL para obter os facilitadores associados a esta ata
-                          $sqlFacilitadores = "SELECT facilitadores FROM ata_has_fac WHERE id_ata = ?";
-                          $stmtFacilitadores = $conn->prepare($sqlFacilitadores);
-                          $stmtFacilitadores->bind_param("s", $ultimoID);
-                          $stmtFacilitadores->execute();
-                          $resultFacilitadores = $stmtFacilitadores->get_result();
-
-                          if ($resultFacilitadores->num_rows > 0) {
-                              // Iterar sobre os facilitadores associados
-                              while ($rowFacilitadores = $resultFacilitadores->fetch_assoc()) {
-                                  $idFacilitador = $rowFacilitadores['facilitadores'];
-
-                                  // Consulta SQL para buscar o nome do facilitador com base no ID
-                                  $sqlNomeFacilitador = "SELECT nome_facilitador FROM facilitadores WHERE id = ?";
-                                  $stmtNomeFacilitador = $conn->prepare($sqlNomeFacilitador);
-                                  $stmtNomeFacilitador->bind_param("s", $idFacilitador);
-                                  $stmtNomeFacilitador->execute();
-                                  $resultNomeFacilitador = $stmtNomeFacilitador->get_result();
-
-                                  if ($resultNomeFacilitador->num_rows > 0) {
-                                      $rowNomeFacilitador = $resultNomeFacilitador->fetch_assoc();
-                                      $nomeFacilitador = $rowNomeFacilitador['nome_facilitador'];
-
-                                    
-                                  } else {
-                                      echo "Nome do facilitador não encontrado para o facilitador com ID $idFacilitador <br>";
-                                  }
-
-                              }
-                          } else {
-                              echo "Nenhum facilitador associado.";
-                          }
-
-                          $stmtFacilitadores->close();
-                      } else {
-                          echo "Nenhuma ata encontrada.";
-                      }
-
-                    ?>
-                  <div class="col-12">
-                      <label for="form-control"><b>Participantes</b></label>
-                      <ul class="form-control bg-body-secondary"><?php echo "$nomeFacilitador <br>"; ?></ul>
-                          
-                      </div>
-                  </div>
-
-
-              <?php
-               
-              $conn->close();
-              ?>
-
-                </div>
-
-
+                ?>
+            </div>
+        </div>
+        <div class="col-6">
+            <label for="form-control"><b>Tema</b></label>
+            <ul class="form-control bg-body-secondary"><?php echo $row["tema"]; ?></ul>
+        </div>
+        <div class="col-6">
+            <label for="form-control"> <b>Local</b> </label>
+            <ul class="form-control bg-body-secondary"><?php echo $row["local"]; ?></ul>
+        </div>
+        <div class="col-6">
+            <label for="form-control"> <b>Status</b> </label>
+            <ul class="form-control bg-body-secondary"><?php echo $row['status']; ?></ul>
+        </div>
+       
+  </div>
+      </div>
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
-<div class="accordion" id="accordionPanelsStayOpenExample">
-
+<br>
+<div class="accordion">
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
-    <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background-color: #1c8f69;">
-
-    <i class="fas"></i>
-    <h5>Participantes Adicionados </h5>
-
-    </button>
-  </h2>
-
-<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
-<div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
-    <div class="col-md-12 text-center">         
+    <div class="accordion-button shadow-sm text-white" style="background-color: #1c8f69;;">
+    <i class="fa-solid fa-circle-info"></i>
+    <h5>Participantes</h5>
+</div>
+  </h2>                                                                                                                                       
+        <main class="container-fluid ">
+        <div class="row">
+          <br>
+        <div class="col">
+          <label for="form-control"><b>Adicione   participantes</b></label>
+          <br>
           
-    </div>  
-    <!---- PRIMEIRA LINHA DO REGISTRO ---->
-    <div class="row">
-    <div class="col">
-        <div>
-            <?php 
-            // Decodifica a string JSON para um array
-            $participantesArray = json_decode($pegarfa[0]['participantes']);
 
-            foreach ($participantesArray as $participanteNome) {
 
-                $participanteNome = trim($participanteNome, '" ');
-            ?>
-                <div style = "margin: 6px" class='form-control bg-body-secondary border rounded'>
-                    <li><b><?php echo $participanteNome; ?></b></li>
-                </div>
-            <?php
-            }
-            ?>
+        <form id="addForm">
+              <div class="col-12 form-group ">
+                
+                  
+                
+
+                
+                    <div class="col" > 
+                    <select class="col-12 form-control" id="participantesadicionados" name="facilitador"  >
+                      <optgroup label="Selecione Facilitadores">
+                          <?php foreach ($pegarfa as $facnull) : ?>
+                              <option value="<?php echo $facnull['id']; ?>"
+                                  data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                                  <?php echo $facnull['nome_facilitador']; ?>
+                              </option> <?php endforeach ?>
+                       </optgroup>
+                    </select>
         </div>
-    </div>
-</div>
+        </div> 
+             
+          </form>
+           
+        <?php
+        if (isset($_GET['updateid'])) {
+            $id_ata = $_GET['updateid'];
+            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+            if (!empty($participantes)) {
+                echo implode(', ', $participantes);
+            } else {
+                echo "Nenhum participante encontrado para esta ATA.";
+            }
+        } else {
+            echo "Nenhum ID de ATA fornecido.";
+        }
+        ?> <br>     
+        
+        <?php      
+        $conn->close();
+        ?>
+      </div>  
+           
+      
+<br>
+           
+  
+        </div>
+      </main>
+      </div>
 
-
-
-
-
-</div>
-</div>
-</div>
-</div>
-  </div>
+            </div>
 
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 <br>
@@ -454,11 +362,18 @@ $result = $conn->query($sql);
     </div>
 
         <br>
-        <!-- <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
-        <div class="d-flex justify-content-center">
-            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Atualizar a ata</button>
-        </div>
-
+        <div class="col">
+                  
+              <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
+                Atualizar a ata
+              </button>
+             
+              <script>
+        function abrirHistorico() {
+            window.location.href = 'paghistorico.php';
+        }
+    </script>
+</div>
     </form>
           
             </div>          
@@ -488,7 +403,9 @@ $result = $conn->query($sql);
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
     <script src="app/deliberacoes.js"></script>
+    <script src="view\js\multi-select-tag.js"></script>
 
+<script src="app/participantes.js"></script>
 </body>
 
 </html>
