@@ -29,8 +29,6 @@ if ($conn->connect_error) {
     die("Falha na conexão: " . $conn->connect_error);
 }   
 
-
-
 ?>
 
 <!DOCTYPE html>
@@ -54,8 +52,6 @@ if ($conn->connect_error) {
 </head>
 
 <body>
-
-    <!--BARRA DE NAVEGAÇÃO-->
     <header>
         <nav class="navbar shadow">
             <div id="container" style="background-color: #001f3f;">
@@ -67,9 +63,6 @@ if ($conn->connect_error) {
             </div>
         </nav>
     </header>
-
-
-    <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
     <div class="box box-primary">
         <main class="container d-flex justify-content-center align-items-center" class="text-center">
             <div class="form-group col-12">
@@ -123,11 +116,9 @@ if ($conn->connect_error) {
                                     </div>
                                 </div>
                                 <br>
-    </tbody>   </table>
-
-
-
-    <table id="myTable" class="table table-striped">
+                        </tbody> 
+                    </table>
+<table id="myTable" class="table table-striped">
     <thead>
     <tr>
         <th class="text-center">Data</th>
@@ -138,121 +129,111 @@ if ($conn->connect_error) {
         <th class="text-center">Status</th>
         <th class="text-center">Ação</th>
     </tr>
-</thead>
+    </thead>
+    <tbody>
+        <?php
+        $sql = "SELECT 
+                    assunto.id, 
+                    DATE_FORMAT(assunto.data_solicitada, '%d/%m/%Y') AS data_formatada, 
+                    assunto.objetivo, 
+                    assunto.tema, 
+                    assunto.local, 
+                    assunto.status, 
+                    GROUP_CONCAT(facilitadores.nome_facilitador SEPARATOR ', ') AS facilitadores,
+                    textoprinc.texto_princ AS deliberações
+                FROM 
+                    assunto
+                LEFT JOIN 
+                    ata_has_fac ON assunto.id = ata_has_fac.id_ata
+                LEFT JOIN 
+                    facilitadores ON ata_has_fac.facilitadores = facilitadores.id
+                LEFT JOIN
+                    textoprinc ON assunto.id = textoprinc.id_ata
+                GROUP BY 
+                    assunto.id
+                ORDER BY 
+                    assunto.id DESC";
 
-                <tbody>
-                <?php
-$sql = "SELECT 
-            assunto.id, 
-            DATE_FORMAT(assunto.data_solicitada, '%d/%m/%Y') AS data_formatada, 
-            assunto.objetivo, 
-            assunto.tema, 
-            assunto.local, 
-            assunto.status, 
-            GROUP_CONCAT(facilitadores.nome_facilitador SEPARATOR ', ') AS facilitadores,
-            textoprinc.texto_princ AS deliberações
-        FROM 
-            assunto
-        LEFT JOIN 
-            ata_has_fac ON assunto.id = ata_has_fac.id_ata
-        LEFT JOIN 
-            facilitadores ON ata_has_fac.facilitadores = facilitadores.id
-        LEFT JOIN
-            textoprinc ON assunto.id = textoprinc.id_ata
-        GROUP BY 
-            assunto.id
-        ORDER BY 
-            assunto.id DESC";
+        $result = mysqli_query($conn, $sql);
 
-$result = mysqli_query($conn, $sql);
+        if ($result && mysqli_num_rows($result) > 0) {               
+            while($row = mysqli_fetch_assoc($result)) {
+                $id =  $row['id'];
+                $data_formatada = $row['data_formatada'];
+                $objetivo = $row['objetivo'];
+                $tema = $row['tema'];
+                $local = $row['local'];
+                $status = $row['status'];
+                $facilitadores = $row['facilitadores'];
 
-if ($result && mysqli_num_rows($result) > 0) {               
-    while($row = mysqli_fetch_assoc($result)) {
-        $id =  $row['id'];
-        $data_formatada = $row['data_formatada'];
-        $objetivo = $row['objetivo'];
-        $tema = $row['tema'];
-        $local = $row['local'];
-        $status = $row['status'];
-        $facilitadores = $row['facilitadores'];
-
-        echo "<tr>";
-        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_formatada"] . "</td>";
-        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
-        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["facilitadores"] . "</td>";
-        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
-        echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
-        echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
-        echo "<td class='align-middle' style='display:none;'  onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
-        echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
-        if (isset($row['id'])) {
-        $id_ata = $row['id'];
-        $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-        if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
-            foreach ($puxaparticipantes as $participante) {
-                echo $participante . ", <br>";
-                
-            }
-        } else {
-            echo "Nenhum participante";
-        }
-        } else {
-        echo "ID da ata não disponível";
-        }
-        echo "<td class='align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>"; 
-        if (isset($row['id'])) {
-            $id_ata = $row['id'];
-            // Supondo que você tenha uma função chamada buscarDeliberacoesPorIdAta para buscar as deliberações
-            $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
-            if (!empty($deliberacoes)) {
-                foreach ($deliberacoes as $deliberacao) {
-                    $deliberador = isset($deliberacao['deliberador']) ? $deliberacao['deliberador'] : 'N/A';
-                    echo "<div>"; // Abre um novo elemento HTML para cada deliberação
-                    echo "
-                    " . $deliberador . ": " . $deliberacao['deliberacoes'] . "<br>";
-                    echo "</div>"; // Fecha o elemento HTML para cada deliberação
-                    echo "<br>"; // Adiciona uma quebra de linha após cada bloco de exibição de deliberação
+                echo "<tr>";
+                echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_formatada"] . "</td>";
+                echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
+                echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["facilitadores"] . "</td>";
+                echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
+                echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
+                echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
+                echo "<td class='align-middle' style='display:none;'  onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
+                echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
+                if (isset($row['id'])) {
+                $id_ata = $row['id'];
+                $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+                if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
+                    foreach ($puxaparticipantes as $participante) {
+                        echo $participante . ", <br>";
+                        
+                    }
+                } else {
+                    echo "Nenhum participante";
                 }
-            } else {
-                echo "Nenhuma deliberação";
-            }
-        } else {
-            echo "ID da ata não disponível";
-        }
-
-
-        
-
-
-
-
-        echo "<td>
-                <button class='btn btn-warning' style='color: white; '>
-                    <a style='color:white; text-decoration:none;' class='text-center align-middle' href='pagatribuida.php? updateid=".$id."'>+</a>
-                </button>
-            </td>";
-        echo "</tr>";
-    }
-} else {
-    echo "<tr><td colspan='6'>Nenhum registro encontrado.</td></tr>";
-}
-?>
-
-            </tbody>
-
-
-
-
-
+                } else {
+                echo "ID da ata não disponível";
+                }
+                echo "<td class='align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>"; 
+                if (isset($row['id'])) {
+                    $id_ata = $row['id'];
+                    $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+                    if (!empty($deliberacoes)) {
+                    $deliberacoes_agrupadas = [];
+                    foreach ($deliberacoes as $deliberacao) {
+                        $deliberador = isset($deliberacao['deliberador']) ? $deliberacao['deliberador'] : 'N/A';
+                        $conteudo = $deliberacao['deliberacoes'];
+                        $deliberacoes_agrupadas[$conteudo][] = $deliberador;
+                    }
+                    foreach ($deliberacoes_agrupadas as $conteudo => $deliberadores) {
+                        echo "<div>"; 
+                        echo "<div>";
+                        echo implode(", ", $deliberadores);
+                        echo "</div>";
+                        echo "<div>";
+                        echo $conteudo;
+                        echo "</div>"; 
+                        echo "<br>"; 
+                    }
+                    
+                    } else {
+                        echo "Nenhuma deliberação";
+                    }
+                } else {
+                    echo "ID da ata não disponível";
+                }
+                echo "<td>
+                        <button class='btn btn-warning' style='color: white; '>
+                            <a style='color:white; text-decoration:none;' class='text-center align-middle' href='pagatribuida.php? updateid=".$id."'>+</a>
+                        </button>
+                    </td>";
+                echo "</tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='6'>Nenhum registro encontrado.</td></tr>";
+                }
+                ?>
+    </tbody>
 </table>
-
-
-
-                    </div>
-                </div>
+        </div>
+    </div>
 </div>
-                <!-- Modal -->
-                <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -292,8 +273,6 @@ if ($result && mysqli_num_rows($result) > 0) {
                                     <label><b>Status:</b></label>
                                     <ul class="form-control bg-body-secondary border rounded" id="modal_status"></ul>
                                 </div>
-                               
-                                <!-- Nova div para deliberações -->
                                 <div class="col-12">
                                     <label for="form-control"><b>Participantes</b></label>
                                     <ul class="form-control bg-body-secondary  border rounded" id="modal_participantes"></ul>
@@ -311,7 +290,6 @@ if ($result && mysqli_num_rows($result) > 0) {
         </div>
     </div>
 
-
     <script>
     function abrirModalDetalhes(row) {
         document.getElementById("modal_solicitacao").innerText = row.data_solicitada;
@@ -328,52 +306,33 @@ if ($result && mysqli_num_rows($result) > 0) {
         document.getElementById("modal_participantes").innerText = participantes; 
 
         var myModal = new bootstrap.Modal(document.getElementById('myModal'), {
-            backdrop: 'static', // Impede o fechamento clicando fora do modal
-            keyboard: false // Impede o fechamento pressionando a tecla Esc
+            backdrop: 'static',
+            keyboard: false 
         });
         myModal.show();
-    }
-</script>
-
-
-
+        }
+    </script>
 
     <script>
-
-
-        // Função para filtrar a tabela com base no input de filtro
         function filtrarTabela() {
             var input, filtro, tabela, linhas, celula, texto;
-
-            // Obter o valor digitado no campo de entrada
             input = document.getElementById("temaprincipal");
             filtro = input.value.toUpperCase();
-
-            // Obter a tabela e suas linhas
             tabela = document.getElementById("myTable");
             linhas = tabela.getElementsByTagName("tr");
 
-            // Iterar sobre todas as linhas da tabela
             for (var i = 0; i < linhas.length; i++) {
-                var encontrou = false; // Flag para indicar se o filtro foi encontrado em alguma célula da linha
-
+                var encontrou = false; 
                 celula = linhas[i].getElementsByTagName("td");
-
-                // Iterar sobre todas as células da linha atual
                 for (var j = 0; j < celula.length; j++) {
                     if (celula[j]) {
-                        // Converta o texto da célula para maiúsculas
                         texto = celula[j].innerText.toUpperCase() || celula[j].textContent.toUpperCase();
-
-                        // Se o texto da célula contiver o filtro, defina a flag como verdadeira
                         if (texto.indexOf(filtro) > -1) {
                             encontrou = true;
-                            break; // Não é necessário continuar verificando outras células se o filtro foi encontrado
+                            break;
                         }
                     }
                 }
-
-                // Exibir ou ocultar a linha com base na flag encontrou
                 if (encontrou) {
                     linhas[i].style.display = "";
                 } else {
@@ -381,80 +340,53 @@ if ($result && mysqli_num_rows($result) > 0) {
                 }
             }
         }
+        function filtrarRegistros(event) {
+            event.preventDefault();
+            var tabela, linhas;
+            tabela = document.getElementById("myTable");
+            linhas = tabela.getElementsByTagName("tr");
 
+            var selectedObjective = document.getElementById("objetivoSelect").value.toUpperCase();
+            var selectedSolicitacao = document.getElementById("solicitacaoInput").value; 
+            var selectedStatus = document.getElementById("statusSelect").value.toUpperCase();
 
-      // Função para filtrar registros com base nos critérios selecionados
-function filtrarRegistros(event) {
-    event.preventDefault();
-    var tabela, linhas;
-    tabela = document.getElementById("myTable");
-    linhas = tabela.getElementsByTagName("tr");
-
-    // Obter os valores selecionados nos selects
-    var selectedObjective = document.getElementById("objetivoSelect").value.toUpperCase();
-    var selectedSolicitacao = document.getElementById("solicitacaoInput").value; // Removemos a conversão para maiúsculas
-    var selectedStatus = document.getElementById("statusSelect").value.toUpperCase();
-
-    // Iterar sobre todas as linhas da tabela e verificar se atendem aos critérios de filtro
-    for (var i = 1; i < linhas.length; i++) {
-        var atendeFiltro = true; // Define se a linha atende aos critérios de filtro
-        var celulas = linhas[i].getElementsByTagName("td");
-        var dataCelula = celulas[0].textContent.trim();
-
-        // Verificar se uma data foi selecionada para filtrar
-        if (selectedSolicitacao) {
-            // Converter a data da célula para o mesmo formato da data selecionada
-            var partesDataCelula = dataCelula.split("/");
-            var dataFormatadaCelula = partesDataCelula[2] + "-" + partesDataCelula[1] + "-" + partesDataCelula[0];
-            
-            // Comparar a data da célula com a data selecionada
-            if (dataFormatadaCelula !== selectedSolicitacao) {
-                atendeFiltro = false;
+            for (var i = 1; i < linhas.length; i++) {
+                var atendeFiltro = true; 
+                var celulas = linhas[i].getElementsByTagName("td");
+                var dataCelula = celulas[0].textContent.trim();
+                if (selectedSolicitacao) {
+                    var partesDataCelula = dataCelula.split("/");
+                    var dataFormatadaCelula = partesDataCelula[2] + "-" + partesDataCelula[1] + "-" + partesDataCelula[0];
+                    
+                    if (dataFormatadaCelula !== selectedSolicitacao) {
+                        atendeFiltro = false;
+                    }
+                }
+                if (selectedObjective && celulas[1].innerText.toUpperCase() !== selectedObjective) {
+                    atendeFiltro = false;
+                }
+                if (selectedStatus && celulas[5].innerText.toUpperCase() !== selectedStatus) {
+                    atendeFiltro = false;
+                }
+                if (atendeFiltro) {
+                    linhas[i].style.display = "";
+                } else {
+                    linhas[i].style.display = "none";
+                }
             }
+            window.scrollTo(0, 0);
         }
-
-        // Filtrar por Objetivo
-        if (selectedObjective && celulas[1].innerText.toUpperCase() !== selectedObjective) {
-            atendeFiltro = false;
-        }
-
-        // Filtrar por Status
-        if (selectedStatus && celulas[5].innerText.toUpperCase() !== selectedStatus) {
-            atendeFiltro = false;
-        }
-
-        // Se a linha atender aos critérios de filtro, exibi-la; caso contrário, ocultá-la
-        if (atendeFiltro) {
-            linhas[i].style.display = "";
-        } else {
-            linhas[i].style.display = "none";
-        }
-    }
-
-    // Rola a página para o topo após aplicar o filtro
-    window.scrollTo(0, 0);
-}
-
-
-
-
-
-        // Adiciona um evento de clique a todas as células da tabela
         window.onload = function() {
             var table = document.getElementById("myTable");
             var linhas = table.getElementsByTagName("tr");
             for (var i = 0; i < linhas.length; i++) {
                 linhas[i].addEventListener("click", function() {
-                    // Obter os dados da linha clicada
                     var data_solicitada = this.cells[0].innerText;
                     var objetivo = this.cells[1].innerText;
                     var facilitador = this.cells[2].innerText;
                     var tema = this.cells[3].innerText;
                     var local = this.cells[4].innerText;
                     var status = this.cells[5].innerText;
-
-
-                    // Criar um objeto com os dados da linha clicada
                     var rowData = {
                         data_solicitada: data_solicitada,
                         objetivo: objetivo,
@@ -463,21 +395,13 @@ function filtrarRegistros(event) {
                         tema: tema,
                         status: status
                     };
-
-                    // Chamar a função para abrir o modal e passar os dados da linha clicada como argumento
                     abrirModalDetalhes(rowData);
                 });
             }
         };
     </script>
-
     <script src="view/js/bootstrap.js"></script>
     <script src="app/gravar.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
-      integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </body>
-
 </html>

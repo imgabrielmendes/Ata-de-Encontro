@@ -204,27 +204,7 @@ $result = $conn->query($sql);
             <label for="form-control"> <b>Status</b> </label>
             <ul class="form-control bg-body-secondary"><?php echo $row['status']; ?></ul>
         </div>
-        <div class="col-12">
-          <label for="form-control"><b>Participantes</b></label>
-        <div class="form-control bg-body-secondary">
-        <?php
-        if (isset($_GET['updateid'])) {
-            $id_ata = $_GET['updateid'];
-            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-            if (!empty($participantes)) {
-                echo implode(', ', $participantes);
-            } else {
-                echo "Nenhum participante encontrado para esta ATA.";
-            }
-        } else {
-            echo "Nenhum ID de ATA fornecido.";
-        }
-        ?>
-        </div>
-      </div>            
-      <?php      
-        $conn->close();
-        ?>
+       
   </div>
       </div>
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
@@ -239,16 +219,22 @@ $result = $conn->query($sql);
   </h2>                                                                                                                                       
         <main class="container-fluid ">
         <div class="row">
-          <form id="addForm">
-              <div class="form-group ">
-                  <br>
-                  <div id="items" class="list-group">                    
-              </div>
-                  <label for="item"><b>Informe os participantes<b></label>
+          <br>
+        <div class="col">
+          <label for="form-control"><b>Adicione   participantes</b></label>
+          <br>
+          
 
-                  <div class="row">
-                    <div class="col"> 
-                    <select class="col form-control" id="participantesadicionados" name="facilitador" multiple>
+
+        <form id="addForm">
+              <div class="col-12 form-group ">
+                
+                  
+                
+
+                
+                    <div class="col" > 
+                    <select class="col-12 form-control" id="participantesadicionados" name="facilitador"  >
                       <optgroup label="Selecione Facilitadores">
                           <?php foreach ($pegarfa as $facnull) : ?>
                               <option value="<?php echo $facnull['id']; ?>"
@@ -257,44 +243,40 @@ $result = $conn->query($sql);
                               </option> <?php endforeach ?>
                        </optgroup>
                     </select>
-        </div>         
+        </div>
+        </div> 
+             
           </form>
-
+           
+        <?php
+        if (isset($_GET['updateid'])) {
+            $id_ata = $_GET['updateid'];
+            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+            if (!empty($participantes)) {
+                echo implode(', ', $participantes);
+            } else {
+                echo "Nenhum participante encontrado para esta ATA.";
+            }
+        } else {
+            echo "Nenhum ID de ATA fornecido.";
+        }
+        ?> <br>     
+        
+        <?php      
+        $conn->close();
+        ?>
+      </div>  
+           
+      
 <br>
            
-      <!--BOTÕES-->
-      <div class="container d-flex justify-content-center">
-        <div class="row">
-
-          <div class="col">
-              <button id="botaocontinuarata" type="button" class="btn btn-success" data-bs-toggle="modal">
-                Continuar ata
-              </button>
-              <script>
-                function abrirDeliberacoes(){
-                  window.location.href = 'pagdeliberacoes.php';
-                }
-              </script>
-
+  
         </div>
-        <div class="col">
-                  
-              <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
-                Atualizar a ata
-              </button>
-            </div>
-            </div>
-              <script>
-        function abrirHistorico() {
-            window.location.href = 'paghistorico.php';
-        }
-    </script>
-            </div>
-        </div>
+      </main>
       </div>
 
             </div>
-</main>
+
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 <br>
 <div class="accordion">
@@ -380,11 +362,18 @@ $result = $conn->query($sql);
     </div>
 
         <br>
-        <!-- <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
-        <div class="d-flex justify-content-center">
-            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Atualizar a ata</button>
-        </div>
-
+        <div class="col">
+                  
+              <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
+                Atualizar a ata
+              </button>
+             
+              <script>
+        function abrirHistorico() {
+            window.location.href = 'paghistorico.php';
+        }
+    </script>
+</div>
     </form>
           
             </div>          
@@ -414,7 +403,9 @@ $result = $conn->query($sql);
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
     <script src="app/deliberacoes.js"></script>
+    <script src="view\js\multi-select-tag.js"></script>
 
+<script src="app/participantes.js"></script>
 </body>
 
 </html>
