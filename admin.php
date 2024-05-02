@@ -103,7 +103,7 @@ include "conexao.php";
                         
                         echo "<td>
                                 <button class='btn btn-success'>
-                                    <a class='text-light' href='impressao.php? updateid=".$id."'>Imprimir</a>
+                                    <a class='text-light' href='arquivopdf.php? updateid=".$id."'>Imprimir</a>
                                 </button>
                             </td>";
                         echo "</tr>";
