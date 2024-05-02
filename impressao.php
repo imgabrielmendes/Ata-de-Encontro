@@ -1,31 +1,7 @@
 <?php
 namespace formulario;
-
 include_once ("app/acoesform.php");
 include ("conexao.php");
-
-
-require __DIR__.'/vendor/autoload.php';
-
-use Dompdf\Dompdf;
-use Dompdf\Options;
-
-$options = new Options();
-$options->setChroot(__DIR__.'/impressao2.php');
-
-$dompdf = new Dompdf();
-
-ob_start();
-include 'impressao2.php'; 
-$html = ob_get_clean();
-
-$dompdf->loadHtml($html);
-
-$dompdf->render();
-
-header('Content-type: application/pdf');
-
-echo $dompdf->output();
 
 $id = $_GET['updateid'];
 

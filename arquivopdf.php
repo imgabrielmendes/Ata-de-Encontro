@@ -1,6 +1,9 @@
 <?php
 namespace formulario;
 include_once ("app/acoesform.php");
+$id = $_GET['updateid'];
+
+
 // include ("conexao.php");
 
 // $id = $_GET['updateid'];
