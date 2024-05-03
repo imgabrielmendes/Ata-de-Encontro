@@ -1,53 +1,9 @@
 <?php
-
 namespace formulario;
-$id = $_GET['updateid'];
-// include("vendor/autoload.php");
 include_once("app/acoesform.php");
 include("conexao.php");
-
 $puxarform = new AcoesForm;
-$facilitadores = $puxarform->selecionarFacilitadores();
-$pegarfa = $puxarform->pegarfacilitador();
-$puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
-$resultados = $puxarform->pegandoTudo();
-$pegarid = $puxarform->puxarId();
-$sql="SELECT * FROM assunto where id=$id ";
-$result = mysqli_query($conn, $sql);
-$row=mysqli_fetch_assoc($result);
-    $datasolicitada = $row['data_solicitada'];
-    $tema = $row['tema'];
-    $objetivo = $row['objetivo'];
-    $password = $row['local'];
-    $horainic = $row['hora_inicial'];
-    $horaterm = $row['hora_termino'];
-
-    $sql2 = "SELECT 
-    fac.nome_facilitador as facilitadores,
-    fac.id as idfacilitadores
-    
-    FROM ata_has_fac as ahf
-    INNER JOIN facilitadores as fac
-      ON fac.id = ahf.facilitadores
-    where ahf.id_ata = $id";
-
-    $result2 = mysqli_query($conn, $sql2);
-    $facilitadores = array(); 
-
-      while ($row2 = mysqli_fetch_assoc($result2)) { 
-          $facilitadores[] = $row2;
-      }
-
-      print_r($sql2);
-
-//funções de encotrar pessoas
-// $pegarfa = $puxarform->puxandoUltimosFacilitadores();
-$participantesArray = $pegarfa;
-// $pegarrespons = $puxarform->ultimosResponsaveis();
-
-$pegarde=$puxarform->pegarfacilitador();
-// ARRUMAR UM JEIT
-var_dump($pegarid);
+$id = $_GET['updateid'];
 
 //Conexão com o banco de dados (substitua os valores pelos seus próprios)
 $servername = "localhost";
@@ -68,6 +24,47 @@ $sql = "SELECT id, data_registro, tema, data_solicitada, objetivo, hora_inicial,
 $result = $conn->query($sql);
 
 
+
+
+$facilitadores = $puxarform->selecionarFacilitadores();
+$pegarfa = $puxarform->pegarfacilitador();
+$puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
+$resultados = $puxarform->pegandoTudo();
+$pegarid = $puxarform->puxarId();
+
+$sql="SELECT * FROM assunto where id=$id_ata ";
+
+$row=mysqli_fetch_assoc($result);
+    $datasolicitada = $row['data_solicitada'];
+    $tema = $row['tema'];
+    $objetivo = $row['objetivo'];
+    $password = $row['local'];
+    $horainic = $row['hora_inicial'];
+    $horaterm = $row['hora_termino'];
+
+    $sql2 = "SELECT 
+    fac.nome_facilitador as facilitadores,
+    fac.id as idfacilitadores
+    
+    FROM ata_has_fac as ahf
+    INNER JOIN facilitadores as fac
+      ON fac.id = ahf.facilitadores
+    where ahf.id_ata = $id";
+
+   
+    $facilitadores = array(); 
+
+      while ($row2 = mysqli_fetch_assoc($result)) { 
+          $facilitadores[] = $row2;
+      };
+
+//funções de encotrar pessoas
+// $pegarfa = $puxarform->puxandoUltimosFacilitadores();
+$participantesArray = $pegarfa;
+// $pegarrespons = $puxarform->ultimosResponsaveis();
+
+$pegarde=$puxarform->pegarfacilitador();
+// ARRUMAR UM JEIT;
 
 ?>
 <!DOCTYPE html>
@@ -209,6 +206,8 @@ $result = $conn->query($sql);
       </div>
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
 <br>
+<form id="formSalvarInformacoes" method="post">
+<input type="hidden" id="idAta" name="idAta" value="">
 <div class="accordion">
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
@@ -226,7 +225,7 @@ $result = $conn->query($sql);
           
 
 
-        <form id="addForm">
+        <form  id="addForm">
               <div class="col-12 form-group ">
                 
                   
@@ -234,15 +233,22 @@ $result = $conn->query($sql);
 
                 
                     <div class="col" > 
-                    <select class="col-12 form-control" id="participantesadicionados" name="facilitador"  >
-                      <optgroup label="Selecione Facilitadores">
-                          <?php foreach ($pegarfa as $facnull) : ?>
-                              <option value="<?php echo $facnull['id']; ?>"
-                                  data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                                  <?php echo $facnull['nome_facilitador']; ?>
-                              </option> <?php endforeach ?>
-                       </optgroup>
-                    </select>
+                    <select class="col-8 form-control" id="participantesadicionados1" name="facilitador" multiple>
+              <optgroup label="Selecione Facilitadores">
+                  <?php foreach ($pegarfa as $facnull) : ?>
+                      <option value="<?php echo $facnull['id']; ?>"
+                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                          <?php echo $facnull['nome_facilitador']; ?>
+                      </option>
+                  <?php endforeach ?>
+              </optgroup>
+          </select>
+                    
+                    <?php 
+                 
+
+?>
+
         </div>
         </div> 
              
@@ -307,7 +313,7 @@ $result = $conn->query($sql);
             <div class="col">
     <!-- Primeira caixa de texto e select de facilitadores -->
     <div class="mb-2">
-        <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
+        <select id="deliberador" class="form-control facilitator-select" name="deliberacoes" placeholder="Deliberações" multiple>
         <optgroup label="Selecione Facilitadores">
                   <?php foreach ($pegarde as $facnull) : ?>
                       <option value="<?php echo $facnull['nome_facilitador']; ?>"
@@ -363,21 +369,15 @@ $result = $conn->query($sql);
 
         <br>
         <div class="col">
-                  
-              <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
-                Atualizar a ata
-              </button>
-             
-              <script>
-        function abrirHistorico() {
-            window.location.href = 'paghistorico.php';
-        }
-    </script>
+        <button  id="atribuida"   class="btn btn-primary">Atualizar a ATA</button>
+    
 </div>
+
     </form>
           
             </div>          
 </div>
+</form>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var botaocont = document.getElementById('botaocontinuarata');
@@ -402,10 +402,7 @@ $result = $conn->query($sql);
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
-    <script src="app/deliberacoes.js"></script>
-    <script src="view\js\multi-select-tag.js"></script>
-
-<script src="app/participantes.js"></script>
+    <script src="app\gravaratribuida.js"></script>
 </body>
 
 </html>
