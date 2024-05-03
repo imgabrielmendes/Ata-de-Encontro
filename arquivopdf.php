@@ -9,6 +9,15 @@ $sql=
         "SELECT  
         assunto.id as IDASSUNTO,
         ahf.id_ata as idatadohas,
+        assunto.hora_inicial as horainicio,
+        assunto.hora_termino as horatermi,
+        
+        assunto.local as local,
+
+        assunto.tema as tema,
+
+        assunto.objetivo as objetivo,
+
         assunto.data_solicitada as data,
         ahf.facilitadores as idfacilitadores,
         fac.nome_facilitador AS facilitadores_responsaveis,
@@ -38,6 +47,7 @@ $sql=
                 $result= $conn->query($sql);
                 $dados = $result->fetch_assoc();
 
+
                 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 
                     $result = $conn->query($sql);
@@ -47,7 +57,18 @@ $sql=
                     
                             $idAssunto = $row['IDASSUNTO'];
                             $idAtaDoHas = $row['idatadohas'];
-                            $data = $row['data'];
+                            $data=substr($date = $row['data'],0,-8);
+                            $tema = $row['tema'];
+
+                            $local = $row['local'];
+
+                            
+                            $horainicio=substr($horainici = $row['horainicio'], 0 , -3);
+                            $horafinal=substr($horafina=$row['horatermi'], 0 , -3);
+
+                            $objetivo = $row['objetivo'];
+
+
                             $idFacilitadores = $row['idfacilitadores'];
                             $facilitadoresResponsaveis = $row['facilitadores_responsaveis'];
                             $idParticipantes = $row['idparticipantes'];
@@ -69,53 +90,86 @@ $sql=
                             // echo "info9:" . $deliberacoes . "<br>";
 
                             $hmtl='<br>
-                            <table style="border: 1px solid black;">
-                            <table class="blueTable">
-                         
+                            <table style="border: 1px solid black; padding: 8px 0px;">
+                            <tbody>
+                                <tr style="text-align: center;">
+                                    <td style="height: 20px; border: 1px solid black;"><img src="view\img\logo-hrg.png" alt="Descrição da imagem">
+                                    </td>
+                                    <td style="height: 30px;"></td>
+                                    <td style="height: 30px;"><h4>Ata de Encontro</h4></td>
+                                    <td style="height: 30px;"></td>
+                                    <td style="height: 30px;  border: 1px solid black;">NOR.QUA.001</td>
+                                </tr>
+                                <tr style="text-align: center;">
+                                    <td style="border: 1px solid black; "><b>Data de elaboração:</b></td>
+                                    <td style="border: 1px solid black;">27/09/2021</td>
+                                    <td style="border: 1px solid black;"><b>Versão</b></td>
+                                    <td style="border: 1px solid black;">2-2021</td>
+                                    <td style="border: 1px solid black;"s>ANEXO 4</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h1 style="text-align: center;">Ata de encontro N°'.$idAssunto.'</h1>
+                        <textarea>
+                            
+                        <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
+                            <tbody>
+                                <tr style="text-align: center;">
+                                    <td style="border: 1px solid black; "><b>Data:</b></td>
+                                    <td style="height: 30px;"><h4>Horário de Inicio:</h4></td>
+                                    <td style="height: 30px;  border: 1px solid black;"><b>Horário de Término:</b></td>
+                                    <td style="height: 30px;  border: 1px solid black;"><b>Tempo estimado:</b></td>
+
+                                </tr>
+                                <tr style="text-align: center;">
+                                    <td style="border: 1px solid black; ">'.$data.'</td>
+                                    <td style="border: 1px solid black;">'.$horainicio.'</td>
+                                    <td style="border: 1px solid black;">'.$horafinal.'</td>
+                                    <td style="border: 1px solid black;"s>*Colocar</td>
+                                </tr>
+                            </tbody>
+                        </table>
+<h1>//////////////</h1>
+                        <table style="border: 1px solid black;">
+                        <tbody>
+                            <tr style="text-align: center; height: 30px;">
+                                <td style=""><b>Objetivo:</b></td>
+                                <td style=""><h4>local:</h4></td>
+                                <td style=""><b>Tema:</b></td>
+
+                            </tr>
+                            <tr>
+                                <td >'.$objetivo.'</td>
+                                <td >'.$local.'</td>
+                                <td >'.$tema.'</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                            </textarea>
+                            <h2> PARTICIPANTES </h2>
+                            <txt> '.$nomeParticipantes.' <txt>
+
+                            <h2> DELIBERAÇÕES </h2>
+                            
+                            <table>
                                 <tbody>
-                                    <tr>
-                                        <td>------</td>
-                                        <td></td>
-                                        <td>Ata de Encontro</td>
-                                        <td></td>
-                                        <td>NOR.QUA.001</td>
-                                    </tr>
-                                    <br>
-                                    <tr>
-                                        <td><b>Data de elaboração:</b></td>
-                                        <td>27/09/2021</td>
-                                        <td>Versão</td>
-                                        <td>2-2021</td>
-                                        <td>ANEXO 4&nbsp;</td>
+                                    <tr style="margin-left: -10px;">
+                                        <td>'.$nomeDeliberadores.'</td>
+                                        <td>'.$deliberacoes.'</td>
                                     </tr>
                                 </tbody>
                             </table>
-                            <h1 style="text-align: center;">Ata de encontro N°'.$idAssunto.'</h1>
-                            <textarea>
 
-                            <txt><b>Facilitador(es) Responsáveis:</b><ul>'
-                                .$facilitadoresResponsaveis.
-                            '</ul></txt>
-
-                            <txt><b>Participantes:</b><ul>'.$nomeParticipantes.'</ul></txt>
-                            <h4>'.$data.'</h4>              
-                            <h4>'.$nomeDeliberadores.'</h4>
-                            <h4>'.$deliberacoes.'</h4>
-                            
-                            </textarea>
-                            <h1> PARTICIPANTES </H1>
-                            <H4> Participantes aqui <h4>
-
-                            <h1> DELIBERAÇÕES </H1>
-                            <H4> Deliberações aqui <h4>
-
-                            <footer class="col main-footer p-4" style="margin-left: 0 !important; margin-top: 1em;">
-                                <strong>Copyright © 2021 <a href="http://www.hospitalriogrande.com.br/" target="_blank">Hospital RiGrande</a></strong>.
+                            <footer style="text-align: center;">
+                                <strong>Copyright © 2021 <a href="http://www.hospitalriogrande.com.br/" target="_blank">Hospital Rio Grande</a></strong>.
                                 Todos os direitos reservados.
                                 <div class="float-right d-none d-sm-inline-block">
                                     <b>Versão</b> 0.0.1
                                 </div>
                             </footer>
+
                             </body>
                             </html>';
 
@@ -129,23 +183,16 @@ $sql=
                     }
                 }
 ?>
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informações da ata de encontro</title>
+    <title>Document</title>
+    <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
+
 </head>
 <body>
-
-   <footer class="col main-footer p-4" style="margin-left: 0 !important; margin-top: 1em;">
-        <strong>Copyright © 2021 <a href="http://www.hospitalriogrande.com.br/" target="_blank">Hospital RiGrande</a></strong>.
-        Todos os direitos reservados.
-        <div class="float-right d-none d-sm-inline-block">
-             <b>Versão</b> 0.0.1
-        </div>
-    </footer> -->
-<!--                
+    
 </body>
-</html>  -->
+</html>
