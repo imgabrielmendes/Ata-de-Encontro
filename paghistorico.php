@@ -175,48 +175,62 @@ if ($conn->connect_error) {
                 echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
                 echo "<td class='align-middle' style='display:none;'  onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
                 echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
-                if (isset($row['id'])) {
+            if (isset($row['id'])) {
                 $id_ata = $row['id'];
                 $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
                 if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
+                    $totalParticipantes = count($puxaparticipantes);
+                    $count = 0;
                     foreach ($puxaparticipantes as $participante) {
-                        echo $participante . ", <br>";
-                        
+                        echo $participante;
+                        $count++;
+                        if ($count < $totalParticipantes) {
+                            echo ", <br>";
+                        }
                     }
                 } else {
                     echo "Nenhum participante";
                 }
-                } else {
+            } else {
                 echo "ID da ata não disponível";
-                }
-                echo "<td class='align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>"; 
-                if (isset($row['id'])) {
-                    $id_ata = $row['id'];
-                    $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
-                    if (!empty($deliberacoes)) {
-                    $deliberacoes_agrupadas = [];
-                    foreach ($deliberacoes as $deliberacao) {
-                        $deliberador = isset($deliberacao['deliberador']) ? $deliberacao['deliberador'] : 'N/A';
-                        $conteudo = $deliberacao['deliberacoes'];
-                        $deliberacoes_agrupadas[$conteudo][] = $deliberador;
+            }
+
+
+                
+   
+            if (isset($row['id'])) {
+                $id_ata = $row['id'];
+                $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+                if (!empty($deliberacoes) && is_array($deliberacoes)) {
+                    echo "<td class='align-middle' style='display:none;' id='deliberacoes1" . $row['id'] . "'>";
+                    foreach ($deliberacoes as $index => $deliberacao) {
+                        echo $deliberacao['deliberacoes'] . "<br>";
                     }
-                    foreach ($deliberacoes_agrupadas as $conteudo => $deliberadores) {
-                        echo "<div>"; 
-                        echo "<div>";
-                        echo implode(", ", $deliberadores);
-                        echo "</div>";
-                        echo "<div>";
-                        echo $conteudo;
-                        echo "</div>"; 
-                        echo "<br>"; 
+                    echo "</td>";
+            
+                    echo "<td class='align-middle' style='display:none;' id='deliberador" . $row['id'] . "'>";
+                    foreach ($deliberacoes as $index => $deliberacao) {
+                        echo $deliberacao['deliberador'] . "<br>";
                     }
-                    
-                    } else {
-                        echo "Nenhuma deliberação";
-                    }
+                    echo "</td>";
                 } else {
-                    echo "ID da ata não disponível";
+                    echo "<td class='align-middle' style='display:none;' id='deliberacoes1" . $row['id'] . "'>";
+                    echo "Nenhuma deliberação";
+                    echo "</td>";
+            
+                    echo "<td class='align-middle' style='display:none;' id='deliberador" . $row['id'] . "'>";
+                    echo "Nenhum deliberador";
+                    echo "</td>";
                 }
+            } else {
+                echo "<td class='align-middle' style='display:none;' id='deliberacoes1" . $row['id'] . "'>";
+                echo "ID da ata não disponível";
+                echo "</td>";
+            
+                echo "<td class='align-middle' style='display:none;' id='deliberador" . $row['id'] . "'>";
+                echo "ID da ata não disponível";
+                echo "</td>";
+            }       
                 echo "<td>
                         <button class='btn btn-warning' style='color: white; '>
                             <a style='color:white; text-decoration:none;' class='text-center align-middle' href='pagatribuida.php? updateid=".$id."'>+</a>
@@ -278,9 +292,19 @@ if ($conn->connect_error) {
                                     <ul class="form-control bg-body-secondary  border rounded" id="modal_participantes"></ul>
                                 </div>
                                 <div class="col-12">
-                                    <label for="form-control"><b>Deliberações</b></label>
-                                    <ul class="form-control bg-body-secondary border rounded" id="modal_deliberacoes" style="height: 100px; overflow-y: auto;"></ul>
+                                    <label class="h4 pt-3"><b>DELIBERAÇÕES</b></label>
+                                    <div class="row">
+                                    <div class="col-6" style="text-align: left;">
+                                        <label for=""></label>
+                                        <ul class="form-control" id="modal_deliberador"></ul>
+                                    </div>
+                                    <div class="col-6" style="text-align: left;">
+                                        <label for=""></label>
+                                        <ul class="form-control" id="modal_deliberacoes1"></ul>
+                                    </div>
                                 </div>
+                                </div>
+                                                                 
                                 </div>
                             </div>
                         </div>
@@ -298,9 +322,12 @@ if ($conn->connect_error) {
         document.getElementById("modal_local").innerText = row.local;
         document.getElementById("modal_tema").innerText = row.tema;
         document.getElementById("modal_status").innerText = row.status; 
-        var deliberacoes = document.getElementById("deliberacoes" + row.id).innerText;
-        document.getElementById("modal_deliberacoes").innerText = deliberacoes; 
 
+        var deliberacoes = document.getElementById("deliberacoes1" + row.id).innerText;
+        document.getElementById("modal_deliberacoes1").innerText = deliberacoes; 
+
+        var deliberacoes = document.getElementById("deliberador" + row.id).innerText;
+        document.getElementById("modal_deliberador").innerText = deliberacoes; 
 
         var participantes = document.getElementById("participantes" + row.id).innerText;
         document.getElementById("modal_participantes").innerText = participantes; 
@@ -312,6 +339,18 @@ if ($conn->connect_error) {
         myModal.show();
         }
     </script>
+
+
+
+
+
+
+<!-- var participantes = document.getElementById("participantes" + row.id).innerText;
+        document.getElementById("modal_participantes").innerText = participantes;  -->
+
+
+
+
 
     <script>
         function filtrarTabela() {
