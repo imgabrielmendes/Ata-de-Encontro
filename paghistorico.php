@@ -198,30 +198,34 @@ if ($conn->connect_error) {
 
                 
    
-            if (isset($row['id'])) {
-                $id_ata = $row['id'];
-                $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
-                if (!empty($deliberacoes) && is_array($deliberacoes)) {
-                    echo "<td class='align-middle' style='display:none;' id='deliberacoes1" . $row['id'] . "'>";
-                    foreach ($deliberacoes as $index => $deliberacao) {
-                        echo $deliberacao['deliberacoes'] . "<br>";
-                    }
-                    echo "</td>";
             
-                    echo "<td class='align-middle' style='display:none;' id='deliberador" . $row['id'] . "'>";
-                    foreach ($deliberacoes as $index => $deliberacao) {
-                        echo $deliberacao['deliberador'] . "<br>";
-                    }
-                    echo "</td>";
-                } else {
-                    echo "<td class='align-middle' style='display:none;' id='deliberacoes1" . $row['id'] . "'>";
-                    echo "Nenhuma deliberação";
-                    echo "</td>";
-            
-                    echo "<td class='align-middle' style='display:none;' id='deliberador" . $row['id'] . "'>";
-                    echo "Nenhum deliberador";
-                    echo "</td>";
-                }
+                    if (isset($row['id'])) {
+                        $id_ata = $row['id'];
+                        $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+                        if (!empty($deliberacoes) && is_array($deliberacoes)) {
+                            echo "<div class='deliberacoes' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                            foreach ($deliberacoes as $deliberacao) {
+                                echo "<div class='deliberacao'>" . $deliberacao['deliberacoes'] . "</div>";
+                            }
+                            echo "</div>";
+                        
+                            echo "<div class='deliberadores' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                            foreach ($deliberacoes as $deliberacao) {
+                                echo "<div class='deliberador'>" . $deliberacao['deliberador'] . "</div>";
+                            }
+                            echo "</div>";
+                        } else {
+                            echo "<div class='deliberacoes' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                            echo "<div class='deliberacao'>Nenhuma deliberação</div>";
+                            echo "</div>";
+                        
+                            echo "<div class='deliberadores' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                            echo "<div class='deliberador'>Nenhum deliberador</div>";
+                            echo "</div>";
+                        }
+                    
+                    
+                
             } else {
                 echo "<td class='align-middle' style='display:none;' id='deliberacoes1" . $row['id'] . "'>";
                 echo "ID da ata não disponível";
@@ -294,14 +298,15 @@ if ($conn->connect_error) {
                                 <div class="col-12">
                                     <label class="h4 pt-3"><b>DELIBERAÇÕES</b></label>
                                     <div class="row">
-                                    <div class="col-6" style="text-align: left;">
-                                        <label for=""></label>
-                                        <ul class="form-control" id="modal_deliberador"></ul>
-                                    </div>
-                                    <div class="col-6" style="text-align: left;">
-                                        <label for=""></label>
-                                        <ul class="form-control" id="modal_deliberacoes1"></ul>
-                                    </div>
+                                    <div class="col-6">
+    <label class="h4 pt-3"><b>Deliberações</b></label>
+    <div class="form-control" id="modal_deliberacoes"></div>
+</div>
+<div class="col-6">
+    <label class="h4 pt-3"><b>Deliberadores</b></label>
+    <div class="form-control" id="modal_deliberadores"></div>
+</div>
+
                                 </div>
                                 </div>
                                                                  
@@ -323,11 +328,12 @@ if ($conn->connect_error) {
         document.getElementById("modal_tema").innerText = row.tema;
         document.getElementById("modal_status").innerText = row.status; 
 
-        var deliberacoes = document.getElementById("deliberacoes1" + row.id).innerText;
-        document.getElementById("modal_deliberacoes1").innerText = deliberacoes; 
 
-        var deliberacoes = document.getElementById("deliberador" + row.id).innerText;
-        document.getElementById("modal_deliberador").innerText = deliberacoes; 
+        var deliberacoes = document.getElementById("deliberacoes" + row.id).innerHTML;
+    document.getElementById("modal_deliberacoes").innerHTML = deliberacoes;
+
+    var deliberadores = document.getElementById("deliberadores" + row.id).innerHTML;
+    document.getElementById("modal_deliberadores").innerHTML = deliberadores;
 
         var participantes = document.getElementById("participantes" + row.id).innerText;
         document.getElementById("modal_participantes").innerText = participantes; 
