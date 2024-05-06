@@ -207,82 +207,117 @@ $pegarde=$puxarform->pegarfacilitador();
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
 <br>
 <form id="formSalvarInformacoes" method="post">
-<input type="hidden" id="idAta" name="idAta" value="">
-<div class="accordion">
-<div class="accordion-item shadow">
-  <h2 class="accordion-header">
-    <div class="accordion-button shadow-sm text-white" style="background-color: #1c8f69;;">
-    <i class="fa-solid fa-circle-info"></i>
-    <h5>Participantes</h5>
-</div>
-  </h2>                                                                                                                                       
-        <main class="container-fluid ">
+  <input type="hidden" id="idAta" name="idAta" value="">
+  <div class="accordion">
+    <div class="accordion-item shadow">
+      <h2 class="accordion-header">
+        <div class="accordion-button shadow-sm text-white" style="background-color: #1c8f69;;">
+          <i class="fa-solid fa-circle-info"></i>
+          <h5>Participantes</h5>
+        </div>
+      </h2>
+      <main class="container-fluid ">
         <div class="row">
           <br>
-        <div class="col">
-          <label for="form-control"><b>Adicione   participantes</b></label>
-          <br>
-          
-
-
-        <form  id="addForm">
+          <div class="col">
+            <label for="form-control"><b>Adicione participantes</b></label>
+            <br>
+            <form id="addForm">
               <div class="col-12 form-group ">
-                
-                  
-                
-
-                
-                    <div class="col" > 
-                    <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple>
-              <optgroup label="Selecione Facilitadores">
-                  <?php foreach ($pegarfa as $facnull) : ?>
-                      <option value="<?php echo $facnull['id']; ?>"
-                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                <div class="col">
+                  <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple>
+                    <optgroup label="Selecione Facilitadores">
+                      <?php foreach ($pegarfa as $facnull) : ?>
+                        <option value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
                           <?php echo $facnull['nome_facilitador']; ?>
-                      </option>
-                  <?php endforeach ?>
-              </optgroup>
-          </select>
-                    
-                    <?php 
-                 
-
-?>
-
-        </div>
-        </div> 
-             
-          </form>
-           
-        <?php
-        if (isset($_GET['updateid'])) {
-            $id_ata = $_GET['updateid'];
-            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-            if (!empty($participantes)) {
+                        </option>
+                      <?php endforeach ?>
+                    </optgroup>
+                  </select>
+                </div>
+              </div>
+            </form>
+            <?php
+            if (isset($_GET['updateid'])) {
+              $id_ata = $_GET['updateid'];
+              $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+              if (!empty($participantes)) {
                 echo implode(', ', $participantes);
-            } else {
+              } else {
                 echo "Nenhum participante encontrado para esta ATA.";
+              }
+            } else {
+              echo "Nenhum ID de ATA fornecido.";
             }
-        } else {
-            echo "Nenhum ID de ATA fornecido.";
-        }
-        ?> <br>     
-        
-        <?php      
-        $conn->close();
-        ?>
-      </div>  
-           
-      
-<br>
-           
-  
+            ?>
+            <br>
+            <?php
+            $conn->close();
+            ?>
+          </div>
         </div>
       </main>
-      </div>
+    </div>
+  </div>
+</form>
+<script>
+  document.getElementById("addForm").addEventListener("submit", function(event) {
+  event.preventDefault(); // Previne o envio do formulário
 
-            </div>
+  var select = document.getElementById("participantesadicionado");
+  var selectedOptions = select.selectedOptions;
 
+  // Adiciona os participantes selecionados ao label
+  for (var i = 0; i < selectedOptions.length; i++) {
+    var selectedOption = selectedOptions[i];
+    var participante = selectedOption.textContent.trim();
+    var participanteId = selectedOption.value;
+
+    // Verifica se o participante já foi adicionado
+    if (!participanteJaAdicionado(participante)) {
+      // Adiciona o participante ao label
+      adicionarParticipanteAoLabel(participante);
+
+      // Remove o participante da lista de seleção
+      selectedOption.remove();
+    }
+  }
+});
+$(document).ready(function() {
+    // Lidar com a seleção de opções no elemento 'participantesadicionado'
+    $('#participantesadicionado').change(function() {
+        // Obter os IDs e os nomes das opções selecionadas
+        var selected_ids = [];
+        var selected_names = [];
+        $('#participantesadicionado option:selected').each(function() {
+            selected_ids.push($(this).val());
+            selected_names.push($(this).text());
+        });
+
+        // Exibir os IDs e os nomes das opções selecionadas no console (opcional)
+        console.log(selected_ids);
+        console.log(selected_names);
+
+        // Você pode fazer mais aqui, como enviar os IDs e nomes selecionados para o servidor via AJAX
+    });
+});
+
+// Função para verificar se o participante já foi adicionado ao label
+function participanteJaAdicionado(participante) {
+  var label = document.getElementById("participantesLabel");
+  return label.textContent.includes(participante);
+}
+
+// Função para adicionar um participante ao label
+function adicionarParticipanteAoLabel(participante) {
+  var label = document.getElementById("participantesLabel");
+  var participanteItem = document.createElement("span");
+  participanteItem.textContent = participante;
+  participanteItem.classList.add("badge", "bg-secondary", "me-1");
+  label.appendChild(participanteItem);
+}
+
+</script>
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 <br>
 <div class="accordion">
@@ -400,6 +435,7 @@ $pegarde=$puxarform->pegarfacilitador();
 </div>
        
     <script src="view\js\multi-select-tag.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
