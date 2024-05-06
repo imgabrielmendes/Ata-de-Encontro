@@ -260,55 +260,39 @@ $pegarde=$puxarform->pegarfacilitador();
     </div>
   </div>
 </form>
+
 <script>
   document.getElementById("addForm").addEventListener("submit", function(event) {
-  event.preventDefault(); // Previne o envio do formulário
-
+  event.preventDefault(); 
   var select = document.getElementById("participantesadicionado");
   var selectedOptions = select.selectedOptions;
-
-  // Adiciona os participantes selecionados ao label
   for (var i = 0; i < selectedOptions.length; i++) {
     var selectedOption = selectedOptions[i];
     var participante = selectedOption.textContent.trim();
     var participanteId = selectedOption.value;
-
-    // Verifica se o participante já foi adicionado
     if (!participanteJaAdicionado(participante)) {
-      // Adiciona o participante ao label
       adicionarParticipanteAoLabel(participante);
-
-      // Remove o participante da lista de seleção
       selectedOption.remove();
     }
   }
 });
 $(document).ready(function() {
-    // Lidar com a seleção de opções no elemento 'participantesadicionado'
     $('#participantesadicionado').change(function() {
-        // Obter os IDs e os nomes das opções selecionadas
         var selected_ids = [];
         var selected_names = [];
         $('#participantesadicionado option:selected').each(function() {
             selected_ids.push($(this).val());
             selected_names.push($(this).text());
         });
-
-        // Exibir os IDs e os nomes das opções selecionadas no console (opcional)
         console.log(selected_ids);
         console.log(selected_names);
 
-        // Você pode fazer mais aqui, como enviar os IDs e nomes selecionados para o servidor via AJAX
     });
 });
-
-// Função para verificar se o participante já foi adicionado ao label
 function participanteJaAdicionado(participante) {
   var label = document.getElementById("participantesLabel");
   return label.textContent.includes(participante);
 }
-
-// Função para adicionar um participante ao label
 function adicionarParticipanteAoLabel(participante) {
   var label = document.getElementById("participantesLabel");
   var participanteItem = document.createElement("span");
@@ -316,7 +300,6 @@ function adicionarParticipanteAoLabel(participante) {
   participanteItem.classList.add("badge", "bg-secondary", "me-1");
   label.appendChild(participanteItem);
 }
-
 </script>
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 <br>
