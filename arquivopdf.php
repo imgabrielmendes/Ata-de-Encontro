@@ -5,79 +5,55 @@ $id = $_GET['updateid'];
 
 require_once("C:\\xampp\\htdocs\\dev\\Ata-de-Encontro\\TCPDF\\tcpdf.php");
 
-$sql=
-        "SELECT  
-        assunto.id as IDASSUNTO,
-        ahf.id_ata as idatadohas,
-        assunto.hora_inicial as horainicio,
-        assunto.hora_termino as horatermi,
-        
-        assunto.local as local,
+$sql = "SELECT  
+            assunto.id AS IDASSUNTO,
+            assunto.hora_inicial AS horainicio,
+            assunto.hora_termino AS horatermi,
+            assunto.local AS local,
+            assunto.tema AS tema,
+            assunto.objetivo AS objetivo,
+            assunto.data_solicitada AS data,
+            GROUP_CONCAT(DISTINCT fac_parti.nome_facilitador) AS nome_participantes,
+            GROUP_CONCAT(DISTINCT delib.deliberacoes) AS deliberacoes,
+            GROUP_CONCAT(DISTINCT fac_delib.nome_facilitador) AS nome_deliberadores,
+            tp.texto_princ
 
-        assunto.tema as tema,
+            FROM 
+            atareu.assunto AS assunto
+            INNER JOIN atareu.participantes AS parti ON parti.id_ata = assunto.id
+            INNER JOIN atareu.facilitadores AS fac_parti ON fac_parti.id = parti.participantes
+            INNER JOIN atareu.deliberacoes AS delib ON delib.id_ata = assunto.id
+            INNER JOIN atareu.facilitadores AS fac_delib ON fac_delib.id = delib.deliberadores
+            INNER JOIN atareu.textoprinc as tp ON tp.id_ata = assunto.id
+            WHERE 
+                delib.id_ata = $id
+            GROUP BY
+            assunto.id";
 
-        assunto.objetivo as objetivo,
-
-        assunto.data_solicitada as data,
-        ahf.facilitadores as idfacilitadores,
-        fac.nome_facilitador AS facilitadores_responsaveis,
-        parti.participantes as idparticipantes,
-        fac_parti.nome_facilitador as nome_participantes,
-            
-        delib.deliberadores as iddeliberadores,
-        fac_delib.nome_facilitador as nome_deliberadores,
-        delib.deliberacoes
-            
-        FROM atareu.assunto as assunto
-            INNER JOIN atareu.ata_has_fac as ahf
-            ON ahf.id_ata = assunto.id
-                INNER JOIN atareu.facilitadores as fac
-                ON fac.id = ahf.facilitadores
-                    INNER JOIN atareu.participantes as parti
-                    ON parti.id_ata = assunto.id
-                    INNER JOIN atareu.facilitadores AS fac_parti 
-                    ON fac_parti.id = parti.participantes
-                        INNER JOIN atareu.deliberacoes as delib
-                        ON delib.id_ata = assunto.id
-                        INNER JOIN atareu.facilitadores as fac_delib
-                        ON fac_delib.id = delib.deliberadores
-                            where delib.id_ata = $id
-                            ;";
 
                 $result= $conn->query($sql);
-                $dados = $result->fetch_assoc();
-
 
                 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 
                     $result = $conn->query($sql);
-                
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                    
-                            $idAssunto = $row['IDASSUNTO'];
-                            $idAtaDoHas = $row['idatadohas'];
-                            $data=substr($date = $row['data'],0,-8);
-                            $tema = $row['tema'];
 
-                            $local = $row['local'];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        // var_dump($row);
+        $idAssunto = $row['IDASSUNTO'];
+        $data = substr($row['data'], 0, -8);
+        $tema = $row['tema'];
+        $local = $row['local'];
+        $horainicio = substr($row['horainicio'], 0, -3);
+        $horafinal = substr($row['horatermi'], 0, -3);
+        $objetivo = $row['objetivo'];
+        $nomeParticipantes = $row['nome_participantes'];
+        $nomeDeliberadores = $row['nome_deliberadores'];
+        $deliberacoes = $row['deliberacoes'];
+        $textop = $row['texto_princ'];
 
-                            
-                            $horainicio=substr($horainici = $row['horainicio'], 0 , -3);
-                            $horafinal=substr($horafina=$row['horatermi'], 0 , -3);
 
-                            $objetivo = $row['objetivo'];
-
-
-                            $idFacilitadores = $row['idfacilitadores'];
-                            $facilitadoresResponsaveis = $row['facilitadores_responsaveis'];
-                            $idParticipantes = $row['idparticipantes'];
-                            $nomeParticipantes = $row['nome_participantes'];
-                            $idDeliberadores = $row['iddeliberadores'];
-                            $nomeDeliberadores = $row['nome_deliberadores'];
-                            $deliberacoes = $row['deliberacoes'];
-                
-                            $pdf = new \TCPDF();
+        $pdf = new \TCPDF();
 
                             // echo "info1:" . $idAssunto . "<br>";
                             // echo "info2:" . $idAtaDoHas . "<br>";
@@ -89,110 +65,122 @@ $sql=
                             // echo "info8:" . $nomeDeliberadores . "<br>";
                             // echo "info9:" . $deliberacoes . "<br>";
 
-                            $hmtl='<br>
-                            <table style="border: 1px solid black; padding: 8px 0px;">
-                            <tbody>
-                                <tr style="text-align: center;">
-                                    <td style="height: 20px; border: 1px solid black;"><img src="view\img\logo-hrg.png" alt="Descrição da imagem">
-                                    </td>
-                                    <td style="height: 30px;"></td>
-                                    <td style="height: 30px;"><h4>Ata de Encontro</h4></td>
-                                    <td style="height: 30px;"></td>
-                                    <td style="height: 30px;  border: 1px solid black;">NOR.QUA.001</td>
-                                </tr>
-                                <tr style="text-align: center;">
-                                    <td style="border: 1px solid black; "><b>Data de elaboração:</b></td>
-                                    <td style="border: 1px solid black;">27/09/2021</td>
-                                    <td style="border: 1px solid black;"><b>Versão</b></td>
-                                    <td style="border: 1px solid black;">2-2021</td>
-                                    <td style="border: 1px solid black;"s>ANEXO 4</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                            $html = '
+            <br>
+            <table style="border: 1px solid black; padding: 8px 0px;">
+                <tbody>
+                    <tr style="text-align: center;">
+                        <td style="height: 20px; border: 1px solid black;"><img src="view\img\logo-hrg.png" alt="Descrição da imagem"></td>
+                        <td style="height: 30px;"></td>
+                        <td style="height: 30px;"><h4>Ata de Encontro</h4></td>
+                        <td style="height: 30px;"></td>
+                        <td style="height: 30px;  border: 1px solid black;">NOR.QUA.001</td>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <td style="border: 1px solid black; "><b>Data de elaboração:</b></td>
+                        <td style="border: 1px solid black;">27/09/2021</td>
+                        <td style="border: 1px solid black;"><b>Versão</b></td>
+                        <td style="border: 1px solid black;">2-2021</td>
+                        <td style="border: 1px solid black;"s>ANEXO 4</td>
+                    </tr>
+                </tbody>
+            </table>
 
-                        <h1 style="text-align: center;">Ata de encontro N°'.$idAssunto.'</h1>
-                        <textarea>
-                            
-                        <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
-                            <tbody>
-                                <tr style="text-align: center;">
-                                    <td style="border: 1px solid black; "><b>Data:</b></td>
-                                    <td style="height: 30px;"><h4>Horário de Inicio:</h4></td>
-                                    <td style="height: 30px;  border: 1px solid black;"><b>Horário de Término:</b></td>
-                                    <td style="height: 30px;  border: 1px solid black;"><b>Tempo estimado:</b></td>
+            <h1 style="text-align: center;">Ata de encontro N°'.$idAssunto.'</h1>
+            
+            <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
+                <tbody>
+                    <tr style="text-align: center; background-color: #c0c0c0">
+                        <td style="border: 1px solid black; height: 30px "><b>Data:</b></td>
+                        <td style="height: 30px; border: 1px solid black;"><h4>Horário de Inicio:</h4></td>
+                        <td style="height: 30px; border: 1px solid black;"><b>Horário de Término:</b></td>
+                        <td style="height: 30px; border: 1px solid black;"><b>Tempo estimado:</b></td>
+                    </tr>
+                    <tr style="text-align: center; ">
+                        <td style="border: 1px solid black; height: 30px ">'.$data.'</td>
+                        <td style="border: 1px solid black; height: 30px">'.$horainicio.'</td>
+                        <td style="border: 1px solid black; height: 30px">'.$horafinal.'</td>
+                        <td style="border: 1px solid black; height: 30px">*Colocar</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br> <br> 
 
-                                </tr>
-                                <tr style="text-align: center;">
-                                    <td style="border: 1px solid black; ">'.$data.'</td>
-                                    <td style="border: 1px solid black;">'.$horainicio.'</td>
-                                    <td style="border: 1px solid black;">'.$horafinal.'</td>
-                                    <td style="border: 1px solid black;"s>*Colocar</td>
-                                </tr>
-                            </tbody>
-                        </table>
-<h1>//////////////</h1>
-                        <table style="border: 1px solid black;">
-                        <tbody>
-                            <tr style="text-align: center; height: 30px;">
-                                <td style=""><b>Objetivo:</b></td>
-                                <td style=""><h4>local:</h4></td>
-                                <td style=""><b>Tema:</b></td>
+            <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
+                <tbody>
+                    <tr style="text-align: center; background-color: #c0c0c0">
+                        <td style="border: 1px solid black; height: 30px"><b>Objetivo:</b></td>
+                        <td style="height: 31px; border: 1px solid black; "><h4>Local:</h4></td>
+                        <td style="height: 30px; border: 1px solid black;"><b>Tema:</b></td>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <td style="border: 1px solid black; ">'.$objetivo.'</td>
+                        <td style="border: 1px solid black;">'.$local.'</td>
+                        <td style="border: 1px solid black;">'.$tema.'</td>
+                    </tr>
+                </tbody>
+            </table>        
+            <h2> PARTICIPANTES </h2>
+            <ul>';
 
-                            </tr>
-                            <tr>
-                                <td >'.$objetivo.'</td>
-                                <td >'.$local.'</td>
-                                <td >'.$tema.'</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        // Adicionando cada participante à lista
+        foreach (explode(",", $nomeParticipantes) as $participante) {
+            $html .= '<li>'.$participante.'</li>';
+        }
+        
+        $html .='<h2> DELIBERAÇÕES </h2>';
 
-                            </textarea>
-                            <h2> PARTICIPANTES </h2>
-                            <txt> '.$nomeParticipantes.' <txt>
+        foreach (explode(",", $nomeDeliberadores) as $deliberador) {
+            $html .= '
+                <table>
+                    <tbody>
+                        <tr style="text-align: center; ">
+                            <td style="height: 31px; border: 1px solid black; background-color: #c0c0c0">'.$deliberador.'</td>';
+        
+            foreach (explode(",", $deliberacoes) as $delib) {
+                $html .= '<td style="border: 1px solid black;">'.$delib.'</td>';
+            } 
+        
+            $html .= '
+                        </tr>
+                    </tbody>
+                </table>';
+        }
+        
+        $html .= '<br><br>
+        <h2> TEXTO PRINCIPAL: </h2>
+        <text style="height: 30px; border: 1px solid black;">'.$textop.'</txt>
+        <br><br><br><br><br>
+            <hr style="margin-left: 4px;" size="10" width="50%" align="center"></hr>
+                       <txt>Assinatura do Responsável</txt>
+                       <br><br><br><br><br><br><br><br>
 
-                            <h2> DELIBERAÇÕES </h2>
-                            
-                            <table>
-                                <tbody>
-                                    <tr style="margin-left: -10px;">
-                                        <td>'.$nomeDeliberadores.'</td>
-                                        <td>'.$deliberacoes.'</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                       <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
+                       <tbody>
+                           <tr style="text-align: center; background-color: #c0c0c0">
+                               <td style="height: 31px; border: 1px solid black; "><h4>Assinatura de presença:</h4></td>
+                           </tr>
+                           <tr style="text-align: center;">
+                               <td style="border: 1px solid black; "></td>
+                               <td style="border: 1px solid black;"></td>
+                               <td style="border: 1px solid black;"></td>
+                           </tr>
+                       </tbody>
+                   </table>    
 
-                            <footer style="text-align: center;">
-                                <strong>Copyright © 2021 <a href="http://www.hospitalriogrande.com.br/" target="_blank">Hospital Rio Grande</a></strong>.
-                                Todos os direitos reservados.
-                                <div class="float-right d-none d-sm-inline-block">
-                                    <b>Versão</b> 0.0.1
-                                </div>
-                            </footer>
+        </body></html>';
+        
 
-                            </body>
-                            </html>';
 
-                            $pdf->AddPage();
+        $pdf->AddPage();
 
-                            $pdf->writeHTML($hmtl, true, false, true, false,'');
+        $pdf->writeHTML($html, true, false, true, false, '');
 
-                            $pdf->Output('arquivopdf.php', 'I');
+        $pdf->Output('arquivopdf.php', 'I');
+    }
+        } else {
+            echo "Nenhum resultado encontrado.";
+        }
+}
 
-                        }            
-                    }
-                }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
-
-</head>
-<body>
-    
-</body>
-</html>
