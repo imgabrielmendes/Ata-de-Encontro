@@ -1,7 +1,7 @@
 var participantesSelecionados = [];
 var participantesSelecionadosLabel = [];
 
-new MultiSelectTag('participantesadicionados1', {
+new MultiSelectTag('participantesadicionado', {
     rounded: true, 
     shadow: false,     
     placeholder: 'Search', 
@@ -27,7 +27,7 @@ botaoatribuicao.addEventListener('click', gravaratribuida);
 function gravaratribuida(){
 
 
-    var nomeparticipante = document.getElementById("participantesadicionados1").option;
+    var nomeparticipante = document.getElementById("participantesadicionado").value;
 
     if (nomeparticipante.trim() === "")
     {
@@ -39,7 +39,7 @@ function gravaratribuida(){
           });
 
           console.log ("(X) Puxou a function da modal, mas não preencheu todas as informações")
-          console.log ("Que bom, o seu nome é: " + nomeparticipante )
+          
     } 
     
     else {
@@ -54,7 +54,6 @@ function gravaratribuida(){
         // console.log (caixamatricula + " " +caixadenome + " " + caixadeemail)
 
     }
-    if (nomeparticipante !=="")
    
 //Primeira solicitação AJAX para enviarprobanco.php
 $.ajax({
@@ -68,6 +67,13 @@ $.ajax({
     success: function () {
         console.log("(3) Deu bom! AJAX está enviando");
 
+        setTimeout(function() {
+            window.location.href = 'paghistorico.php' +
+            '?facilitadores=' + encodeURIComponent(JSON.stringify(participantesSelecionadosLabel)) 
+            
+            
+        }, 1500);
+    
     },
 
     error: function (error) {

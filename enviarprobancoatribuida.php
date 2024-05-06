@@ -1,13 +1,22 @@
 <?php
 include 'database.php';
+include 'pagatribuida.php';
 session_start();
-
+$id = isset($_GET['updateid']) ? $_GET['updateid'] : null;
+print_r($id);
 $participantesSelecionados = json_decode($_POST['participanteatribu']);
-
-$id = $_GET['updateid'];
-echo($id);
+var_dump("string jfjfff");
 if ($participantesSelecionados !== null) {
 
+
+    $conexao->begin_transaction();
+
+    $enviarbanco = "INSERT INTO ata_has_fac (id_ata) VALUES (?)";
+    
+    $stmt = $conexao->prepare($enviarbanco);
+    $stmt->bind_param("ssssss", $participantesSelecionados);
+    
+    $stmt->execute();
    
 
     if ($stmt) {
@@ -16,9 +25,9 @@ if ($participantesSelecionados !== null) {
 
         foreach ($participantesSelecionados as $facilitador) {
 
-            $enviarbanco2 = "INSERT INTO ata_has_fac ($id , facilitadores) VALUES (?, ?) ";
+            $enviarbanco2 = "INSERT INTO ata_has_fac ( facilitadores) VALUES (?, ?) ";
             $stmt2 = $conexao->prepare($enviarbanco2);
-            $stmt2->bind_param("ss", $id,  $facilitador);
+            $stmt2->bind_param("ss",  $facilitador);
             $stmt2->execute();
 
             if ($stmt2) {

@@ -3,7 +3,7 @@ namespace formulario;
 include_once("app/acoesform.php");
 include("conexao.php");
 $puxarform = new AcoesForm;
-$id = $_GET['updateid'];
+$id = isset($_GET['updateid']) ? $_GET['updateid'] : null;
 
 //Conexão com o banco de dados (substitua os valores pelos seus próprios)
 $servername = "localhost";
@@ -233,7 +233,7 @@ $pegarde=$puxarform->pegarfacilitador();
 
                 
                     <div class="col" > 
-                    <select class="col-8 form-control" id="participantesadicionados1" name="facilitador" multiple>
+                    <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple>
               <optgroup label="Selecione Facilitadores">
                   <?php foreach ($pegarfa as $facnull) : ?>
                       <option value="<?php echo $facnull['id']; ?>"
@@ -368,19 +368,20 @@ $pegarde=$puxarform->pegarfacilitador();
     </div>
 
         <br>
-        <div class="col">
-        <button  id="atribuida"   class="btn btn-primary">Atualizar a ATA</button>
-    
-</div>
-
+        
     </form>
           
             </div>          
 </div>
 </form>
+<div class="col">
+        <button  id="atribuida"   class="btn btn-primary">Atualizar a ATA</button>
+    
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var botaocont = document.getElementById('botaocontinuarata');
+        var botaocont = document.getElementById('atribuida');
         var botaoregistrar = document.getElementById('botaoregistrar');
         var itemList = document.getElementById('items');
         var filter = document.getElementById('filter');
