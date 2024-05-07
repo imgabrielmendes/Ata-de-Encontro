@@ -66,8 +66,8 @@ if ($result->num_rows > 0) {
                             // echo "info9:" . $deliberacoes . "<br>";
 
                             $html = '
-            <br>
-            <table style="border: 1px solid black; padding: 8px 0px;">
+          
+            <table style="border: 1px solid black; padding: 8px 0px; order-spacing:3px">
                 <tbody>
                     <tr style="text-align: center;">
                         <td style="height: 20px; border: 1px solid black;"><img src="view\img\logo-hrg.png" alt="Descrição da imagem"></td>
@@ -81,47 +81,47 @@ if ($result->num_rows > 0) {
                         <td style="border: 1px solid black;">27/09/2021</td>
                         <td style="border: 1px solid black;"><b>Versão</b></td>
                         <td style="border: 1px solid black;">2-2021</td>
-                        <td style="border: 1px solid black;"s>ANEXO 4</td>
+                        <td style="border: 1px solid black;">ANEXO 4</td>
                     </tr>
                 </tbody>
             </table>
 
             <h1 style="text-align: center;">Ata de encontro N°'.$idAssunto.'</h1>
             
-            <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
-                <tbody>
-                    <tr style="text-align: center; background-color: #c0c0c0">
-                        <td style="border: 1px solid black; height: 30px "><b>Data:</b></td>
-                        <td style="height: 30px; border: 1px solid black;"><h4>Horário de Inicio:</h4></td>
-                        <td style="height: 30px; border: 1px solid black;"><b>Horário de Término:</b></td>
-                        <td style="height: 30px; border: 1px solid black;"><b>Tempo estimado:</b></td>
-                    </tr>
-                    <tr style="text-align: center;">
-                        <td style="border: 1px solid black; height: 30px ">'.$data.'</td>
-                        <td style="border: 1px solid black; height: 30px">'.$horainicio.'</td>
-                        <td style="border: 1px solid black; height: 30px">'.$horafinal.'</td>
-                        <td style="border: 1px solid black; height: 30px">*Colocar</td>
-                    </tr>
-                </tbody>
-            </table>
-            <br> <br> 
+            <table style="padding: 6px 0px; text-align: center; font-size: 10px; width: 540px; height: 20px;">
+            <tbody>
+                <tr style="text-align: center; background-color: #c0c0c0">
+                    <td style="padding: 5px; border: 1px solid black"><b>Data:</b></td>
+                    <td style="padding: 5px; border: 1px solid black"><h4>Horário de Inicio:</h4></td>
+                    <td style="padding: 5px; border: 1px solid black"><b>Horário de Término:</b></td>
+                    <td style="padding: 5px; border: 1px solid black"><b>Tempo estimado:</b></td>
+                    <td style="padding: 5px; border: 1px solid black"><b>Objetivo:</b></td>
+                </tr>
+                <tr style="text-align: center;">
+                    <td style="border: 1px solid black; padding: 5px;">'.$data.'</td>
+                    <td style="border: 1px solid black; padding: 5px;">'.$horainicio.'</td>
+                    <td style="border: 1px solid black; padding: 5px;">'.$horafinal.'</td>
+                    <td style="border: 1px solid black; padding: 5px;">*Colocar</td>
+                    <td style="border: 1px solid black; padding: 5px;">'.$objetivo.'</td>
+                </tr>
+            </tbody>
+        </table>
 
-            <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
-                <tbody>
-                    <tr style="text-align: center; background-color: #c0c0c0">
-                        <td style="border: 1px solid black; height: 30px"><b>Objetivo:</b></td>
-                        <td style="height: 31px; border: 1px solid black; "><h4>Local:</h4></td>
-                        <td style="height: 30px; border: 1px solid black;"><b>Tema:</b></td>
-                    </tr>
-                    <tr style="text-align: center;">
-                        <td style="border: 1px solid black; ">'.$objetivo.'</td>
-                        <td style="border: 1px solid black;">'.$local.'</td>
-                        <td style="border: 1px solid black;">'.$tema.'</td>
-                    </tr>
-                </tbody>
-            </table>        
-            <h2> PARTICIPANTES </h2>
-            <ul>';
+        <table style="border: 1px solid black; padding: 8px 0px; text-align: center; ">
+        <tbody>
+            <tr style="background-color: #c0c0c0">
+                <td style="border: 1px solid black; height: 30px; width: 108px;"><b>Local:</b></td>
+                <td style="border: 1px solid black; width: 432px; text-align: left;">'.'   '.'<b>Tema:</b></td>
+            </tr>
+                <tr>
+                    <td style="border: 1px solid black; text-align: center;">'.$local.'</td>
+                    <td style="border: 1px solid black; text-align: left; padding-left: 10px;">'.'   '.$tema.'</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2> PARTICIPANTES </h2>
+        <ul style="">';
 
         // Adicionando cada participante à lista
         foreach (explode(",", $nomeParticipantes) as $participante) {
@@ -150,34 +150,53 @@ if (!empty($deliberadores_deliberacoes)) {
 }
 
 foreach ($deliberadores_por_deliberacao as $deliberacao => $deliberadores) {
-    $html .= '<p><b>Deliberação:</b> '
-                .$deliberacao.'<br><b>Deliberadores:</b> '.implode(", ", $deliberadores).'</p>';
+    $html .= '
+        <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
+            <tbody>
+                <tr style="">
+                    <td style="text-align: center; border: 1px solid black; background-color: #c0c0c0; width: 130px; font-size: 9,5px;"><b>'.implode(", ", $deliberadores).'</b></td>
+                    <td style="text-align: left; border: 1px solid black; height: 30px; width: 409px; font-size: 10px;">'.'   '.$deliberacao.'</td>
+                </tr>
+            </tbody>
+        </table>';
 }
 
 $html .= '</body></html>';
 
         
         
-        $html .= '<br><br>
+        $html .= '
         <h2> TEXTO PRINCIPAL: </h2>
-        <text style="height: 30px; border: 1px solid black;">'.$textop.'</txt>
+        <text style="height: 30px; border: 1px solid black">'.$textop.'</txt>
         <br><br><br><br><br>
-            <hr style="margin-left: 4px;" size="10" width="50%" align="center"></hr>
-                       <txt>Assinatura do Responsável</txt>
-                       <br><br><br><br><br><br><br><br>
 
-                       <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
-                       <tbody>
-                           <tr style="text-align: center; background-color: #c0c0c0">
-                               <td style="height: 31px; border: 1px solid black; "><h4>Assinatura de presença:</h4></td>
-                           </tr>
-                           <tr style="text-align: center;">
-                               <td style="border: 1px solid black; "></td>
-                               <td style="border: 1px solid black;"></td>
-                               <td style="border: 1px solid black;"></td>
-                           </tr>
-                       </tbody>
-                   </table>    
+        <hr style="margin-left: 4px;" size="10" width="50%" align="center"></hr>
+        <txt>Assinatura do Responsável</txt>
+        <br><br><br><br><br><br><br><br>
+
+        <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
+        <tbody>
+            <tr style="text-align: center">
+                <td style="height: 31px; border: 1px solid black; background-color: #c0c0c0 "><h4>Assinatura de presença:</h4></td>
+            </tr>
+        </tbody>
+        </table>  
+
+        <table style="border: 1px solid black; text-align: center">
+        <tbody>
+            <tr style="text-align: center">
+                <td style="height: 31px; border: 1px solid black; width: 60px"><h4>Mat.</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 150px "><h4>Nome:</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 60px"><h4>Função:</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 262px "><h4>Assinatura:</h4></td>
+            </tr>
+            <tr style="text-align: center;">
+                <td style="border: 1px solid black; "></td>
+                <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;"></td>
+            </tr>
+        </tbody>
+        </table>     
 
         </body></html>';
         
