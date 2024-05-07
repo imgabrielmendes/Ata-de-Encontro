@@ -154,7 +154,7 @@ foreach ($deliberadores_por_deliberacao as $deliberacao => $deliberadores) {
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
             <tbody>
                 <tr style="">
-                    <td style="text-align: center; border: 1px solid black; background-color: #c0c0c0; width: 130px; font-size: 9,5px;"><b>'.implode(", ", $deliberadores).'</b></td>
+                    <td style="text-align: center; border: 1px solid black; background-color: #c0c0c0; width: 130px; font-size: 9,5px;"><b>'.implode(",<br>", $deliberadores).'</b></td>
                     <td style="text-align: left; border: 1px solid black; height: 30px; width: 409px; font-size: 10px;">'.'   '.$deliberacao.'</td>
                 </tr>
             </tbody>
@@ -185,22 +185,23 @@ $html .= '</body></html>';
         <table style="border: 1px solid black; text-align: center">
         <tbody>
             <tr style="text-align: center">
+
                 <td style="height: 31px; border: 1px solid black; width: 60px"><h4>Mat.</h4></td>
                 <td style="height: 31px; border: 1px solid black; width: 150px "><h4>Nome:</h4></td>
                 <td style="height: 31px; border: 1px solid black; width: 60px"><h4>Função:</h4></td>
                 <td style="height: 31px; border: 1px solid black; width: 262px "><h4>Assinatura:</h4></td>
             </tr>
             <tr style="text-align: center;">
-                <td style="border: 1px solid black; "></td>
                 <td style="border: 1px solid black;"></td>
                 <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;"></td>
+                <td style="border: 1px solid black;"></td>
+
             </tr>
         </tbody>
-        </table>     
+        </table>';     
 
-        </body></html>';
-        
-
+        $html .='</body></html>';
 
         $pdf->AddPage();
 
