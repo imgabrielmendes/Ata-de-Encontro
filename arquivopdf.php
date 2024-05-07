@@ -5,30 +5,30 @@ $id = $_GET['updateid'];
 
 require_once("C:\\xampp\\htdocs\\dev\\Ata-de-Encontro\\TCPDF\\tcpdf.php");
 
-$sql = "SELECT  
-            assunto.id AS IDASSUNTO,
-            assunto.hora_inicial AS horainicio,
-            assunto.hora_termino AS horatermi,
-            assunto.local AS local,
-            assunto.tema AS tema,
-            assunto.objetivo AS objetivo,
-            assunto.data_solicitada AS data,
-            GROUP_CONCAT(DISTINCT fac_parti.nome_facilitador) AS nome_participantes,
-            GROUP_CONCAT(DISTINCT delib.deliberacoes) AS deliberacoes,
-            GROUP_CONCAT(DISTINCT fac_delib.nome_facilitador) AS nome_deliberadores,
-            tp.texto_princ
-
-            FROM 
-            atareu.assunto AS assunto
-            INNER JOIN atareu.participantes AS parti ON parti.id_ata = assunto.id
-            INNER JOIN atareu.facilitadores AS fac_parti ON fac_parti.id = parti.participantes
-            INNER JOIN atareu.deliberacoes AS delib ON delib.id_ata = assunto.id
-            INNER JOIN atareu.facilitadores AS fac_delib ON fac_delib.id = delib.deliberadores
-            INNER JOIN atareu.textoprinc as tp ON tp.id_ata = assunto.id
-            WHERE 
-                delib.id_ata = $id
-            GROUP BY
-            assunto.id";
+$sql = "SELECT
+assunto.id AS IDASSUNTO,
+assunto.hora_inicial AS horainicio,
+assunto.hora_termino AS horatermi,
+assunto.local AS local,
+assunto.tema AS tema,
+assunto.objetivo AS objetivo,
+assunto.data_solicitada AS data,
+GROUP_CONCAT(DISTINCT fac_parti.nome_facilitador) AS nome_participantes,
+GROUP_CONCAT(DISTINCT delib.deliberacoes) AS deliberacoes,
+GROUP_CONCAT(DISTINCT CONCAT(fac_delib.nome_facilitador, ':', delib.deliberacoes)) AS deliberadores_deliberacoes,
+tp.texto_princ
+FROM
+atareu.assunto AS assunto
+INNER JOIN atareu.participantes AS parti ON parti.id_ata = assunto.id
+INNER JOIN atareu.facilitadores AS fac_parti ON fac_parti.id = parti.participantes
+INNER JOIN atareu.deliberacoes AS delib ON delib.id_ata = assunto.id
+INNER JOIN atareu.facilitadores AS fac_delib ON fac_delib.id = delib.deliberadores
+INNER JOIN atareu.textoprinc AS tp ON tp.id_ata = assunto.id
+WHERE
+delib.id_ata = $id
+GROUP BY
+assunto.id;
+";
 
 
                 $result= $conn->query($sql);
@@ -48,8 +48,8 @@ if ($result->num_rows > 0) {
         $horafinal = substr($row['horatermi'], 0, -3);
         $objetivo = $row['objetivo'];
         $nomeParticipantes = $row['nome_participantes'];
-        $nomeDeliberadores = $row['nome_deliberadores'];
         $deliberacoes = $row['deliberacoes'];
+        $deliberadores_deliberacoes = $row['deliberadores_deliberacoes'];
         $textop = $row['texto_princ'];
 
 
@@ -96,7 +96,7 @@ if ($result->num_rows > 0) {
                         <td style="height: 30px; border: 1px solid black;"><b>Horário de Término:</b></td>
                         <td style="height: 30px; border: 1px solid black;"><b>Tempo estimado:</b></td>
                     </tr>
-                    <tr style="text-align: center; ">
+                    <tr style="text-align: center;">
                         <td style="border: 1px solid black; height: 30px ">'.$data.'</td>
                         <td style="border: 1px solid black; height: 30px">'.$horainicio.'</td>
                         <td style="border: 1px solid black; height: 30px">'.$horafinal.'</td>
@@ -128,24 +128,35 @@ if ($result->num_rows > 0) {
             $html .= '<li>'.$participante.'</li>';
         }
         
+        $html .= '</ul>';
         $html .='<h2> DELIBERAÇÕES </h2>';
 
-        foreach (explode(",", $nomeDeliberadores) as $deliberador) {
-            $html .= '
-                <table>
-                    <tbody>
-                        <tr style="text-align: center; ">
-                            <td style="height: 31px; border: 1px solid black; background-color: #c0c0c0">'.$deliberador.'</td>';
-        
-            foreach (explode(",", $deliberacoes) as $delib) {
-                $html .= '<td style="border: 1px solid black;">'.$delib.'</td>';
-            } 
-        
-            $html .= '
-                        </tr>
-                    </tbody>
-                </table>';
+
+$deliberadores_por_deliberacao = array();
+
+if (!empty($deliberadores_deliberacoes)) {
+
+    foreach (explode(",", $deliberadores_deliberacoes) as $deliberador_deliberacao) {
+        list($deliberador, $deliberacao) = explode(":", $deliberador_deliberacao);
+
+        if (isset($deliberadores_por_deliberacao[$deliberacao])) {
+
+            $deliberadores_por_deliberacao[$deliberacao][] = $deliberador;
+        } else {
+
+            $deliberadores_por_deliberacao[$deliberacao] = array($deliberador);
         }
+    }
+}
+
+foreach ($deliberadores_por_deliberacao as $deliberacao => $deliberadores) {
+    $html .= '<p><b>Deliberação:</b> '
+                .$deliberacao.'<br><b>Deliberadores:</b> '.implode(", ", $deliberadores).'</p>';
+}
+
+$html .= '</body></html>';
+
+        
         
         $html .= '<br><br>
         <h2> TEXTO PRINCIPAL: </h2>
