@@ -57,6 +57,8 @@ if ($result->num_rows > 0) {
         // var_dump($matric);
 
         $pdf = new \TCPDF();
+        $pdf->SetCreator(PDF_CREATOR);
+
 
                             // echo "info1:" . $idAssunto . "<br>";
                             // echo "info2:" . $idAtaDoHas . "<br>";
@@ -224,43 +226,48 @@ $html .= '</body></html>';
 
         $pdf->writeHTML($html, true, false, true, false, '');
 
-        $pdf->Output('arquivopdf.pdf', 'I');
+// Start First Page Group
+$pdf->startPageGroup();
 
-        $pdf->AddPage(); // Adiciona uma nova página ao PDF
+// add a page
+$pdf->AddPage();
 
-        // Escreve o HTML na nova página
-        $pdf->writeHTML($html, true, false, true, false, '');
+// // set some text to print
+// $html = '<table style="border: 1px solid black; text-align: center; padding: 6px 0px;">
+// <tbody>
+// <tr style="text-align: center; background-color: #ececed">
+//     <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Mat.</h4></td>
+//     <td style="height: 31px; border: 1px solid black; width: 150px; vertical-align: middle;"><h4>Nome:</h4></td>
+//     <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Função:</h4></td>
+//     <td style="height: 31px; border: 1px solid black; width: 262px; vertical-align: middle;"><h4>Assinatura:</h4></td>
+// </tr>';
 
-        // Define o nome do arquivo de saída e o método de saída
-        $pdf->Output('arquivopdf.pdf', 'I');
+//     foreach (explode(",", $nomeParticipantes) as $participante) {
+//         $html .= '<tr style="text-align: center;">
+//                     <td style="border: 1px solid black; height: 20px;">0000</td>
+//                     <td style="border: 1px solid black;">'.$participante.'</td>
+//                     <td style="border: 1px solid black;"></td>
+//                     <td style="border: 1px solid black;"></td>
+//                     <td style="border: 1px solid black;"></td>
 
-        $html .= '
-        <h2> TEXTO PRINCIPAL: </h2>
-        <text style="height: 30px; border: 1px solid black">'.$textop.'</txt>
-        <br><br><br><br><br>
-
-        <hr style="margin: 5px auto; width: 40%;" align="center">
-        <txt style="display: block; text-align: center;">Assinatura do Responsável</txt>
-        
-        <br><br><br><br><br><br>
-
-        <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
-        <tbody>
-            <tr style="text-align: center">
-                <td style="height: 31px; border: 1px solid black; background-color: #c0c0c0 "><h4>Assinatura de presença:</h4></td>
-            </tr>
-        </tbody>
-        </table>  
-
-        <table style="border: 1px solid black; text-align: center; padding: 6px 0px;">
-    <tbody>
-    <tr style="text-align: center; background-color: #ececed">
-        <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Mat.</h4></td>
-        <td style="height: 31px; border: 1px solid black; width: 150px; vertical-align: middle;"><h4>Nome:</h4></td>
-        <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Função:</h4></td>
-        <td style="height: 31px; border: 1px solid black; width: 262px; vertical-align: middle;"><h4>Assinatura:</h4></td>
-    </tr>';
+//                 </tr>';
+//     }
     
+//     for ($linha = 0; $linha < 6; $linha++) {
+//         $html .= '<tr style="text-align: center;">
+//                     <td style="border: 1px solid black; height: 20px;"></td>
+//                     <td style="border: 1px solid black;"></td>
+//                     <td style="border: 1px solid black;"></td>
+//                     <td style="border: 1px solid black;"></td>
+//                 </tr>';
+//     }
+
+// $html .='</tbody>
+//         </table>';
+
+        // $pdf->writeHTML($html, true, false, true, false, '');
+
+$pdf->Output('ata_de_encontro'.$id.'.pdf', 'I');
 
     }
         } else {
