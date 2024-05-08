@@ -133,26 +133,27 @@ if ($conn->connect_error) {
     <tbody>
         <?php
         $sql = "SELECT 
-                    assunto.id, 
-                    DATE_FORMAT(assunto.data_solicitada, '%d/%m/%Y') AS data_formatada, 
-                    assunto.objetivo, 
-                    assunto.tema, 
-                    assunto.local, 
-                    assunto.status, 
-                    GROUP_CONCAT(facilitadores.nome_facilitador SEPARATOR ', ') AS facilitadores,
-                    textoprinc.texto_princ AS deliberações
-                FROM 
-                    assunto
-                LEFT JOIN 
-                    ata_has_fac ON assunto.id = ata_has_fac.id_ata
-                LEFT JOIN 
-                    facilitadores ON ata_has_fac.facilitadores = facilitadores.id
-                LEFT JOIN
-                    textoprinc ON assunto.id = textoprinc.id_ata
-                GROUP BY 
-                    assunto.id
-                ORDER BY 
-                    assunto.id DESC";
+        assunto.id, 
+        DATE_FORMAT(assunto.data_solicitada, '%d/%m/%Y') AS data_formatada, 
+        assunto.objetivo, 
+        assunto.tema, 
+        assunto.local, 
+        assunto.status, 
+        GROUP_CONCAT(DISTINCT facilitadores.nome_facilitador SEPARATOR ', ') AS facilitadores,
+        GROUP_CONCAT(DISTINCT CONCAT(facilitadores.nome_facilitador, ': ', textoprinc.texto_princ) ORDER BY facilitadores.nome_facilitador SEPARATOR '<br>') AS deliberadores_deliberacoes
+    FROM 
+        assunto
+    LEFT JOIN 
+        ata_has_fac ON assunto.id = ata_has_fac.id_ata
+    LEFT JOIN 
+        facilitadores ON ata_has_fac.facilitadores = facilitadores.id
+    LEFT JOIN
+        textoprinc ON assunto.id = textoprinc.id_ata
+    GROUP BY 
+        assunto.id, textoprinc.texto_princ
+    ORDER BY 
+        assunto.id DESC;
+    ";
 
         $result = mysqli_query($conn, $sql);
 
@@ -200,26 +201,51 @@ if ($conn->connect_error) {
                     $id_ata = $row['id'];
                     $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
                     if (!empty($deliberacoes) && is_array($deliberacoes)) {
-                        echo "<td class='align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        // Inicializa um array associativo para armazenar as deliberações únicas e os deliberadores associados a cada deliberação
+                        $deliberacoes_unicas = array();
+                    
+                        // Agrupa os deliberadores por deliberação, evitando repetições
                         foreach ($deliberacoes as $deliberacao) {
-                            echo "<div class='deliberacao'>" . $deliberacao['deliberacoes'] . "</div>";
+                            $texto_deliberacao = $deliberacao['deliberacoes'];
+                            $deliberador = $deliberacao['deliberador'];
+                            // Adiciona o deliberador apenas se esta deliberação ainda não estiver presente no array
+                            if (!isset($deliberacoes_unicas[$texto_deliberacao])) {
+                                $deliberacoes_unicas[$texto_deliberacao] = array();
+                            }
+                            // Adiciona o deliberador ao array associado à deliberação
+                            $deliberacoes_unicas[$texto_deliberacao][] = $deliberador;
+                        }
+                    
+                        echo "<td class='text-left' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        // Exibe as deliberações únicas
+                        foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
+                            echo "<div class='form-control deliberacao'>" . $texto_deliberacao . "</div><br>";
                         }
                         echo "</td>";
-
-                        echo "<td class='align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
-                        foreach ($deliberacoes as $deliberacao) {
-                            echo "<div class='deliberador'>" . $deliberacao['deliberador'] . "</div>";
+                    
+                        echo "<td class='text-left' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                        // Exibe os deliberadores associados a cada deliberação única
+                        foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
+                            $deliberadores_concatenados = implode(", ", $deliberadores);
+                            // Verifica se o texto é grande o suficiente para justificar a barra de rolagem
+                            echo "<div class='form-control deliberador' style='overflow-x: auto;'>" . $deliberadores_concatenados . "</div><br>";
                         }
                         echo "</td>";
                     } else {
-                        echo "<td class='align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        echo "<td class='form-control align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
                         echo "Nenhuma deliberação";
                         echo "</td>";
-
-                        echo "<td class='align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                    
+                        echo "<td class='form-control align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
                         echo "Nenhum deliberador";
                         echo "</td>";
                     }
+                    
+                    
+                    
+                    
+                    
+
                 } else {
                     echo "<td class='align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
                     echo "ID da ata não disponível";
@@ -246,7 +272,7 @@ if ($conn->connect_error) {
     </div>
 </div>
         <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Informações de Registro da Ata</h5>
@@ -255,7 +281,7 @@ if ($conn->connect_error) {
             <div class="modal-body">
                 <div class="accordion">
                     <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
-                        <div class="col-md text-center">
+                        <div class="col-md ">
                             <div class="row">
                                 <div class="col-4">
                                     <label><b>Solicitação:</b></label>
@@ -290,16 +316,17 @@ if ($conn->connect_error) {
                                     <ul class="form-control bg-body-secondary  border rounded" id="modal_participantes"></ul>
                                 </div>
                                 <div class="col-12">
-                                    <label class="h4 pt-3"><b>DELIBERAÇÕES</b></label>
+                                 
                                     <div class="row">
                                     <div class="col-6">
-    <label class="h4 pt-3"><b>Deliberações</b></label>
-    <div class="form-control" id="modal_deliberacoes"></div>
+    <label class="h4 "><b>Deliberadores</b></label>
+    <div class="col-12" id="modal_deliberadores"></div>
 </div>
-<div class="col-6">
-    <label class="h4 pt-3"><b>Deliberadores</b></label>
-    <div class="form-control" id="modal_deliberadores"></div>
+                                    <div class="col-6">
+    <label class="h4  "><b>Deliberações</b></label>
+    <div class="col-12" id="modal_deliberacoes"></div>
 </div>
+
 
                                 </div>
                                 </div>
