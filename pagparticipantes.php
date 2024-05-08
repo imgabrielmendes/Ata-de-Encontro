@@ -87,7 +87,7 @@ $local = $_GET['local'];
           <div class="container-fluid">
             <div class="row py-1">
               <div class="col-sm-6">
-                <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Histórico de atas de encontro</h2>
+              <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Atas de encontro</h2>
               </div>
             </div>
           </div>
@@ -95,7 +95,6 @@ $local = $_GET['local'];
       </header>
 
   <!--FORMULÁRIO-->
-
   <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
   <div class="box box-primary">
     <main class="container_fluid d-flex justify-content-center align-items-center">
