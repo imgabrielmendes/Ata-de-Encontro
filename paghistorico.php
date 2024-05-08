@@ -175,66 +175,60 @@ if ($conn->connect_error) {
                 echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
                 echo "<td class='align-middle' style='display:none;'  onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
                 echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
-            if (isset($row['id'])) {
-                $id_ata = $row['id'];
-                $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-                if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
-                    $totalParticipantes = count($puxaparticipantes);
-                    $count = 0;
-                    foreach ($puxaparticipantes as $participante) {
-                        echo $participante;
-                        $count++;
-                        if ($count < $totalParticipantes) {
-                            echo ", <br>";
+                if (isset($row['id'])) {
+                    $id_ata = $row['id'];
+                    $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+                    if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
+                        $totalParticipantes = count($puxaparticipantes);
+                        $count = 0;
+                        foreach ($puxaparticipantes as $participante) {
+                            echo $participante;
+                            $count++;
+                            if ($count < $totalParticipantes) {
+                                echo ", <br>";
+                            }
                         }
+                    } else {
+                        echo "Nenhum participante";
                     }
                 } else {
-                    echo "Nenhum participante";
+                    echo "ID da ata não disponível";
                 }
-            } else {
-                echo "ID da ata não disponível";
-            }
+                echo "</td>";
 
-
-                
-   
-            
-                    if (isset($row['id'])) {
-                        $id_ata = $row['id'];
-                        $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
-                        if (!empty($deliberacoes) && is_array($deliberacoes)) {
-                            echo "<div class='deliberacoes' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
-                            foreach ($deliberacoes as $deliberacao) {
-                                echo "<div class='deliberacao'>" . $deliberacao['deliberacoes'] . "</div>";
-                            }
-                            echo "</div>";
-                        
-                            echo "<div class='deliberadores' style='display:none;' id='deliberadores" . $row['id'] . "'>";
-                            foreach ($deliberacoes as $deliberacao) {
-                                echo "<div class='deliberador'>" . $deliberacao['deliberador'] . "</div>";
-                            }
-                            echo "</div>";
-                        } else {
-                            echo "<div class='deliberacoes' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
-                            echo "<div class='deliberacao'>Nenhuma deliberação</div>";
-                            echo "</div>";
-                        
-                            echo "<div class='deliberadores' style='display:none;' id='deliberadores" . $row['id'] . "'>";
-                            echo "<div class='deliberador'>Nenhum deliberador</div>";
-                            echo "</div>";
+                if (isset($row['id'])) {
+                    $id_ata = $row['id'];
+                    $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+                    if (!empty($deliberacoes) && is_array($deliberacoes)) {
+                        echo "<td class='align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        foreach ($deliberacoes as $deliberacao) {
+                            echo "<div class='deliberacao'>" . $deliberacao['deliberacoes'] . "</div>";
                         }
-                    
-                    
-                
-            } else {
-                echo "<td class='align-middle' style='display:none;' id='deliberacoes1" . $row['id'] . "'>";
-                echo "ID da ata não disponível";
-                echo "</td>";
-            
-                echo "<td class='align-middle' style='display:none;' id='deliberador" . $row['id'] . "'>";
-                echo "ID da ata não disponível";
-                echo "</td>";
-            }       
+                        echo "</td>";
+
+                        echo "<td class='align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                        foreach ($deliberacoes as $deliberacao) {
+                            echo "<div class='deliberador'>" . $deliberacao['deliberador'] . "</div>";
+                        }
+                        echo "</td>";
+                    } else {
+                        echo "<td class='align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        echo "Nenhuma deliberação";
+                        echo "</td>";
+
+                        echo "<td class='align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                        echo "Nenhum deliberador";
+                        echo "</td>";
+                    }
+                } else {
+                    echo "<td class='align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                    echo "ID da ata não disponível";
+                    echo "</td>";
+
+                    echo "<td class='align-middle' style='display:none;' id='deliberador" . $row['id'] . "'>";
+                    echo "ID da ata não disponível";
+                    echo "</td>";
+                }     
                 echo "<td>
                         <button class='btn btn-warning' style='color: white; '>
                             <a style='color:white; text-decoration:none;' class='text-center align-middle' href='pagatribuida.php? updateid=".$id."'>+</a>
