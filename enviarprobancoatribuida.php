@@ -1,49 +1,30 @@
 <?php
 include 'database.php';
-include 'pagatribuida.php';
 session_start();
-$id = isset($_GET['updateid']) ? $_GET['updateid'] : null;
-print_r($id);
-$participantesSelecionados = json_decode($_POST['participanteatribu']);
-var_dump("string jfjfff");
-if ($participantesSelecionados !== null) {
+$id_ata = isset($_GET['updateid']) ? $_GET['updateid'] : null;
 
+$participantesSelecionados = json_decode($_POST['participanteatribu']);
+
+if ($participantesSelecionados !== null) {
 
     $conexao->begin_transaction();
 
-    $enviarbanco = "INSERT INTO ata_has_fac (id_ata) VALUES (?)";
-    
+    // Preparando a query SQL para inserção dos dados
+    $enviarbanco = "INSERT INTO ata_has_fac (id_ata, facilitadores) VALUES (?, ?)";
     $stmt = $conexao->prepare($enviarbanco);
-    $stmt->bind_param("ssssss", $participantesSelecionados);
-    
-    $stmt->execute();
-   
+    $stmt->bind_param("ss", $id_ata, $facilitador); // Aqui bind_param espera dois valores, então usamos "ss"
+
+    // Loop pelos participantes selecionados para inserir um por um no banco de dados
+    foreach ($participantesSelecionados as $facilitador) {
+        $stmt->execute(); // Executa a query SQL para cada participante
+    }
 
     if ($stmt) {
-        
-        $id_ata = $conexao->insert_id;
-
-        foreach ($participantesSelecionados as $facilitador) {
-
-            $enviarbanco2 = "INSERT INTO ata_has_fac ( facilitadores) VALUES (?, ?) ";
-            $stmt2 = $conexao->prepare($enviarbanco2);
-            $stmt2->bind_param("ss",  $facilitador);
-            $stmt2->execute();
-
-            if ($stmt2) {
-                echo "Registro inserido com sucesso na tabela ata_has_fac para o facilitador: $facilitador <br>";
-            } else {
-                echo "Erro ao inserir registro na tabela ata_has_fac para o facilitador: $facilitador <br>";
-            }
-
-            $stmt2->close();
-        }
-
         $conexao->commit();
-        echo "Registro inserido com sucesso para o facilitador: $facilitador <br>";
+        echo "Registros inseridos com sucesso.";
     } else {
         $conexao->rollback();
-        echo "Erro ao inserir registro <br>";
+        echo "Erro ao inserir registros.";
     }
 
     $stmt->close();
@@ -52,8 +33,4 @@ if ($participantesSelecionados !== null) {
 } else {
     echo "(X) Algum dos campos está vazio.";
 }
-
-
-
-
 ?>

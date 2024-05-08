@@ -1,9 +1,53 @@
 <?php
+
 namespace formulario;
+$id = $_GET['updateid'];
+// include("vendor/autoload.php");
 include_once("app/acoesform.php");
 include("conexao.php");
+
 $puxarform = new AcoesForm;
-$id = isset($_GET['updateid']) ? $_GET['updateid'] : null;
+$facilitadores = $puxarform->selecionarFacilitadores();
+$pegarfa = $puxarform->pegarfacilitador();
+$puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
+$resultados = $puxarform->pegandoTudo();
+$pegarid = $puxarform->puxarId();
+$sql="SELECT * FROM assunto where id=$id ";
+$result = mysqli_query($conn, $sql);
+$row=mysqli_fetch_assoc($result);
+    $datasolicitada = $row['data_solicitada'];
+    $tema = $row['tema'];
+    $objetivo = $row['objetivo'];
+    $password = $row['local'];
+    $horainic = $row['hora_inicial'];
+    $horaterm = $row['hora_termino'];
+
+    $sql2 = "SELECT 
+    fac.nome_facilitador as facilitadores,
+    fac.id as idfacilitadores
+    
+    FROM ata_has_fac as ahf
+    INNER JOIN facilitadores as fac
+      ON fac.id = ahf.facilitadores
+    where ahf.id_ata = $id";
+
+    $result2 = mysqli_query($conn, $sql2);
+    $facilitadores = array(); 
+
+      while ($row2 = mysqli_fetch_assoc($result2)) { 
+          $facilitadores[] = $row2;
+      }
+
+      print_r($sql2);
+
+//funções de encotrar pessoas
+// $pegarfa = $puxarform->puxandoUltimosFacilitadores();
+$participantesArray = $pegarfa;
+// $pegarrespons = $puxarform->ultimosResponsaveis();
+
+$pegarde=$puxarform->pegarfacilitador();
+// ARRUMAR UM JEIT
+var_dump($pegarid);
 
 //Conexão com o banco de dados (substitua os valores pelos seus próprios)
 $servername = "localhost";
@@ -24,47 +68,6 @@ $sql = "SELECT id, data_registro, tema, data_solicitada, objetivo, hora_inicial,
 $result = $conn->query($sql);
 
 
-
-
-$facilitadores = $puxarform->selecionarFacilitadores();
-$pegarfa = $puxarform->pegarfacilitador();
-$puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
-$resultados = $puxarform->pegandoTudo();
-$pegarid = $puxarform->puxarId();
-
-$sql="SELECT * FROM assunto where id=$id_ata ";
-
-$row=mysqli_fetch_assoc($result);
-    $datasolicitada = $row['data_solicitada'];
-    $tema = $row['tema'];
-    $objetivo = $row['objetivo'];
-    $password = $row['local'];
-    $horainic = $row['hora_inicial'];
-    $horaterm = $row['hora_termino'];
-
-    $sql2 = "SELECT 
-    fac.nome_facilitador as facilitadores,
-    fac.id as idfacilitadores
-    
-    FROM ata_has_fac as ahf
-    INNER JOIN facilitadores as fac
-      ON fac.id = ahf.facilitadores
-    where ahf.id_ata = $id";
-
-   
-    $facilitadores = array(); 
-
-      while ($row2 = mysqli_fetch_assoc($result)) { 
-          $facilitadores[] = $row2;
-      };
-
-//funções de encotrar pessoas
-// $pegarfa = $puxarform->puxandoUltimosFacilitadores();
-$participantesArray = $pegarfa;
-// $pegarrespons = $puxarform->ultimosResponsaveis();
-
-$pegarde=$puxarform->pegarfacilitador();
-// ARRUMAR UM JEIT;
 
 ?>
 <!DOCTYPE html>
@@ -224,19 +227,20 @@ $pegarde=$puxarform->pegarfacilitador();
             <br>
             <form id="addForm">
               <div class="col-12 form-group ">
-                <div class="col">
-                  <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple>
-                    <optgroup label="Selecione Facilitadores">
-                      <?php foreach ($pegarfa as $facnull) : ?>
-                        <option value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                          <?php echo $facnull['nome_facilitador']; ?>
-                        </option>
-                      <?php endforeach ?>
-                    </optgroup>
-                  </select>
-                </div>
+                  <div class="col">
+                      <!-- Adicione o atributo data-id-ata -->
+                      <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
+                          <optgroup label="Selecione Facilitadores">
+                              <?php foreach ($pegarfa as $facnull) : ?>
+                                  <option value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                                      <?php echo $facnull['nome_facilitador']; ?>
+                                  </option>
+                              <?php endforeach ?>
+                          </optgroup>
+                      </select>
+                  </div>
               </div>
-            </form>
+          </form>
             <?php
             if (isset($_GET['updateid'])) {
               $id_ata = $_GET['updateid'];
@@ -330,30 +334,75 @@ function adicionarParticipanteAoLabel(participante) {
 
             <div class="col">
     <!-- Primeira caixa de texto e select de facilitadores -->
-    <div class="mb-2">
-        <select id="deliberador" class="form-control facilitator-select" name="deliberacoes" placeholder="Deliberações" multiple>
-        <optgroup label="Selecione Facilitadores">
-                  <?php foreach ($pegarde as $facnull) : ?>
-                      <option value="<?php echo $facnull['nome_facilitador']; ?>"
-                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                          <?php echo $facnull['nome_facilitador']; ?>
-                      </option>
-                  <?php endforeach ?>
-              </optgroup>
-        </select>
-</div>
-
+            <div class="mb-2">
+            <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
+                <optgroup label="Selecione Facilitadores">
+                          <?php foreach ($pegarde as $facnull) : ?>
+                              <option value="<?php echo $facnull['nome_facilitador']; ?>"
+                                  data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                                  <?php echo $facnull['nome_facilitador']; ?>
+                              </option>
+                          <?php endforeach ?>
+                      </optgroup>
+                </select>
         </div>
-        <div class="row">
-          <div class="col-10"></div>
-          <div class="col-2 d-flex justify-content-end">
-              <div class="d-flex flex-column align-items-end">
-                  <ul id="caixadeselecaodel"></ul>
-                  <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
-              </div>
-    </div>
-</div>
+<script>
+    // Função para adicionar event listener ao formulário
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("addForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Previne o comportamento padrão de envio do formulário
 
+        // Recupera o select e suas opções selecionadas
+        var select = document.getElementById("participantesadicionado");
+        var selectedOptions = select.selectedOptions;
+
+        // Loop pelas opções selecionadas
+        for (var i = 0; i < selectedOptions.length; i++) {
+            var selectedOption = selectedOptions[i];
+            var participante = selectedOption.textContent.trim();
+            var participanteId = selectedOption.value;
+
+            // Verifica se o participante já foi adicionado ao label
+            if (!participanteJaAdicionado(participante)) {
+                adicionarParticipanteAoLabel(participante);
+                selectedOption.remove(); // Remove a opção do select após ser adicionada ao label
+            }
+        }
+    });
+});
+
+
+    // Função para lidar com a mudança de seleção no select
+    $(document).ready(function() {
+        $('#participantesadicionado').change(function() {
+            var selected_ids = [];
+            var selected_names = [];
+
+            // Loop pelas opções selecionadas
+            $('#participantesadicionado option:selected').each(function() {
+                selected_ids.push($(this).val());
+                selected_names.push($(this).text());
+            });
+            console.log(selected_ids);
+            console.log(selected_names);
+        });
+    });
+
+    // Função para verificar se o participante já foi adicionado ao label
+    function participanteJaAdicionado(participante) {
+        var label = document.getElementById("participantesLabel");
+        return label.textContent.includes(participante);
+    }
+
+    // Função para adicionar participante ao label
+    function adicionarParticipanteAoLabel(participante) {
+        var label = document.getElementById("participantesLabel");
+        var participanteItem = document.createElement("span");
+        participanteItem.textContent = participante;
+        participanteItem.classList.add("badge", "bg-secondary", "me-1");
+        label.appendChild(participanteItem);
+    }
+</script>
 
     </div>
     
@@ -399,15 +448,24 @@ function adicionarParticipanteAoLabel(participante) {
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var botaocont = document.getElementById('atribuida');
-        var botaoregistrar = document.getElementById('botaoregistrar');
-        var itemList = document.getElementById('items');
-        var filter = document.getElementById('filter');
-        var addItemButton = document.getElementById('addItemButton'); 
+        var botaoatribuicao = document.getElementById("atribuida");
+        if (botaoatribuicao) {
+            botaoatribuicao.addEventListener('click', gravaratribuida);
+        } else {
+            console.error("Elemento com o ID 'atribuida' não encontrado.");
+        }
 
+        // Verifique se id_ata está definido
+        if (id_ata !== null) {
+            // Código para executar se id_ata estiver definido
+            console.log("ID da página:", id_ata);
+            // Aqui você pode usar id_ata conforme necessário
+        } else {
+            console.error("id_ata não está definido.");
+        }
     });
-
 </script>
+
   </div>
     </div>
       </div>
@@ -422,7 +480,9 @@ function adicionarParticipanteAoLabel(participante) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
-    <script src="app\gravaratribuida.js"></script>
+    <script src="app/gravar.js"></script>
+    <script src="app/gravaratribuida.js" data-id-ata="<?php echo $id_ata; ?>"></script>
+
 </body>
 
 </html>
