@@ -13,6 +13,7 @@ assunto.local AS local,
 assunto.tema AS tema,
 assunto.objetivo AS objetivo,
 assunto.data_solicitada AS data,
+fac_delib.matricula as matric,
 GROUP_CONCAT(DISTINCT fac_parti.nome_facilitador) AS nome_participantes,
 GROUP_CONCAT(DISTINCT delib.deliberacoes) AS deliberacoes,
 GROUP_CONCAT(DISTINCT CONCAT(fac_delib.nome_facilitador, ':', delib.deliberacoes)) AS deliberadores_deliberacoes,
@@ -43,6 +44,7 @@ if ($result->num_rows > 0) {
         $idAssunto = $row['IDASSUNTO'];
         $data = substr($row['data'], 0, -8);
         $tema = $row['tema'];
+        $matric = $row['matric'];
         $local = $row['local'];
         $horainicio = substr($row['horainicio'], 0, -3);
         $horafinal = substr($row['horatermi'], 0, -3);
@@ -52,6 +54,7 @@ if ($result->num_rows > 0) {
         $deliberadores_deliberacoes = $row['deliberadores_deliberacoes'];
         $textop = $row['texto_princ'];
 
+        // var_dump($matric);
 
         $pdf = new \TCPDF();
 
@@ -154,8 +157,8 @@ foreach ($deliberadores_por_deliberacao as $deliberacao => $deliberadores) {
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
             <tbody>
                 <tr style="">
-                    <td style="text-align: center; border: 1px solid black; background-color: #c0c0c0; width: 130px; font-size: 9,5px;"><b>'.implode(",<br>", $deliberadores).'</b></td>
-                    <td style="text-align: left; border: 1px solid black; height: 30px; width: 409px; font-size: 10px;">'.'   '.$deliberacao.'</td>
+                    <td style="text-align: center; border: 1px solid black; background-color: #c0c0c0; width: 130px; font-size: 9,5px;"><ul><b>'.implode(",<br>", $deliberadores).'</b></ul></td>
+                    <td style="text-align: left; border: 1px solid black; height: 30px; width: 409px; font-size: 10px;">'.'    '.$deliberacao.'</td>
                 </tr>
             </tbody>
         </table>';
@@ -170,8 +173,9 @@ $html .= '</body></html>';
         <text style="height: 30px; border: 1px solid black">'.$textop.'</txt>
         <br><br><br><br><br>
 
-        <hr style="margin-left: 4px;" size="10" width="50%" align="center"></hr>
-        <txt>Assinatura do Responsável</txt>
+        <hr style="margin: 5px auto; width: 40%;" align="center">
+        <txt style="display: block; text-align: center;">Assinatura do Responsável</txt>
+        
         <br><br><br><br><br><br><br><br>
 
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
@@ -182,25 +186,30 @@ $html .= '</body></html>';
         </tbody>
         </table>  
 
-        <table style="border: 1px solid black; text-align: center">
-        <tbody>
-            <tr style="text-align: center">
+        <table style="border: 1px solid black; text-align: center; padding: 6px 0px;">
+    <tbody>
+    <tr style="text-align: center; background-color: #ececed">
+        <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Mat.</h4></td>
+        <td style="height: 31px; border: 1px solid black; width: 150px; vertical-align: middle;"><h4>Nome:</h4></td>
+        <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Função:</h4></td>
+        <td style="height: 31px; border: 1px solid black; width: 262px; vertical-align: middle;"><h4>Assinatura:</h4></td>
+    </tr>';
 
-                <td style="height: 31px; border: 1px solid black; width: 60px"><h4>Mat.</h4></td>
-                <td style="height: 31px; border: 1px solid black; width: 150px "><h4>Nome:</h4></td>
-                <td style="height: 31px; border: 1px solid black; width: 60px"><h4>Função:</h4></td>
-                <td style="height: 31px; border: 1px solid black; width: 262px "><h4>Assinatura:</h4></td>
-            </tr>
-            <tr style="text-align: center;">
-                <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;"></td>
 
-            </tr>
-        </tbody>
-        </table>';     
+        foreach (explode(",", $nomeParticipantes) as $participante) {
+            $html .= '<tr style="text-align: center;">
+                        <td style="border: 1px solid black; height: 20px;"></td>
+                        <td style="border: 1px solid black;">'.$participante.'</td>
+                        <td style="border: 1px solid black;"></td>
+                        <td style="border: 1px solid black;"></td>
+                        <td style="border: 1px solid black;"></td>
 
+                    </tr>';
+        }
+
+    $html .='</tbody>
+            </table>';
+   
         $html .='</body></html>';
 
         $pdf->AddPage();
