@@ -118,7 +118,7 @@ if ($conn->connect_error) {
                                 <br>
                         </tbody> 
                     </table>
-<table id="myTable" class="table table-striped">
+<table id="myTable" class="table  table-hover">
     <thead>
     <tr>
         <th class="text-center">Data</th>
@@ -219,8 +219,10 @@ if ($conn->connect_error) {
                         echo "<td class='text-left' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
                         // Exibe as deliberações únicas
                         foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
-                            echo "<div class='form-control deliberacao'>" . $texto_deliberacao . "</div><br>";
+                            $classe_overflow = (strlen($texto_deliberacao) > 10) ? 'overflow-auto-y' : ''; // Verifica se o texto excede 500 caracteres
+                            echo "<div class='form-control deliberacao  $classe_overflow' style='overflow-y: auto; max-height: 80px;'>" . $texto_deliberacao . "</div><br>";
                         }
+                        
                         echo "</td>";
                     
                         echo "<td class='text-left' style='display:none;' id='deliberadores" . $row['id'] . "'>";
@@ -228,16 +230,16 @@ if ($conn->connect_error) {
                         foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
                             $deliberadores_concatenados = implode(", ", $deliberadores);
                             // Verifica se o texto é grande o suficiente para justificar a barra de rolagem
-                            echo "<div class='form-control deliberador' style='overflow-x: auto;'>" . $deliberadores_concatenados . "</div><br>";
+                            echo "<div class='form-control deliberador'  >" . $deliberadores_concatenados . "</div><br>";
                         }
                         echo "</td>";
                     } else {
-                        echo "<td class='form-control align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
-                        echo "Nenhuma deliberação";
+                        echo "<td class=' align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        echo "<div class='form-control'>Nenhuma deliberação</div>";
                         echo "</td>";
                     
-                        echo "<td class='form-control align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
-                        echo "Nenhum deliberador";
+                        echo "<td class=' align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                        echo "<div class='form-control'>Nenhum deliberador</div>";
                         echo "</td>";
                     }
                     
@@ -315,15 +317,17 @@ if ($conn->connect_error) {
                                     <label for="form-control"><b>Participantes</b></label>
                                     <ul class="form-control bg-body-secondary  border rounded" id="modal_participantes"></ul>
                                 </div>
+                                <br><br>
                                 <div class="col-12">
-                                 
                                     <div class="row">
+                                        
+                                    <label class="h3  "><b>Deliberações</b></label>
+                                 
                                     <div class="col-6">
-    <label class="h4 "><b>Deliberadores</b></label>
     <div class="col-12" id="modal_deliberadores"></div>
 </div>
                                     <div class="col-6">
-    <label class="h4  "><b>Deliberações</b></label>
+  
     <div class="col-12" id="modal_deliberacoes"></div>
 </div>
 
