@@ -88,7 +88,6 @@ addItemButton.addEventListener('click', function() {
         deleteButton.className = 'btn btn-danger btn-sm ml-2 delete-item';
         deleteButton.addEventListener('click', function() {
 
-            // Remove o item e os deliberadores associados
             itemList.removeChild(textListItemDiv);
             selectedDeliberators.forEach(function(deliberator) {
 
@@ -96,23 +95,18 @@ addItemButton.addEventListener('click', function() {
                 itemList.removeChild(deliberatorDiv);
             });
 
-            deleteButton.remove(); // Remove o botão de exclusão
+            deleteButton.remove(); 
             
         });
 
-        // Adiciona o botão de exclusão à lista de itens
         itemList.appendChild(deleteButton);
     }
 });
 
 document.getElementById('addItemButton').addEventListener('click', function() {
 
-    // Captura o texto digitado e o facilitador selecionado
     var newItem = document.querySelector('.item').value.trim();
     
-    // var selectedFacilitator = document.querySelector('.facilitator-select').value;
-
-    // Verifica se o texto e o facilitador foram preenchidos
     if (newItem === "") {
           Swal.fire({
             title: "Você não adicionou uma deliberação",
@@ -122,11 +116,11 @@ document.getElementById('addItemButton').addEventListener('click', function() {
         return;
     }
 
-    if (deliberadoresSelecionadosLabel === "") {
+    if (deliberadoresSelecionadosLabel.length === 0) {
 
         Swal.fire({
-          title: "Você não adicionou um participante",
-          text: "Adicione pelo menos 1 participante para a ata",
+          title: "Você não adicionou um deliberador",
+          text: "Adicione pelo menos 1 deliberador para a deliberação",
           icon: "error"
       });
       
@@ -219,10 +213,10 @@ function irparaHist() {
     var textoprincipal = document.getElementById('textoprinc').value;
     console.log(textoprincipal);
 
-    if (textoprincipal === "") {
+    if (textoprincipal === "" || deliberadoresSelecionadosLabel.length === 0 ) {
 
         Swal.fire({
-            title: "Informe o texto principal para prosseguir",
+            title: "Informe todos os campos para seguir",
             icon: "error"
         });
 

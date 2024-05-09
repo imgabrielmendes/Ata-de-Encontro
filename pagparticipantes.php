@@ -11,8 +11,14 @@ $pegarfa=$puxarform->pegarfacilitador();
 
 //PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
 $facilitadores = $_GET['facilitadores'];
+
+echo $facilitadores;
+
 $facilitadoresArray = json_decode($facilitadores, true);   
 $facilitadoresString = implode(", ", $facilitadoresArray);
+
+echo $facilitadoresString;
+
 
 $conteudo = $_GET['conteudo'];
 $horainicio = $_GET['horainicio'];

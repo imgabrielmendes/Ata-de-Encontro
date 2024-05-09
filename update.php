@@ -132,26 +132,26 @@ $row=mysqli_fetch_assoc($result);
           <!---ABA DE DATA---->
           <div class="col-3">
             <label><b>Data</b></label>
-            <input id="datainicio" class="form-control" placeholder="dd-mm-aaaa" min="2024-04-01" type="date" value=<?php echo $datasolicitada?>>
+            <input id="datainicio" class="form-control bg-body-secondary" placeholder="dd-mm-aaaa" min="2024-04-01" type="date" value=<?php echo $datasolicitada?> readonly>
           </div>
 
           <!---ABA DE HORÁRIO INICIO---->
           <div class="col-3">
             <label for="nomeMedico"><b>Horário de Início:</b></label>
             <br>
-            <input class="form-control" type="time" id="horainicio" name="appt" min="" max="18:00" value=<?php echo $horaterm?>>
+            <input class="form-control bg-body-secondary" type="time" id="horainicio" name="appt" min="" max="18:00" value=<?php echo $horaterm?> readonly>
           </div>
 
           <!---ABA DE HORÁRIO TERMINO---->
           <div class="col-3">
             <label for="form-control"> <b> Horário de Término:</b> </label>
-            <input class="form-control" type="time" id="horaterm" name="appt" min="13:00" max="12:00" value=<?php echo $horainic?>>
+            <input class="form-control bg-body-secondary" type="time" id="horaterm" name="appt" min="13:00" max="12:00" value=<?php echo $horainic?> readonly>
           </div>
 
           <!---ABA DE TEMPO ESTIMADO ---->
           <div class="col-3">
             <label for="form-control"> <b> Tempo Estimado (horas):</b> </label>
-            <input value="1" class="form-control" type="number" id="tempoestim" name="appt" min="0" max="5">
+            <input value="1" class="form-control bg-body-secondary" type="number" id="tempoestim" name="appt" min="0" max="5" readonly>
           </div>
 
            <!---ABA DE OBJETIVO - REUNIÃO---->
@@ -183,9 +183,9 @@ $row=mysqli_fetch_assoc($result);
       </div>
 
 
-          <div class="col-6 mt-4 pb-2"><b>Tema*:</b>
+          <div class="col-6 mt-4 pb-2"><b>Tema:</b>
             <br>
-            <input id="temaprincipal" class="form-control" type="text" value="<?php echo $tema?>"/>
+            <input id="temaprincipal" class="form-control bg-body-secondary" type="text" value="<?php echo $tema?>" readonly/>
           </div>
 
           <!---ABA DE ADICIONAR FACILITADORES---->
