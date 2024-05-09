@@ -209,74 +209,102 @@ $result = $conn->query($sql);
       </div>
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
 <br>
-<div class="accordion">
-<div class="accordion-item shadow">
-  <h2 class="accordion-header">
-    <div class="accordion-button shadow-sm text-white" style="background-color: #1c8f69;;">
-    <i class="fa-solid fa-circle-info"></i>
-    <h5>Participantes</h5>
-</div>
-  </h2>                                                                                                                                       
-        <main class="container-fluid ">
+<form id="formSalvarInformacoes" method="post">
+  <input type="hidden" id="idAta" name="idAta" value="">
+  <div class="accordion">
+    <div class="accordion-item shadow">
+      <h2 class="accordion-header">
+        <div class="accordion-button shadow-sm text-white" style="background-color: #1c8f69;;">
+          <i class="fa-solid fa-circle-info"></i>
+          <h5>Participantes</h5>
+        </div>
+      </h2>
+      <main class="container-fluid ">
         <div class="row">
           <br>
-        <div class="col">
-          <label for="form-control"><b>Adicione   participantes</b></label>
-          <br>
-          
-
-
-        <form id="addForm">
+          <div class="col">
+            <label for="form-control"><b>Adicione participantes</b></label>
+            <br>
+            <form id="addForm">
               <div class="col-12 form-group ">
-                
-                  
-                
-
-                
-                    <div class="col" > 
-                    <select class="col-12 form-control" id="participantesadicionados" name="facilitador"  >
-                      <optgroup label="Selecione Facilitadores">
-                          <?php foreach ($pegarfa as $facnull) : ?>
-                              <option value="<?php echo $facnull['id']; ?>"
-                                  data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                                  <?php echo $facnull['nome_facilitador']; ?>
-                              </option> <?php endforeach ?>
-                       </optgroup>
-                    </select>
-        </div>
-        </div> 
-             
+                  <div class="col">
+                      <!-- Adicione o atributo data-id-ata -->
+                      <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
+                          <optgroup label="Selecione Facilitadores">
+                              <?php foreach ($pegarfa as $facnull) : ?>
+                                  <option value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                                      <?php echo $facnull['nome_facilitador']; ?>
+                                  </option>
+                              <?php endforeach ?>
+                          </optgroup>
+                      </select>
+                  </div>
+              </div>
           </form>
-           
-        <?php
-        if (isset($_GET['updateid'])) {
-            $id_ata = $_GET['updateid'];
-            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-            if (!empty($participantes)) {
+            <?php
+            if (isset($_GET['updateid'])) {
+              $id_ata = $_GET['updateid'];
+              $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+              if (!empty($participantes)) {
                 echo implode(', ', $participantes);
-            } else {
+              } else {
                 echo "Nenhum participante encontrado para esta ATA.";
+              }
+            } else {
+              echo "Nenhum ID de ATA fornecido.";
             }
-        } else {
-            echo "Nenhum ID de ATA fornecido.";
-        }
-        ?> <br>     
-        
-        <?php      
-        $conn->close();
-        ?>
-      </div>  
-           
-      
-<br>
-           
-  
+            ?>
+            <br>
+            <?php
+            $conn->close();
+            ?>
+          </div>
         </div>
       </main>
-      </div>
+    </div>
+  </div>
+</form>
 
-            </div>
+<script>
+  document.getElementById("addForm").addEventListener("submit", function(event) {
+  event.preventDefault(); 
+  var select = document.getElementById("participantesadicionado");
+  var selectedOptions = select.selectedOptions;
+  for (var i = 0; i < selectedOptions.length; i++) {
+    var selectedOption = selectedOptions[i];
+    var participante = selectedOption.textContent.trim();
+    var participanteId = selectedOption.value;
+    if (!participanteJaAdicionado(participante)) {
+      adicionarParticipanteAoLabel(participante);
+      selectedOption.remove();
+    }
+  }
+});
+$(document).ready(function() {
+    $('#participantesadicionado').change(function() {
+        var selected_ids = [];
+        var selected_names = [];
+        $('#participantesadicionado option:selected').each(function() {
+            selected_ids.push($(this).val());
+            selected_names.push($(this).text());
+        });
+        console.log(selected_ids);
+        console.log(selected_names);
 
+    });
+});
+function participanteJaAdicionado(participante) {
+  var label = document.getElementById("participantesLabel");
+  return label.textContent.includes(participante);
+}
+function adicionarParticipanteAoLabel(participante) {
+  var label = document.getElementById("participantesLabel");
+  var participanteItem = document.createElement("span");
+  participanteItem.textContent = participante;
+  participanteItem.classList.add("badge", "bg-secondary", "me-1");
+  label.appendChild(participanteItem);
+}
+</script>
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 <br>
 <div class="accordion">
@@ -306,30 +334,76 @@ $result = $conn->query($sql);
 
             <div class="col">
     <!-- Primeira caixa de texto e select de facilitadores -->
-    <div class="mb-2">
-        <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
-        <optgroup label="Selecione Facilitadores">
-                  <?php foreach ($pegarde as $facnull) : ?>
-                      <option value="<?php echo $facnull['nome_facilitador']; ?>"
-                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                          <?php echo $facnull['nome_facilitador']; ?>
-                      </option>
-                  <?php endforeach ?>
-              </optgroup>
-        </select>
-</div>
+            <div class="mb-2">
+            <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>" data-id-ata-value="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
+                <optgroup label="Selecione Facilitadores">
+                    <?php foreach ($pegarde as $facnull) : ?>
+                        <option value="<?php echo $facnull['nome_facilitador']; ?>" 
+                            data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                            <?php echo $facnull['nome_facilitador']; ?>
+                        </option>
+                    <?php endforeach ?>
+                </optgroup>
+            </select>
 
         </div>
-        <div class="row">
-          <div class="col-10"></div>
-          <div class="col-2 d-flex justify-content-end">
-              <div class="d-flex flex-column align-items-end">
-                  <ul id="caixadeselecaodel"></ul>
-                  <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
-              </div>
-    </div>
-</div>
+<script>
+    // Função para adicionar event listener ao formulário
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("addForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Previne o comportamento padrão de envio do formulário
 
+        // Recupera o select e suas opções selecionadas
+        var select = document.getElementById("participantesadicionado");
+        var selectedOptions = select.selectedOptions;
+
+        // Loop pelas opções selecionadas
+        for (var i = 0; i < selectedOptions.length; i++) {
+            var selectedOption = selectedOptions[i];
+            var participante = selectedOption.textContent.trim();
+            var participanteId = selectedOption.value;
+
+            // Verifica se o participante já foi adicionado ao label
+            if (!participanteJaAdicionado(participante)) {
+                adicionarParticipanteAoLabel(participante);
+                selectedOption.remove(); // Remove a opção do select após ser adicionada ao label
+            }
+        }
+    });
+});
+
+
+    // Função para lidar com a mudança de seleção no select
+    $(document).ready(function() {
+        $('#participantesadicionado').change(function() {
+            var selected_ids = [];
+            var selected_names = [];
+
+            // Loop pelas opções selecionadas
+            $('#participantesadicionado option:selected').each(function() {
+                selected_ids.push($(this).val());
+                selected_names.push($(this).text());
+            });
+            console.log(selected_ids);
+            console.log(selected_names);
+        });
+    });
+
+    // Função para verificar se o participante já foi adicionado ao label
+    function participanteJaAdicionado(participante) {
+        var label = document.getElementById("participantesLabel");
+        return label.textContent.includes(participante);
+    }
+
+    // Função para adicionar participante ao label
+    function adicionarParticipanteAoLabel(participante) {
+        var label = document.getElementById("participantesLabel");
+        var participanteItem = document.createElement("span");
+        participanteItem.textContent = participante;
+        participanteItem.classList.add("badge", "bg-secondary", "me-1");
+        label.appendChild(participanteItem);
+    }
+</script>
 
     </div>
     
@@ -362,33 +436,37 @@ $result = $conn->query($sql);
     </div>
 
         <br>
-        <div class="col">
-                  
-              <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
-                Atualizar a ata
-              </button>
-             
-              <script>
-        function abrirHistorico() {
-            window.location.href = 'paghistorico.php';
-        }
-    </script>
-</div>
+        
     </form>
           
             </div>          
 </div>
+</form>
+<div class="col">
+        <button  id="atribuida"   class="btn btn-primary">Atualizar a ATA</button>
+    
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var botaocont = document.getElementById('botaocontinuarata');
-        var botaoregistrar = document.getElementById('botaoregistrar');
-        var itemList = document.getElementById('items');
-        var filter = document.getElementById('filter');
-        var addItemButton = document.getElementById('addItemButton'); 
+        var botaoatribuicao = document.getElementById("atribuida");
+        if (botaoatribuicao) {
+            botaoatribuicao.addEventListener('click', gravaratribuida);
+        } else {
+            console.error("Elemento com o ID 'atribuida' não encontrado.");
+        }
 
+        // Verifique se id_ata está definido
+        if (id_ata !== null) {
+            // Código para executar se id_ata estiver definido
+            console.log("ID da página:", id_ata);
+            // Aqui você pode usar id_ata conforme necessário
+        } else {
+            console.error("id_ata não está definido.");
+        }
     });
-
 </script>
+
   </div>
     </div>
       </div>
@@ -399,13 +477,13 @@ $result = $conn->query($sql);
 </div>
        
     <script src="view\js\multi-select-tag.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
-    <script src="app/deliberacoes.js"></script>
-    <script src="view\js\multi-select-tag.js"></script>
+    <script src="app/gravar.js"></script>
+    <script src="app/gravaratribuida.js" data-id-ata="<?php echo $id_ata; ?>"></script>
 
-<script src="app/participantes.js"></script>
 </body>
 
 </html>
