@@ -12,13 +12,12 @@ $pegarfa=$puxarform->pegarfacilitador();
 //PUXANDO OS VALORES QUE ESTÃO SENDO INSERIDOS NA PÁGINA PRINCIPAL ATRAVÉS DA CHAMADA AJAX NO "gravar.js
 $facilitadores = $_GET['facilitadores'];
 
-echo $facilitadores;
+// echo $facilitadores;
 
 $facilitadoresArray = json_decode($facilitadores, true);   
 $facilitadoresString = implode(", ", $facilitadoresArray);
 
-echo $facilitadoresString;
-
+// echo $facilitadoresString;
 
 $conteudo = $_GET['conteudo'];
 $horainicio = $_GET['horainicio'];
@@ -62,10 +61,7 @@ $local = $_GET['local'];
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" />
 </head>
-
 <body>
-
-
 <style>
       body{
         background-color: rgba(240, 240, 240, 0.41);

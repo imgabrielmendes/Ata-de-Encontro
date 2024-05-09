@@ -143,14 +143,11 @@ if (!empty($deliberadores_deliberacoes)) {
 
     foreach (explode(",", $deliberadores_deliberacoes) as $deliberador_deliberacao) {
         list($deliberador, $deliberacao) = explode(":", $deliberador_deliberacao);
-
-        if (isset($deliberadores_por_deliberacao[$deliberacao])) {
-
-            $deliberadores_por_deliberacao[$deliberacao][] = $deliberador;
-        } else {
-
-            $deliberadores_por_deliberacao[$deliberacao] = array($deliberador);
-        }
+            if (isset($deliberadores_por_deliberacao[$deliberacao])) {
+                $deliberadores_por_deliberacao[$deliberacao][] = $deliberador;
+            } else {
+                $deliberadores_por_deliberacao[$deliberacao] = array($deliberador);
+            }
     }
 }
 
@@ -173,33 +170,38 @@ $html .= '</body></html>';
         $html .= '
         <h2> TEXTO PRINCIPAL: </h2>
         <text style="height: 30px; border: 1px solid black">'.$textop.'</txt>
+
         <br><br><br><br><br>
 
-        <hr style="margin-left: auto; margin-right: auto; width: 40%;" align="center">
+        <hr style="margin-left: auto; margin-right: auto; width: 45%;" align="center">
         <txt style="display: block; text-align: center;">Assinatura do Responsável</txt>
-        
-        <br><br><br><br><br><br>
-
+        <br><br><br>
+        ';
+          
+        $pdf->AddPage();
+        $pdf->writeHTML($html, true, false, true, false, '');
+  
+        $html ='
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
         <tbody>
             <tr style="text-align: center">
-                <td style="height: 31px; border: 1px solid black; background-color: #c0c0c0 "><h4>Assinatura de presença:</h4></td>
+                <td style="height: 40px; border: 1px solid black; background-color: #c0c0c0 "><h4>Assinatura de presença:</h4></td>
             </tr>
         </tbody>
-        </table>  
-
-        <table style="border: 1px solid black; text-align: center; padding: 6px 0px;">
+        </table>
+        
+        <table style="border: 1px solid black; text-align: center; padding: 4px 0px;">
     <tbody>
     <tr style="text-align: center; background-color: #ececed">
-        <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Mat.</h4></td>
+        <td style="height: 31px; border: 1px solid black; width: 59px; vertical-align: middle;"><h4>Mat.</h4></td>
         <td style="height: 31px; border: 1px solid black; width: 150px; vertical-align: middle;"><h4>Nome:</h4></td>
         <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Função:</h4></td>
-        <td style="height: 31px; border: 1px solid black; width: 262px; vertical-align: middle;"><h4>Assinatura:</h4></td>
+        <td style="height: 31px; border: 1px solid black; width: 270px; vertical-align: middle;"><h4>Assinatura:</h4></td>
     </tr>';
 
         foreach (explode(",", $nomeParticipantes) as $participante) {
             $html .= '<tr style="text-align: center;">
-                        <td style="border: 1px solid black; height: 20px;">0000</td>
+                        <td style="border: 1px solid black; height: 30px;">0000</td>
                         <td style="border: 1px solid black;">'.$participante.'</td>
                         <td style="border: 1px solid black;"></td>
                         <td style="border: 1px solid black;"></td>
@@ -210,64 +212,19 @@ $html .= '</body></html>';
         
         for ($linha = 0; $linha < 6; $linha++) {
             $html .= '<tr style="text-align: center;">
-                        <td style="border: 1px solid black; height: 20px;"></td>
+                        <td style="border: 1px solid black; height: 37px;"></td>
                         <td style="border: 1px solid black;"></td>
                         <td style="border: 1px solid black;"></td>
                         <td style="border: 1px solid black;"></td>
                     </tr>';
         }
 
-    $html .='</tbody>
-            </table>';
-   
-        $html .='</body></html>';
+            $html .='</tbody></table></body></html>';
 
-        $pdf->AddPage();
+            $pdf->AddPage();
+            $pdf->writeHTML($html, true, false, true, false, '');
 
-        $pdf->writeHTML($html, true, false, true, false, '');
-
-// Start First Page Group
-$pdf->startPageGroup();
-
-// add a page
-$pdf->AddPage();
-
-// // set some text to print
-// $html = '<table style="border: 1px solid black; text-align: center; padding: 6px 0px;">
-// <tbody>
-// <tr style="text-align: center; background-color: #ececed">
-//     <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Mat.</h4></td>
-//     <td style="height: 31px; border: 1px solid black; width: 150px; vertical-align: middle;"><h4>Nome:</h4></td>
-//     <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Função:</h4></td>
-//     <td style="height: 31px; border: 1px solid black; width: 262px; vertical-align: middle;"><h4>Assinatura:</h4></td>
-// </tr>';
-
-//     foreach (explode(",", $nomeParticipantes) as $participante) {
-//         $html .= '<tr style="text-align: center;">
-//                     <td style="border: 1px solid black; height: 20px;">0000</td>
-//                     <td style="border: 1px solid black;">'.$participante.'</td>
-//                     <td style="border: 1px solid black;"></td>
-//                     <td style="border: 1px solid black;"></td>
-//                     <td style="border: 1px solid black;"></td>
-
-//                 </tr>';
-//     }
-    
-//     for ($linha = 0; $linha < 6; $linha++) {
-//         $html .= '<tr style="text-align: center;">
-//                     <td style="border: 1px solid black; height: 20px;"></td>
-//                     <td style="border: 1px solid black;"></td>
-//                     <td style="border: 1px solid black;"></td>
-//                     <td style="border: 1px solid black;"></td>
-//                 </tr>';
-//     }
-
-// $html .='</tbody>
-//         </table>';
-
-        // $pdf->writeHTML($html, true, false, true, false, '');
-
-$pdf->Output('ata_de_encontro'.$id.'.pdf', 'I');
+            $pdf->Output('ata_de_encontro'.$id.'.pdf', 'I');
 
     }
         } else {
