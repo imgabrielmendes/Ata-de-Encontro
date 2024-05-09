@@ -335,16 +335,17 @@ function adicionarParticipanteAoLabel(participante) {
             <div class="col">
     <!-- Primeira caixa de texto e select de facilitadores -->
             <div class="mb-2">
-            <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
+            <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>" data-id-ata-value="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
                 <optgroup label="Selecione Facilitadores">
-                          <?php foreach ($pegarde as $facnull) : ?>
-                              <option value="<?php echo $facnull['nome_facilitador']; ?>"
-                                  data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                                  <?php echo $facnull['nome_facilitador']; ?>
-                              </option>
-                          <?php endforeach ?>
-                      </optgroup>
-                </select>
+                    <?php foreach ($pegarde as $facnull) : ?>
+                        <option value="<?php echo $facnull['nome_facilitador']; ?>" 
+                            data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                            <?php echo $facnull['nome_facilitador']; ?>
+                        </option>
+                    <?php endforeach ?>
+                </optgroup>
+            </select>
+
         </div>
 <script>
     // Função para adicionar event listener ao formulário
