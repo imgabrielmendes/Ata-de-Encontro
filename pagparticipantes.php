@@ -11,17 +11,16 @@ $pegarfa=$puxarform->pegarfacilitador();
 $resultados = $puxarform->pegandoTudo();
 $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
 $ultimaata = $puxarform->pegarUltimaAta();
+$ultimosfacilitadores = $puxarform->puxandoUltimosFacilitadores();
 
+$facilitadoresString = '';
+foreach ($ultimosfacilitadores as $facilitador) {
+    $facilitadoresString .= $facilitador['nome_facilitador'] . ', ';
+}
 
+// Remova a vírgula extra no final da string
+$facilitadoresString = rtrim($facilitadoresString, ', ');
 
-    // Usando $facilitadoresString na sua string de saída
-    // echo "Facilitadores - $facilitadoresString, 
-    //       Conteúdo - $conteudo, 
-    //       Horário de Início - $horainicio, 
-    //       Horário de Término - $horaterm, 
-    //       Data - $data, 
-    //       Objetivos - $objetivoSelecionado, 
-    //       Local - $local";
 
 ?>
 <!DOCTYPE html>
@@ -92,91 +91,84 @@ $ultimaata = $puxarform->pegarUltimaAta();
 
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
           <div class="row">
-            <br>
-                  <div class="col-3">
-                    <label><b>Data*:</b></label>
-                    <ul class="form-control bg-body-secondary"> <?php echo $row['objetivo'];  ?> </ul>
-                  </div>
-          
-                  <!---ABA DE HORÁRIO INICIO---->
-                  <div class="col-3">
-                    <label for="nomeMedico"><b>Horário de Início*:</b></label>
-                    <br>
-                    <ul class="form-control bg-body-secondary"><?php echo $horainicio; ?></ul>
-                  </div>
+    <br>
+    <div class="col-3">
+        <label><b>Data*:</b></label>
+        <ul class="form-control bg-body-secondary"> <?php echo $_SESSION['objetivoSelecionado']; ?> </ul>
+    </div>
 
-                  <!---ABA DE HORÁRIO TERMINO---->
-                  <div class="col-3">
-                    <label for="form-control"> <b> Horário de Término:</b> </label>
-                    <ul class="form-control bg-body-secondary"><?php echo $horaterm; ?></ul>
-                  </div>
+    <!---ABA DE HORÁRIO INICIO---->
+    <div class="col-3">
+        <label for="nomeMedico"><b>Horário de Início*:</b></label>
+        <br>
+        <ul class="form-control bg-body-secondary"><?php echo $_SESSION['horainicio']; ?></ul>
+    </div>
 
-                  <!---ABA DE TEMPO ESTIMADO ---->
-                  <div class="col-3">
-                    <label for="form-control"><b>Tempo Estimado:</b></label>
-                    <?php
-                    
-                    // Verifica se as variáveis estão definidas antes de calcular o tempo estimado
-                    if (isset($horainicio) && isset($horaterm)) {
-                        // Calcula a diferença de tempo em minutos
-                        $inicio = strtotime($horainicio);
-                        $termino = strtotime($horaterm);
-                        $diferencaMinutos = ($termino - $inicio) / 60;
+    <!---ABA DE HORÁRIO TERMINO---->
+    <div class="col-3">
+        <label for="form-control"> <b> Horário de Término:</b> </label>
+        <ul class="form-control bg-body-secondary"><?php echo $_SESSION['horaterm']; ?></ul>
+    </div>
 
-                        // Calcula horas e minutos
-                        $horas = floor($diferencaMinutos / 60);
-                        $minutos = $diferencaMinutos % 60;
+    <!---ABA DE TEMPO ESTIMADO ---->
+    <div class="col-3">
+        <label for="form-control"><b>Tempo Estimado:</b></label>
+        <?php
+        // Verifica se as variáveis estão definidas antes de calcular o tempo estimado
+        if (isset($_SESSION['horainicio']) && isset($_SESSION['horaterm'])) {
+            // Calcula a diferença de tempo em minutos
+            $inicio = strtotime($_SESSION['horainicio']);
+            $termino = strtotime($_SESSION['horaterm']);
+            $diferencaMinutos = ($termino - $inicio) / 60;
 
-                        // Formata os números com dois dígitos
-                        $horas_formatado = sprintf("%02d", $horas);
-                        $minutos_formatado = sprintf("%02d", $minutos);
+            // Calcula horas e minutos
+            $horas = floor($diferencaMinutos / 60);
+            $minutos = $diferencaMinutos % 60;
 
-                        // Exibe o tempo estimado no formato "00:00"
-                        echo "<div class='form-control bg-body-secondary tempo-estimado'>" . $horas_formatado . ":" . $minutos_formatado . "</div>";
-                    } else {
-                        echo "Horário de início e/ou término não definidos.";
-                    }
-                    ?>
-                    <style>
-                        .tempo-estimado {
-                            width: 100%;
-                        }
-                    </style>
-                </div>
+            // Formata os números com dois dígitos
+            $horas_formatado = sprintf("%02d", $horas);
+            $minutos_formatado = sprintf("%02d", $minutos);
 
+            // Exibe o tempo estimado no formato "00:00"
+            echo "<div class='form-control bg-body-secondary tempo-estimado'>" . $horas_formatado . ":" . $minutos_formatado . "</div>";
+        } else {
+            echo "Horário de início e/ou término não definidos.";
+        }
+        ?>
+        <style>
+            .tempo-estimado {
+                width: 100%;
+            }
+        </style>
+    </div>
+</div>
 
-          </div>
-
-          <div class="row">
-            <div class="col-6 ">
-              <label><b> Facilitador(res) responsável:</b></label>
-              <ul class="form-control bg-body-secondary"><?php echo $facilitadoresString; ?></ul>  
+<div class="row">
+    <div class="col-6">
+        <label><b>Facilitador(es) responsável(eis):</b></label>
+        <ul class="form-control bg-body-secondary"><?php echo $facilitadoresString; ?></ul>
+    </div>
+    <div class="col-3">
+        <label><b>Local:</b></label>
+        <ul class="form-control bg-body-secondary border rounded"><?php echo $_SESSION['local']; ?></ul>
+    </div>
+    <div class="col-3">
+        <label for="form-control"> <b>Objetivo:</b> </label>
+        <label class="form-control bg-body-secondary border rounded">
+            <input type="checkbox" disabled checked> <?php echo $_SESSION['objetivoSelecionado']; ?>
+    </div>
+    <div>
+        <div class="col">
+            <b>Tema:</b> 
+        </div>
+        <div>
+            <div class="col-12">
+                <ul class="form-control bg-body-secondary"><?php echo $_SESSION['conteudo']; ?></ul>
             </div>
-          
- 
-          <div class="col-3">
-            <label><b>Local:</b></label>
-            <ul class="form-control bg-body-secondary border rounded"><?php echo $local; ?></ul>
-          </div>
-
-          <div class="col-3">
-              <label for="form-control"> <b>Objetivo:</b> </label>
-              <label class="form-control bg-body-secondary border rounded">
-                <input type="checkbox" disabled checked> <?php echo $row['objetivo']; ?>
-            </div>
-
-            <div>
-                <div class="col">
-                  <b>Tema:</b> 
-                </div>
-                <div>
-                <div class="col-12">
-                  <ul class="form-control bg-body-secondary"><?php echo $conteudo; ?></ul>
-                  </div></div>       
-            </div>
-
-    
-            </div>
+        </div>       
+    </div>
+</div>
+      </div>
     </div>
 </div>
   </div>

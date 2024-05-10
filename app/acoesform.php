@@ -222,11 +222,7 @@ class AcoesForm {
             throw $e;
         }
     }
-    
-    
-    
-    
-    
+     
 
     public function buscarParticipantesPorIdAta($id_ata) {
         try {
