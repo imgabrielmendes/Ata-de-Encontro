@@ -19,11 +19,6 @@ include "conexao.php";
         <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
         
 </head>
-<<<<<<< HEAD
-
-<body>
-=======
->>>>>>> origin/Area-de-desenvolvimento
 
 <body style="background-color: #f4f6f9;">
 <style>
