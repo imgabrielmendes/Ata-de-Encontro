@@ -89,7 +89,7 @@ $ultimaata = $puxarform->pegarUltimaAta();
       <div class="container-fluid">
         <div class="row py-1">
           <div class="col-sm-6">
-            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Atas de encontro</h2>
+            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Deliberações</h2>
           </div>
         </div>
       </div>

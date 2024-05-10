@@ -52,17 +52,41 @@ if ($conn->connect_error) {
 </head>
 
 <body>
-    <header>
-        <nav class="navbar shadow">
-            <div id="container" style="background-color: #001f3f;">
-                <div class="container_align">
-                    <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
-                        <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"></a>
-                    <h1 id="tittle" class="text-center">Histórico</h1>
-                </div>
-            </div>
-        </nav>
-    </header>
+    
+<style>
+          body{
+        background-color: rgba(240, 240, 240, 0.41);
+      }
+
+  .content-header{
+        background-color: #001f3f;
+    }
+    </style>
+      <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/"><img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
+                </a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+      
+
+      <div class="collapse navbar-collapse" id="navBarCentral">
+      </div>
+    </div>
+  </nav>
+  <div class="content-header shadow" style="border-bottom: solid 1px gray;">
+      <div class="container-fluid">
+        <div class="row py-1">
+          <div class="col-sm-6">
+            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Histórico</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
     <div class="box box-primary">
         <main class="container d-flex justify-content-center align-items-center" class="text-center">
             <div class="form-group col-12">
@@ -76,7 +100,7 @@ if ($conn->connect_error) {
                                             <button class="accordion-button shadow-sm text-white text-center" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background-color: #1c8f69 ">
                                                 <i class="fa fa-info-circle" aria-hidden="true"></i>
                                                 <i class="fa-solid fa-circle-info"></i>
-                                                <h5>Histórico de Atas</h5>
+                                                <h5>Filtro de Atas</h5>
                                             </button>
                                         </h2>
                                         <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" class="text-center">
@@ -118,7 +142,7 @@ if ($conn->connect_error) {
                                 <br>
                         </tbody> 
                     </table>
-<table id="myTable" class="table  table-hover">
+<table id="myTable" class="table  table-hover shadow">
     <thead>
     <tr>
         <th class="text-center">Data</th>
