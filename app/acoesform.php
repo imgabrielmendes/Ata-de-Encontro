@@ -115,7 +115,6 @@ class AcoesForm {
             echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
         }
     }
-
     public function puxandoUltimosFacilitadores() {
         try {
             

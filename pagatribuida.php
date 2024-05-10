@@ -38,7 +38,7 @@ $row=mysqli_fetch_assoc($result);
           $facilitadores[] = $row2;
       }
 
-      print_r($sql2);
+
 
 //funções de encotrar pessoas
 // $pegarfa = $puxarform->puxandoUltimosFacilitadores();
@@ -47,7 +47,7 @@ $participantesArray = $pegarfa;
 
 $pegarde=$puxarform->pegarfacilitador();
 // ARRUMAR UM JEIT
-var_dump($pegarid);
+
 
 //Conexão com o banco de dados (substitua os valores pelos seus próprios)
 $servername = "localhost";
@@ -64,11 +64,19 @@ if ($conn->connect_error) {
 }
 
 // Consulta SQL para selecionar os dados
-$sql = "SELECT id, data_registro, tema, data_solicitada, objetivo, hora_inicial, hora_termino, tempo_estimado, local, status FROM assunto ORDER BY data_registro DESC";
+// $sql = "SELECT id, data_registro, tema, data_solicitada, objetivo, hora_inicial, hora_termino, tempo_estimado, local, status FROM assunto ORDER BY data_registro DESC";
 $result = $conn->query($sql);
 
 
-
+function identificarIdPagina() {
+  if(isset($_GET['updateid'])) {
+      return $_GET['updateid'];
+  } else {
+      return null;
+  }
+}
+$id_pagina = identificarIdPagina();
+print_r($id_pagina);
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -448,6 +456,7 @@ function adicionarParticipanteAoLabel(participante) {
 </div>
 
 <script>
+    var id_ata = <?php echo json_encode($id_pagina); ?>;
     document.addEventListener('DOMContentLoaded', function() {
         var botaoatribuicao = document.getElementById("atribuida");
         if (botaoatribuicao) {
@@ -456,16 +465,18 @@ function adicionarParticipanteAoLabel(participante) {
             console.error("Elemento com o ID 'atribuida' não encontrado.");
         }
 
-        // Verifique se id_ata está definido
-        if (id_ata !== null) {
-            // Código para executar se id_ata estiver definido
-            console.log("ID da página:", id_ata);
+        // Verifique se id_ata está definido e se estamos na página correta
+        if (typeof id_ata !== 'undefined' && window.location.pathname !== '/paghistorico.php') {
+            // Código para executar se id_ata estiver definido e não estiver na página de histórico
+            // console.log("ID da página:", id_ata);
             // Aqui você pode usar id_ata conforme necessário
         } else {
-            console.error("id_ata não está definido.");
+            console.error("id_ata não está definido ou estamos na página de histórico.");
         }
     });
 </script>
+
+
 
   </div>
     </div>
