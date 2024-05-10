@@ -66,7 +66,7 @@ $row=mysqli_fetch_assoc($result);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - ATA</title>
-    <link rel="icon" href="view/img/Logobordab.png" type="image/x-icon">
+    <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
 
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="view/css/styles.css">
@@ -86,22 +86,40 @@ $row=mysqli_fetch_assoc($result);
       }
 
     </style>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg shadow">
-        <div class="container-fluid">
-            <!-- <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/">
-                <img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
-            </a> -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+<style>
+    .{
+        background-color: #f4f6f9;
+    }
 
-            <div class="collapse navbar-collapse" id="navBarCentral">
-                <!-- Adicione aqui os elementos do menu se necessário -->
-            </div>
-        </div>
-    </nav>
-</header>
+    .content-header{
+        background-color: #001f3f;
+    }
+    </style>
+      <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/"><img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
+                </a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+      
+
+      <div class="collapse navbar-collapse" id="navBarCentral">
+      </div>
+    </div>
+  </nav>
+  <div class="content-header" style="border-bottom: solid 1px gray;">
+      <div class="container-fluid">
+        <div class="row py-1">
+          <div class="col-sm-6">
+            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Histórico de atas de encontro</h2>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div>
+    </div>
+  </header>
  <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
     <main class="container_fluid d-flex justify-content-center align-items-center">
       <div class="form-group col-8">
@@ -114,26 +132,26 @@ $row=mysqli_fetch_assoc($result);
           <!---ABA DE DATA---->
           <div class="col-3">
             <label><b>Data</b></label>
-            <input id="datainicio" class="form-control" placeholder="dd-mm-aaaa" min="2024-04-01" type="date" value=<?php echo $datasolicitada?>>
+            <input id="datainicio" class="form-control bg-body-secondary" placeholder="dd-mm-aaaa" min="2024-04-01" type="date" value=<?php echo $datasolicitada?> readonly>
           </div>
 
           <!---ABA DE HORÁRIO INICIO---->
           <div class="col-3">
             <label for="nomeMedico"><b>Horário de Início:</b></label>
             <br>
-            <input class="form-control" type="time" id="horainicio" name="appt" min="" max="18:00" value=<?php echo $horaterm?>>
+            <input class="form-control bg-body-secondary" type="time" id="horainicio" name="appt" min="" max="18:00" value=<?php echo $horaterm?> readonly>
           </div>
 
           <!---ABA DE HORÁRIO TERMINO---->
           <div class="col-3">
             <label for="form-control"> <b> Horário de Término:</b> </label>
-            <input class="form-control" type="time" id="horaterm" name="appt" min="13:00" max="12:00" value=<?php echo $horainic?>>
+            <input class="form-control bg-body-secondary" type="time" id="horaterm" name="appt" min="13:00" max="12:00" value=<?php echo $horainic?> readonly>
           </div>
 
           <!---ABA DE TEMPO ESTIMADO ---->
           <div class="col-3">
             <label for="form-control"> <b> Tempo Estimado (horas):</b> </label>
-            <input value="1" class="form-control" type="number" id="tempoestim" name="appt" min="0" max="5">
+            <input value="1" class="form-control bg-body-secondary" type="number" id="tempoestim" name="appt" min="0" max="5" readonly>
           </div>
 
            <!---ABA DE OBJETIVO - REUNIÃO---->
@@ -165,21 +183,21 @@ $row=mysqli_fetch_assoc($result);
       </div>
 
 
-          <div class="col-6 mt-4 pb-2"><b>Tema*:</b>
+          <div class="col-6 mt-4 pb-2"><b>Tema:</b>
             <br>
-            <input id="temaprincipal" class="form-control" type="text" value="<?php echo $tema?>"/>
+            <input id="temaprincipal" class="form-control bg-body-secondary" type="text" value="<?php echo $tema?>" readonly/>
           </div>
 
           <!---ABA DE ADICIONAR FACILITADORES---->
+    <div class="row">
 
           <div class="col-4 pt-2 pb-2"> 
             <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
           </div>
-
-          <div class="row">
+          
             <select class="col-6 form-control" id="selecionandofacilitador" name="facilitador" multiple value="">
             </div>
-
+            
                 <optgroup label="Selecione Facilitadores">
                     <?php foreach ($pegarfa as $facnull) : ?>
                         <option value="<?php echo $facnull['id']; ?>"
