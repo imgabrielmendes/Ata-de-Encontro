@@ -16,8 +16,8 @@ new MultiSelectTag('participantesadicionados', {
         ParticipantesAdicionadosvalor = selected_ids;
         participantesAdicionadosLabel = selected_names;
 
-        console.log(ParticipantesAdicionadosvalor);
-        console.log(participantesAdicionadosLabel);
+        // console.log(ParticipantesAdicionadosvalor);
+        // console.log(participantesAdicionadosLabel);
     }
     
 });
@@ -35,45 +35,56 @@ botaocont.addEventListener('click', addDeliberacoes);
 
 function addDeliberacoes() {
 
-    $.ajax({
-        url: 'registrarfacilitadores.php',
-        method: 'POST',
-        data: {
-            particadd: JSON.stringify(ParticipantesAdicionadosvalor)
-        },
-
-        success: function(response) {
-
-            console.log("(4.2) Deu bom! AJAX está enviando os participantes");
-            console.log("Response:", response); // Adicionado para depuração
+    if (participantesAdicionadosLabel.length === 0 || participantesAdicionadosLabel.length === 0) 
+        {
             
-            var ultimoID = response.ultimoID;
-
-            setTimeout(function() {
-                console.log("Redirecionando..."); // Adicionado para depuração
-
-                window.location.href = 'pagdeliberacoes.php' +
-                '?ultimoID=' + encodeURIComponent(ultimoID) +
-                '&participantesAdicionados=' + encodeURIComponent(participantesAdicionadosLabel);
-
-            }, 1500);
-
             Swal.fire({
-                title: "Perfeito!",
-                text: "Seus participantes foram registrados",
-                icon: "success"
+                title: "Erro no registro",
+                text: "Você não adicionou os seus participantes",
+                icon: "error"
+              });
+       
+        } else {
+            Swal.fire({
+            title: "Perfeito!",
+            text: "Seus participantes foram registrados",
+            icon: "success" });
+
+            $.ajax({
+                url: 'registrarfacilitadores.php',
+                method: 'POST',
+                data: {
+                    particadd: JSON.stringify(ParticipantesAdicionadosvalor)
+                },
+        
+                success: function(response) {
+        
+                    console.log("(4.2) Deu bom! AJAX está enviando os participantes");
+                    console.log("Response:", response); // Adicionado para depuração
+                    
+                    var ultimoID = response.ultimoID;
+        
+                    setTimeout(function() {
+                        console.log("Redirecionando..."); // Adicionado para depuração
+        
+                        window.location.href = 'pagdeliberacoes.php' +
+                        '?ultimoID=' + encodeURIComponent(ultimoID) +
+                        '&participantesAdicionados=' + encodeURIComponent(participantesAdicionadosLabel);
+        
+                    }, 1500);
+                    
+                    // Limpa a lista de participantes adicionados
+                    ParticipantesAdicionadosvalor = [];
+                    atualizarListaParticipantes();
+        
+                },
+        
+                error: function(error) {
+                    console.error('Erro na solicitação AJAX:', error);
+                }
             });
-          
-            // Limpa a lista de participantes adicionados
-            ParticipantesAdicionadosvalor = [];
-            atualizarListaParticipantes();
-
-        },
-
-        error: function(error) {
-            console.error('Erro na solicitação AJAX:', error);
         }
-    });
+  
 }
 
 function atualizarListaParticipantes() {
@@ -91,8 +102,10 @@ function gravaremail(){
     var caixadeemail = document.getElementById("caixadeemail").value;
     var caixamatricula = document.getElementById("caixamatricula").value;
    
-    if (caixadenome.trim() === "" || caixadeemail.trim() === "" || caixamatricula.trim() === "")
-    {
+    if (caixadenome.trim() === "" || 
+        caixadeemail.trim() === "" || 
+        caixamatricula.trim() === "" )
+            {
         
         Swal.fire({
             title: "Erro no registro",
@@ -113,7 +126,6 @@ function gravaremail(){
           });
 
         console.log ("(3.1) As informações de email foram enviadas");
-        // console.log (caixamatricula + " " +caixadenome + " " + caixadeemail)
 
         if (caixadenome !=="" && caixadeemail !=="" && caixamatricula !=="") 
 

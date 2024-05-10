@@ -14,9 +14,8 @@ new MultiSelectTag('selecionandofacilitador', {
 
         facilitadoresSelecionados = selected_ids;
         facilitadoresSelecionadosLabel = selected_names;
-
-        console.log(facilitadoresSelecionados);
-        console.log(facilitadoresSelecionadosLabel);
+        // console.log(facilitadoresSelecionados);
+        // console.log(facilitadoresSelecionadosLabel);
     }
 });
 
@@ -36,10 +35,10 @@ var objetivoSelecionado = null;
 //3° LINHA
 var temaprincipal = document.getElementById("temaprincipal");
 
-// Botões
-gravarinformacoes.addEventListener('click', gravando);
 
+gravarinformacoes.addEventListener('click', gravando);
 function gravando() {
+
 
     var data = document.getElementById("datainicio").value;
     var horainicio = document.getElementById("horainicio").value;
@@ -63,7 +62,9 @@ function gravando() {
     var conteudo = temaprincipal.value;
     var data = document.getElementById("datainicio").value;
 
-    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() === "" || conteudo.trim() === "" ) {
+    
+    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() === "" || conteudo.trim() === "" ||
+    facilitadoresSelecionados.length === 0 || facilitadoresSelecionadosLabel.length === 0) { 
 
         Swal.fire({
             title: "Erro no registro",
@@ -72,6 +73,7 @@ function gravando() {
         });
 
         console.log("(X) Puxou a function, mas está faltando informações");
+
         // console.log(objetivoSelecionado);
         // console.log(local);
         // console.log(facilitadores);

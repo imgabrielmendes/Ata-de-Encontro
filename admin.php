@@ -7,7 +7,9 @@ include "conexao.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Display</title>
+    <title>Admin atas - HRG</title>
+    <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
+
 
         <link rel="stylesheet" href="view/css/styles.css">
         <link rel="stylesheet" href="view/css/bootstrap.min.css">
@@ -18,23 +20,45 @@ include "conexao.php";
         
 </head>
 
-<body>
+<body style="background-color: #f4f6f9;">
+<style>
+    .{
+        background-color: #f4f6f9;
+    }
 
-    <!-- <div class="row">
-      <div class="col">
-        <a class="btn btn-primary text-light" href="admin.php">Add</a>
+    .content-header{
+        background-color: #001f3f;
+    }
+    </style>
+      <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/"><img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
+                </a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+      
+
+      <div class="collapse navbar-collapse" id="navBarCentral">
       </div>
-    </div> -->
-
+    </div>
+  </nav>
+  <div class="content-header" style="border-bottom: solid 1px gray;">
+      <div class="container-fluid">
+        <div class="row py-1">
+          <div class="col-sm-6">
+            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Histórico de atas de encontro</h2>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div>
+    </div>
+  </header>
 <div class="container">
-
-        <div class="col-md-12 text-center p-5">
-            <h2>Histórico de atas registradas</h2>
-          </div>
-
-    <div class="row pt-4">
-        <table class="table table-light">
-            <thead class="table table-dark">
+    <div class="row pt-5">
+        <table class="table rounded shadow">
+            <thead class="table-light">
                 <tr>
                     <th scope="col">ID</th>
                     <th scope="col">Data Solicitada</th>
@@ -79,7 +103,7 @@ include "conexao.php";
                         
                         echo "<td>
                                 <button class='btn btn-success'>
-                                    <a class='text-light' href='impressao.php? updateid=".$id."'>Imprimir</a>
+                                    <a class='text-light' href='arquivopdf.php? updateid=".$id."'>Imprimir</a>
                                 </button>
                             </td>";
                         echo "</tr>";

@@ -13,13 +13,21 @@ $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
 $ultimaata = $puxarform->pegarUltimaAta();
 $ultimosfacilitadores = $puxarform->puxandoUltimosFacilitadores();
 
-$facilitadoresString = '';
-foreach ($ultimosfacilitadores as $facilitador) {
-    $facilitadoresString .= $facilitador['nome_facilitador'] . ', ';
-}
+$facilitadores = $_GET['facilitadores'];
 
-// Remova a vírgula extra no final da string
-$facilitadoresString = rtrim($facilitadoresString, ', ');
+// echo $facilitadores;
+
+$facilitadoresArray = json_decode($facilitadores, true);   
+$facilitadoresString = implode(", ", $facilitadoresArray);
+
+// echo $facilitadoresString;
+
+$conteudo = $_GET['conteudo'];
+$horainicio = $_GET['horainicio'];
+$horaterm = $_GET['horaterm'];
+$data = $_GET['data'];
+$objetivoSelecionado = $_GET['objetivoSelecionado'];
+$local = $_GET['local'];
 
 
 ?>
@@ -48,24 +56,42 @@ $facilitadoresString = rtrim($facilitadoresString, ', ');
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" />
 </head>
-
 <body>
+<style>
+      body{
+        background-color: rgba(240, 240, 240, 0.41);
+      }
+      .content-header{
+        background-color: #001f3f;
+        }
+</style>
 
-  <!--BARRA DE NAVEGAÇÃO-->
-  <header>
-    <nav class="navbar shadow">
-      <div id="container" style="background-color: #001f3f;">
-        <div class="container_align">
-          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
-            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"></a>
-            <h1 id="tittle" class="text-center"> 2° FASE</h1>
+      <header>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/"><img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px"></a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+            </button>
+      
+
+          <div class="collapse navbar-collapse" id="navBarCentral">
+          </div>
         </div>
-      </div>
-    </nav>
-  </header>
+      </nav>
+      <div class="content-header shadow" style="border-bottom: solid 1px gray;">
+          <div class="container-fluid">
+            <div class="row py-1">
+              <div class="col-sm-6">
+              <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Participantes</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
 
   <!--FORMULÁRIO-->
-
   <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
   <div class="box box-primary">
     <main class="container_fluid d-flex justify-content-center align-items-center">

@@ -1,11 +1,11 @@
-<?php 
+<?php
 include 'database.php';
 session_start();
 
 $dbhost = 'localhost';
-$dbname = 'atareu';  
-$dbuser = 'root';  
-$dbpass = '';     
+$dbname = 'atareu';
+$dbuser = 'root';
+$dbpass = '';
 
 $conn = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
@@ -26,14 +26,18 @@ if ($result->num_rows > 0) {
     foreach ($deliberadoresSelecionados as $deliberadorValue) {
 
         $enviarbanco = "INSERT INTO deliberacoes (id_ata, deliberacoes, deliberadores) VALUES ('$ultimoID', '$newItem', '$deliberadorValue')";
-
-        $alterarstatus = "UPDATE assunto SET status = 'FECHADA' WHERE id = $sql";
-        print_r($alterarstatus);
+        $alterarstatus = "UPDATE assunto SET status = 'FECHADA' WHERE id = $ultimoID";
 
         if ($conn->query($enviarbanco) === TRUE) {
             echo "Novo registro inserido com sucesso para o deliberador $deliberadorValue.<br>";
         } else {
             echo "Erro ao inserir registro para o deliberador $deliberadorValue: " . $conn->error . "<br>";
+        }
+
+        if ($conn->query($alterarstatus) === TRUE) {
+            echo "Status da tarefa atualizado para 'FECHADA' com sucesso para o deliberador $deliberadorValue.<br>";
+        } else {
+            echo "Erro ao atualizar status da tarefa para 'FECHADA' para o deliberador $deliberadorValue: " . $conn->error . "<br>";
         }
     }
 } else {
