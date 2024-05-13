@@ -83,7 +83,7 @@ $pegarlocal=$puxarform->pegarlocais();
         <!--2° LINHA DO FORMULÁRIO DA ATA----------------------->
         <div class="row"> <!---COLUNA NOME + DATA---->
           <!--Título do formulário ----------------------->
-          <div class="col-md-12 text-center">
+          <div class="col-md-12 text-center m-3 p-2">
             <h2>Formulário de Solicitação </h2>
           </div>         
           <!---ABA DE DATA---->
@@ -130,7 +130,7 @@ $pegarlocal=$puxarform->pegarlocais();
 </div>
 
           <!--- ABA DE SELECIONAR LOCAL ---->
-          <div class="col-2.col-sm-2">
+          <div class="col-2 col-sm">
             <label for="nomeFacilitador"><b>Informe o Local</b></label>
             <select class="form-control" id="pegarlocal">
               <option disabled> - Informe o Local - </option>
@@ -167,15 +167,13 @@ $pegarlocal=$puxarform->pegarlocais();
           <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
 
           <div class="col"><b>Tema*:</b>
-   
             <input id="temaprincipal" class="form-control" type="text" />
           </div>
 
           <!--BOTÕES-->
           <div class="row">
-
             <div class="col">
-              <div class="btn-atas">
+              <div class="btn-atas p-4">
                 
               <button id="botaoregistrar" type="button" class="btn btn-success">salvar</button>
 
