@@ -241,11 +241,6 @@ $ultimaata = $puxarform->pegarUltimaAta();
         </div>
     </div>
 </div>
-
-
-
-
-
 </div>
 </div>
 </div>
@@ -301,8 +296,7 @@ $ultimaata = $puxarform->pegarUltimaAta();
                   <?php endforeach ?>
               </optgroup>
         </select>
-</div>
-
+    </div>
         </div>
         <div class="row">
           <div class="col-10"></div>
@@ -311,12 +305,9 @@ $ultimaata = $puxarform->pegarUltimaAta();
                   <ul id="caixadeselecaodel"></ul>
                   <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
               </div>
+          </div>
     </div>
-</div>
-
-
-    </div>
-    
+  </div>
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
