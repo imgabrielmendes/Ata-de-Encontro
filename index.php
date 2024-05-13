@@ -82,70 +82,55 @@ $pegarlocal=$puxarform->pegarlocais();
       <div class="form-group col-8 mt-5">
         <!--2° LINHA DO FORMULÁRIO DA ATA----------------------->
         <div class="row"> <!---COLUNA NOME + DATA---->
-
           <!--Título do formulário ----------------------->
-
           <div class="col-md-12 text-center">
             <h2>Formulário de Solicitação </h2>
-          </div>
-          <br><br><br>
-          
+          </div>         
           <!---ABA DE DATA---->
-          <div class="col-3">
+          <div class="col-xl-4 col-lg-xl-3 col-md-6">
             <label><b>Data*</b></label>
-            <input id="datainicio" class="form-control col-12 col-md-6" placeholder="dd-mm-aaaa" min="2024-04-01" type="date">
+            <input id="datainicio" class="form-control" placeholder="dd-mm-aaaa" min="2024-04-01" type="date">
           </div>
           
-              <!--CONDIÇÃO PARA QUE O USUARIO NÃO COLOQUE DIAS ANTERIORES--->
-              <script>
-                var hoje = new Date().toISOString().split('T')[0];
-                document.getElementById("datainicio").setAttribute("min", hoje);
-              </script>
-
-
           <!---ABA DE HORÁRIO INICIO---->
-          <div class="col-3">
+          <div class="col-xl-4 col-lg-xl-3 col-md-6">
             <label for="nomeMedico"><b>Horário de Início*:</b></label>
-            <br>
-            <input class="form-control col-12 col-md-6" type="time" id="horainicio" name="appt" min="" max="18:00">
+            <input class="form-control" type="time" id="horainicio" name="appt" min="" max="18:00">
           </div>
 
           <!---ABA DE HORÁRIO TERMINO---->
-          <div class="col-3">
+          <div class="col-xl-4 col-lg-xl-3 col-md-6">
             <label for="form-control"> <b> Horário de Término:</b> </label>
             <input class="form-control" type="time" id="horaterm" name="appt" min="13:00" max="12:00">
           </div>
 
-          <!---ABA DE TEMPO ESTIMADO ---->
-          <div class="col-3">
-            <label for="form-control"> <b> Tempo Estimado (horas):</b> </label>
-            <input value="1" class="form-control" type="number" id="tempoestim" name="appt" min="0" max="5">
-          </div>
-          <br>
-
            <!---ABA DE OBJETIVO - REUNIÃO---->
-          <div class="col" id="objetivo">
+          <div class="row">
+          <div class="col-xl-12 col-lg-xl-12 col-md-12" id="objetivo">
             <label for="form-control"> <b>Objetivo:</b> </label>
-            <label class="form-control">
+          </div>
+
+<div class="row">
+          <div class="col-xl-4 col-lg-xl-4 col-md-4">
+              <label class="form-control">
               <input type="checkbox" class="objetivo" name="objetivo" id="reuniao" value="Reunião" > Reunião</label>
           </div>
-
            <!---ABA DE OBJETIVO - TREINAMENTO---->
-          <div class="col">
-            <br>
-            <label class="form-control">
+          <div class="col-xl-4 col-lg-xl-4 col-md-4">
+             <label class="form-control">
               <input type="checkbox" class="objetivo" name="objetivo" id="treinamento" value="Treinamento"> Treinamento</label>
           </div>
 
         <!---ABA DE OBJETIVO - CONSULTA---->
-          <div class="col">
-            <br>
+          <div class="col-xl-4 col-lg-xl-4 col-md-4">
+          
             <label class="form-control">
               <input type="checkbox" class="objetivo" name="objetivo" id="consulta" value="Consulta"> Consulta </label>
           </div>
+</div>
 
           <!--- ABA DE SELECIONAR LOCAL ---->
-          <div class="col-4">
+          <div class="col-2.col-sm-2">
             <label for="nomeFacilitador"><b>Informe o Local</b></label>
             <select class="form-control" id="pegarlocal">
               <option disabled> - Informe o Local - </option>
@@ -159,12 +144,14 @@ $pegarlocal=$puxarform->pegarlocais();
             </select>
           </div>
 
-          <br><br>
+         
           <!---ABA DE ADICIONAR FACILITADORES---->
-          <div class="col-4"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
-          <br>     
-          <div class="col-8">
-          <select class="col-8 form-control" id="selecionandofacilitador" name="facilitador" multiple>
+          <div class="row">
+          <div class="col"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
+
+          <div class="row">
+          <div class="col">
+          <select class="col form-control" id="selecionandofacilitador" name="facilitador" multiple>
               <optgroup label="Selecione Facilitadores">
                   <?php foreach ($pegarfa as $facnull) : ?>
                       <option value="<?php echo $facnull['id']; ?>"
@@ -174,20 +161,20 @@ $pegarlocal=$puxarform->pegarlocais();
                   <?php endforeach ?>
               </optgroup>
           </select>
-
+</div>
           </div>
  
           <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
 
           <div class="col"><b>Tema*:</b>
-            <br>
+   
             <input id="temaprincipal" class="form-control" type="text" />
           </div>
 
           <!--BOTÕES-->
           <div class="row">
 
-            <div class="col  "><br>
+            <div class="col">
               <div class="btn-atas">
                 
               <button id="botaoregistrar" type="button" class="btn btn-success">salvar</button>
