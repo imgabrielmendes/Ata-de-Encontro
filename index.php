@@ -81,7 +81,8 @@ $pegarlocal=$puxarform->pegarlocais();
     <main class="container_fluid d-flex justify-content-center align-items-center">
       <div class="form-group col-8 mt-5">
         <!--2° LINHA DO FORMULÁRIO DA ATA----------------------->
-        <div class="row"> <!---COLUNA NOME + DATA---->
+        <div class="row"> 
+          <!---COLUNA NOME + DATA---->
           <!--Título do formulário ----------------------->
           <div class="col-md-12 text-center m-3 p-2">
             <h2>Formulário de Solicitação </h2>
@@ -103,66 +104,63 @@ $pegarlocal=$puxarform->pegarlocais();
             <label for="form-control"> <b> Horário de Término:</b> </label>
             <input class="form-control" type="time" id="horaterm" name="appt" min="13:00" max="12:00">
           </div>
-
+  </div>
            <!---ABA DE OBJETIVO - REUNIÃO---->
-          <div class="row">
-          <div class="col-xl-12 col-lg-xl-12 col-md-12" id="objetivo">
+          <div class="row ">
+          <div class="col" id="objetivo">
             <label for="form-control"> <b>Objetivo:</b> </label>
-          </div>
+ 
+  </div>
 
 <div class="row">
-          <div class="col-xl-4 col-lg-xl-4 col-md-4">
+          <div class="col-xl-2 col-lg-xl-4 col-md-4">
               <label class="form-control">
               <input type="checkbox" class="objetivo" name="objetivo" id="reuniao" value="Reunião" > Reunião</label>
           </div>
            <!---ABA DE OBJETIVO - TREINAMENTO---->
-          <div class="col-xl-4 col-lg-xl-4 col-md-4">
-             <label class="form-control">
+          <div class="col-xl-3 col-lg-xl-4 col-md-4">
+              <label class="form-control">
               <input type="checkbox" class="objetivo" name="objetivo" id="treinamento" value="Treinamento"> Treinamento</label>
           </div>
-
         <!---ABA DE OBJETIVO - CONSULTA---->
-          <div class="col-xl-4 col-lg-xl-4 col-md-4">
-          
-            <label class="form-control">
+          <div class="col-xl-2 col-lg-xl-4 col-md-4">
+              <label class="form-control">
               <input type="checkbox" class="objetivo" name="objetivo" id="consulta" value="Consulta"> Consulta </label>
           </div>
-</div>
 
-          <!--- ABA DE SELECIONAR LOCAL ---->
-          <div class="col-2 col-sm">
-            <label for="nomeFacilitador"><b>Informe o Local</b></label>
-            <select class="form-control" id="pegarlocal">
-              <option disabled> - Informe o Local - </option>
-              <option> 
-              
-              <?php foreach ($pegarlocal as $locais) : ?>
-              <option value="<?php echo $locais['locais'] ?>" data-tokens="<?php echo $locais['locais']; ?>">
-              <?php echo $locais['locais'] ?> <?php endforeach ?>
-              </option>
+            <div class="col-xl-5 col-sm-12">
+              <select class="form-control" id="pegarlocal">
+            
+                <option disabled> - Informe o Local - </option>
+                <option> 
+                  <?php foreach ($pegarlocal as $locais) : ?>
+                  <option value="<?php echo $locais['locais'] ?>" data-tokens="<?php echo $locais['locais']; ?>">
+                  <?php echo $locais['locais'] ?> <?php endforeach ?>
+                </option>
 
-            </select>
+              </select>
           </div>
 
+</div>
          
           <!---ABA DE ADICIONAR FACILITADORES---->
           <div class="row">
-          <div class="col"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> </div>
+          <div class="col"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> 
+          </div>
 
           <div class="row">
-          <div class="col">
-          <select class="col form-control" id="selecionandofacilitador" name="facilitador" multiple>
-              <optgroup label="Selecione Facilitadores">
-                  <?php foreach ($pegarfa as $facnull) : ?>
-                      <option value="<?php echo $facnull['id']; ?>"
-                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                          <?php echo $facnull['nome_facilitador']; ?>
-                      </option>
-                  <?php endforeach ?>
-              </optgroup>
-          </select>
-</div>
+            <select class="col form-control" id="selecionandofacilitador" name="facilitador" multiple>
+                <optgroup label="Selecione Facilitadores">
+                    <?php foreach ($pegarfa as $facnull) : ?>
+                        <option value="<?php echo $facnull['id']; ?>"
+                            data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                            <?php echo $facnull['nome_facilitador']; ?>
+                        </option>
+                    <?php endforeach ?>
+                </optgroup>
+            </select>
           </div>
+     
  
           <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
 
@@ -172,7 +170,7 @@ $pegarlocal=$puxarform->pegarlocais();
 
           <!--BOTÕES-->
           <div class="row">
-            <div class="col">
+            <div class="col d-flex justify-content-center">
               <div class="btn-atas p-4">
                 
               <button id="botaoregistrar" type="button" class="btn btn-success">salvar</button>
@@ -232,5 +230,4 @@ $pegarlocal=$puxarform->pegarlocais();
       <script src="app/gravar.js"></script>
 
 </body>
-
 </html>
