@@ -95,9 +95,10 @@ $local = $_GET['local'];
   <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
   <div class="box box-primary">
     <main class="container_fluid d-flex justify-content-center align-items-center">
-      <div class="form-group col-8">
-        <div class="row"> 
-          
+      
+      <div class="form-group col-lg-8 col-md-12 ">
+       
+           <div class="row"> 
     <div class="accordion" id="accordionPanelsStayOpenExample">
 
       <div class="accordion-item shadow">
@@ -118,26 +119,26 @@ $local = $_GET['local'];
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
           <div class="row">
     <br>
-    <div class="col-3">
+    <div class="col-lg-3  col-md-2">
         <label><b>Data*:</b></label>
         <ul class="form-control bg-body-secondary"> <?php echo $_SESSION['objetivoSelecionado']; ?> </ul>
     </div>
 
     <!---ABA DE HORÁRIO INICIO---->
-    <div class="col-3">
+    <div class="col-lg-3  col-md-2">
         <label for="nomeMedico"><b>Horário de Início*:</b></label>
         <br>
         <ul class="form-control bg-body-secondary"><?php echo $_SESSION['horainicio']; ?></ul>
     </div>
 
     <!---ABA DE HORÁRIO TERMINO---->
-    <div class="col-3">
+    <div class="col-lg-3  col-md-2">
         <label for="form-control"> <b> Horário de Término:</b> </label>
         <ul class="form-control bg-body-secondary"><?php echo $_SESSION['horaterm']; ?></ul>
     </div>
 
     <!---ABA DE TEMPO ESTIMADO ---->
-    <div class="col-3">
+    <div class="col-lg-3  col-md-2">
         <label for="form-control"><b>Tempo Estimado:</b></label>
         <?php
         // Verifica se as variáveis estão definidas antes de calcular o tempo estimado
@@ -170,17 +171,17 @@ $local = $_GET['local'];
 </div>
 
 <div class="row">
-    <div class="col-6">
-        <label><b>Facilitador(es) responsável(eis):</b></label>
-        <ul class="form-control bg-body-secondary"><?php echo $facilitadoresString; ?></ul>
+    <div class="facilitadorcol col-lg-6  col-md-2">
+        <label><b >Facilitador(es):</b></label>
+        <ul class=" mt-2 form-control bg-body-secondary"><?php echo $facilitadoresString; ?></ul>
     </div>
-    <div class="col-3">
+    <div class="col-lg-3  col-md-2">
         <label><b>Local:</b></label>
-        <ul class="form-control bg-body-secondary border rounded"><?php echo $_SESSION['local']; ?></ul>
+        <ul class=" mt-2 form-control bg-body-secondary border rounded"><?php echo $_SESSION['local']; ?></ul>
     </div>
-    <div class="col-3">
+    <div class="col-lg-3  col-md-2-br">
         <label for="form-control"> <b>Objetivo:</b> </label>
-        <label class="form-control bg-body-secondary border rounded">
+        <label class=" mt-2 form-control bg-body-secondary border rounded">
             <input type="checkbox" disabled checked> <?php echo $_SESSION['objetivoSelecionado']; ?>
     </div>
     <div>
@@ -198,7 +199,6 @@ $local = $_GET['local'];
     </div>
 </div>
   </div>
-
 <!-----------------------------2° FASE-------------------------------->
 <br>
 <div class="accordion">
@@ -209,7 +209,7 @@ $local = $_GET['local'];
     <h5>Participantes</h5>
 </div>
   </h2>                                                                                                                                       
-        <main class="container-fluid ">
+        <div class="container-fluid ">
         <div class="row">
           <form id="addForm">
               <div class="form-group ">
@@ -219,7 +219,7 @@ $local = $_GET['local'];
                   <label for="item"><b>Informe os participantes<b></label>
 
                   <div class="row">
-                    <div class="col" style="widht: 50px;"> 
+                    <div class="col" > 
                     <select class="col form-control" id="participantesadicionados" name="facilitador" multiple style="width: 100px;">
                       <optgroup label="Selecione Facilitadores">
                           <?php foreach ($pegarfa as $facnull) : ?>
@@ -230,25 +230,26 @@ $local = $_GET['local'];
                        </optgroup>
                     </select>
         </div>
-              
-             
+        </div></div>
+          
           </form>
           <div  class="row">
-          <div class="col">
-           <button style="width: 30%; padding:0px;margin:5px; background-color:white; color:#353535; border:none;" id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
+          <div class="col-lg-12 col-md-2 d-flex text-center">
+           <button style=" background-color:white; color:#353535; border:none; font-size: 13px;" id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
               Clique aqui para cadastrar usúario 
             </button>
        </div>
       </div>
     </div>
 <br>
-           
+           <br><br>
       <!--BOTÕES-->
-      <div class="container d-flex justify-content-center">
+      <div class="container-fluid   justify-content-center align-items-center">
         <div class="row">
+          <div class="btnsparticipante">
 
-          <div class="col">
-              <button id="botaocontinuarata" type="button" class="btn btn-success" data-bs-toggle="modal">
+          <div class="col-lg-3 col-md-2">
+              <button id="botaocontinuarata" type="button" class="btn form-control btn-success" data-bs-toggle="modal">
                 Continuar ata
               </button>
               <script>
@@ -256,26 +257,38 @@ $local = $_GET['local'];
                   window.location.href = 'pagdeliberacoes.php';
                 }
               </script>
-
         </div>
-        <div class="col">
-                  
-              <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal">
+        <br>
+        <div class="col-lg-3 col-md-2">
+              <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn form-control btn-primary" data-bs-toggle="modal">
                 Atualizar a ata
               </button>
-            </div>
-            </div>
+           
+            
               <script>
         function abrirHistorico() {
             window.location.href = 'paghistorico.php';
         }
-    </script>
+    </script> 
+    </div>
+          </div>
+
+          </div>
             </div>
+            <br>
+          </div>
+          
+    
+           
+          </div>  <br></div>
         </div>
-      </div>
 
             </div>
+
+              
 </main>
+</div>
+
                       <!------------------ MODAL ------------------>
                       <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         <div class="modal-dialog">
