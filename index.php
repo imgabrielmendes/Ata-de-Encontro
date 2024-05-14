@@ -85,29 +85,34 @@ $pegarlocal=$puxarform->pegarlocais();
           <!---COLUNA NOME + DATA---->
           <!--Título do formulário ----------------------->
           <div class="col-md-12 text-center m-3 p-2">
-            <h2>Formulário de Solicitação </h2>
+            <h2><b>Formulário de Solicitação</b></h2>
           </div>         
           <!---ABA DE DATA---->
           <div class="col-xl-4 col-lg-xl-3 col-md-6">
             <label><b>Data*</b></label>
-            <input id="datainicio" class="form-control" placeholder="dd-mm-aaaa" min="2024-04-01" type="date">
+            <input id="datainicio" class="mt-2 mb-2 form-control" placeholder="dd-mm-aaaa" min="2024-04-01" type="date">
           </div>
+          <script>
+                var hoje = new Date().toISOString().split('T')[0];
+                document.getElementById("datainicio").setAttribute("min", hoje);
+              </script>
           
           <!---ABA DE HORÁRIO INICIO---->
           <div class="col-xl-4 col-lg-xl-3 col-md-6">
             <label for="nomeMedico"><b>Horário de Início*:</b></label>
-            <input class="form-control" type="time" id="horainicio" name="appt" min="" max="18:00">
+            <input class="mt-2 mb-2 form-control" type="time" id="horainicio" name="appt" min="" max="18:00">
           </div>
 
           <!---ABA DE HORÁRIO TERMINO---->
           <div class="col-xl-4 col-lg-xl-3 col-md-6">
             <label for="form-control"> <b> Horário de Término:</b> </label>
-            <input class="form-control" type="time" id="horaterm" name="appt" min="13:00" max="12:00">
+            <input class="mt-2 mb-2 form-control" type="time" id="horaterm" name="appt" min="13:00" max="12:00">
           </div>
+
   </div>
            <!---ABA DE OBJETIVO - REUNIÃO---->
           <div class="row ">
-          <div class="col" id="objetivo">
+          <div class="col mt-1" id="objetivo">
             <label for="form-control"> <b>Objetivo:</b> </label>
  
   </div>
@@ -145,11 +150,11 @@ $pegarlocal=$puxarform->pegarlocais();
          
           <!---ABA DE ADICIONAR FACILITADORES---->
           <div class="row">
-          <div class="col"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> 
+          <div class="col mt-3"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> 
           </div>
 
           <div class="row">
-            <select class="col form-control" id="selecionandofacilitador" name="facilitador" multiple>
+            <select class="col mt-3 form-control" id="selecionandofacilitador" name="facilitador" multiple>
                 <optgroup label="Selecione Facilitadores">
                     <?php foreach ($pegarfa as $facnull) : ?>
                         <option value="<?php echo $facnull['id']; ?>"
@@ -164,8 +169,8 @@ $pegarlocal=$puxarform->pegarlocais();
  
           <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
 
-          <div class="col"><b>Tema*:</b>
-            <input id="temaprincipal" class="form-control" type="text" />
+          <div class="col mt-2"><b>Tema*:</b>
+            <input id="temaprincipal" class="mt-2 form-control" type="text" />
           </div>
 
           <!--BOTÕES-->
@@ -173,9 +178,9 @@ $pegarlocal=$puxarform->pegarlocais();
             <div class="col d-flex justify-content-center">
               <div class="btn-atas p-4">
                 
-              <button id="botaoregistrar" type="button" class="btn btn-success">salvar</button>
+              <button id="botaoregistrar" type="button" class="mt-2 btn btn-success">salvar</button>
 
-              <button id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
+              <button id="botaoregistrar" type="button" class="mt-2 btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
               </div>
               
               <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -187,7 +192,7 @@ $pegarlocal=$puxarform->pegarlocais();
                             </div>
                             <div class="modal-body">
 
-                              <form>
+                           
                                 <div class="mb-3">
 
                                   <label class="col-form-label">Nome completo:</label>
@@ -203,7 +208,7 @@ $pegarlocal=$puxarform->pegarlocais();
                                 <label class="col-4 form-label">Matricula: </label>
                                 <label id="labelcargo" class="col-8 form-label">Cargo: </label>
                                 <div class="col-4">
-                                <input type="text" maxlength="4" class="form-control" id="caixamatricula">
+                                <input type="text" maxlength="4" pattern="[0-9]{4}" class="form-control" id="caixamatricula">
                                 </div>  
 
                                 <div class="col-8">
@@ -224,6 +229,7 @@ $pegarlocal=$puxarform->pegarlocais();
 
 
       <script src="view\js\multi-select-tag.js"></script>
+      
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
       <script src="view/js/bootstrap.js"></script>
