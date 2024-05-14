@@ -107,16 +107,27 @@ document.getElementById('addItemButton').addEventListener('click', function() {
 
     var newItem = document.querySelector('.item').value.trim();
     
-    if (newItem === "") {
+    if (newItem === "" && deliberadoresSelecionadosLabel.length === 0) {
           Swal.fire({
-            title: "Você não adicionou uma deliberação",
+            title: "Preencha os campos de deliberação",
             icon: "error"
         });
         
         return;
     }
 
-    if (deliberadoresSelecionadosLabel.length === 0) {
+    else if (newItem === ""){
+
+        Swal.fire({
+            title: "Você não adicionou uma deliberação",
+            text: "Adicione pelo menos 1 deliberação para a ata",
+            icon: "error"
+        });
+        
+        return;
+    }
+
+    else if (deliberadoresSelecionadosLabel.length === 0) {
 
         Swal.fire({
           title: "Você não adicionou um deliberador",
@@ -213,14 +224,23 @@ function irparaHist() {
     var textoprincipal = document.getElementById('textoprinc').value;
     console.log(textoprincipal);
 
-    if (textoprincipal === "" || deliberadoresSelecionadosLabel.length === 0 ) {
 
+     if (textoprincipal === ""){
         Swal.fire({
-            title: "Informe todos os campos para seguir",
+            title: "Você não informou um texto principal",
             icon: "error"
         });
+    }
 
-    } else {
+    else if( deliberadoresSelecionadosLabel.length === 0 ){
+
+        Swal.fire({
+            title: "Preencha o espaço de deliberações",
+            icon: "error"
+        });
+    }
+
+    else {
 
         Swal.fire({
             title: "Perfeito!",

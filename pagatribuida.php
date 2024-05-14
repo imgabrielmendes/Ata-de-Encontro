@@ -236,32 +236,97 @@ print_r($id_pagina);
             <form id="addForm">
               <div class="col-12 form-group ">
                   <div class="col">
-                      <!-- Adicione o atributo data-id-ata -->
-                      <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
-                          <optgroup label="Selecione Facilitadores">
-                              <?php foreach ($pegarfa as $facnull) : ?>
-                                  <option value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                                      <?php echo $facnull['nome_facilitador']; ?>
-                                  </option>
-                              <?php endforeach ?>
-                          </optgroup>
-                      </select>
+                  <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
+    <optgroup label="Selecione Facilitadores">
+        <?php foreach ($pegarfa as $facilitador) : ?>
+            <?php
+            // Verifica se o facilitador já está na ATA
+            $estaNaAta = false;
+            foreach ($participantes as $participante) {
+                if ($participante['id'] == $facilitador['id']) {
+                    $estaNaAta = true;
+                    break;
+                }
+            }
+            // Se o facilitador não estiver na ATA, exibe no seletor
+            if (!$estaNaAta) :
+            ?>
+                <option value="<?php echo $facilitador['id']; ?>" data-tokens="<?php echo $facilitador['nome_facilitador']; ?>">
+                    <?php echo $facilitador['nome_facilitador']; ?>
+                </option>
+            <?php endif; ?>
+        <?php endforeach; ?>
+    </optgroup>
+</select>
+
                   </div>
               </div>
           </form>
-            <?php
-            if (isset($_GET['updateid'])) {
-              $id_ata = $_GET['updateid'];
-              $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-              if (!empty($participantes)) {
-                echo implode(', ', $participantes);
-              } else {
-                echo "Nenhum participante encontrado para esta ATA.";
-              }
-            } else {
-              echo "Nenhum ID de ATA fornecido.";
-            }
-            ?>
+          <div class="d-flex align-items-center">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#listaParticipantesModal" style="background-color: #001f3f; border-color: #001f3f;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 1em; height: 1em; vertical-align: -0.125em;">
+      <path fill="#ffffff" d="M96 0C60.7 0 32 28.7 32 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H96zM208 288h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H144c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm-32-96a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM512 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V80zM496 192c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm16 144c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V336z"/>
+    </svg>
+  </button>
+  <span class="ms-2">Participantes da ata</span>
+</div>
+<div class="modal fade" id="listaParticipantesModal" tabindex="-1" aria-labelledby="listaParticipantesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="listaParticipantesModalLabel">Participantes da ata</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+      <?php
+if (isset($_GET['updateid'])) {
+    $id_ata = $_GET['updateid'];
+    $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+    if (!empty($participantes)) {
+        echo "<ul>";
+        foreach ($participantes as $participante) {
+            echo "<li class='mb-2' style='font-weight: bold; font-size: 18px;'>";
+            echo "$participante";
+            echo "<button type='button' class='btn btn-danger btn-sm ms-2' onclick='excluirParticipante(\"$participante\")'>Excluir</button>";
+            echo "</li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "Nenhum participante encontrado para esta ATA.";
+    }
+} else {
+    echo "Nenhum ID de ATA fornecido.";
+}
+?>
+
+<script>
+    function excluirParticipante(participante) {
+        // Implemente a lógica para excluir o participante
+      
+        console.log("Excluindo participante:", participante);
+    }
+</script>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function excluirParticipante(participante) {
+    if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
+      var participanteElement = document.querySelector("li:contains('" + participante + "')");
+      if (participanteElement) {
+        participanteElement.remove();
+      } else {
+        alert("Participante não encontrado na lista.");
+      }
+    }
+  }
+</script>
+
+
+
             <br>
             <?php
             $conn->close();
@@ -274,21 +339,21 @@ print_r($id_pagina);
 </form>
 
 <script>
-  document.getElementById("addForm").addEventListener("submit", function(event) {
-  event.preventDefault(); 
-  var select = document.getElementById("participantesadicionado");
-  var selectedOptions = select.selectedOptions;
-  for (var i = 0; i < selectedOptions.length; i++) {
-    var selectedOption = selectedOptions[i];
-    var participante = selectedOption.textContent.trim();
-    var participanteId = selectedOption.value;
-    if (!participanteJaAdicionado(participante)) {
-      adicionarParticipanteAoLabel(participante);
-      selectedOption.remove();
-    }
-  }
-});
-$(document).ready(function() {
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("addForm").addEventListener("submit", function(event) {
+        event.preventDefault(); 
+        var select = document.getElementById("participantesadicionado");
+        var selectedOptions = select.selectedOptions;
+        for (var i = 0; i < selectedOptions.length; i++) {
+            var selectedOption = selectedOptions[i];
+            var participante = selectedOption.textContent.trim();
+            var participanteId = selectedOption.value;
+            if (!participanteJaAdicionado(participante)) {
+                adicionarParticipanteAoLabel(participante);
+                selectedOption.remove(); 
+            }
+        }
+    });
     $('#participantesadicionado').change(function() {
         var selected_ids = [];
         var selected_names = [];
@@ -296,23 +361,24 @@ $(document).ready(function() {
             selected_ids.push($(this).val());
             selected_names.push($(this).text());
         });
+
         console.log(selected_ids);
         console.log(selected_names);
-
     });
 });
 function participanteJaAdicionado(participante) {
-  var label = document.getElementById("participantesLabel");
-  return label.textContent.includes(participante);
+    var label = document.getElementById("participantesLabel");
+    return label.textContent.includes(participante);
 }
 function adicionarParticipanteAoLabel(participante) {
-  var label = document.getElementById("participantesLabel");
-  var participanteItem = document.createElement("span");
-  participanteItem.textContent = participante;
-  participanteItem.classList.add("badge", "bg-secondary", "me-1");
-  label.appendChild(participanteItem);
+    var label = document.getElementById("participantesLabel");
+    var participanteItem = document.createElement("span");
+    participanteItem.textContent = participante;
+    participanteItem.classList.add("badge", "bg-secondary", "me-1");
+    label.appendChild(participanteItem);
 }
 </script>
+
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 <br>
 <div class="accordion">
@@ -328,7 +394,14 @@ function adicionarParticipanteAoLabel(participante) {
 <div class="accordion-collapse collapse show">
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
     <div class="col-md-12 text-center">               
-    </div>     
+    </div>
+    <div class="row">
+    <div class ="col">
+        <label style="height: 35px;"><b>Informe o texto principal:</b></label>
+        <textarea id="textoprinc" style="height: 110px;" class="form-control"></textarea>
+
+              </div>
+    </div>   
     <span class="col-4" id="inputContainer"></span>
         <form id="addForm">
           
@@ -336,85 +409,37 @@ function adicionarParticipanteAoLabel(participante) {
         <div class="col">
           
               <br>
-              <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-              <textarea id="deliberacoes" class="form-control item" placeholder="Informe aqui..." style="height: 110px;"></textarea>
+              <ul class="list-group list-group-flush"></ul>
+              <label class="h4" style="height: 35px;"><b>DELIBERAÇÕES</b></label>
+              
+              <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;"></textarea>
             </div>
 
-            <div class="col">
+    <div class="col">
     <!-- Primeira caixa de texto e select de facilitadores -->
-            <div class="mb-2">
-            <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>" data-id-ata-value="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
-                <optgroup label="Selecione Facilitadores">
-                    <?php foreach ($pegarde as $facnull) : ?>
-                        <option value="<?php echo $facnull['nome_facilitador']; ?>" 
-                            data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                            <?php echo $facnull['nome_facilitador']; ?>
-                        </option>
-                    <?php endforeach ?>
-                </optgroup>
-            </select>
-
-        </div>
-<script>
-    // Função para adicionar event listener ao formulário
-    document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById("addForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // Previne o comportamento padrão de envio do formulário
-
-        // Recupera o select e suas opções selecionadas
-        var select = document.getElementById("participantesadicionado");
-        var selectedOptions = select.selectedOptions;
-
-        // Loop pelas opções selecionadas
-        for (var i = 0; i < selectedOptions.length; i++) {
-            var selectedOption = selectedOptions[i];
-            var participante = selectedOption.textContent.trim();
-            var participanteId = selectedOption.value;
-
-            // Verifica se o participante já foi adicionado ao label
-            if (!participanteJaAdicionado(participante)) {
-                adicionarParticipanteAoLabel(participante);
-                selectedOption.remove(); // Remove a opção do select após ser adicionada ao label
-            }
-        }
-    });
-});
-
-
-    // Função para lidar com a mudança de seleção no select
-    $(document).ready(function() {
-        $('#participantesadicionado').change(function() {
-            var selected_ids = [];
-            var selected_names = [];
-
-            // Loop pelas opções selecionadas
-            $('#participantesadicionado option:selected').each(function() {
-                selected_ids.push($(this).val());
-                selected_names.push($(this).text());
-            });
-            console.log(selected_ids);
-            console.log(selected_names);
-        });
-    });
-
-    // Função para verificar se o participante já foi adicionado ao label
-    function participanteJaAdicionado(participante) {
-        var label = document.getElementById("participantesLabel");
-        return label.textContent.includes(participante);
-    }
-
-    // Função para adicionar participante ao label
-    function adicionarParticipanteAoLabel(participante) {
-        var label = document.getElementById("participantesLabel");
-        var participanteItem = document.createElement("span");
-        participanteItem.textContent = participante;
-        participanteItem.classList.add("badge", "bg-secondary", "me-1");
-        label.appendChild(participanteItem);
-    }
-</script>
-
+    <div class="mb-2">
+        <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
+        <optgroup label="Selecione Facilitadores">
+                  <?php foreach ($pegarde as $facnull) : ?>
+                      <option value="<?php echo $facnull['id']; ?>"
+                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                          <?php echo $facnull['nome_facilitador']; ?>
+                      </option>
+                  <?php endforeach ?>
+              </optgroup>
+        </select>
     </div>
-    
+        </div>
+        <div class="row">
+          <div class="col-10"></div>
+          <div class="col-2 d-flex justify-content-end">
+              <div class="d-flex flex-column align-items-end">
+                  <ul id="caixadeselecaodel"></ul>
+                  <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
+              </div>
+          </div>
+    </div>
+  </div>
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
@@ -442,19 +467,87 @@ function adicionarParticipanteAoLabel(participante) {
         </div>
       </div>
     </div>
-
         <br>
-        
-    </form>
-          
-            </div>          
+        <div class="col text-center">
+            <button  id="atribuida"   class="btn btn-primary">Atualizar a ATA</button>
+    </div>
+    </form>       
+      </div>          
 </div>
-</form>
-<div class="col">
-        <button  id="atribuida"   class="btn btn-primary">Atualizar a ATA</button>
-    
-</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("addForm").addEventListener("submit", function(event) {
+        event.preventDefault(); 
+        var select = document.getElementById("participantesadicionado");
+        var selectedOptions = select.selectedOptions;
+        for (var i = 0; i < selectedOptions.length; i++) {
+            var selectedOption = selectedOptions[i];
+            var participante = selectedOption.textContent.trim();
+            var participanteId = selectedOption.value;
+            if (!participanteJaAdicionado(participante)) {
+                adicionarParticipanteAoLabel(participante);
+                selectedOption.remove(); 
+            }
+        }
+    });
+});
+    $(document).ready(function() {
+        $('#participantesadicionado').change(function() {
+            var selected_ids = [];
+            var selected_names = [];
+            $('#participantesadicionado option:selected').each(function() {
+                selected_ids.push($(this).val());
+                selected_names.push($(this).text());
+            });
+            console.log(selected_ids);
+            console.log(selected_names);
+        });
+    });
+    function participanteJaAdicionado(participante) {
+        var label = document.getElementById("participantesLabel");
+        return label.textContent.includes(participante);
+    }
+    function adicionarParticipanteAoLabel(participante) {
+        var label = document.getElementById("participantesLabel");
+        var participanteItem = document.createElement("span");
+        participanteItem.textContent = participante;
+        participanteItem.classList.add("badge", "bg-secondary", "me-1");
+        label.appendChild(participanteItem);
+    }
+</script>
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="view/img/check.svg" class="rounded me-2" alt="..." style="width: 20px";>
+          <strong class="me-auto">Perfeito!</strong>
+          <small>Agora</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          A deliberação foi atribuída.
+        </div>
+      </div>
+    </div>
 
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast2" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="view\img\x.svg" class="rounded me-2" alt="..." style="width: 15px";>
+          <strong class="me-auto">Perfeito!</strong>
+          <small>Agora</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          Atribuição excluída.
+        </div>
+      </div>
+    </div>
+        <br>  
+    </form>
+        </div>          
+    </div>
+</form>
 <script>
     var id_ata = <?php echo json_encode($id_pagina); ?>;
     document.addEventListener('DOMContentLoaded', function() {
@@ -464,37 +557,25 @@ function adicionarParticipanteAoLabel(participante) {
         } else {
             console.error("Elemento com o ID 'atribuida' não encontrado.");
         }
-
-        // Verifique se id_ata está definido e se estamos na página correta
         if (typeof id_ata !== 'undefined' && window.location.pathname !== '/paghistorico.php') {
-            // Código para executar se id_ata estiver definido e não estiver na página de histórico
-            // console.log("ID da página:", id_ata);
-            // Aqui você pode usar id_ata conforme necessário
         } else {
             console.error("id_ata não está definido ou estamos na página de histórico.");
         }
     });
 </script>
-
-
-
-  </div>
-    </div>
       </div>
-         </div>
-         
+    </div>
+  </div>
+</div>     
 </main>
-
-</div>
-       
+</div> 
     <script src="view\js\multi-select-tag.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
     <script src="app/gravar.js"></script>
+    <script src="app/deliberacoes.js"></script>
     <script src="app/gravaratribuida.js" data-id-ata="<?php echo $id_ata; ?>"></script>
-
 </body>
-
 </html>

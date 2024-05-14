@@ -19,8 +19,6 @@ new MultiSelectTag('selecionandofacilitador', {
     }
 });
 
-// Pegar inputs 
-var gravarinformacoes = document.getElementById("botaoregistrar");
 
 //1° LINHAS
 var data = document.getElementById("datainicio").value;
@@ -35,10 +33,9 @@ var objetivoSelecionado = null;
 //3° LINHA
 var temaprincipal = document.getElementById("temaprincipal");
 
-
+var gravarinformacoes = document.getElementById("botaoregistrar");
 gravarinformacoes.addEventListener('click', gravando);
 function gravando() {
-
 
     var data = document.getElementById("datainicio").value;
     var horainicio = document.getElementById("horainicio").value;
@@ -77,8 +74,14 @@ function gravando() {
         // console.log(objetivoSelecionado);
         // console.log(local);
         // console.log(facilitadores);
-
     } 
+
+    else if (horainicio > horaterm){
+        Swal.fire({
+            title: "Horário incorreto",
+            icon: "error"
+        });
+    }
     
     else {
 
