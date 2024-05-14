@@ -164,7 +164,7 @@ if ($conn->connect_error) {
         assunto.tema, 
         assunto.local, 
         assunto.status, 
-        GROUP_CONCAT(DISTINCT facilitadores.nome_facilitador SEPARATOR ', ') AS facilitadores,
+        GROUP_CONCAT(DISTINCT facilitadores.nome_facilitador SEPARATOR ',') AS facilitadores,
         GROUP_CONCAT(DISTINCT CONCAT(facilitadores.nome_facilitador, ': ', textoprinc.texto_princ) ORDER BY facilitadores.nome_facilitador SEPARATOR '<br>') AS deliberadores_deliberacoes
     FROM 
         assunto
@@ -208,10 +208,10 @@ if ($conn->connect_error) {
                         $totalParticipantes = count($puxaparticipantes);
                         $count = 0;
                         foreach ($puxaparticipantes as $participante) {
-                            echo $participante;
+                            echo  "<li> $participante </li>";
                             $count++;
                             if ($count < $totalParticipantes) {
-                                echo ", <br>";
+                                echo '<li>';
                             }
                         }
                     } else {
@@ -333,28 +333,29 @@ if ($conn->connect_error) {
                                     <label><b>Objetivo:</b></label>
                                     <ul class="form-control bg-body-secondary border rounded" id="modal_objetivo"></ul>
                                 </div>
-                                <div class="col-4">
-                                    <label><b>Facilitador:</b></label>
-                                    <ul class="form-control bg-body-secondary border rounded" id="modal_facilitador"></ul>
-                                </div>
+                               
                                 <div class="col-4">
                                     <label><b>Local:</b></label>
                                     <ul class="form-control bg-body-secondary border rounded" id="modal_local"></ul>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-12">
                                     <b>Tema:</b>
                                     <div class="col-12">
                                         <ul class="form-control bg-body-secondary" id="modal_tema"></ul>
                                     </div>
                                     
                                 </div>
-                                <div class="col-4">
-                                    <label><b>Status:</b></label>
-                                    <ul class="form-control bg-body-secondary border rounded" id="modal_status"></ul>
-                                </div>
                                 <div class="col-12">
+    <label><b>Facilitador:</b></label>
+    <ul class="form-control bg-body-secondary border rounded "id="modal_facilitador" >
+    
+            </ul>
+</div>
+
+                                <div class="col-12"> 
                                     <label for="form-control"><b>Participantes</b></label>
                                     <ul class="form-control bg-body-secondary  border rounded" id="modal_participantes"></ul>
+                                    
                                 </div>
                                 <br><br>
                                 <div class="col-12">
@@ -390,7 +391,6 @@ if ($conn->connect_error) {
         document.getElementById("modal_facilitador").innerText = row.facilitador;
         document.getElementById("modal_local").innerText = row.local;
         document.getElementById("modal_tema").innerText = row.tema;
-        document.getElementById("modal_status").innerText = row.status; 
 
 
         var deliberacoes = document.getElementById("deliberacoes" + row.id).innerHTML;
