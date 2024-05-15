@@ -164,8 +164,8 @@ if ($conn->connect_error) {
         assunto.tema, 
         assunto.local, 
         assunto.status, 
-        GROUP_CONCAT(DISTINCT facilitadores.nome_facilitador SEPARATOR ',') AS facilitadores,
-        GROUP_CONCAT(DISTINCT CONCAT(facilitadores.nome_facilitador, ': ', textoprinc.texto_princ) ORDER BY facilitadores.nome_facilitador SEPARATOR '<br>') AS deliberadores_deliberacoes
+        GROUP_CONCAT(DISTINCT facilitadores.nome_facilitador SEPARATOR '<br>') AS facilitadores,
+        GROUP_CONCAT(DISTINCT CONCAT(facilitadores.nome_facilitador, ': ', textoprinc.texto_princ) ORDER BY facilitadores.nome_facilitador SEPARATOR '<li>') AS deliberadores_deliberacoes
     FROM 
         assunto
     LEFT JOIN 
@@ -208,10 +208,10 @@ if ($conn->connect_error) {
                         $totalParticipantes = count($puxaparticipantes);
                         $count = 0;
                         foreach ($puxaparticipantes as $participante) {
-                            echo  "<li> $participante </li>";
+                            echo   $participante ;
                             $count++;
                             if ($count < $totalParticipantes) {
-                                echo '<li>';
+                                echo ",";
                             }
                         }
                     } else {
@@ -245,26 +245,26 @@ if ($conn->connect_error) {
                         // Exibe as deliberações únicas
                         foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
                             $classe_overflow = (strlen($texto_deliberacao) > 10) ? 'overflow-auto-y' : ''; // Verifica se o texto excede 500 caracteres
-                            echo "<div class='form-control deliberacao  $classe_overflow' style='overflow-y: auto; max-height: 80px;'>" . $texto_deliberacao . "</div><br>";
+                            echo "<div class='col-6 bg-body-secondary form-control deliberacao  $classe_overflow' style='overflow-y: auto; max-height: 80px;'>" . $texto_deliberacao . "</div><br>";
                         }
                         
                         echo "</td>";
                     
-                        echo "<td class='text-left' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                        echo "<td class=' text-left' style='display:none;' id='deliberadores" . $row['id'] . "'>";
                         // Exibe os deliberadores associados a cada deliberação única
                         foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
                             $deliberadores_concatenados = implode(", ", $deliberadores);
                             // Verifica se o texto é grande o suficiente para justificar a barra de rolagem
-                            echo "<div class='form-control deliberador'  >" . $deliberadores_concatenados . "</div><br>";
+                            echo "<div class='col-6 bg-body-secondary form-control deliberador'  >" . $deliberadores_concatenados . "</div><br>";
                         }
                         echo "</td>";
                     } else {
                         echo "<td class=' align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
-                        echo "<div class='form-control'>Nenhuma deliberação</div>";
+                        echo "<div class='col-6 bg-body-secondary form-control'>Nenhuma deliberação</div>";
                         echo "</td>";
                     
                         echo "<td class=' align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
-                        echo "<div class='form-control'>Nenhum deliberador</div>";
+                        echo "<div class='col-6 bg-body-secondary form-control'>Nenhum deliberador</div>";
                         echo "</td>";
                     }
                     
@@ -290,7 +290,7 @@ if ($conn->connect_error) {
 
 
                     echo "<td>
-                    <a class='text-light' href='arquivopdf.php?updateid=".$id."'>
+                    <a class=' text-light' href='arquivopdf.php?updateid=".$id."'>
                     <button class='btn btn-success'>
                         
                             <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512' width='16' height='16'>
@@ -358,20 +358,39 @@ if ($conn->connect_error) {
                                     
                                 </div>
                                 <br><br>
-                                <div class="col-12">
+                                <div class=" col-12">
                                     <div class="row">
                                         
                                     <label class="h3  "><b>Deliberações</b></label>
                                  
-                                    <div class="col-6">
-    <div class="col-12" id="modal_deliberadores"></div>
-</div>
-                                    <div class="col-6">
-  
-    <div class="col-12" id="modal_deliberacoes"></div>
-</div>
 
 
+
+
+
+
+
+                             <table id="myTable" class="table  bg-body-secondary">
+    <thead>
+    <tr>
+        <th class="text-center">Deliberador</th>
+        <th class="text-center">deliberações</th>
+        
+    </tr>
+    </thead>
+    <tbody>
+      
+<?php 
+
+                echo "<tr>";
+                echo "<td class='col-6 align-middle' id='modal_deliberadores''>"  . "</td>";
+                echo "<td class='col-6 align-middle' id='modal_deliberacoes''>"  . "</td>";
+               ?>
+               
+                    
+                    
+    </tbody>
+</table>
                                 </div>
                                 </div>
                                                                  
