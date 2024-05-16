@@ -142,18 +142,18 @@ if ($conn->connect_error) {
                                 <br>
                         </tbody> 
                     </table>
-<table id="myTable" class="table  table-hover shadow">
+                    <table id="myTable" class="table table-hover shadow">
     <thead>
-    <tr>
-        <th class="text-center">Data</th>
-        <th class="text-center">Objetivo</th>
-        <th class="text-center">Facilitador</th>
-        <th class="text-center">Tema</th>
-        <th class="text-center">Local</th>
-        <th class="text-center">Status</th>
-        <th class="text-center">Ação</th>
-        <th class="text-center">Imprimir</th>
-    </tr>
+        <tr>
+            <th class="text-center">Data</th>
+            <th class="text-center">Objetivo</th>
+            <th class="text-center">Facilitador</th>
+            <th class="text-center">Tema</th>
+            <th class="text-center">Local</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Ação</th>
+            <th class="text-center">Imprimir</th>
+        </tr>
     </thead>
     <tbody>
         <?php
@@ -199,7 +199,20 @@ if ($conn->connect_error) {
                 echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
                 echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
                 echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
-                echo "<td class='align-middle' style='display:none;'  onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
+                echo "<td class='text-center align-middle'>
+                        <a href='pagatribuida.php?updateid=".$id."' class='btn btn-warning' style='color: white;'>
+                            <button class='text-center align-middle' style='color:white; border: none; background: transparent;'>&plus;</button>
+                        </a>
+                    </td>";
+                echo "<td class='text-center align-middle'>
+                        <a class='text-light btn btn-success' href='arquivopdf.php?updateid=".$id."'>
+                            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512' width='16' height='16'>
+                                <path fill='currentColor' d='M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM112 256H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16z'/>
+                            </svg>
+                        </a>
+                    </td>";
+                echo "<td class='align-middle' style='display:none;' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
+
                 echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
                 if (isset($row['id'])) {
                     $id_ata = $row['id'];
@@ -241,74 +254,44 @@ if ($conn->connect_error) {
                             $deliberacoes_unicas[$texto_deliberacao][] = $deliberador;
                         }
                     
-                        echo "<td class='text-left' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        echo "<td class='deliberacao-cell text-left' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
                         // Exibe as deliberações únicas
                         foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
                             $classe_overflow = (strlen($texto_deliberacao) > 10) ? 'overflow-auto-y' : ''; // Verifica se o texto excede 500 caracteres
-                            echo "<div class='col-6 bg-body-secondary form-control deliberacao  $classe_overflow' style='overflow-y: auto; max-height: 80px;'>" . $texto_deliberacao . "</div><br>";
+                            echo "<div class='col-6 bg-body-secondary form-control deliberacao $classe_overflow' style='overflow-y: auto; max-height: 80px;'>" . $texto_deliberacao . "</div><br>";
                         }
-                        
+                    
                         echo "</td>";
                     
-                        echo "<td class=' text-left' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                        echo "<td class='deliberador-cell text-left' style='display:none;' id='deliberadores" . $row['id'] . "'>";
                         // Exibe os deliberadores associados a cada deliberação única
                         foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
                             $deliberadores_concatenados = implode(", ", $deliberadores);
                             // Verifica se o texto é grande o suficiente para justificar a barra de rolagem
-                            echo "<div class='col-6 bg-body-secondary form-control deliberador'  >" . $deliberadores_concatenados . "</div><br>";
+                            echo "<div class='col-6 bg-body-secondary form-control deliberador'>" . $deliberadores_concatenados . "</div><br>";
                         }
                         echo "</td>";
                     } else {
-                        echo "<td class=' align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        echo "<td class='deliberacao-cell align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
                         echo "<div class='col-6 bg-body-secondary form-control'>Nenhuma deliberação</div>";
                         echo "</td>";
                     
-                        echo "<td class=' align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                        echo "<td class='deliberador-cell align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
                         echo "<div class='col-6 bg-body-secondary form-control'>Nenhum deliberador</div>";
                         echo "</td>";
                     }
-                    
-                    
-                    
-                    
-                    
-
-                } else {
-                    echo "<td class='align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
-                    echo "ID da ata não disponível";
-                    echo "</td>";
-
-                    echo "<td class='align-middle' style='display:none;' id='deliberador" . $row['id'] . "'>";
-                    echo "ID da ata não disponível";
-                    echo "</td>";
-                }     
-                echo "<td>
-                        <a href='pagatribuida.php?updateid=".$id."' class='btn btn-warning' style='color: white;'>
-                            <button class='text-center align-middle' style='color:white; border: none; background: transparent;'>&plus;</button>
-                        </a>
-                    </td>";
-
-
-                    echo "<td>
-                    <a class=' text-light' href='arquivopdf.php?updateid=".$id."'>
-                    <button class='btn btn-success'>
-                        
-                            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 384 512' width='16' height='16'>
-                                <path fill='currentColor' d='M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM112 256H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H272c8.8 0 16 7.2 16 16s-7.2 16-16 16H112c-8.8 0-16-7.2-16-16s7.2-16 16-16z'/>
-                            </svg>
-                        </a>
-                    </button>
-                  </td>";
-            
-
+                }                     
+                
                 echo "</tr>";
-                    }
-                } else {
-                    echo "<tr><td colspan='6'>Nenhum registro encontrado.</td></tr>";
-                }
-                ?>
+            }
+        } else {
+            echo "<tr><td colspan='8'>Nenhum registro encontrado.</td></tr>";
+        }
+        ?>
     </tbody>
 </table>
+
+
         </div>
     </div>
 </div>
