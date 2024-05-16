@@ -2,7 +2,6 @@
 
 namespace formulario;
 $id = $_GET['updateid'];
-// include("vendor/autoload.php");
 include_once("app/acoesform.php");
 include("conexao.php");
 
@@ -38,18 +37,10 @@ $row=mysqli_fetch_assoc($result);
           $facilitadores[] = $row2;
       }
 
-
-
-//funções de encotrar pessoas
-// $pegarfa = $puxarform->puxandoUltimosFacilitadores();
 $participantesArray = $pegarfa;
-// $pegarrespons = $puxarform->ultimosResponsaveis();
 
 $pegarde=$puxarform->pegarfacilitador();
-// ARRUMAR UM JEIT
 
-
-//Conexão com o banco de dados (substitua os valores pelos seus próprios)
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -262,6 +253,8 @@ print_r($id_pagina);
                   </div>
               </div>
           </form>
+
+          
           <div class="d-flex align-items-center">
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#listaParticipantesModal" style="background-color: #001f3f; border-color: #001f3f;">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 1em; height: 1em; vertical-align: -0.125em;">
@@ -412,7 +405,7 @@ function adicionarParticipanteAoLabel(participante) {
               <ul class="list-group list-group-flush"></ul>
               <label class="h4" style="height: 35px;"><b>DELIBERAÇÕES</b></label>
               
-              <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;"></textarea>
+              <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>"></textarea>
             </div>
 
     <div class="col">

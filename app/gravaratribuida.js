@@ -76,7 +76,7 @@ function gravaratribuida() {
         success: function() {
             console.log("(3) Deu bom! AJAX está enviando");
             console.log(id_ata);
-
+    
             setTimeout(function() {
                 window.location.href = 'paghistorico.php';
             }, 1500);
@@ -85,4 +85,5 @@ function gravaratribuida() {
             console.error('Erro na solicitação AJAX:', error);
         },
     });
+    
 }

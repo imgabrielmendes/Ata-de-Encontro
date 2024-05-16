@@ -13,15 +13,20 @@ if ($conn->connect_error) {
     die("Erro ao conectar ao banco de dados: " . $conn->connect_error);
 }
 
-$id_ata = $_POST['id_ata']; // Recebe o id_ata enviado via POST
+$deliberadoresSelecionados = json_decode($_POST['deliberaDores'], true);
+$newItem = $_POST['newItem'];
 
-if (!empty($id_ata)) { // Verifica se o id_ata não está vazio
-    $deliberadoresSelecionados = json_decode($_POST['deliberaDores'], true);
-    $newItem = $_POST['newItem'];
+$sql = "SELECT id FROM assunto ORDER BY id DESC LIMIT 1";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $ultimoID = $row["id"];
 
     foreach ($deliberadoresSelecionados as $deliberadorValue) {
-        $enviarbanco = "INSERT INTO deliberacoes (id_ata, deliberacoes, deliberadores) VALUES ('$id_ata', '$newItem', '$deliberadorValue')";
-        $alterarstatus = "UPDATE assunto SET status = 'FECHADA' WHERE id = $id_ata";
+
+        $enviarbanco = "INSERT INTO deliberacoes (id_ata, deliberacoes, deliberadores) VALUES ('$ultimoID', '$newItem', '$deliberadorValue')";
+        $alterarstatus = "UPDATE assunto SET status = 'FECHADA' WHERE id = $ultimoID";
 
         if ($conn->query($enviarbanco) === TRUE) {
             echo "Novo registro inserido com sucesso para o deliberador $deliberadorValue.<br>";
@@ -36,9 +41,9 @@ if (!empty($id_ata)) { // Verifica se o id_ata não está vazio
         }
     }
 } else {
-    echo "ID da ATA não recebido.<br>";
+    echo "Nenhum ID encontrado na tabela assunto.<br>";
+    echo "Dados não recebidos.<br>";
 }
-
 
 $conn->close();
 ?>
