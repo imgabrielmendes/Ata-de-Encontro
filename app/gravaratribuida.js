@@ -33,27 +33,6 @@ var botaoatribuicao = document.getElementById("atribuida");
 botaoatribuicao.addEventListener('click', gravaratribuida);
 
 function gravaratribuida() {
-    var nomeparticipante = document.getElementById("participantesadicionado").value;
-
-    if (nomeparticipante.trim() === "") {
-        Swal.fire({
-            title: "Erro no registro",
-            text: "Preencha todas as caixas do formulário",
-            icon: "error"
-        });
-
-        console.log("(X) Puxou a function da modal, mas não preencheu todas as informações");
-        return; // Sai da função se os campos não estiverem preenchidos
-    }
-
-    Swal.fire({
-        title: "Cadastrado com sucesso!",
-        text: "Atualize a página e continue a operação",
-        icon: "success"
-    });
-
-    console.log("(3.1) As informações de participante foram enviadas");
-
     // Recuperar o id_ata da página
     var id_ata = document.getElementById("participantesadicionado").getAttribute("data-id-ata");
     console.log(id_ata);
@@ -85,4 +64,12 @@ function gravaratribuida() {
             console.error('Erro na solicitação AJAX:', error);
         },
     });
+
+    // Mostrar mensagem de sucesso
+    Swal.fire({
+        title: "Cadastrado com sucesso!",
+        text: "Atualize a página e continue a operação",
+        icon: "success"
+    });
 }
+

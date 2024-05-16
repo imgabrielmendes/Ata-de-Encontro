@@ -31,9 +31,16 @@ var mensagemInfo = document.getElementById('infoMessage');
 
 
 
+//LINKANDO AS VARÍAVEIS QUE VÃO SER ENVIADO JUNTO COM PARTICIPANTES
+
 addItemButton.addEventListener('click', function() {
     var newItem = document.getElementById('item').value.trim();
     
+    // Obtém o elemento <select>
+    // var selectElement = document.getElementById('selectFacilitators');
+    
+    // Obtém o valor selecionado
+    // var selectedFacilitator = document.querySelector('.facilitator-select').value;
     
     if (newItem === "") {
         Swal.fire({
@@ -46,20 +53,23 @@ addItemButton.addEventListener('click', function() {
     
     else {
 
+        // Remove a caixa de texto existente
         var inputField = document.getElementById('item');
         inputField.parentNode.removeChild(inputField);
 
+        // Cria uma div para a list-group-item do texto digitado
         var textListItemDiv = document.createElement('div');
         textListItemDiv.className = 'list-group-item';
         textListItemDiv.textContent = newItem;
 
         itemList.appendChild(textListItemDiv);
 
-
+        // Cria uma label para o texto digitado
         var textLabelElement = document.createElement('label');
         textLabelElement.textContent = newItem;
         textListItemDiv.appendChild(textLabelElement);
 
+        // Adiciona os deliberadores selecionados à lista
         selectedDeliberators.forEach(function(deliberator) {
 
             var deliberatorDiv = document.createElement('div');
@@ -127,80 +137,42 @@ document.getElementById('addItemButton').addEventListener('click', function() {
       
       return;
   }
-  else {
 
-    const toastLiveExample = document.getElementById('liveToast')
+    // Local que vai enviar as informações para o banco
+    else {
 
-    var deliberador = document.querySelector('.item').value;
-    var deliberacoes = document.querySelector('.facilitator-select').value;
+        const toastLiveExample = document.getElementById('liveToast')
 
-    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-    toastBootstrap.show();        
-    $.ajax({
-        url: 'registrardeliberadores.php',
-        method: 'POST',
-        data: {
-           deliberaDores: JSON.stringify(deliberadoresSelecionadosNUM), 
-           deliberAcoes: deliberacoes, 
-           newItem: newItem,
+        var deliberador = document.querySelector('.item').value;
+        var deliberacoes = document.querySelector('.facilitator-select').value;
+ 
+        const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+        toastBootstrap.show();        
+        $.ajax({
+            url: 'registrarpagdeliberacoes.php',
+            method: 'POST',
+            data: {
+               deliberaDores: JSON.stringify(deliberadoresSelecionadosNUM), 
+               deliberAcoes: deliberacoes, 
+               newItem: newItem,
 
-        },
-
-        success: function(response) {
-            console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
-            console.log(response);
-
-            console.log("AAAAAAAAAAAAA");
-            console.log(deliberadoresSelecionadosNUM);
-
-
-        },
-        
-        error: function(error) {
-            console.error('Erro na solicitação AJAX:', error);
-        }
-    });
-}
-  function enviarDadosParaServidor() {
-    const toastLiveExample = document.getElementById('liveToast');
-
-    // Recuperar o id_ata da página
-    var id_ata = document.getElementById("deliberacoes").getAttribute("data-id-ata");
-
-    var deliberador = document.querySelector('.item').value;
-    var deliberacoes = document.querySelector('.facilitator-select').value;
-
-    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-    toastBootstrap.show();        
-
-    $.ajax({
-        url: 'registrardeliberadores.php',
-        method: 'POST',
-        data: {
-            id_ata: id_ata, // Envia o id_ata junto com os dados
-            deliberaDores: JSON.stringify(deliberadoresSelecionadosNUM), 
-            deliberAcoes: deliberacoes, 
-            newItem: newItem,
-        },
-
-        success: function(response) {
-            console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
-            console.log(response);
-
-            console.log("AAAAAAAAAAAAA");
-            console.log(deliberadoresSelecionadosNUM);
-        },
-
-        error: function(error) {
-            console.error('Erro na solicitação AJAX:', error);
-        }
-    });
-}
-
-// Agora você pode chamar essa função onde precisar, ao invés de usar um else
-enviarDadosParaServidor();
-
+            },
     
+            success: function(response) {
+                console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
+                console.log(response);
+
+                console.log("AAAAAAAAAAAAA");
+                console.log(deliberadoresSelecionadosNUM);
+
+
+            },
+            
+            error: function(error) {
+                console.error('Erro na solicitação AJAX:', error);
+            }
+        });
+    }
             
         // Adiciona um botão de exclusão para o item
         var deleteButton = document.createElement('button');

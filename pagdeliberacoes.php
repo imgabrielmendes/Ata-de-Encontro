@@ -370,7 +370,7 @@ $ultimaata = $puxarform->pegarUltimaAta();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
-    <script src="app/deliberacoes.js"></script>
+    <script src="app/pagdeliberacoes.js"></script>
 
 </body>
 
