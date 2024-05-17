@@ -241,7 +241,7 @@ if ($conn->connect_error) {
                     if (!empty($deliberacoes) && is_array($deliberacoes)) {
                         // Inicializa um array associativo para armazenar as deliberações únicas e os deliberadores associados a cada deliberação
                         $deliberacoes_unicas = array();
-                    
+                        
                         // Agrupa os deliberadores por deliberação, evitando repetições
                         foreach ($deliberacoes as $deliberacao) {
                             $texto_deliberacao = $deliberacao['deliberacoes'];
@@ -253,33 +253,33 @@ if ($conn->connect_error) {
                             // Adiciona o deliberador ao array associado à deliberação
                             $deliberacoes_unicas[$texto_deliberacao][] = $deliberador;
                         }
-                    
-                        echo "<td class='deliberacao-cell text-left' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        
                         // Exibe as deliberações únicas
                         foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
-                            $classe_overflow = (strlen($texto_deliberacao) > 10) ? 'overflow-auto-y' : ''; // Verifica se o texto excede 500 caracteres
-                            echo "<div class='col-6 bg-body-secondary form-control deliberacao $classe_overflow' style='overflow-y: auto; max-height: 80px;'>" . $texto_deliberacao . "</div><br>";
-                        }
-                    
-                        echo "</td>";
-                    
-                        echo "<td class='deliberador-cell text-left' style='display:none;' id='deliberadores" . $row['id'] . "'>";
-                        // Exibe os deliberadores associados a cada deliberação única
-                        foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
+                            $classe_overflow = (strlen($texto_deliberacao) > 10) ? 'overflow-auto-y' : ''; // Verifica se o texto excede 10 caracteres
+                            echo "<div class='row'>";
+                            echo "<div class='col-6 bg-body-secondary form-control deliberacao $classe_overflow' style='overflow-y: auto; max-height: 80px;'>$texto_deliberacao</div>";
+                            
+                            // Exibe os deliberadores associados a cada deliberação única
+                            echo "<div class='col-6 bg-body-secondary form-control deliberador'>";
                             $deliberadores_concatenados = implode(", ", $deliberadores);
-                            // Verifica se o texto é grande o suficiente para justificar a barra de rolagem
-                            echo "<div class='col-6 bg-body-secondary form-control deliberador'>" . $deliberadores_concatenados . "</div><br>";
+                            echo $deliberadores_concatenados;
+                            echo "</div>";
+                            
+                            echo "</div><br>"; // Quebra de linha entre cada conjunto
                         }
-                        echo "</td>";
                     } else {
-                        echo "<td class='deliberacao-cell align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        // Caso não haja deliberações, exibe mensagens padrão
+                        echo "<div class='row'>";
                         echo "<div class='col-6 bg-body-secondary form-control'>Nenhuma deliberação</div>";
-                        echo "</td>";
-                    
-                        echo "<td class='deliberador-cell align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
                         echo "<div class='col-6 bg-body-secondary form-control'>Nenhum deliberador</div>";
-                        echo "</td>";
+                        echo "</div>";
                     }
+                    
+                    
+                    
+                      
+                    
                 }                     
                 
                 echo "</tr>";
@@ -341,39 +341,29 @@ if ($conn->connect_error) {
                                     
                                 </div>
                                 <br><br>
-                                <div class=" col-12">
-                                    <div class="row">
+                                <div class=" col-12 ">
                                         
                                     <label class="h3  "><b>Deliberações</b></label>
+                                    <div class="row d-flex">
                                  
 
 
 
 
+    <div class=" col-6 " id="modal_deliberadores">
+
+</div>
+<div class="col-6  " id="modal_deliberacoes">
+<br>
+</div>
+
+
+<br>
 
 
 
-                             <table id="myTable" class="table  bg-body-secondary">
-    <thead>
-    <tr>
-        <th class="text-center">Deliberador</th>
-        <th class="text-center">deliberações</th>
-        
-    </tr>
-    </thead>
-    <tbody>
-      
-<?php 
-
-                echo "<tr>";
-                echo "<td class='col-6 align-middle' id='modal_deliberadores''>"  . "</td>";
-                echo "<td class='col-6 align-middle' id='modal_deliberacoes''>"  . "</td>";
-               ?>
                
-                    
-                    
-    </tbody>
-</table>
+              
                                 </div>
                                 </div>
                                                                  
