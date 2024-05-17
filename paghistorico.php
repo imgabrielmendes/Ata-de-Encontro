@@ -254,27 +254,34 @@ if ($conn->connect_error) {
                             $deliberacoes_unicas[$texto_deliberacao][] = $deliberador;
                         }
                         
-                        // Exibe as deliberações únicas
+                        echo "<td class='deliberacao-cell text-left' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        // Exibe as deliberações únicas e os deliberadores associados a cada deliberação
                         foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
-                            $classe_overflow = (strlen($texto_deliberacao) > 10) ? 'overflow-auto-y' : ''; // Verifica se o texto excede 10 caracteres
-                            echo "<div class='row'>";
-                            echo "<div class='col-6 bg-body-secondary form-control deliberacao $classe_overflow' style='overflow-y: auto; max-height: 80px;'>$texto_deliberacao</div>";
-                            
-                            // Exibe os deliberadores associados a cada deliberação única
-                            echo "<div class='col-6 bg-body-secondary form-control deliberador'>";
+                            echo "<div class='col-6 bg-body-secondary form-control deliberacao' style='max-height: 80px;'>" . $texto_deliberacao . "<br>";
+                            // Exibe os deliberadores associados a esta deliberação
                             $deliberadores_concatenados = implode(", ", $deliberadores);
-                            echo $deliberadores_concatenados;
-                            echo "</div>";
-                            
-                            echo "</div><br>"; // Quebra de linha entre cada conjunto
+                            echo "<div class='deliberador'>" . $deliberadores_concatenados . "</div>";
+                            echo "</div><br>"; // Adiciona uma quebra de linha após cada bloco de deliberação
                         }
+                        echo "</td>";
+                        echo "<td  class='deliberador-cell text-left' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                        // Exibe os deliberadores associados a cada deliberação única
+                        foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
+                            $deliberadores_concatenados = implode(", ", $deliberadores);
+                            echo "<div class='col-6 bg-body-secondary form-control deliberador'>" . $deliberadores_concatenados . "</div>";
+                            echo "<br>"; // Adiciona uma quebra de linha após cada bloco de deliberadores
+                        }
+                        echo "</td>";
                     } else {
-                        // Caso não haja deliberações, exibe mensagens padrão
-                        echo "<div class='row'>";
+                        echo "<td class='deliberacao-cell align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
                         echo "<div class='col-6 bg-body-secondary form-control'>Nenhuma deliberação</div>";
+                        echo "</td>";
+                        
+                        echo "<td class='deliberador-cell align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
                         echo "<div class='col-6 bg-body-secondary form-control'>Nenhum deliberador</div>";
-                        echo "</div>";
+                        echo "</td>";
                     }
+                    
                     
                     
                     
@@ -350,10 +357,8 @@ if ($conn->connect_error) {
 
 
 
-    <div class=" col-6 " id="modal_deliberadores">
-
-</div>
-<div class="col-6  " id="modal_deliberacoes">
+   
+<div class="col " id="modal_deliberacoes">
 <br>
 </div>
 
@@ -387,9 +392,6 @@ if ($conn->connect_error) {
 
         var deliberacoes = document.getElementById("deliberacoes" + row.id).innerHTML;
     document.getElementById("modal_deliberacoes").innerHTML = deliberacoes;
-
-    var deliberadores = document.getElementById("deliberadores" + row.id).innerHTML;
-    document.getElementById("modal_deliberadores").innerHTML = deliberadores;
 
         var participantes = document.getElementById("participantes" + row.id).innerText;
         document.getElementById("modal_participantes").innerText = participantes; 
