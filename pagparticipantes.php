@@ -96,7 +96,7 @@ $local = $_GET['local'];
   <div class="box box-primary">
     <main class="container_fluid d-flex justify-content-center align-items-center">
       
-      <div class="form-group col-lg-8 col-md-12 ">
+      <div class="form-group col-xl-9 col-lg-xs-sm-md-12 ">
        
            <div class="row"> 
     <div class="accordion" id="accordionPanelsStayOpenExample">
@@ -119,26 +119,26 @@ $local = $_GET['local'];
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
           <div class="row">
     <br>
-    <div class="col-lg-3  col-md-2">
+    <div class="col-sm-12 col-xl-3  col-md-6">
         <label><b>Data*:</b></label>
         <ul class="form-control bg-body-secondary"> <?php echo $_SESSION['objetivoSelecionado']; ?> </ul>
     </div>
 
     <!---ABA DE HORÁRIO INICIO---->
-    <div class="col-lg-3  col-md-2">
+    <div class="col-sm-12 col-xl-3  col-md-6">
         <label for="nomeMedico"><b>Horário de Início*:</b></label>
         <br>
         <ul class="form-control bg-body-secondary"><?php echo $_SESSION['horainicio']; ?></ul>
     </div>
 
     <!---ABA DE HORÁRIO TERMINO---->
-    <div class="col-lg-3  col-md-2">
+    <div class="col-sm-12 col-xl-3  col-md-6">
         <label for="form-control"> <b> Horário de Término:</b> </label>
         <ul class="form-control bg-body-secondary"><?php echo $_SESSION['horaterm']; ?></ul>
     </div>
 
     <!---ABA DE TEMPO ESTIMADO ---->
-    <div class="col-lg-3  col-md-2">
+    <div class="col-sm-12 col-xl-3  col-md-6">
         <label for="form-control"><b>Tempo Estimado:</b></label>
         <?php
         // Verifica se as variáveis estão definidas antes de calcular o tempo estimado
@@ -171,15 +171,15 @@ $local = $_GET['local'];
 </div>
 
 <div class="row">
-    <div class="facilitadorcol col-lg-6  col-md-2">
+    <div class="facilitadorcol col-lg-6  col-lg-md-12 col-md-12">
         <label><b >Facilitador(es):</b></label>
         <ul class=" mt-2 form-control bg-body-secondary"><?php echo $facilitadoresString; ?></ul>
     </div>
-    <div class="col-lg-3  col-md-2">
+    <div class="col-lg-3  col-lg-md-12 col-md-6">
         <label><b>Local:</b></label>
         <ul class=" mt-2 form-control bg-body-secondary border rounded"><?php echo $_SESSION['local']; ?></ul>
     </div>
-    <div class="col-lg-3  col-md-2-br">
+    <div class="col-lg-3  col-lg-md-12 col-md-6">
         <label for="form-control"> <b>Objetivo:</b> </label>
         <label class=" mt-2 form-control bg-body-secondary border rounded">
             <input type="checkbox" disabled checked> <?php echo $_SESSION['objetivoSelecionado']; ?>
@@ -244,11 +244,11 @@ $local = $_GET['local'];
 <br>
            <br><br>
       <!--BOTÕES-->
-      <div class="container-fluid   justify-content-center align-items-center">
+      <div class="container-fluid   justify-content-center ">
         <div class="row">
           <div class="btnsparticipante">
 
-          <div class="col-lg-3 col-md-2">
+          <div class="p-2 col-lg-3 col-md-5 col-sm-12">
               <button id="botaocontinuarata" type="button" class="btn form-control btn-success" data-bs-toggle="modal">
                 Continuar ata
               </button>
@@ -259,7 +259,7 @@ $local = $_GET['local'];
               </script>
         </div>
         <br>
-        <div class="col-lg-3 col-md-2">
+        <div class="p-2 col-lg-3 col-md-5 col-sm-12">
               <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn form-control btn-primary" data-bs-toggle="modal">
                 Atualizar a ata
               </button>

@@ -106,15 +106,17 @@ if ($conn->connect_error) {
                                         <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" class="text-center">
                                             <div class="accordion-body">
                                                 <div class="col">
-                                                    <br>
-                                                    <input id="temaprincipal" class="form-control" type="text" onkeyup="filtrarTabela()" placeholder="Filtrar registros..." />
+                                                   
+                                                    <input id="temaprincipal" class="form-control mt-3" type="text" onkeyup="filtrarTabela()" placeholder="Filtrar registros..." />
                                                 </div>
                                                 <!-- <input style="border: 1px solid #0000;" class="form-control item" type="text" id="filtroInput" onkeyup="filtrarTabela()" placeholder="Filtrar registros..."> -->
 
-                                                <br>
+                                              
                                                 <div class="row">
-                                                    <div class="col-4" style="text-align: left;">
+                                                    <div class="col-xl-4 col-sm-12 col-md-6" style="text-align: left;">
+                                                        <div class="mb-2 mt-2">
                                                         <b>Objetivo</b>
+                                                        </div>
                                                         <select class="form-control" id="objetivoSelect" onchange="filtrarRegistros(event)">
                                                             <option value="">Selecione o objetivo</option>
                                                             <option value="Reunião">Reunião</option>
@@ -122,13 +124,17 @@ if ($conn->connect_error) {
                                                             <option value="Consulta">Consulta</option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-4" style="text-align: left;">
+                                                    <div class="col-xl-4 col-sm-12 col-md-6" style="text-align: left;">
+                                                        <div class="mb-2 mt-2">
                                                         <b>Solicitação</b>
+                                                        </div>
                                                         <input class="form-control" type="date" id="solicitacaoInput" onchange="filtrarRegistros(event)">
                                                     </div>
-                                                    <div class="col-4" style="text-align: left;">
+                                                    <div class="col-xl-4 col-sm-12 col-md-6" style="text-align: left;">
+                                                    <div class="mb-2 mt-2">
                                                         <b>Status</b>
-                                                        <select class="form-control" id="statusSelect" onchange="filtrarRegistros(event)">
+                                                        </div>
+                                                        <select class="form-control " id="statusSelect" onchange="filtrarRegistros(event)">
                                                             <option value="">Selecione o status</option>
                                                             <option value="Aberta">Aberta</option>
                                                             <option value="Fechada">Fechada</option>

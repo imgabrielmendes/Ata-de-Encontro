@@ -178,9 +178,9 @@ $pegarlocal=$puxarform->pegarlocais();
             <div class="col d-flex justify-content-center">
               <div class="btn-atas p-4">
                 
-              <button id="botaoregistrar" type="button" class="mt-2 btn btn-success">salvar</button>
+              <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-12 col-lg-3 btn btn-success">salvar</button>
 
-              <button id="botaoregistrar" type="button" class="mt-2 btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
+              <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-12 col-lg-3 btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
               </div>
               
               <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

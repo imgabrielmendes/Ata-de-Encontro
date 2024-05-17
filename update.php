@@ -233,7 +233,6 @@ $row=mysqli_fetch_assoc($result);
             <div class="col p-4"><br>
               <div class="btn-atas">
                 <button id="btnAtualizar" class="btn btn-primary">Atualizar</button>
-                <button type="submit" class="btn btn-primary" name="submit">Enviar</button>
           </div>
               <div class="row">
                 <footer class="col main-footer p-4" style="margin-left: 0 !important; margin-top: 1em;">
