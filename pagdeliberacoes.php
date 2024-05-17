@@ -26,6 +26,33 @@ foreach ($participantesArray as $participante) {
 
 $ultimaata = $puxarform->pegarUltimaAta();
 
+// $sql3 = "SELECT 
+//               del.id_ata,
+//               fac.nome_facilitador as deliberador,
+//               del.deliberacoes as deliberacoes
+//          FROM atareu.deliberacoes as del
+//          INNER JOIN atareu.facilitadores as fac
+//          ON fac.id = del.deliberadores
+//          WHERE del.id_ata = ?";
+
+// // Preparar a declaração
+// $stmt = mysqli_prepare($conn, $sql3);
+// mysqli_stmt_bind_param($stmt, "i", $id_ata);
+// mysqli_stmt_execute($stmt);
+// $result3 = mysqli_stmt_get_result($stmt);
+// $deliberacoes_array = array();
+// $deliberador_array = array();
+
+// if ($result3 && mysqli_num_rows($result3) > 0) {
+//     while ($row3 = mysqli_fetch_assoc($result3)) {
+//         $deliberacoes_array[] = $row3['deliberacoes'];
+//         $deliberador_array[] = $row3['deliberador'];
+//     }
+// }
+// var_dump($deliberacoes_array);
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -270,7 +297,7 @@ $ultimaata = $puxarform->pegarUltimaAta();
 
               </div>
     </div>   
-    <span class="col-4" id="inputContainer"></span>
+    <span class="col d-flex align-items-end flex-column" id="inputContainer"></span>
         <form id="addForm">
           
         <div class="form-group">

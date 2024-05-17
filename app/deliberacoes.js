@@ -197,17 +197,12 @@ document.getElementById('addItemButton').addEventListener('click', function() {
     });
 }
 
-// Agora você pode chamar essa função onde precisar, ao invés de usar um else
 enviarDadosParaServidor();
-
-    
-            
+  
         // Adiciona um botão de exclusão para o item
         var deleteButton = document.createElement('button');
         deleteButton.textContent = 'x';
-        deleteButton.className = 'col btn btn-danger btn-mt mt-2';
-        deleteButton.style.right = '9px'; 
-        deleteButton.style.top = '0px'; 
+        deleteButton.className = 'btn btn-danger';
         deleteButton.style.width = '37px'; 
         deleteButton.style.height = '37px'; 
     

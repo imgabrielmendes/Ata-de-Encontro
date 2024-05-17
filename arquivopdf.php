@@ -3,7 +3,7 @@ namespace formulario;
 include ("conexao.php");
 $id = $_GET['updateid'];
 
-require_once("C:\\xampp\\htdocs\\dev\\Ata-de-Encontro\\TCPDF\\tcpdf.php");
+require_once(__DIR__ . "/TCPDF/tcpdf.php");
 
 $sql = "SELECT
 assunto.id AS IDASSUNTO,
@@ -119,7 +119,7 @@ if ($result->num_rows > 0) {
                 <td style="border: 1px solid black; width: 432px; text-align: left;">'.'   '.'<b>Tema:</b></td>
             </tr>
                 <tr>
-                    <td style="border: 1px solid black; text-align: center;">'.$local.'</td>
+                    <td style="border: 1px solid black; text-align: center; font-size: 9px">'.$local.'</td>
                     <td style="border: 1px solid black; text-align: left; padding-left: 10px;">'.'   '.$tema.'</td>
                 </tr>
             </tbody>
@@ -200,8 +200,8 @@ $html .= '</body></html>';
     </tr>';
 
         foreach (explode(",", $nomeParticipantes) as $participante) {
-            $html .= '<tr style="text-align: center;">
-                        <td style="border: 1px solid black; height: 30px;">0000</td>
+            $html .= '<tr style="text-align: left; font-size: 10px;">
+                        <td style="border: 1px solid black; height: 30px;"></td>
                         <td style="border: 1px solid black;">'.$participante.'</td>
                         <td style="border: 1px solid black;"></td>
                         <td style="border: 1px solid black;"></td>
