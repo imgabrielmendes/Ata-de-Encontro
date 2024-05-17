@@ -3,7 +3,7 @@ namespace formulario;
 include ("conexao.php");
 $id = $_GET['updateid'];
 
-require_once(__DIR__ . "/TCPDF/tcpdf.php");
+require_once(__DIR__ . "/view/TCPDF/tcpdf.php");
 
 $sql = "SELECT
 assunto.id AS IDASSUNTO,
