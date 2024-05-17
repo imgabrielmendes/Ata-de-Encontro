@@ -9,6 +9,8 @@ $puxarform = new AcoesForm;
 $facilitadores = $puxarform->selecionarFacilitadores();
 $pegarfa = $puxarform->pegarfacilitador();
 $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
+$puxadeliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata = "?");
+
 $resultados = $puxarform->pegandoTudo();
 $pegarid = $puxarform->puxarId();
 $sql="SELECT * FROM assunto where id=$id ";
@@ -280,7 +282,8 @@ if (isset($_GET['updateid'])) {
         foreach ($participantes as $participante) {
             echo "<li class='mb-2' style='font-weight: bold; font-size: 18px;'>";
             echo "$participante";
-            echo "<button type='button' class='btn btn-danger btn-sm ms-2' onclick='excluirParticipante(\"$participante\")'>Excluir</button>";
+            // Passa o ID da ATA e o nome do participante como parâmetros
+            echo "<button type='button' class='btn btn-danger btn-sm ms-2' onclick='excluirParticipante($id_ata, \"$participante\")'>Excluir</button>";
             echo "</li>";
         }
         echo "</ul>";
@@ -292,13 +295,10 @@ if (isset($_GET['updateid'])) {
 }
 ?>
 
-<script>
-    function excluirParticipante(participante) {
-        // Implemente a lógica para excluir o participante
-      
-        console.log("Excluindo participante:", participante);
-    }
-</script>
+
+
+
+
 
       </div>
     </div>
@@ -317,9 +317,6 @@ if (isset($_GET['updateid'])) {
     }
   }
 </script>
-
-
-
             <br>
             <?php
             $conn->close();
@@ -385,31 +382,61 @@ function adicionarParticipanteAoLabel(participante) {
 <!-----------------------------4° FASE-------------------------------->
 
 <div class="accordion-collapse collapse show">
-<div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
-    <div class="col-md-12 text-center">               
-    </div>
-    <div class="row">
-    <div class ="col">
-        <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-        <textarea id="textoprinc" style="height: 110px;" class="form-control"></textarea>
-
-              </div>
-    </div>   
-    <span class="col-4" id="inputContainer"></span>
-        <form id="addForm">
-          
-        <div class="form-group">
-        <div class="col">
-          
-              <br>
-              <ul class="list-group list-group-flush"></ul>
-              <label class="h4" style="height: 35px;"><b>DELIBERAÇÕES</b></label>
-              
-              <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>"></textarea>
+    <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+        <div class="col-md-12 text-center"></div>
+        
+        <div class="row">
+            <div class="col">
+                <label style="height: 35px;"><b>Informe o texto principal:</b></label>
+                <textarea id="textoprinc" style="height: 110px;" class="form-control"></textarea>
             </div>
+        </div>    
+        <div id="existingDeliberations" class="mt-3">
+    <h5>Deliberações Existentes:</h5>
+    <ul id="deliberationsList" class="list-group">
+      
+        <?php
+        $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+        if (!empty($deliberacoes)) {
+            foreach ($deliberacoes as $deliberacao) {
+                ?>
+                <li class="form-control bg-body-secondary border rounded">
+                    <div>
+                        <strong></strong> <?php echo $deliberacao['deliberador']; ?>
+                    </div>
+                </li>
+                <li class="form-control border rounded">
+                    <div>
+                        <strong></strong> <?php echo $deliberacao['deliberacoes']; ?>
+                    </div>
+                </li>
+                <li class="list-group">
+                    <div>
+                    <button type='button' class='btn btn-danger btn-sm ms-2' onclick='excluirDeliberacao(<?php echo $id_ata; ?>, "<?php echo htmlspecialchars($deliberacao['deliberacoes']); ?>")'>Excluir</button>
+                    </div>
+                </li>
+                <?php
+            }
+        } else {
+            // Não há deliberações, então não há necessidade de exibir nada aqui
+        }
+        ?>
+    </ul>
+</div>
+   
+        
+        
 
+        <span class="col-4" id="inputContainer"></span>   
+        <form id="addForm">
+            <div class="form-group">
+                <div class="col">
+                    <br>
+                    <ul class="list-group list-group-flush"></ul>
+                    <label class="h4" style="height: 35px;"><b>DELIBERAÇÕES</b></label>
+                    <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>"></textarea>
+                </div>
     <div class="col">
-    <!-- Primeira caixa de texto e select de facilitadores -->
     <div class="mb-2">
         <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
         <optgroup label="Selecione Facilitadores">
@@ -562,13 +589,13 @@ function adicionarParticipanteAoLabel(participante) {
 </div>     
 </main>
 </div> 
-    <script src="view\js\multi-select-tag.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
+    <script src="view/js/multi-select-tag.js"></script>
     <script src="app/gravar.js"></script>
     <script src="app/deliberacoes.js"></script>
     <script src="app/gravaratribuida.js" data-id-ata="<?php echo $id_ata; ?>"></script>
+    <script src="app/excluiratribuida.js"></script>
 </body>
 </html>
