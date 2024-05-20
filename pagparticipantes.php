@@ -26,6 +26,10 @@ $conteudo = $_GET['conteudo'];
 $horainicio = $_GET['horainicio'];
 $horaterm = $_GET['horaterm'];
 $data = $_GET['data'];
+  $dateTime = new \DateTime($data);
+  $data_formatada = $dateTime->format('d/m/Y');
+  $_SESSION['data'] = $data_formatada;
+
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
 
@@ -121,7 +125,7 @@ $local = $_GET['local'];
     <br>
     <div class="col-sm-12 col-xl-3  col-md-6">
         <label><b>Data*:</b></label>
-        <ul class="form-control bg-body-secondary"> <?php echo $_SESSION['objetivoSelecionado']; ?> </ul>
+        <ul class="form-control bg-body-secondary"> <?php echo $_SESSION['data']; ?> </ul>
     </div>
 
     <!---ABA DE HORÁRIO INICIO---->
@@ -220,7 +224,7 @@ $local = $_GET['local'];
 
                   <div class="row">
                     <div class="col" > 
-                    <select class="col form-control" id="participantesadicionados" name="facilitador" multiple style="width: 100px;">
+                    <select  class="col form-control" id="participantesadicionados" name="facilitador" multiple style="width: 100px;">
                       <optgroup label="Selecione Facilitadores">
                           <?php foreach ($pegarfa as $facnull) : ?>
                               <option value="<?php echo $facnull['id']; ?>"

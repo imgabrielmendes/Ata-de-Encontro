@@ -25,7 +25,10 @@ foreach ($participantesArray as $participante) {
 }
 
 $ultimaata = $puxarform->pegarUltimaAta();
-
+$data = $_SESSION['data'];
+  $dateTime = new \DateTime($data);
+  $data_formatada = $dateTime->format('d/m/Y');
+  $_SESSION['data'] = $data_formatada;
 // $sql3 = "SELECT 
 //               del.id_ata,
 //               fac.nome_facilitador as deliberador,
@@ -151,7 +154,7 @@ $ultimaata = $puxarform->pegarUltimaAta();
     <br>
     <div class="col-sm-12 col-xl-3  col-md-6">
         <label><b>Data*:</b></label>
-        <ul class="form-control bg-body-secondary"> <?php echo $_SESSION['objetivoSelecionado']; ?> </ul>
+        <ul class="form-control bg-body-secondary"> <?php echo $_SESSION['data']; ?> </ul>
     </div>
 
     <!---ABA DE HORÁRIO INICIO---->
