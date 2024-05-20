@@ -45,37 +45,37 @@ if (isset($_POST['id_ata']) && isset($_POST['participante'])) {
 
 
 
-if ($conn->connect_error) {
-    die("Erro ao conectar ao banco de dados: " . $conn->connect_error);
-}
+// if ($conn->connect_error) {
+//     die("Erro ao conectar ao banco de dados: " . $conn->connect_error);
+// }
 
-// Verificar se os parâmetros necessários foram fornecidos via POST
-if (isset($_POST['id_ata']) && isset($_POST['deliberacao'])) {
-    $id_ata = $_POST['id_ata'];
-    $deliberacao = $_POST['deliberacao']; // Corrigido para 'deliberacao'
+// // Verificar se os parâmetros necessários foram fornecidos via POST
+// if (isset($_POST['id_ata']) && isset($_POST['deliberacao'])) {
+//     $id_ata = $_POST['id_ata'];
+//     $deliberacao = $_POST['deliberacao']; // Corrigido para 'deliberacao'
 
-    // Preparar a consulta SQL para excluir a deliberação e os deliberadores da ATA
-    $sql = "DELETE FROM deliberacoes WHERE id_ata = ? AND deliberacoes = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("is", $id_ata, $deliberacao); // Corrigido para "is" para vincular corretamente os tipos de dados
+//     // Preparar a consulta SQL para excluir a deliberação e os deliberadores da ATA
+//     $sql = "DELETE FROM deliberacoes WHERE id_ata = ? AND deliberacoes = ?";
+//     $stmt = $conn->prepare($sql);
+//     $stmt->bind_param("is", $id_ata, $deliberacao); // Corrigido para "is" para vincular corretamente os tipos de dados
 
-    // Executar a consulta preparada
-    if ($stmt->execute()) {
-        // Se a exclusão for bem-sucedida, também exclua os deliberadores
-        $sql_deliberadores = "DELETE FROM deliberadores WHERE id_ata = ? AND deliberacoes = ?";
-        $stmt_deliberadores = $conn->prepare($sql_deliberadores);
-        $stmt_deliberadores->bind_param("is", $id_ata, $deliberacao);
-        $stmt_deliberadores->execute();
-        $stmt_deliberadores->close();
+//     // Executar a consulta preparada
+//     if ($stmt->execute()) {
+//         // Se a exclusão for bem-sucedida, também exclua os deliberadores
+//         $sql_deliberadores = "DELETE FROM deliberadores WHERE id_ata = ? AND deliberacoes = ?";
+//         $stmt_deliberadores = $conn->prepare($sql_deliberadores);
+//         $stmt_deliberadores->bind_param("is", $id_ata, $deliberacao);
+//         $stmt_deliberadores->execute();
+//         $stmt_deliberadores->close();
 
-        echo json_encode(['success' => true, 'message' => 'Deliberação e deliberadores excluídos com sucesso.']);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Erro ao excluir deliberação: ' . $conn->error]);
-    }
-    $stmt->close();
-} else {
-    echo json_encode(['success' => false, 'message' => 'ID da ATA ou deliberação não fornecido.']);
-}
+//         echo json_encode(['success' => true, 'message' => 'Deliberação e deliberadores excluídos com sucesso.']);
+//     } else {
+//         echo json_encode(['success' => false, 'message' => 'Erro ao excluir deliberação: ' . $conn->error]);
+//     }
+//     $stmt->close();
+// } else {
+//     echo json_encode(['success' => false, 'message' => 'ID da ATA ou deliberação não fornecido.']);
+// }
 
 
 
