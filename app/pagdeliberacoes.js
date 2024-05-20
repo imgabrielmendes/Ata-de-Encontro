@@ -38,7 +38,6 @@ addItemButton.addEventListener('click', function() {
     
     // Obtém o elemento <select>
     // var selectElement = document.getElementById('selectFacilitators');
-    
     // Obtém o valor selecionado
     // var selectedFacilitator = document.querySelector('.facilitator-select').value;
     
@@ -79,6 +78,8 @@ addItemButton.addEventListener('click', function() {
             deliberatorLabel.textContent = deliberator;
             deliberatorDiv.appendChild(deliberatorLabel);
             itemList.appendChild(deliberatorDiv);
+
+
 
         });
 
@@ -137,8 +138,6 @@ document.getElementById('addItemButton').addEventListener('click', function() {
       
       return;
   }
-
-    // Local que vai enviar as informações para o banco
     else {
 
         const toastLiveExample = document.getElementById('liveToast')
@@ -174,95 +173,89 @@ document.getElementById('addItemButton').addEventListener('click', function() {
         });
     }
             
-        // Adiciona um botão de exclusão para o item
         var deleteButton = document.createElement('button');
-        deleteButton.textContent = 'x';
-        deleteButton.className = 'col btn btn-danger btn-mt mt-2';
-        deleteButton.style.right = '9px'; 
-        deleteButton.style.top = '0px'; 
-        deleteButton.style.width = '37px'; 
-        deleteButton.style.height = '37px'; 
+            deleteButton.textContent = 'x';
+            deleteButton.className = 'col btn btn-danger btn-mt mt-2';
+            deleteButton.style.right = '9px'; 
+            deleteButton.style.top = '0px'; 
+            deleteButton.style.width = '37px'; 
+            deleteButton.style.height = '37px'; 
     
         deleteButton.addEventListener('click', function() {  
                      
-            // Remove o item e o facilitador associado
             itemList.removeChild(textListItemDiv);
             itemList.removeChild(facilitatorListItemDiv);
-            deleteButton.remove(); // Remove o botão de exclusão
-        
+            deleteButton.remove(); 
+
             const toastLiveExample = document.getElementById('liveToast2');
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-            toastBootstrap.show();
+                toastBootstrap.show();
 
             });
 
-    //Div para a list-group-item do texto digitado
     var textListItemDiv = document.createElement('div');
-    textListItemDiv.className = 'black text-break form-control border rounded';
-    textListItemDiv.textContent = newItem;
+        textListItemDiv.className = 'black text-break form-control border rounded';
+        textListItemDiv.textContent = newItem;
 
-    //Div para a list-group-item do facilitador selecionado
     var facilitatorListItemDiv = document.createElement('div');
-    facilitatorListItemDiv.className = 'form-control bg-body-secondary border rounded';
-    facilitatorListItemDiv.textContent = deliberadoresSelecionadosLabel;
+        facilitatorListItemDiv.className = 'form-control bg-body-secondary border rounded';
+        facilitatorListItemDiv.textContent = deliberadoresSelecionadosLabel;
 
-    // Juntar as Divs
     var itemList = document.getElementById('inputContainer');
-    itemList.appendChild(textListItemDiv);
-    itemList.appendChild(facilitatorListItemDiv);
-    itemList.appendChild(deleteButton);
+        itemList.appendChild(textListItemDiv);
+        itemList.appendChild(facilitatorListItemDiv);
+        itemList.appendChild(deleteButton);
 
 });
 
-var botaohist = document.getElementById('abrirhist');
-botaohist.addEventListener('click', irparaHist);
+    var botaohist = document.getElementById('abrirhist');
+        botaohist.addEventListener('click', irparaHist);
 
-function irparaHist() {
-
-    console.log("Ok, a função de ir para histórico e registrar texto foi puxada");
+    function irparaHist() {
+        console.log("Ok, a função de ir para histórico e registrar texto foi puxada");
 
     var textoprincipal = document.getElementById('textoprinc').value;
-    console.log(textoprincipal);
+        console.log(textoprincipal);
 
 
-     if (textoprincipal === ""){
-        Swal.fire({
-            title: "Você não informou um texto principal",
-            icon: "error"
-        });
+        if (textoprincipal === ""){
+            Swal.fire({
+                title: "Você não informou um texto principal",
+                icon: "error"
+            });
+        }
+
+        else if( deliberadoresSelecionadosLabel.length === 0 ){
+
+            Swal.fire({
+                title: "Preencha o espaço de deliberações",
+                icon: "error"
+            });
+        }
+
+        else {
+
+            Swal.fire({
+                title: "Perfeito!",
+                text: "Seus Deliberadores foram registrados",
+                icon: "success",
+            });
+
+            $.ajax({
+                url: 'registrartextop.php',
+                method: 'POST',
+                data: {
+                    textoprincipal1: textoprincipal,  
+                },
+                success: function() {
+
+                    console.log ("AJAX DO TEXTO FOI PUXADO");
+                    
+                    setTimeout(function() {
+                        var url = 'paghistorico.php';
+                        window.location.href = url;
+                    }, 1500);
+                }            
+            });
+        }
     }
-
-    else if( deliberadoresSelecionadosLabel.length === 0 ){
-
-        Swal.fire({
-            title: "Preencha o espaço de deliberações",
-            icon: "error"
-        });
-    }
-
-    else {
-
-        Swal.fire({
-            title: "Perfeito!",
-            text: "Seus Deliberadores foram registrados",
-            icon: "success",
-        });
-
-        $.ajax({
-            url: 'registrartextop.php',
-            method: 'POST',
-            data: {
-                textoprincipal1: textoprincipal,  
-            },
-            success: function() {
-
-                console.log ("AJAX DO TEXTO FOI PUXADO");
-                
-                setTimeout(function() {
-                    var url = 'paghistorico.php';
-                    window.location.href = url;
-                }, 1500);
-            }            
-        });
-    }
-}

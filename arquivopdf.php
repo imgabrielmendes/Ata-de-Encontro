@@ -123,60 +123,68 @@ if ($result->num_rows > 0) {
                     <td style="border: 1px solid black; text-align: left; padding-left: 10px;">'.'   '.$tema.'</td>
                 </tr>
             </tbody>
-        </table>
-
-        <h2> PARTICIPANTES </h2>
-        <ul style="">';
-
-        // Adicionando cada participante à lista
-        foreach (explode(",", $nomeParticipantes) as $participante) {
-            $html .= '<li>'.$participante.'</li>';
-        }
-        
-        $html .= '</ul>';
-        $html .='<h2> DELIBERAÇÕES </h2>';
-
-
-$deliberadores_por_deliberacao = array();
-
-if (!empty($deliberadores_deliberacoes)) {
-
-    foreach (explode(",", $deliberadores_deliberacoes) as $deliberador_deliberacao) {
-        list($deliberador, $deliberacao) = explode(":", $deliberador_deliberacao);
-            if (isset($deliberadores_por_deliberacao[$deliberacao])) {
-                $deliberadores_por_deliberacao[$deliberacao][] = $deliberador;
-            } else {
-                $deliberadores_por_deliberacao[$deliberacao] = array($deliberador);
-            }
-    }
-}
-
-foreach ($deliberadores_por_deliberacao as $deliberacao => $deliberadores) {
-    $html .= '
-        <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
-            <tbody>
-                <tr style="">
-                    <td style="text-align: center; border: 1px solid black; background-color: #c0c0c0; width: 130px; font-size: 9,5px;"><ul><b>'.implode(",<br>", $deliberadores).'</b></ul></td>
-                    <td style="text-align: left; border: 1px solid black; height: 30px; width: 409px; font-size: 10px;">'.'    '.$deliberacao.'</td>
-                </tr>
-            </tbody>
         </table>';
-}
 
-$html .= '</body></html>';
+        $html .= '<h2> PARTICIPANTES </h2>';
+        if (empty($nomeParticipantes)) {
+            $html .= '<p>Participantes não informados</p>';
+        } else {
+            $html .= '<ul>';
+            foreach (explode(",", $nomeParticipantes) as $participante) {
+                $html .= '<li>' . htmlspecialchars($participante) . '</li>';
+            }
+            $html .= '</ul>';
+        }
 
+        $html .= '<h2> DELIBERAÇÕES </h2>';
+
+        $deliberadores_por_deliberacao = array();
+
+        if (!empty($deliberadores_deliberacoes)) {
+            foreach (explode(",", $deliberadores_deliberacoes) as $deliberador_deliberacao) {
+
+                list($deliberador, $deliberacao) = explode(":", $deliberador_deliberacao);
+
+                    if (isset($deliberadores_por_deliberacao[$deliberacao])) {
+                        $deliberadores_por_deliberacao[$deliberacao][] = $deliberador;
+                    } else {
+                        $deliberadores_por_deliberacao[$deliberacao] = array($deliberador);
+                    }
+
+            }
+        }
+
+        if (!empty($deliberadores_por_deliberacao)) {
+            foreach ($deliberadores_por_deliberacao as $deliberacao => $deliberadores) {
+
+                $html .= '
+                    <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
+                        <tbody>
+                            <tr style="">
+                                <td style="text-align: center; border: 1px solid black; background-color: #c0c0c0; width: 130px; font-size: 9.5px;"><ul><b>' . implode(",<br>", array_map('htmlspecialchars', $deliberadores)) . '</b></ul></td>
+                                <td style="text-align: left; border: 1px solid black; height: 30px; width: 409px; font-size: 10px;">' . htmlspecialchars($deliberacao) . '</td>
+                            </tr>
+                        </tbody>
+                    </table>';
+
+            }
+
+        } else {
+            $html .= '<p>Deliberações não informadas</p>';
+        }      
         
+        $html .= '<h2> TEXTO PRINCIPAL: </h2>';
+
+        if (!empty($textop)) {
+            $html .= '<p>Texto principal não informado</p>';
+        } 
+            else {
+                $html .= '<p>Texto principal não informado</p>';
+            }
         
-        $html .= '
-        <h2> TEXTO PRINCIPAL: </h2>
-        <text style="height: 30px; border: 1px solid black">'.$textop.'</txt>
-
-        <br><br><br><br><br>
-
-        <hr style="margin-left: auto; margin-right: auto; width: 45%;" align="center">
-        <txt style="display: block; text-align: center;">Assinatura do Responsável</txt>
-        <br><br><br>
-        ';
+        $html .='<hr style="margin-left: auto; margin-right: auto; width: 45%;" align="center">
+                <txt style="display: block; text-align: center;">Assinatura do Responsável</txt>
+                <br><br><br>';
           
         $pdf->AddPage();
         $pdf->writeHTML($html, true, false, true, false, '');
@@ -219,7 +227,8 @@ $html .= '</body></html>';
                     </tr>';
         }
 
-            $html .='</tbody></table></body></html>';
+            $html .='</tbody></table>
+                     </body></html>';
 
             $pdf->AddPage();
             $pdf->writeHTML($html, true, false, true, false, '');
@@ -228,7 +237,7 @@ $html .= '</body></html>';
 
     }
         } else {
-            echo "Nenhum resultado encontrado.";
+            echo "Nenhum resultado INVÁLIDOS.";
         }
 }
 

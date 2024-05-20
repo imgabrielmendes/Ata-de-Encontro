@@ -22,18 +22,18 @@ new MultiSelectTag('deliberador', {
 
 console.log();
 
-var participantesAdicionados = [];
+    var participantesAdicionados = [];
 
-var itemList = document.getElementById('items');
-var filter = document.getElementById('filter');
-var addItemButton = document.getElementById('addItemButton');
-var mensagemInfo = document.getElementById('infoMessage');
+    var itemList = document.getElementById('items');
+    var filter = document.getElementById('filter');
+    var addItemButton = document.getElementById('addItemButton');
+    var mensagemInfo = document.getElementById('infoMessage');
 
 
 
 addItemButton.addEventListener('click', function() {
+
     var newItem = document.getElementById('item').value.trim();
-    
     
     if (newItem === "") {
         Swal.fire({
@@ -47,42 +47,42 @@ addItemButton.addEventListener('click', function() {
     else {
 
         var inputField = document.getElementById('item');
-        inputField.parentNode.removeChild(inputField);
+            inputField.parentNode.removeChild(inputField);
 
         var textListItemDiv = document.createElement('div');
-        textListItemDiv.className = 'list-group-item';
-        textListItemDiv.textContent = newItem;
+            textListItemDiv.className = 'list-group-item';
+            textListItemDiv.textContent = newItem;
 
-        itemList.appendChild(textListItemDiv);
-
+            itemList.appendChild(textListItemDiv);
 
         var textLabelElement = document.createElement('label');
-        textLabelElement.textContent = newItem;
-        textListItemDiv.appendChild(textLabelElement);
+            textLabelElement.textContent = newItem;
+            textListItemDiv.appendChild(textLabelElement);
 
-        selectedDeliberators.forEach(function(deliberator) {
+            selectedDeliberators.forEach(function(deliberator) {
 
-            var deliberatorDiv = document.createElement('div');
+        var deliberatorDiv = document.createElement('div');
             deliberatorDiv.className = 'form-control bg-body-secondary border rounded';
-            var deliberatorLabel = document.createElement('label');
-            
+
+        var deliberatorLabel = document.createElement('label');
             deliberatorLabel.textContent = deliberator;
             deliberatorDiv.appendChild(deliberatorLabel);
             itemList.appendChild(deliberatorDiv);
 
         });
 
-        // Adiciona um botão de exclusão para o item
         var deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Excluir';
-        deleteButton.className = 'btn btn-danger btn-sm ml-2 delete-item';
-        deleteButton.addEventListener('click', function() {
+            deleteButton.textContent = 'Excluir';
+            deleteButton.className = 'btn btn-danger btn-sm ml-2 delete-item';
+            deleteButton.addEventListener('click', function() {
 
             itemList.removeChild(textListItemDiv);
+
             selectedDeliberators.forEach(function(deliberator) {
 
-                var deliberatorDiv = document.querySelector('.form-control.bg-body-secondary.border.rounded:contains(' + deliberator + ')');
-                itemList.removeChild(deliberatorDiv);
+        var deliberatorDiv = document.querySelector('.form-control.bg-body-secondary.border.rounded:contains(' + deliberator + ')');
+
+                    itemList.removeChild(deliberatorDiv);
             });
 
             deleteButton.remove(); 
@@ -97,69 +97,71 @@ document.getElementById('addItemButton').addEventListener('click', function() {
 
     var newItem = document.querySelector('.item').value.trim();
     
-    if (newItem === "" && deliberadoresSelecionadosLabel.length === 0) {
-          Swal.fire({
-            title: "Preencha os campos de deliberação",
-            icon: "error"
-        });
-        
-        return;
+        if (newItem === "" && deliberadoresSelecionadosLabel.length === 0) {
+            Swal.fire({
+                title: "Preencha os campos de deliberação",
+                icon: "error"
+            });
+            
+            return;
     }
 
-    else if (newItem === ""){
+        else if (newItem === ""){
 
-        Swal.fire({
-            title: "Você não adicionou uma deliberação",
-            text: "Adicione pelo menos 1 deliberação para a ata",
-            icon: "error"
-        });
-        
-        return;
-    }
-
-    else if (deliberadoresSelecionadosLabel.length === 0) {
-
-        Swal.fire({
-          title: "Você não adicionou um deliberador",
-          text: "Adicione pelo menos 1 deliberador para a deliberação",
-          icon: "error"
-      });
-      
-      return;
-  }
-  else {
-
-    const toastLiveExample = document.getElementById('liveToast')
-
-    var deliberador = document.querySelector('.item').value;
-    var deliberacoes = document.querySelector('.facilitator-select').value;
-
-    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-    toastBootstrap.show();        
-    $.ajax({
-        url: 'registrardeliberadores.php',
-        method: 'POST',
-        data: {
-           deliberaDores: JSON.stringify(deliberadoresSelecionadosNUM), 
-           deliberAcoes: deliberacoes, 
-           newItem: newItem,
-
-        },
-
-        success: function(response) {
-            console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
-            console.log(response);
-
-            console.log("AAAAAAAAAAAAA");
-            console.log(deliberadoresSelecionadosNUM);
-
-
-        },
-        
-        error: function(error) {
-            console.error('Erro na solicitação AJAX:', error);
+            Swal.fire({
+                title: "Você não adicionou uma deliberação",
+                text: "Adicione pelo menos 1 deliberação para a ata",
+                icon: "error"
+            });
+            
+            return;
         }
-    });
+
+        else if (deliberadoresSelecionadosLabel.length === 0) {
+
+            Swal.fire({
+            title: "Você não adicionou um deliberador",
+            text: "Adicione pelo menos 1 deliberador para a deliberação",
+            icon: "error"
+        });
+      
+        return;
+        }
+
+        else {
+
+            const toastLiveExample = document.getElementById('liveToast')
+
+            var deliberador = document.querySelector('.item').value;
+            var deliberacoes = document.querySelector('.facilitator-select').value;
+
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+                        
+                toastBootstrap.show();        
+                $.ajax({
+                    url: 'registrardeliberadores.php',
+                    method: 'POST',
+                    data: {
+                    deliberaDores: JSON.stringify(deliberadoresSelecionadosNUM), 
+                    deliberAcoes: deliberacoes, 
+                    newItem: newItem,
+
+                    },
+
+                    success: function(response) {
+                        console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
+                        console.log(response);
+
+                        console.log("AAAAAAAAAAAAA");
+                        console.log(deliberadoresSelecionadosNUM);
+
+
+                    },
+                    
+                    error: function(error) {
+                        console.error('Erro na solicitação AJAX:', error);
+                    }
+                });
 }
   function enviarDadosParaServidor() {
     const toastLiveExample = document.getElementById('liveToast');
@@ -171,13 +173,13 @@ document.getElementById('addItemButton').addEventListener('click', function() {
     var deliberacoes = document.querySelector('.facilitator-select').value;
 
     const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-    toastBootstrap.show();        
+        toastBootstrap.show();        
 
     $.ajax({
         url: 'registrardeliberadores.php',
         method: 'POST',
         data: {
-            id_ata: id_ata, // Envia o id_ata junto com os dados
+            id_ata: id_ata, 
             deliberaDores: JSON.stringify(deliberadoresSelecionadosNUM), 
             deliberAcoes: deliberacoes, 
             newItem: newItem,
@@ -186,8 +188,6 @@ document.getElementById('addItemButton').addEventListener('click', function() {
         success: function(response) {
             console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
             console.log(response);
-
-            console.log("AAAAAAAAAAAAA");
             console.log(deliberadoresSelecionadosNUM);
         },
 
@@ -199,53 +199,47 @@ document.getElementById('addItemButton').addEventListener('click', function() {
 
 enviarDadosParaServidor();
   
-        // Adiciona um botão de exclusão para o item
-        var deleteButton = document.createElement('button');
+    var deleteButton = document.createElement('button');
         deleteButton.textContent = 'x';
         deleteButton.className = 'btn btn-danger';
         deleteButton.style.width = '37px'; 
-        deleteButton.style.height = '37px'; 
-    
-        deleteButton.addEventListener('click', function() {  
-                     
-            // Remove o item e o facilitador associado
-            itemList.removeChild(textListItemDiv);
-            itemList.removeChild(facilitatorListItemDiv);
-            deleteButton.remove(); // Remove o botão de exclusão
+        deleteButton.style.height = '37px';
+
+            deleteButton.addEventListener('click', function() {       
+                itemList.removeChild(textListItemDiv);
+                itemList.removeChild(facilitatorListItemDiv);
+                deleteButton.remove();
         
-            const toastLiveExample = document.getElementById('liveToast2');
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-            toastBootstrap.show();
+                    const toastLiveExample = document.getElementById('liveToast2');
+                    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+                        toastBootstrap.show();
 
-            });
+                    });
 
-    //Div para a list-group-item do texto digitado
     var textListItemDiv = document.createElement('div');
-    textListItemDiv.className = 'black text-break form-control border rounded';
-    textListItemDiv.textContent = newItem;
+        textListItemDiv.className = 'black text-break form-control border rounded';
+        textListItemDiv.textContent = newItem;
 
-    //Div para a list-group-item do facilitador selecionado
     var facilitatorListItemDiv = document.createElement('div');
-    facilitatorListItemDiv.className = 'form-control bg-body-secondary border rounded';
-    facilitatorListItemDiv.textContent = deliberadoresSelecionadosLabel;
+        facilitatorListItemDiv.className = 'form-control bg-body-secondary border rounded';
+        facilitatorListItemDiv.textContent = deliberadoresSelecionadosLabel;
 
-    // Juntar as Divs
     var itemList = document.getElementById('inputContainer');
-    itemList.appendChild(textListItemDiv);
-    itemList.appendChild(facilitatorListItemDiv);
-    itemList.appendChild(deleteButton);
+        itemList.appendChild(textListItemDiv);
+        itemList.appendChild(facilitatorListItemDiv);
+        itemList.appendChild(deleteButton);
 
 });
 
-var botaohist = document.getElementById('abrirhist');
-botaohist.addEventListener('click', irparaHist);
+    var botaohist = document.getElementById('abrirhist');
+        botaohist.addEventListener('click', irparaHist);
 
 function irparaHist() {
 
     console.log("Ok, a função de ir para histórico e registrar texto foi puxada");
 
     var textoprincipal = document.getElementById('textoprinc').value;
-    console.log(textoprincipal);
+        console.log(textoprincipal);
 
 
      if (textoprincipal === ""){

@@ -24,7 +24,6 @@ new MultiSelectTag('selecionandofacilitador', {
 var data = document.getElementById("datainicio").value;
 var horainicio = document.getElementById("horainicio").value;
 var horaterm = document.getElementById("horaterm").value;
-// var tempoes = document.getElementById("tempoestim").value;
 
 // 2° LINHAS
 var objetivomarc = document.getElementsByName("objetivo");
@@ -40,7 +39,6 @@ function gravando() {
     var data = document.getElementById("datainicio").value;
     var horainicio = document.getElementById("horainicio").value;
     var horaterm = document.getElementById("horaterm").value;
-    // var tempoes = document.getElementById("tempoestim").value;
 
     var objetivomarc = document.getElementsByName("objetivo");
     var objetivoSelecionado = null;
@@ -105,7 +103,6 @@ function gravando() {
             datainic: data,
             objetivos: objetivoSelecionado,
             local: local,
-            // tempoestimado: tempoes,
         },
         
         success: function () {
@@ -126,7 +123,6 @@ function gravando() {
 
         error: function (error) {
             console.error('Erro na solicitação AJAX:', error);
-            // console.log(facilitadores);
         },
     });
 }}

@@ -34,7 +34,7 @@ $pegarlocal=$puxarform->pegarlocais();
   <link rel="stylesheet" href="view/css/bootstrap.css">
   <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
 
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+  <link rel="stylesheet" href="view\css\multi-select-tag.css">
 
 </head>
 
@@ -68,7 +68,7 @@ $pegarlocal=$puxarform->pegarlocais();
       <div class="container-fluid">
         <div class="row py-1">
           <div class="col-sm-6">
-            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i><b>Ata de encontro<b></h2>
+            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i><b>Ata de encontro</b></h2>
           </div>
         </div>
       </div>
