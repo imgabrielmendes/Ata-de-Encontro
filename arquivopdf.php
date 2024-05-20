@@ -12,7 +12,8 @@ assunto.hora_termino AS horatermi,
 assunto.local AS local,
 assunto.tema AS tema,
 assunto.objetivo AS objetivo,
-assunto.data_solicitada AS data,
+assunto.data_solicitada,
+date_format(assunto.data_solicitada, '%d/%m/%y') as data,
 fac_delib.matricula as matric,
 GROUP_CONCAT(DISTINCT fac_parti.nome_facilitador) AS nome_participantes,
 GROUP_CONCAT(DISTINCT delib.deliberacoes) AS deliberacoes,
@@ -31,18 +32,15 @@ GROUP BY
 assunto.id;
 ";
 
-
-                $result= $conn->query($sql);
-
-                if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-                
-                    $result = $conn->query($sql);
+$result= $conn->query($sql);
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+$result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
 
         $idAssunto = $row['IDASSUNTO'];
-        $data = substr($row['data'], 0, -8);
+        $data = $row['data'];
         $tema = $row['tema'];
         $matric = $row['matric'];
         $local = $row['local'];
@@ -184,9 +182,14 @@ if ($result->num_rows > 0) {
             $html .= '<p>' . htmlspecialchars($textop) . '</p>';
         }
         
-        $html .='<hr style="margin-left: auto; margin-right: auto; width: 45%;" align="center">
-                <txt style="display: block; text-align: center;">Assinatura do Responsável</txt>
-                <br><br><br>';
+        $html .='<hr 
+                    style=" 
+                    margin-right: auto; width: 40%;" 
+                    align="center">
+
+                    <p style="display: block; 
+                       text-align: center;"> Assinatura do Responsável </txt>
+                    <br><br><br>';
           
         $pdf->AddPage();
         $pdf->writeHTML($html, true, false, true, false, '');

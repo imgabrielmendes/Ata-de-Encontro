@@ -130,32 +130,32 @@ $row=mysqli_fetch_assoc($result);
           </div>
 
           <!---ABA DE DATA---->
-          <div class="col-3">
+          <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
             <label><b>Data</b></label>
             <input id="datainicio" class="form-control bg-body-secondary" placeholder="dd-mm-aaaa" min="2024-04-01" type="date" value=<?php echo $datasolicitada?> readonly>
           </div>
 
           <!---ABA DE HORÁRIO INICIO---->
-          <div class="col-3">
+          <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
             <label for="nomeMedico"><b>Horário de Início:</b></label>
             <br>
             <input class="form-control bg-body-secondary" type="time" id="horainicio" name="appt" min="" max="18:00" value=<?php echo $horaterm?> readonly>
           </div>
 
           <!---ABA DE HORÁRIO TERMINO---->
-          <div class="col-3">
+          <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
             <label for="form-control"> <b> Horário de Término:</b> </label>
             <input class="form-control bg-body-secondary" type="time" id="horaterm" name="appt" min="13:00" max="12:00" value=<?php echo $horainic?> readonly>
           </div>
 
           <!---ABA DE TEMPO ESTIMADO ---->
-          <div class="col-3">
+          <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
             <label for="form-control"> <b> Tempo Estimado (horas):</b> </label>
             <input value="1" class="form-control bg-body-secondary" type="number" id="tempoestim" name="appt" min="0" max="5" readonly>
           </div>
 
            <!---ABA DE OBJETIVO - REUNIÃO---->
-          <div class="col-2 mt-4 " id="objetivo">
+          <div class="col-sm-6 col-lg-6 col-md-6 col-xl-2 mt-2" id="objetivo">
             <label for="objetivo pb-2"> <b>Objetivo:</b> </label>
 
             <select class="form-control" name="objetivo" id="objetivo">
@@ -170,7 +170,7 @@ $row=mysqli_fetch_assoc($result);
 
 
           <!--- ABA DE SELECIONAR LOCAL ---->
-          <div class="col-4 mt-4 pb-2">
+          <div class="col-sm-6 col-md-6 col-xl-5 col-lg-6 mt-2 pb-2">
           <label for="local"><b>Local:</b></label>
           <select class="form-control" name="local" id="local">
               <?php echo empty($pegarlocal) ? '<option selected disabled hidden>Local não informado</option>' : ''; ?>
@@ -183,7 +183,7 @@ $row=mysqli_fetch_assoc($result);
       </div>
 
 
-          <div class="col-6 mt-4 pb-2"><b>Tema:</b>
+          <div class="col-md-5 col-xl-5 col-lg-12 col-sm-6 mt-2 pb-2"><b>Tema:</b>
             <br>
             <input id="temaprincipal" class="form-control bg-body-secondary" type="text" value="<?php echo $tema?>" readonly/>
           </div>
