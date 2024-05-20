@@ -254,7 +254,7 @@ $local = $_GET['local'];
 
           <div class="p-2 col-lg-3 col-md-5 col-sm-12">
               <button id="botaocontinuarata" type="button" class="btn form-control btn-success" data-bs-toggle="modal">
-                Continuar ata
+                Prosseguir com a ata
               </button>
               <script>
                 function abrirDeliberacoes(){
@@ -265,7 +265,7 @@ $local = $_GET['local'];
         <br>
         <div class="p-2 col-lg-3 col-md-5 col-sm-12">
               <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn form-control btn-primary" data-bs-toggle="modal">
-                Atualizar a ata
+                Ir para histórico
               </button>
            
             

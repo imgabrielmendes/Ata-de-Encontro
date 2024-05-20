@@ -40,7 +40,7 @@ assunto.id;
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        // var_dump($row);
+
         $idAssunto = $row['IDASSUNTO'];
         $data = substr($row['data'], 0, -8);
         $tema = $row['tema'];
@@ -49,12 +49,11 @@ if ($result->num_rows > 0) {
         $horainicio = substr($row['horainicio'], 0, -3);
         $horafinal = substr($row['horatermi'], 0, -3);
         $objetivo = $row['objetivo'];
-        $nomeParticipantes = $row['nome_participantes'];
+        $nomeParticipantes = isset($row['nome_participantes']) ? $row['nome_participantes'] : null;
         $deliberacoes = $row['deliberacoes'];
         $deliberadores_deliberacoes = $row['deliberadores_deliberacoes'];
-        $textop = $row['texto_princ'];
 
-        // var_dump($matric);
+        $textop = isset($row['texto_princ']) ? $row['texto_princ'] : null;
 
         $pdf = new \TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
@@ -126,16 +125,20 @@ if ($result->num_rows > 0) {
         </table>';
 
         $html .= '<h2> PARTICIPANTES </h2>';
+
         if (empty($nomeParticipantes)) {
             $html .= '<p>Participantes não informados</p>';
-        } else {
-            $html .= '<ul>';
-            foreach (explode(",", $nomeParticipantes) as $participante) {
-                $html .= '<li>' . htmlspecialchars($participante) . '</li>';
-            }
-            $html .= '</ul>';
-        }
 
+        } else {
+
+            $html .= '<ul>';
+
+                foreach (explode(",", $nomeParticipantes) as $participante) {
+                $html .= '<li>' . htmlspecialchars($participante) . '</li>';}
+                 
+                $html .= '</ul>';
+        }
+        
         $html .= '<h2> DELIBERAÇÕES </h2>';
 
         $deliberadores_por_deliberacao = array();
@@ -175,12 +178,11 @@ if ($result->num_rows > 0) {
         
         $html .= '<h2> TEXTO PRINCIPAL: </h2>';
 
-        if (!empty($textop)) {
+        if (empty($textop)) {
             $html .= '<p>Texto principal não informado</p>';
-        } 
-            else {
-                $html .= '<p>Texto principal não informado</p>';
-            }
+        } else {
+            $html .= '<p>' . htmlspecialchars($textop) . '</p>';
+        }
         
         $html .='<hr style="margin-left: auto; margin-right: auto; width: 45%;" align="center">
                 <txt style="display: block; text-align: center;">Assinatura do Responsável</txt>
