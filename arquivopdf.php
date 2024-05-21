@@ -35,40 +35,26 @@ assunto.id;
 $result= $conn->query($sql);
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 $result = $conn->query($sql);
-
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
 
-        $idAssunto = $row['IDASSUNTO'];
-        $data = $row['data'];
-        $tema = $row['tema'];
-        $matric = $row['matric'];
-        $local = $row['local'];
-        $horainicio = substr($row['horainicio'], 0, -3);
-        $horafinal = substr($row['horatermi'], 0, -3);
-        $objetivo = $row['objetivo'];
-        $nomeParticipantes = isset($row['nome_participantes']) ? $row['nome_participantes'] : null;
-        $deliberacoes = $row['deliberacoes'];
-        $deliberadores_deliberacoes = $row['deliberadores_deliberacoes'];
-
-        $textop = isset($row['texto_princ']) ? $row['texto_princ'] : null;
+        $idAssunto = isset($row['IDASSUNTO']) ? $row['IDASSUNTO'] : '';
+        $data = isset($row['data']) ? $row['data'] : '';
+        $tema = isset($row['tema']) ? $row['tema'] : '';
+        $matric = isset($row['matric']) ? $row['matric'] : '';
+        $local = isset($row['local']) ? $row['local'] : '';
+        $horainicio = isset($row['horainicio']) ? substr($row['horainicio'], 0, -3) : '';
+        $horafinal = isset($row['horatermi']) ? substr($row['horatermi'], 0, -3) : '';
+        $objetivo = isset($row['objetivo']) ? $row['objetivo'] : '';
+        $nomeParticipantes = isset($row['nome_participantes']) ? $row['nome_participantes'] : '';
+        $deliberacoes = isset($row['deliberacoes']) ? $row['deliberacoes'] : '';
+        $deliberadores_deliberacoes = isset($row['deliberadores_deliberacoes']) ? $row['deliberadores_deliberacoes'] : '';
+        $textop = isset($row['texto_princ']) ? $row['texto_princ'] : '';
 
         $pdf = new \TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
 
-
-                            // echo "info1:" . $idAssunto . "<br>";
-                            // echo "info2:" . $idAtaDoHas . "<br>";
-                            // echo "info3:" . $idFacilitadores  . "<br>";
-                            // echo "info4:" . $facilitadoresResponsaveis . "<br>";
-                            // echo "info5:" . $idParticipantes . "<br>";
-                            // echo "info6:" . $nomeParticipantes . "<br>";
-                            // echo "info7:" . $idDeliberadores . "<br>";
-                            // echo "info8:" . $nomeDeliberadores . "<br>";
-                            // echo "info9:" . $deliberacoes . "<br>";
-
-                            $html = '
-          
+        $html = '
             <table style="border: 1px solid black; padding: 8px 0px; order-spacing:3px">
                 <tbody>
                     <tr style="text-align: center;">
@@ -79,7 +65,7 @@ if ($result->num_rows > 0) {
                         <td style="height: 30px;  border: 1px solid black;">NOR.QUA.001</td>
                     </tr>
                     <tr style="text-align: center;">
-                        <td style="border: 1px solid black; "><b>Data de elaboração:</b></td>
+                        <td style="border: 1px solid black;"><b>Data de elaboração:</b></td>
                         <td style="border: 1px solid black;">27/09/2021</td>
                         <td style="border: 1px solid black;"><b>Versão</b></td>
                         <td style="border: 1px solid black;">2-2021</td>
@@ -109,55 +95,48 @@ if ($result->num_rows > 0) {
             </tbody>
         </table>
 
-        <table style="border: 1px solid black; padding: 8px 0px; text-align: center; ">
+        <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
         <tbody>
             <tr style="background-color: #c0c0c0">
                 <td style="border: 1px solid black; height: 30px; width: 108px;"><b>Local:</b></td>
                 <td style="border: 1px solid black; width: 432px; text-align: left;">'.'   '.'<b>Tema:</b></td>
             </tr>
-                <tr>
-                    <td style="border: 1px solid black; text-align: center; font-size: 9px">'.$local.'</td>
-                    <td style="border: 1px solid black; text-align: left; padding-left: 10px;">'.'   '.$tema.'</td>
-                </tr>
-            </tbody>
+            <tr>
+                <td style="border: 1px solid black; text-align: center; font-size: 9px">'.$local.'</td>
+                <td style="border: 1px solid black; text-align: left; padding-left: 10px;">'.'   '.$tema.'</td>
+            </tr>
+        </tbody>
         </table>';
 
         $html .= '<h2> PARTICIPANTES </h2>';
 
         if (empty($nomeParticipantes)) {
             $html .= '<p>Participantes não informados</p>';
-
         } else {
-
             $html .= '<ul>';
-
-                foreach (explode(",", $nomeParticipantes) as $participante) {
-                $html .= '<li>' . htmlspecialchars($participante) . '</li>';}
-                 
-                $html .= '</ul>';
+            foreach (explode(",", $nomeParticipantes) as $participante) {
+                $html .= '<li>' . htmlspecialchars($participante) . '</li>';
+            }
+            $html .= '</ul>';
         }
-        
+
         $html .= '<h2> DELIBERAÇÕES </h2>';
 
         $deliberadores_por_deliberacao = array();
 
         if (!empty($deliberadores_deliberacoes)) {
             foreach (explode(",", $deliberadores_deliberacoes) as $deliberador_deliberacao) {
-
                 list($deliberador, $deliberacao) = explode(":", $deliberador_deliberacao);
-
-                    if (isset($deliberadores_por_deliberacao[$deliberacao])) {
-                        $deliberadores_por_deliberacao[$deliberacao][] = $deliberador;
-                    } else {
-                        $deliberadores_por_deliberacao[$deliberacao] = array($deliberador);
-                    }
-
+                if (isset($deliberadores_por_deliberacao[$deliberacao])) {
+                    $deliberadores_por_deliberacao[$deliberacao][] = $deliberador;
+                } else {
+                    $deliberadores_por_deliberacao[$deliberacao] = array($deliberador);
+                }
             }
         }
 
         if (!empty($deliberadores_por_deliberacao)) {
             foreach ($deliberadores_por_deliberacao as $deliberacao => $deliberadores) {
-
                 $html .= '
                     <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
                         <tbody>
@@ -167,13 +146,11 @@ if ($result->num_rows > 0) {
                             </tr>
                         </tbody>
                     </table>';
-
             }
-
         } else {
             $html .= '<p>Deliberações não informadas</p>';
         }      
-        
+
         $html .= '<h2> TEXTO PRINCIPAL: </h2>';
 
         if (empty($textop)) {
@@ -181,48 +158,43 @@ if ($result->num_rows > 0) {
         } else {
             $html .= '<p>' . htmlspecialchars($textop) . '</p>';
         }
-        
-        $html .='<hr 
-                    style=" 
-                    margin-right: auto; width: 40%;" 
-                    align="center">
 
-                    <p style="display: block; 
-                       text-align: center;"> Assinatura do Responsável </txt>
-                    <br><br><br>';
-          
+        $html .= '<hr style="margin-right: auto; width: 40%;" align="center">
+                  <p style="display: block; text-align: center;">Assinatura do Responsável</p>
+                  <br><br><br>';
+
         $pdf->AddPage();
         $pdf->writeHTML($html, true, false, true, false, '');
-  
-        $html ='
+
+        $html = '
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
         <tbody>
             <tr style="text-align: center">
-                <td style="height: 40px; border: 1px solid black; background-color: #c0c0c0 "><h4>Assinatura de presença:</h4></td>
+                <td style="height: 40px; border: 1px solid black; background-color: #c0c0c0;"><h4>Assinatura de presença:</h4></td>
             </tr>
         </tbody>
         </table>
-        
+
         <table style="border: 1px solid black; text-align: center; padding: 4px 0px;">
-    <tbody>
-    <tr style="text-align: center; background-color: #ececed">
-        <td style="height: 31px; border: 1px solid black; width: 59px; vertical-align: middle;"><h4>Mat.</h4></td>
-        <td style="height: 31px; border: 1px solid black; width: 150px; vertical-align: middle;"><h4>Nome:</h4></td>
-        <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Função:</h4></td>
-        <td style="height: 31px; border: 1px solid black; width: 270px; vertical-align: middle;"><h4>Assinatura:</h4></td>
-    </tr>';
+        <tbody>
+            <tr style="text-align: center; background-color: #ececed">
+                <td style="height: 31px; border: 1px solid black; width: 59px; vertical-align: middle;"><h4>Mat.</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 150px; vertical-align: middle;"><h4>Nome:</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Função:</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 270px; vertical-align: middle;"><h4>Assinatura:</h4></td>
+            </tr>';
 
-        foreach (explode(",", $nomeParticipantes) as $participante) {
-            $html .= '<tr style="text-align: left; font-size: 10px;">
-                        <td style="border: 1px solid black; height: 30px;"></td>
-                        <td style="border: 1px solid black;">'.$participante.'</td>
-                        <td style="border: 1px solid black;"></td>
-                        <td style="border: 1px solid black;"></td>
-                        <td style="border: 1px solid black;"></td>
-
-                    </tr>';
+        if (!empty($nomeParticipantes)) {
+            foreach (explode(",", $nomeParticipantes) as $participante) {
+                $html .= '<tr style="text-align: left; font-size: 10px;">
+                            <td style="border: 1px solid black; height: 30px;"></td>
+                            <td style="border: 1px solid black;">'.$participante.'</td>
+                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;"></td>
+                        </tr>';
+            }
         }
-        
+
         for ($linha = 0; $linha < 6; $linha++) {
             $html .= '<tr style="text-align: center;">
                         <td style="border: 1px solid black; height: 37px;"></td>
@@ -232,18 +204,15 @@ if ($result->num_rows > 0) {
                     </tr>';
         }
 
-            $html .='</tbody></table>
-                     </body></html>';
+        $html .= '</tbody></table>';
 
-            $pdf->AddPage();
-            $pdf->writeHTML($html, true, false, true, false, '');
+        $pdf->AddPage();
+        $pdf->writeHTML($html, true, false, true, false, '');
 
-            $pdf->Output('ata_de_encontro'.$id.'.pdf', 'I');
-
+        $pdf->Output('ata_de_encontro'.$idAssunto.'.pdf', 'I');
     }
-        } else {
-            echo "Nenhum resultado INVÁLIDOS.";
-        }
+} else {
+    echo "Nenhum resultado encontrado.";
 }
-
+}
 ?>

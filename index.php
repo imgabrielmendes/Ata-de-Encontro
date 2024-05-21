@@ -117,34 +117,38 @@ $pegarlocal=$puxarform->pegarlocais();
  
   </div>
 
-<div class="row">
-          <div class="col-xl-2 col-lg-xl-4 col-md-4">
-              <label class="form-control">
-              <input type="checkbox" class="objetivo" name="objetivo" id="reuniao" value="Reunião" > Reunião</label>
-          </div>
-           <!---ABA DE OBJETIVO - TREINAMENTO---->
-          <div class="col-xl-3 col-lg-xl-4 col-md-4">
-              <label class="form-control">
-              <input type="checkbox" class="objetivo" name="objetivo" id="treinamento" value="Treinamento"> Treinamento</label>
-          </div>
-        <!---ABA DE OBJETIVO - CONSULTA---->
-          <div class="col-xl-2 col-lg-xl-4 col-md-4">
-              <label class="form-control">
-              <input type="checkbox" class="objetivo" name="objetivo" id="consulta" value="Consulta"> Consulta </label>
-          </div>
+  <div class="row">
+    <div class="col-xl-2 col-lg-xl-4 col-md-4">
+        <label class="form-control">
+            <input type="radio" class="objetivo" name="objetivo" id="reuniao" value="Reunião"> Reunião
+        </label>
+    </div>
+    <!---ABA DE OBJETIVO - TREINAMENTO---->
+    <div class="col-xl-3 col-lg-xl-4 col-md-4">
+        <label class="form-control">
+            <input type="radio" class="objetivo" name="objetivo" id="treinamento" value="Treinamento"> Treinamento
+        </label>
+    </div>
+    <!---ABA DE OBJETIVO - CONSULTA---->
+    <div class="col-xl-2 col-lg-xl-4 col-md-4">
+        <label class="form-control">
+            <input type="radio" class="objetivo" name="objetivo" id="consulta" value="Consulta"> Consulta
+        </label>
+    </div>
 
-            <div class="col-xl-5 col-sm-12">
-              <select class="form-control" id="pegarlocal">
-            
-                <option disabled> - Informe o Local - </option>
-                <option> 
-                  <?php foreach ($pegarlocal as $locais) : ?>
-                  <option value="<?php echo $locais['locais'] ?>" data-tokens="<?php echo $locais['locais']; ?>">
-                  <?php echo $locais['locais'] ?> <?php endforeach ?>
-                </option>
 
-              </select>
-          </div>
+
+        <div class="col-xl-5 col-sm-12">
+                <select class="form-control" id="pegarlocal" placeholder="Informe o Local">
+              <option value="" disabled selected> Informe o Local </option>
+              <?php foreach ($pegarlocal as $locais) : ?>
+                  <option value="<?php echo htmlspecialchars($locais['locais']); ?>" data-tokens="<?php echo htmlspecialchars($locais['locais']); ?>">
+                      <?php echo htmlspecialchars($locais['locais']); ?>
+                  </option>
+              <?php endforeach; ?>
+          </select>
+        </div>
+
 
 </div>
          

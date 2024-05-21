@@ -161,7 +161,7 @@ $local = $_GET['local'];
             $minutos_formatado = sprintf("%02d", $minutos);
 
             // Exibe o tempo estimado no formato "00:00"
-            echo "<div class='form-control bg-body-secondary tempo-estimado'>" . $horas_formatado . ":" . $minutos_formatado . "</div>";
+            echo "<div class='form-control bg-body-secondary tempo-estimado'>" . $horas_formatado . ":" . $minutos_formatado . ":00". "</div>";
         } else {
             echo "Horário de início e/ou término não definidos.";
         }
