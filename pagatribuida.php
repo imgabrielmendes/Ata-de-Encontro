@@ -139,7 +139,7 @@ print_r($id_pagina);
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
 
           <div class="row">
-          <div class="col-6">
+          <div class="col-md-6 col-md-2">
               <label for="form-control"><b>Data</b></label>
             <div class="form-control bg-body-secondary">
               <?php
@@ -164,11 +164,11 @@ print_r($id_pagina);
                 ?>
               </div>
               </div>
-              <div class="col-6">
+              <div class="col-md-6 col-md-2">
                   <label for="form-control"><b>Objetivo</b></label>
                   <ul class="form-control bg-body-secondary"><?php echo $row['objetivo']; ?></ul>     
               </div>
-          <div class="col-6">
+          <div class="col-md-6 col-md-2">
             <label for="form-control"><b>Facilitadores</b></label>
             <div class="form-control bg-body-secondary">
                 <?php
@@ -194,15 +194,15 @@ print_r($id_pagina);
                 ?>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-md-6 col-md-2">
             <label for="form-control"><b>Tema</b></label>
             <ul class="form-control bg-body-secondary"><?php echo $row["tema"]; ?></ul>
         </div>
-        <div class="col-6">
+        <div class="col-md-6 col-md-2">
             <label for="form-control"> <b>Local</b> </label>
             <ul class="form-control bg-body-secondary"><?php echo $row["local"]; ?></ul>
         </div>
-        <div class="col-6">
+        <div class="col-md-6 col-md-2">
             <label for="form-control"> <b>Status</b> </label>
             <ul class="form-control bg-body-secondary"><?php echo $row['status']; ?></ul>
         </div>
