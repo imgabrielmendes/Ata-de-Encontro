@@ -373,7 +373,6 @@ function adicionarParticipanteAoLabel(participante) {
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 <br>
 <div class="accordion">
-<div class="accordion-item shadow">
   <h2 class="accordion-header">
     <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
       <h5>Deliberações</h5>
@@ -495,7 +494,6 @@ function adicionarParticipanteAoLabel(participante) {
     </form>       
       </div>          
 </div>
-    </div>
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
