@@ -1,6 +1,6 @@
 <?php
-
 namespace formulario;
+session_start();
 
 include_once ("app/acoesform.php");
 include ("conexao.php");
@@ -13,7 +13,6 @@ $facilitadores=$puxarform->selecionarFacilitadores();
 $pegarfa=$puxarform->pegarfacilitador();
 // Puxar local
 $pegarlocal=$puxarform->pegarlocais();
-
 ?>
 
 <!DOCTYPE html>

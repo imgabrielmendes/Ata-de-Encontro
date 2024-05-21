@@ -1,5 +1,6 @@
 <?php
 namespace formulario;
+session_start();
 
 require __DIR__.'/vendor/autoload.php';
 include 'conexao2.php';
@@ -21,7 +22,7 @@ $row=mysqli_fetch_assoc($result);
     $local = $row['local'];
     $horainic = $row['hora_inicial'];
     $horaterm = $row['hora_termino'];
-
+    
     $sql2 = "SELECT 
     fac.nome_facilitador as facilitadores,
     fac.id as idfacilitadores
@@ -58,7 +59,10 @@ $row=mysqli_fetch_assoc($result);
                         $deliberador_array[] = $row3['deliberador'];
                     }
                 }
+            
+mysqli_close($conn);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -120,7 +124,8 @@ $row=mysqli_fetch_assoc($result);
       </div>
     </div>
   </header>
- <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
+ <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->          
+ <form method="POST">
     <main class="container_fluid d-flex justify-content-center align-items-center">
       <div class="form-group col-8">
         <div class="row"> 
@@ -130,6 +135,7 @@ $row=mysqli_fetch_assoc($result);
           </div>
 
           <!---ABA DE DATA---->
+            
           <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
             <label><b>Data</b></label>
             <input id="datainicio" class="form-control bg-body-secondary" placeholder="dd-mm-aaaa" min="2024-04-01" type="date" value=<?php echo $datasolicitada?> readonly>
@@ -232,8 +238,11 @@ $row=mysqli_fetch_assoc($result);
           <div class="row">
             <div class="col p-4"><br>
               <div class="btn-atas">
-                <button id="btnAtualizar" class="btn btn-primary">Atualizar</button>
+              <input type="hidden" name="id" value="<?php echo $_GET['updateid']; ?>">
+              <button type="submit" class="btn btn-primary">Atualizar</button>
           </div>
+          </form>
+          
               <div class="row">
                 <footer class="col main-footer p-4" style="margin-left: 0 !important; margin-top: 1em;">
                   <strong>Copyright © 2021 <a href="http://www.hospitalriogrande.com.br/" target="_blank">Hospital Rio Grande</a></strong>. Todos os direitos reservados.
@@ -263,6 +272,29 @@ $row=mysqli_fetch_assoc($result);
                           }
                 });
                 </script>
+<?php
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+                $datasolicitada = $_POST['datainicio'];
+                $horainic = $_POST['horainicio'];
+                $horaterm = $_POST['horaterm'];
+                $tema = $_POST['tema'];
+                $objetivo = $_POST['objetivo'];
+                $local = $_POST['local'];
+
+                $sql_update = "UPDATE assunto SET data_solicitada = ?, hora_inicial = ?, hora_termino = ?, tema = ?, objetivo = ?, local = ? WHERE id = ?";
+                $stmt_update = mysqli_prepare($conn, $sql_update);
+                mysqli_stmt_bind_param($stmt_update, 'ssssssi', $datasolicitada, $horainic, $horaterm, $tema, $objetivo, $local, $id);
+
+                if (mysqli_stmt_execute($stmt_update)) {
+                    echo "Dados atualizados com sucesso!";
+                } else {
+                    echo "Erro ao atualizar os dados: " . mysqli_error($conn);
+                }
+                mysqli_stmt_close($stmt_update);
+            }
+
+?>
 
 </body>
 </html>

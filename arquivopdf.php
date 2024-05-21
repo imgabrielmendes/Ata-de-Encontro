@@ -35,6 +35,7 @@ assunto.id;
 $result= $conn->query($sql);
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 $result = $conn->query($sql);
+
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
 
@@ -51,6 +52,19 @@ if ($result->num_rows > 0) {
         $deliberadores_deliberacoes = isset($row['deliberadores_deliberacoes']) ? $row['deliberadores_deliberacoes'] : '';
         $textop = isset($row['texto_princ']) ? $row['texto_princ'] : '';
 
+        // echo($idAssunto). "<br>" ;
+        // echo($data). "<br>" ;
+        // echo($tema). "<br>";
+        // echo($matric). "<br>" ;
+        // echo($local). "<br>" ;
+        // echo($horainicio). "<br>" ;
+        // echo($horafinal). "<br>" ;
+        // echo($objetivo). "<br>" ;
+        // echo($nomeParticipantes). "<br>" ;
+        // echo( $deliberacoes). "<br>";
+        // echo( $deliberadores_deliberacoes). "<br>";
+        // echo($textop). "<br>";
+        
         $pdf = new \TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
 
@@ -108,16 +122,16 @@ if ($result->num_rows > 0) {
         </tbody>
         </table>';
 
-        $html .= '<h2> PARTICIPANTES </h2>';
-
-        if (empty($nomeParticipantes)) {
-            $html .= '<p>Participantes não informados</p>';
-        } else {
+        $html .= '<h2>PARTICIPANTES</h2>';
+        if (!empty($nomeParticipantes)) {
             $html .= '<ul>';
             foreach (explode(",", $nomeParticipantes) as $participante) {
                 $html .= '<li>' . htmlspecialchars($participante) . '</li>';
             }
             $html .= '</ul>';
+        } else {
+            $html .= '<p>Participantes não informados</p>';
+        }
         }
 
         $html .= '<h2> DELIBERAÇÕES </h2>';
@@ -193,7 +207,7 @@ if ($result->num_rows > 0) {
                             <td style="border: 1px solid black;"></td>
                         </tr>';
             }
-        }
+        } else { $html .= '<p>Texto principal não informado</p>'; }
 
         for ($linha = 0; $linha < 6; $linha++) {
             $html .= '<tr style="text-align: center;">
@@ -211,8 +225,9 @@ if ($result->num_rows > 0) {
 
         $pdf->Output('ata_de_encontro'.$idAssunto.'.pdf', 'I');
     }
+
 } else {
     echo "Nenhum resultado encontrado.";
 }
-}
+
 ?>

@@ -1,5 +1,6 @@
 <?php
 namespace formulario;
+session_start();
 
 include_once ("app/acoesform.php");
 include ("conexao.php");

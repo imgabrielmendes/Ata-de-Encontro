@@ -9,6 +9,7 @@ $puxarform= new AcoesForm;
 $pegarfa=$puxarform->pegarfacilitador();
 $pegarlocal=$puxarform->pegarlocais();
 
+
 $sql="SELECT * FROM assunto where id=$id ";
 $result = mysqli_query($conn, $sql);
 $row=mysqli_fetch_assoc($result);
