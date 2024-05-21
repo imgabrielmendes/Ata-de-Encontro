@@ -411,11 +411,6 @@ function adicionarParticipanteAoLabel(participante) {
                         <strong></strong> <?php echo $deliberacao['deliberacoes']; ?>
                     </div>
                 </li>
-                <li class="list-group">
-                    <div>
-                    <button type='button' class='btn btn-danger btn-sm ms-2' onclick='excluirDeliberacao(<?php echo $id_ata; ?>, "<?php echo htmlspecialchars($deliberacao['deliberacoes']); ?>")'>Excluir</button>
-                    </div>
-                </li>
                 <?php
             }
         } else {
