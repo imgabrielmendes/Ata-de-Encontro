@@ -72,4 +72,80 @@ function gravaratribuida() {
         icon: "success"
     });
 }
-
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("addForm").addEventListener("submit", function(event) {
+        event.preventDefault(); 
+        var select = document.getElementById("participantesadicionado");
+        var selectedOptions = select.selectedOptions;
+        for (var i = 0; i < selectedOptions.length; i++) {
+            var selectedOption = selectedOptions[i];
+            var participante = selectedOption.textContent.trim();
+            var participanteId = selectedOption.value;
+            if (!participanteJaAdicionado(participante)) {
+                adicionarParticipanteAoLabel(participante);
+                selectedOption.remove(); 
+            }
+        }
+    });
+});
+    $(document).ready(function() {
+        $('#participantesadicionado').change(function() {
+            var selected_ids = [];
+            var selected_names = [];
+            $('#participantesadicionado option:selected').each(function() {
+                selected_ids.push($(this).val());
+                selected_names.push($(this).text());
+            });
+            console.log(selected_ids);
+            console.log(selected_names);
+        });
+    });
+    function participanteJaAdicionado(participante) {
+        var label = document.getElementById("participantesLabel");
+        return label.textContent.includes(participante);
+    }
+    function adicionarParticipanteAoLabel(participante) {
+        var label = document.getElementById("participantesLabel");
+        var participanteItem = document.createElement("span");
+        participanteItem.textContent = participante;
+        participanteItem.classList.add("badge", "bg-secondary", "me-1");
+        label.appendChild(participanteItem);
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById("addForm").addEventListener("submit", function(event) {
+            event.preventDefault(); 
+            var select = document.getElementById("participantesadicionado");
+            var selectedOptions = select.selectedOptions;
+            for (var i = 0; i < selectedOptions.length; i++) {
+                var selectedOption = selectedOptions[i];
+                var participante = selectedOption.textContent.trim();
+                var participanteId = selectedOption.value;
+                if (!participanteJaAdicionado(participante)) {
+                    adicionarParticipanteAoLabel(participante);
+                    selectedOption.remove(); 
+                }
+            }
+        });
+        $('#participantesadicionado').change(function() {
+            var selected_ids = [];
+            var selected_names = [];
+            $('#participantesadicionado option:selected').each(function() {
+                selected_ids.push($(this).val());
+                selected_names.push($(this).text());
+            });
+    
+            console.log(selected_ids);
+            console.log(selected_names);
+        });
+    });
+    function participanteJaAdicionado(participante) {
+        var label = document.getElementById("participantesLabel");
+        return label.textContent.includes(participante);
+    }
+    function adicionarParticipanteAoLabel(participante) {
+        var label = document.getElementById("participantesLabel");
+        var participanteItem = document.createElement("span");
+        participanteItem.textContent = participante;
+        participanteItem.classList.add("badge", "bg-secondary", "me-1");
+        label.appendChild(participanteItem);
+    }
