@@ -121,63 +121,32 @@ if ($result->num_rows > 0) {
                 <td style="border: 1px solid black; text-align: left; padding-left: 10px;">'.'   '.$tema.'</td>
             </tr>
         </tbody>
-        </table>';
+        </table>
 
-        $html .= '<h2>PARTICIPANTES</h2>';
-        if (!empty($nomeParticipantes)) {
-            $html .= '<ul>';
-            foreach (explode(",", $nomeParticipantes) as $participante) {
-                $html .= '<li>' . htmlspecialchars($participante) . '</li>';
-            }
-            $html .= '</ul>';
-        } else {
-            $html .= '<p>Participantes não informados</p>';
-        }
-        }
+        <h2> DELIBERAÇÕES </h2>';
 
-        $html .= '<h2> DELIBERAÇÕES </h2>';
+        $html .= '<table style="border: 1px solid black; padding: 8px 0px; text-align: center">
+        <tbody>
+            <tr style="">
+                <td style="text-align: left; border: 1px solid black; height: 120px; width: 539px; font-size: 10px;"></td>
+            </tr>
+        </tbody>
+    </table>';   
 
-        $deliberadores_por_deliberacao = array();
+        $html .= '<h2>TEXTO PRINCIPAL:</h2>';
+        $html .= '<table style="border: 1px solid black; padding: 8px 0px; text-align: center">
+        <tbody>
+            <tr style="">
+                <td style="text-align: left; border: 1px solid black; height: 120px; width: 539px; font-size: 10px;"></td>
+            </tr>
+        </tbody>
+    </table>'; 
 
-        if (!empty($deliberadores_deliberacoes)) {
-            foreach (explode(",", $deliberadores_deliberacoes) as $deliberador_deliberacao) {
-                list($deliberador, $deliberacao) = explode(":", $deliberador_deliberacao);
-                if (isset($deliberadores_por_deliberacao[$deliberacao])) {
-                    $deliberadores_por_deliberacao[$deliberacao][] = $deliberador;
-                } else {
-                    $deliberadores_por_deliberacao[$deliberacao] = array($deliberador);
-                }
-            }
-        }
-
-        if (!empty($deliberadores_por_deliberacao)) {
-            foreach ($deliberadores_por_deliberacao as $deliberacao => $deliberadores) {
-                $html .= '
-                    <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
-                        <tbody>
-                            <tr style="">
-                                <td style="text-align: center; border: 1px solid black; background-color: #c0c0c0; width: 130px; font-size: 9.5px;"><ul><b>' . implode(",<br>", array_map('htmlspecialchars', $deliberadores)) . '</b></ul></td>
-                                <td style="text-align: left; border: 1px solid black; height: 30px; width: 409px; font-size: 10px;">'."  " . htmlspecialchars($deliberacao) . '</td>
-                            </tr>
-                        </tbody>
-                    </table>';
-            }
-        } else {
-            $html .= '<p>Deliberações não informadas</p>';
-        }      
-
-        $html .= '<h2> TEXTO PRINCIPAL: </h2>';
-
-        if (empty($textop)) {
-            $html .= '<p>Texto principal não informado</p>';
-        } else {
-            $html .= '<p>' . htmlspecialchars($textop) . '</p>';
-        }
-
-        $html .= '<hr style="margin-right: auto; width: 40%;" align="center">
-                  <p style="display: block; text-align: center;">Assinatura do Responsável</p>
-                  <br><br><br>';
-
+    $html .= '<br><br><br><br><br><br><hr style="margin-right: center; width: 40%;" align="center">
+    <p style="display: block; text-align: center;">Assinatura do Responsável</p>
+    ';       
+        
+    }
         $pdf->AddPage();
         $pdf->writeHTML($html, true, false, true, false, '');
 
@@ -199,18 +168,8 @@ if ($result->num_rows > 0) {
                 <td style="height: 31px; border: 1px solid black; width: 270px; vertical-align: middle;"><h4>Assinatura:</h4></td>
             </tr>';
 
-        if (!empty($nomeParticipantes)) {
-            foreach (explode(",", $nomeParticipantes) as $participante) {
-                $html .= '<tr style="text-align: left; font-size: 10px;">
-                            <td style="border: 1px solid black; height: 30px;"></td>
-                            <td style="border: 1px solid black;">'."  ".$participante.'</td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                        </tr>';
-            }
-        } else { $html .= '<p>Texto principal não informado</p>'; }
 
-        for ($linha = 0; $linha < 6; $linha++) {
+        for ($linha = 0; $linha < 10; $linha++) {
             $html .= '<tr style="text-align: center;">
                         <td style="border: 1px solid black; height: 37px;"></td>
                         <td style="border: 1px solid black;"></td>
