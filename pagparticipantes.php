@@ -101,10 +101,34 @@ $local = $_GET['local'];
     <main class="container_fluid d-flex justify-content-center align-items-center">
       
       <div class="form-group col-xl-9 col-lg-xs-sm-md-12 ">
-       
-           <div class="row"> 
-    <div class="accordion" id="accordionPanelsStayOpenExample">
 
+      <style>
+        .text-danger {
+        color: #198754;
+      }
+
+      .text-primary {
+        color: #007bff;
+      }
+      </style>
+
+      <div class="row">
+        <div class="col">
+          <div class="alert alert-light d-flex align-items-center shadow" role="alert">
+          <svg style="color: #dc3545;" xmlns="http://www.w3.org/2000/svg" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" width="25" height="25" viewBox="0 0 16 16" role="img" aria-label="Warning:">
+        <path fill="currentColor" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+      </svg>
+            <p class="mb-0">
+              <b class="text-danger">ATENÇÃO!</b> Caso deseje apenas abrir uma ata sem informar os participantes, clique em <b class="text-primary">Ir para histórico</b>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+
+
+    <div class="row"> 
+    <div class="accordion" id="accordionPanelsStayOpenExample">
       <div class="accordion-item shadow">
         <h2 class="accordion-header">
           <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background-color: #001f3f;">
@@ -114,8 +138,8 @@ $local = $_GET['local'];
           </button>
         </h2>
 
-    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
-      <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse">
+      <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);" >
           <div class="col-md-12 text-center">         
         
           </div>     
@@ -205,10 +229,10 @@ $local = $_GET['local'];
   </div>
 <!-----------------------------2° FASE-------------------------------->
 <br>
-<div class="accordion">
+<div class="accordion mt-4">
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
-    <div class="accordion-button shadow-sm text-white" style="background-color: #1c8f69;;">
+    <div class="accordion-button shadow-sm text-white" style="background-color: #1c8f69;">
     <i class="fa-solid fa-circle-info"></i>
     <h5>Participantes</h5>
 </div>
