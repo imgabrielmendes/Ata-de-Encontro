@@ -1,6 +1,5 @@
 <?php
 namespace formulario;
-session_start();
 
 include_once ("app/acoesform.php");
 include ("conexao.php");
@@ -146,7 +145,7 @@ $data = $_SESSION['data'];
           </button>
         </h2>
 
-    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse ">
       <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
           <div class="col-md-12 text-center">         
           </div>     
@@ -192,7 +191,7 @@ $data = $_SESSION['data'];
             $minutos_formatado = sprintf("%02d", $minutos);
 
             // Exibe o tempo estimado no formato "00:00"
-            echo "<div class='form-control bg-body-secondary tempo-estimado'>" . $horas_formatado . ":" . $minutos_formatado . "</div>";
+            echo "<div class='form-control bg-body-secondary tempo-estimado'>" . $horas_formatado . ":" . $minutos_formatado . ":00". "</div>";
         } else {
             echo "Horário de início e/ou término não definidos.";
         }
@@ -237,11 +236,11 @@ $data = $_SESSION['data'];
 </div>
   </div>
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
-<div class="accordion" id="accordionPanelsStayOpenExample">
+<div class="accordion mt-4" id="accordionPanelsStayOpenExample">
 
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
-    <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background-color: #1c8f69;">
+    <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo" style="background-color: #1c8f69;">
 
     <i class="fas"></i>
     <h5>Participantes Adicionados </h5>
@@ -249,7 +248,7 @@ $data = $_SESSION['data'];
     </button>
   </h2>
 
-<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+<div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse ">
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
     <div class="col-md-12 text-center">         
           
@@ -280,8 +279,8 @@ $data = $_SESSION['data'];
   </div>
 
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
-<br>
-<div class="accordion">
+
+<div class="accordion mt-4">
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
     <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">

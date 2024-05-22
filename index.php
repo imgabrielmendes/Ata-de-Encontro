@@ -117,19 +117,19 @@ $pegarlocal=$puxarform->pegarlocais();
   </div>
 
   <div class="row">
-    <div class="col-xl-2 col-lg-xl-4 col-md-4">
+    <div class="col-xl-2 col-lg-xl-4 col-md-4 mt-2">
         <label class="form-control">
             <input type="radio" class="objetivo" name="objetivo" id="reuniao" value="Reunião"> Reunião
         </label>
     </div>
     <!---ABA DE OBJETIVO - TREINAMENTO---->
-    <div class="col-xl-3 col-lg-xl-4 col-md-4">
+    <div class="col-xl-3 col-lg-xl-4 col-md-4 mt-2">
         <label class="form-control">
             <input type="radio" class="objetivo" name="objetivo" id="treinamento" value="Treinamento"> Treinamento
         </label>
     </div>
     <!---ABA DE OBJETIVO - CONSULTA---->
-    <div class="col-xl-2 col-lg-xl-4 col-md-4">
+    <div class="col-xl-2 col-lg-xl-4 col-md-4 mt-2">
         <label class="form-control">
             <input type="radio" class="objetivo" name="objetivo" id="consulta" value="Consulta"> Consulta
         </label>
@@ -137,7 +137,7 @@ $pegarlocal=$puxarform->pegarlocais();
 
 
 
-        <div class="col-xl-5 col-sm-12">
+        <div class="col-xl-5 col-sm-12 mt-2">
                 <select class="form-control" id="pegarlocal" placeholder="Informe o Local">
               <option value="" disabled selected> Informe o Local </option>
               <?php foreach ($pegarlocal as $locais) : ?>
