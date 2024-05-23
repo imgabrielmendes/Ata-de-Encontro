@@ -12,6 +12,8 @@ $pegarfa = $puxarform->pegarfacilitador();
 $pegarid = $puxarform->puxarId();
 $resultados = $puxarform->pegandoTudo();
 $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
+$puxadeliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata = "?");
+
 $ultimaata = $puxarform->pegarUltimaAta();
 
 
@@ -212,33 +214,38 @@ if ($conn->connect_error) {
                             <button class='text-center align-middle' style='color:white; border: none; background: transparent;'>&plus;</button>
                         </a>
                     </td>";
-          
-// Verificar se os campos de deliberação e participante estão preenchidos
-if (empty($deliberacao) && !empty($participante)) {
-     // Exibir o PDF sem deliberação, mas com participante
-    echo "<td class='text-center align-middle'>
-                <a class='text-light btn btn-success' href='arquivo_semdel.php?updateid=".$id."'>
-                    Exibir PDF Sem Deliberação
-                </a>
-            </td>";
+
+                    
+                    // código para exibir as colunas da tabela...
+                // Definindo $puxaparticipantes dentro do loop
+    $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id);
     
-} elseif (empty($deliberacao) && empty($participante)) {
-   // Exibir o PDF sem participante e sem deliberação
-    echo "<td class='text-center align-middle'>
-                <a class='text-light btn btn-success' href='arquivo_semdel.php?updateid=".$id."'>
-                    Exibir PDF Sem Participante
-                </a>
-            </td>";
-} else {
-    // Exibir o PDF com deliberação e participante
-    echo "<td class='text-center align-middle'>
-                <a class='text-light btn btn-success' href='arquivopdf.php?updateid=".$id."'>
-                    Exibir PDF
-                </a>
-            </td>";
-}
-
-
+    // Definindo $deliberacoes dentro do loop
+    $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id);
+                    // Lógica para exibir os botões de acordo com $deliberacoes e $puxaparticipantes
+                    if (empty($deliberacoes) && !empty($puxaparticipantes)) {
+                        // Exibir o PDF sem deliberação, mas com participante
+                        echo "<td class='text-center align-middle'>
+                                    <a class='text-light btn btn-success' href='arquivo_semdel.php?updateid=".$id."'>
+                                        Exibir PDF Sem Deliberação
+                                    </a>
+                                </td>";
+                    } elseif (empty($deliberacoes) && empty($puxaparticipantes)) {
+                        // Exibir o PDF sem participante e sem deliberação
+                        echo "<td class='text-center align-middle'>
+                                    <a class='text-light btn btn-success' href='arquivo_sempart.php?updateid=".$id."'>
+                                        Exibir PDF Sem Participante
+                                    </a>
+                                </td>";
+                    } else {
+                        // Exibir o PDF com deliberação e participante
+                        echo "<td class='text-center align-middle'>
+                                    <a class='text-light btn btn-success' href='arquivopdf.php?updateid=".$id."'>
+                                        Exibir PDF
+                                    </a>
+                                </td>";
+                    }
+                   
 
 
 

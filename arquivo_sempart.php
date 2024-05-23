@@ -13,63 +13,31 @@ assunto.local AS local,
 assunto.tema AS tema,
 assunto.objetivo AS objetivo,
 assunto.data_solicitada,
-date_format(assunto.data_solicitada, '%d/%m/%y') as data,
-fac_delib.matricula as matric,
-GROUP_CONCAT(DISTINCT fac_parti.nome_facilitador) AS nome_participantes,
-GROUP_CONCAT(DISTINCT delib.deliberacoes) AS deliberacoes,
-GROUP_CONCAT(DISTINCT CONCAT(fac_delib.nome_facilitador, ':', delib.deliberacoes)) AS deliberadores_deliberacoes,
-tp.texto_princ
+date_format(assunto.data_solicitada, '%d/%m/%y') as data
 FROM
 atareu.assunto AS assunto
-INNER JOIN atareu.participantes AS parti ON parti.id_ata = assunto.id
-INNER JOIN atareu.facilitadores AS fac_parti ON fac_parti.id = parti.participantes
-INNER JOIN atareu.deliberacoes AS delib ON delib.id_ata = assunto.id
-INNER JOIN atareu.facilitadores AS fac_delib ON fac_delib.id = delib.deliberadores
-INNER JOIN atareu.textoprinc AS tp ON tp.id_ata = assunto.id
 WHERE
-delib.id_ata = $id
-GROUP BY
-assunto.id;
-";
+assunto.id = $id";
 
 $result= $conn->query($sql);
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-$result = $conn->query($sql);
+    $result = $conn->query($sql);
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
 
-        $idAssunto = !empty($row['IDASSUNTO']) ? $row['IDASSUNTO'] : '';
-        $data = !empty($row['data']) ? $row['data'] : '';
-        $tema = !empty($row['tema']) ? $row['tema'] : '';
-        $matric = !empty($row['matric']) ? $row['matric'] : '';
-        $local = !empty($row['local']) ? $row['local'] : '';
-        $horainicio = !empty($row['horainicio']) ? substr($row['horainicio'], 0, -3) : '';
-        $horafinal = !empty($row['horatermi']) ? substr($row['horatermi'], 0, -3) : '';
-        $objetivo = !empty($row['objetivo']) ? $row['objetivo'] : '';
-        $nomeParticipantes = !empty($row['nome_participantes']) ? $row['nome_participantes'] : '';
-        $deliberacoes = !empty($row['deliberacoes']) ? $row['deliberacoes'] : '';
-        $deliberadores_deliberacoes = !empty($row['deliberadores_deliberacoes']) ? $row['deliberadores_deliberacoes'] : '';
-        $textop = !empty($row['texto_princ']) ? $row['texto_princ'] : '';
+            $idAssunto = !empty($row['IDASSUNTO']) ? $row['IDASSUNTO'] : '';
+            $data = !empty($row['data']) ? $row['data'] : '';
+            $tema = !empty($row['tema']) ? $row['tema'] : '';
+            $local = !empty($row['local']) ? $row['local'] : '';
+            $horainicio = !empty($row['horainicio']) ? substr($row['horainicio'], 0, -3) : '';
+            $horafinal = !empty($row['horatermi']) ? substr($row['horatermi'], 0, -3) : '';
+            $objetivo = !empty($row['objetivo']) ? $row['objetivo'] : '';
 
+            $pdf = new \TCPDF();
+            $pdf->SetCreator(PDF_CREATOR);
 
-        // echo($idAssunto). "<br>" ;
-        // echo($data). "<br>" ;
-        // echo($tema). "<br>";
-        // echo($matric). "<br>" ;
-        // echo($local). "<br>" ;
-        // echo($horainicio). "<br>" ;
-        // echo($horafinal). "<br>" ;
-        // echo($objetivo). "<br>" ;
-        // echo($nomeParticipantes). "<br>" ;
-        // echo( $deliberacoes). "<br>";
-        // echo( $deliberadores_deliberacoes). "<br>";
-        // echo($textop). "<br>";
-        
-        $pdf = new \TCPDF();
-        $pdf->SetCreator(PDF_CREATOR);
-
-        $html = '
+            $html = '
             <table style="border: 1px solid black; padding: 8px 0px; order-spacing:3px">
                 <tbody>
                     <tr style="text-align: center;">
@@ -123,34 +91,38 @@ if ($result->num_rows > 0) {
         </tbody>
         </table>
 
-        <h2> DELIBERAÇÕES </h2>';
+        <h2> DELIBERAÇÕES </h2>
+        <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
+            <tbody>
+                <tr style="">
+                    <td style="text-align: left; border: 1px solid black; height: 120px; width: 539px; font-size: 10px;"></td>
+                </tr>
+            </tbody>
+        </table>
 
-        $html .= '<table style="border: 1px solid black; padding: 8px 0px; text-align: center">
-        <tbody>
-            <tr style="">
-                <td style="text-align: left; border: 1px solid black; height: 120px; width: 539px; font-size: 10px;"></td>
-            </tr>
-        </tbody>
-    </table>';   
+        <h2>TEXTO PRINCIPAL:</h2>
+        <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
+            <tbody>
+                <tr style="">
+                    <td style="text-align: left; border: 1px solid black; height: 120px; width: 539px; font-size: 10px;"></td>
+                </tr>
+            </tbody>
+        </table>'; 
 
-        $html .= '<h2>TEXTO PRINCIPAL:</h2>';
-        $html .= '<table style="border: 1px solid black; padding: 8px 0px; text-align: center">
-        <tbody>
-            <tr style="">
-                <td style="text-align: left; border: 1px solid black; height: 120px; width: 539px; font-size: 10px;"></td>
-            </tr>
-        </tbody>
-    </table>'; 
-
-    $html .= '<br><br><br><br><br><br><hr style="margin-right: center; width: 40%;" align="center">
-    <p style="display: block; text-align: center;">Assinatura do Responsável</p>
-    ';       
-        
-    }
         $pdf->AddPage();
         $pdf->writeHTML($html, true, false, true, false, '');
 
+        // Adicionar linha para assinatura do participante
+        $html = '<br><br><br><hr style="margin-right: center; width: 40%;" align="center">
+        <p style="display: block; text-align: center;">Assinatura do Participante</p>';
+
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        // Adicionar nova página para a lista de participantes
+        $pdf->AddPage();
         $html = '
+       
+
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
         <tbody>
             <tr style="text-align: center">
@@ -168,7 +140,6 @@ if ($result->num_rows > 0) {
                 <td style="height: 31px; border: 1px solid black; width: 270px; vertical-align: middle;"><h4>Assinatura:</h4></td>
             </tr>';
 
-
         for ($linha = 0; $linha < 10; $linha++) {
             $html .= '<tr style="text-align: center;">
                         <td style="border: 1px solid black; height: 37px;"></td>
@@ -180,7 +151,6 @@ if ($result->num_rows > 0) {
 
         $html .= '</tbody></table>';
 
-        $pdf->AddPage();
         $pdf->writeHTML($html, true, false, true, false, '');
 
         $pdf->Output('ata_de_encontro'.$idAssunto.'.pdf', 'I');
@@ -188,6 +158,5 @@ if ($result->num_rows > 0) {
 
 } else {
     echo "Nenhum resultado encontrado.";
-}
-
+}}
 ?>
