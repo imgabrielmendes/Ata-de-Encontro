@@ -70,7 +70,7 @@ $data = $_SESSION['data'];
   <!---------------------------------------------------------------->
   <script src="view/js/popper.min.js" crossorigin="anonymous"></script>
 
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" /> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" />
 
   <!-- <link rel="stylesheet" href="view/fontawesome/css/fontawesome.css"> -->
 
@@ -370,7 +370,7 @@ $data = $_SESSION['data'];
         <br>
         <!-- <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
         <div class="d-flex justify-content-center">
-            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Atualizar a ata</button>
+            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Registrar a Ata</button>
         </div>
 
     </form>

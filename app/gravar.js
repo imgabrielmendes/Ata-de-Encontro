@@ -58,7 +58,7 @@ function gravando() {
     var data = document.getElementById("datainicio").value;
 
     
-    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() === "" || conteudo.trim() === "" ||
+    if (data.trim() === "" || horainicio.trim() ==="" || objetivoSelecionado.trim() === "" || conteudo.trim() === "" ||
     facilitadoresSelecionados.length === 0 || facilitadoresSelecionadosLabel.length === 0) { 
 
         Swal.fire({
@@ -74,13 +74,13 @@ function gravando() {
         // console.log(facilitadores);
     } 
 
-    else if (horainicio > horaterm){
+    else if (horaterm !== ""  && horainicio > horaterm) {
         Swal.fire({
             title: "Horário incorreto",
             icon: "error"
         });
     }
-    
+
     else {
 
         Swal.fire({

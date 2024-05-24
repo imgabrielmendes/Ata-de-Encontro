@@ -23,7 +23,7 @@ $pegarlocal=$puxarform->pegarlocais();
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ata de encontro - HRG</title>
   <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
-
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <link rel="stylesheet" href="view/css/styles.css">
@@ -187,46 +187,71 @@ $pegarlocal=$puxarform->pegarlocais();
               </div>
               
               <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h1 class="col modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="col modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formularioRegistro">
+            <div class="mb-3">
+              <label class="col-form-label">Nome completo:</label>
+              <input type="text" class="form-control" id="caixanome">
+            </div>
+            <div class="mb-3">
+              <label class="col-form-label">Informe o Email</label>
+              <input type="email" class="form-control" id="caixadeemail">
+            </div>
+            <div class="row mb-3">
+              <label class="col-4 form-label">Matricula: </label>
+              <label id="labelcargo" class="col-8 form-label">Cargo: </label>
+              <div class="col-4">
+                <input type="text" maxlength="4" pattern="[0-9]{4}" class="form-control" id="caixamatricula">
+              </div>
+              <div class="col-8">
+                <input type="text" class="form-control" id="caixacargo">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+          <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.getElementById('registraremail').addEventListener('click', function() {
+      var caixanome = document.getElementById('caixanome').value.trim();
+      var caixadeemail = document.getElementById('caixadeemail').value.trim();
+      var caixamatricula = document.getElementById('caixamatricula').value.trim();
+      var caixacargo = document.getElementById('caixacargo').value.trim();
 
-                           
-                                <div class="mb-3">
+      if (caixanome === "" || caixadeemail === "" || caixamatricula === "" || caixacargo === "") {
+        Swal.fire({
+          title: "Erro no registro",
+          text: "Preencha todas as caixas obrigatórias",
+          icon: "error"
+        });
+      } else {
+        Swal.fire({
+          title: "Registro bem-sucedido",
+          text: "Usuário registrado com sucesso",
+          icon: "success"
 
-                                  <label class="col-form-label">Nome completo:</label>
-                                  <input type="text" class="form-control" id="caixanome">
-                                </div>
+        }).then(() => {
+          var modalElement = document.getElementById('modaldeemail');
+          var modalInstance = bootstrap.Modal.getInstance(modalElement);
+          modalInstance.hide();
+        });
 
-                                <div class="mb-3">
-                                  <label class="col-form-label">Informe o Email</label>
-                                  <input type="email" class="form-control" id="caixadeemail">
-                                </div>
-
-                                <div class="row">
-                                <label class="col-4 form-label">Matricula: </label>
-                                <label id="labelcargo" class="col-8 form-label">Cargo: </label>
-                                <div class="col-4">
-                                <input type="text" maxlength="4" pattern="[0-9]{4}" class="form-control" id="caixamatricula">
-                                </div>  
-
-                                <div class="col-8">
-                                <input type="text" class="col-5 form-control" id="caixacargo">
-                              </div></div>
-                              </form>
-
-                            </div>
-
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                              <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
-
-                            </div>
+      }
+    });
+  </script>
                           </div>
+
                         </div>
                       </div>
 
@@ -237,6 +262,5 @@ $pegarlocal=$puxarform->pegarlocais();
       <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
       <script src="view/js/bootstrap.js"></script>
       <script src="app/gravar.js"></script>
-
 </body>
 </html>
