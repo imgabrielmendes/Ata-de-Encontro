@@ -208,54 +208,80 @@ document.getElementById('addItemButton').addEventListener('click', function() {
 
 });
 
-    var botaohist = document.getElementById('abrirhist');
-        botaohist.addEventListener('click', irparaHist);
 
-    function irparaHist() {
-        console.log("Ok, a função de ir para histórico e registrar texto foi puxada");
+
+
+var botaohist = document.getElementById('abrirhist');
+botaohist.addEventListener('click', irparaHist);
+
+function irparaHist() {
+    console.log("Ok, a função de ir para histórico e registrar texto foi puxada");
 
     var textoprincipal = document.getElementById('textoprinc').value;
-        console.log(textoprincipal);
+    console.log(textoprincipal);
 
+    // Verifica se pelo menos uma das informações está preenchida
+    if (textoprincipal === "" && deliberadoresSelecionadosLabel.length === 0) {
+        Swal.fire({
+            title: "Preencha pelo menos uma informação",
+            text: "Adicione pelo menos 1 texto principal ou 1 deliberador para a deliberação",
+            icon: "error"
+        });
+    } else {
+        // Se pelo menos uma das informações estiver preenchida, solicita confirmação do usuário
+        Swal.fire({
+            title: "Confirmação",
+            text: "Deseja continuar modificando ou ir para o histórico?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ir para o histórico",
+            cancelButtonText: "Continuar modificando",
+            // Adiciona o terceiro botão ao footer
+            footer: "<button id='updateAndContinueBtn' class='btn btn-info'>Atualizar e continuar</button>"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Se o usuário escolher ir para o histórico, exibe mensagem de sucesso
+                Swal.fire({
+                    title: "Perfeito!",
+                    text: "Seus Deliberadores foram registrados",
+                    icon: "success",
+                });
 
-        if (textoprincipal === ""){
-            Swal.fire({
-                title: "Você não informou um texto principal",
-                icon: "error"
-            });
-        }
+                // Envia os dados para o servidor
+                $.ajax({
+                    url: 'registrartextop.php',
+                    method: 'POST',
+                    data: {
+                        textoprincipal1: textoprincipal,
+                        // Enviar deliberadores selecionados junto com os dados
+                        deliberadoresSelecionados: JSON.stringify(deliberadoresSelecionadosLabel)
+                    },
+                    success: function() {
+                        console.log ("AJAX DO TEXTO FOI PUXADO");
+                        
+                        // Redireciona para a página de histórico após o envio bem-sucedido
+                        setTimeout(function() {
+                            var url = 'paghistorico.php';
+                            window.location.href = url;
+                        }, 1500);
+                    },
+                    error: function(error) {
+                        console.error('Erro na solicitação AJAX:', error);
+                    }
+                });
+            } else if (result.isDismissed) {
+                // Se o usuário escolher continuar modificando, não faz nada
+            }
+        });
 
-        else if( deliberadoresSelecionadosLabel.length === 0 ){
-
-            Swal.fire({
-                title: "Preencha o espaço de deliberações",
-                icon: "error"
-            });
-        }
-
-        else {
-
-            Swal.fire({
-                title: "Perfeito!",
-                text: "Seus Deliberadores foram registrados",
-                icon: "success",
-            });
-
-            $.ajax({
-                url: 'registrartextop.php',
-                method: 'POST',
-                data: {
-                    textoprincipal1: textoprincipal,  
-                },
-                success: function() {
-
-                    console.log ("AJAX DO TEXTO FOI PUXADO");
-                    
-                    setTimeout(function() {
-                        var url = 'paghistorico.php';
-                        window.location.href = url;
-                    }, 1500);
-                }            
-            });
-        }
+        // Adiciona um event listener para o botão "Atualizar e continuar"
+        document.getElementById('updateAndContinueBtn').addEventListener('click', function() {
+            // Coloque aqui a lógica para atualizar e continuar na página
+            console.log("Atualizando e continuando na página...");
+        });
     }
+}
+
+

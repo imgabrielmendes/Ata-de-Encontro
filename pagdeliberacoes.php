@@ -4,59 +4,31 @@ namespace formulario;
 include_once ("app/acoesform.php");
 include ("conexao.php");
 
-$puxarform= new AcoesForm;
-$pegarde=$puxarform->pegarfacilitador();
+$puxarform = new AcoesForm;
+$pegarde = $puxarform->pegarfacilitador();
 
-$testando=$puxarform->puxandoUltimosParticipantes($id_ata = "?");
 $ultimosfacilitadores = $puxarform->puxandoUltimosFacilitadores();
+
 
 $facilitadoresString = '';
 foreach ($ultimosfacilitadores as $facilitador) {
     $facilitadoresString .= $facilitador['nome_facilitador'] . ', ';
 }
 
-// Remova a vírgula extra no final da string
 $facilitadoresString = rtrim($facilitadoresString, ', ');
 
 $participantesAdicionados = $_GET['participantesAdicionados'];
 $participantesArray = explode(",", $participantesAdicionados);
 foreach ($participantesArray as $participante) {
-    // echo $participante . "<br>";
 }
 
 $ultimaata = $puxarform->pegarUltimaAta();
 $data = $_SESSION['data'];
-  $dateTime = new \DateTime($data);
-  $data_formatada = $dateTime->format('d/m/Y');
-  $_SESSION['data'] = $data_formatada;
-// $sql3 = "SELECT 
-//               del.id_ata,
-//               fac.nome_facilitador as deliberador,
-//               del.deliberacoes as deliberacoes
-//          FROM atareu.deliberacoes as del
-//          INNER JOIN atareu.facilitadores as fac
-//          ON fac.id = del.deliberadores
-//          WHERE del.id_ata = ?";
-
-// // Preparar a declaração
-// $stmt = mysqli_prepare($conn, $sql3);
-// mysqli_stmt_bind_param($stmt, "i", $id_ata);
-// mysqli_stmt_execute($stmt);
-// $result3 = mysqli_stmt_get_result($stmt);
-// $deliberacoes_array = array();
-// $deliberador_array = array();
-
-// if ($result3 && mysqli_num_rows($result3) > 0) {
-//     while ($row3 = mysqli_fetch_assoc($result3)) {
-//         $deliberacoes_array[] = $row3['deliberacoes'];
-//         $deliberador_array[] = $row3['deliberador'];
-//     }
-// }
-// var_dump($deliberacoes_array);
-
-
-
+$dateTime = new \DateTime($data);
+$data_formatada = $dateTime->format('d/m/Y');
+$_SESSION['data'] = $data_formatada;
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -254,29 +226,106 @@ $data = $_SESSION['data'];
           
     </div>     
 
-    <!---- PRIMEIRA LINHA DO REGISTRO ---->
+
+
+
+
+
+
     <div class="row">
     <div class="col">
         <div>
-                <div style = "margin: 6px" class='form-control bg-body-secondary border rounded'>
-
+            <div style="margin: 6px" class='form-control bg-body-secondary border rounded'>
+                <ul>
                     <?php 
                     foreach ($participantesArray as $participante) {
-                    $participante = trim($participante);
-                    echo "<li><b>{$participante}</b></li>";
-                } ?>
-                </div>
-            <?php
-            
-            ?>
+                        $participante = trim($participante);
+                        // Adicione a chamada para a função excluirParticipante() no evento onclick
+                        echo "<li><b>{$participante}</b> <button class='btn btn-danger btn-sm excluir-participante' onclick='excluirParticipante(\"{$participante}\")'>Excluir</button></li>";
+                    } 
+                    ?>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+    function excluirParticipante(participante) {
+        if (confirm("Tem certeza que deseja excluir " + participante + "?")) {
+            // Enviar solicitação para excluir o participante
+            $.ajax({
+                url: 'enviarprobanco.php',
+                type: 'POST',
+                data: {
+                    participante: participante
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.message);
+                        location.reload();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function() {
+                    alert('Erro ao tentar excluir o participante.');
+                }
+            });
+        }
+    }
+</script>
+
+
+
+
+
+
 </div>
 </div>
 </div>
 </div>
   </div>
+
+
+
+  <!-- texto principal -->
+
+
+
+
+  <div class="accordion mt-4">
+<div class="accordion-item shadow">
+  <h2 class="accordion-header">
+    <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
+      <h5>Descrição do Encontro</h5>
+</div>
+  </h2>
+
+<!-----------------------------4° FASE-------------------------------->
+
+<div class="accordion-collapse collapse show">
+<div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+    <div class="col-md-12 text-center">               
+    </div>
+    <div class="row">
+    <div class ="col">
+        <label style="height: 35px;"><b>Informe o texto principal:</b></label>
+        <textarea id="textoprinc" style="height: 110px;" class="form-control"></textarea>
+
+              </div>
+    </div>   
+        
+    <div class="d-flex justify-content-center">
+            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Registrar Texto</button>
+        </div>
+
+            </div>          
+</div>
+
+  </div>
+    </div>
 
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 
@@ -295,11 +344,7 @@ $data = $_SESSION['data'];
     <div class="col-md-12 text-center">               
     </div>
     <div class="row">
-    <div class ="col">
-        <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-        <textarea id="textoprinc" style="height: 110px;" class="form-control"></textarea>
-
-              </div>
+   
     </div>   
     <span class="col d-flex align-items-end flex-column" id="inputContainer"></span>
         <form id="addForm">
@@ -368,9 +413,28 @@ $data = $_SESSION['data'];
     </div>
 
         <br>
-        <!-- <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
+        <!-- <button id="" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
         <div class="d-flex justify-content-center">
-            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Registrar a Ata</button>
+           <button id="finalizarAtaBtn" type="button" class="btn btn-primary" data-bs-toggle="modal">Finalizar Ata</button>
+<script>  
+document.getElementById("finalizarAtaBtn").addEventListener("click", function() {
+    // Exibe a mensagem de sucesso usando SweetAlert2
+    Swal.fire({
+        title: "Parabéns!",
+        text: "Você finalizou sua ata com sucesso!",
+        icon: "success",
+        confirmButtonText: "OK"
+    }).then((result) => {
+        // Redireciona para outra página após o usuário clicar em "OK"
+        if (result.isConfirmed) {
+            window.location.href = "paghistorico.php";
+        }
+    });
+
+
+});</script>
+          
+
         </div>
 
     </form>

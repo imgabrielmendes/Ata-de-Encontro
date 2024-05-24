@@ -54,5 +54,39 @@ if ($facilitadoresSelecionados !== null && $data !== "" && $horaterm !== "" && $
 } else {
     echo "(X) Algum dos campos está vazio.";
 }
+if (isset($_POST['id_ata']) && isset($_POST['participante'])) {
+    // Obtém o ID da última ATA
+    $id_ultima_ata = $puxarform->puxarId();
+    
+    if ($id_ultima_ata) {
+        $participante = $_POST['participante'];
+        $sql = "SELECT id FROM facilitadores WHERE nome_facilitador = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $participante);
+        $stmt->execute();
+        $stmt->bind_result($participante_id);
+        $stmt->fetch();
+        $stmt->close();
+        
+        if ($participante_id) {
+            $sql = "DELETE FROM participantes WHERE id_ata = ? AND participante_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ii", $id_ultima_ata, $participante_id);
+
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'message' => 'Participante excluído com sucesso.']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Erro ao excluir participante: ' . $conn->error]);
+            }
+            $stmt->close();
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Participante não encontrado.']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'ID da última ATA não encontrado.']);
+    }
+} else {
+    echo json_encode(['success' => false, 'message' => 'ID da ATA ou participante não fornecido.']);
+}
 
 ?>
