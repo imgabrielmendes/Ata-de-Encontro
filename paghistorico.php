@@ -222,6 +222,7 @@ if ($conn->connect_error) {
     
     // Definindo $deliberacoes dentro do loop
     $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id);
+    
                     // Lógica para exibir os botões de acordo com $deliberacoes e $puxaparticipantes
                     if (empty($deliberacoes) && !empty($puxaparticipantes)) {
                         // Exibir o PDF sem deliberação, mas com participante

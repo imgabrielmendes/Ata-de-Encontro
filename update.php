@@ -89,7 +89,7 @@ mysqli_close($conn);
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
-    <script src="update.js"></script>
+ 
     <style>
         body {
             background-color: rgba(240, 240, 240, 0.41);
@@ -121,7 +121,7 @@ mysqli_close($conn);
       </div>
     </div>
 </header>
-<form method="POST" action="">
+<form method="POST" id="seu-formulario-id" action="">
     <main class="container_fluid d-flex justify-content-center align-items-center">
       <div class="form-group col-8">
         <div class="row"> 
@@ -145,7 +145,7 @@ mysqli_close($conn);
             <label for="form-control"> <b> Tempo Estimado (horas):</b> </label>
             <input value="1" class="form-control bg-body-secondary" type="number" id="tempoestim" name="appt" min="0" max="5" readonly>
           </div>
-          <div class="col-sm-6 col-lg-6 col-md-6 col-xl-2 mt-2" id="objetivo">
+          <div class="col-sm-6 col-lg-6 col-md-6 col-xl-2 mt-2" >
             <label for="objetivo pb-2"> <b>Objetivo:</b> </label>
             <select class="form-control" name="objetivo" id="objetivo">
                 <option value="Reunião" <?php if ($objetivo == 'Reunião') echo 'selected'; ?>>Reunião</option>
@@ -217,11 +217,10 @@ mysqli_close($conn);
     <div class="row">
         <div class="col-3 mt-3">
             <div class="btn-atas">
-                <input type="hidden" name="id" value="<?php echo $_GET['updateid']; ?>">
-                <button type="submit" class="btn btn-danger">Excluir</button>
+
                 
-                <input type="hidden" name="id" value="<?php echo $_GET['updateid']; ?>">
-              <button type="submit" class="btn btn-primary">Atualizar</button>
+                <input type="hidden"  name="id" value="<?php echo $_GET['updateid']; ?>">
+              <button type="submit"  class="btn btn-primary">Atualizar</button>
             </div>
         </div>
     </div>
@@ -256,45 +255,54 @@ mysqli_close($conn);
             }
       });
 
+      var form = document.getElementById("seu-formulario-id");
+form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Evita que o formulário seja enviado normalmente
+
+    var objetivo = document.getElementById('objetivo').value;
+    var id = <?php echo $_GET['updateid']; ?>;
+    var local = document.getElementById('local').value;
+ 
+
+    if (objetivo === "" && local === "" && facilitadores === "") { 
+        window.alert("Preencha as informações");
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: 'acoesdeupdate.php',
+            data: {
+                objetivo: objetivo,
+                id: id,
+                local: local,
+            
+            },
+            success: function(response) {
+                alert(response);
+                console.log("DEU CERTO");
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                console.log("DEU RUIM");
+            }
+        });
+    }
+});
     </script>
 <?php
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_action']) && $_POST['form_action'] === 'update') {
 
-  include "conexao.php";
-
-    $datasolicitada = $_POST['datainicio'];
-    $horainic = $_POST['horainicio'] . ":00";
-    $horaterm = $_POST['horaterm'] .  ":00";
-    $tema = $_POST['tema'];
-    $objetivo = $_POST['objetivo'];
-    $local = $_POST['local'];
-
-      $sql_update = "UPDATE assunto SET data_solicitada = ?, hora_inicial = ?, hora_termino = ?, tema = ?, objetivo = ?, local = ? WHERE id = ?";
-      $stmt_update = mysqli_prepare($conn, $sql_update);
-      mysqli_stmt_bind_param($stmt_update, 'ssssssi', "aaaa", "aaaa", "aaaa", "aaaa", "aaaa", "aaaa", $id);
-
-        if (mysqli_stmt_execute($stmt_update)) {
-            echo "Dados atualizados com sucesso!";
-        } else {
-            echo "Erro ao atualizar os dados: " . mysqli_error($conn);
-        }
-        mysqli_stmt_close($stmt_update);
-        mysqli_close($conn); 
-} else { var_dump("deu errado");}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_action']) && $_POST['form_action'] === 'delete') {
-  $delete_id = $_POST['delete_id'];
+// if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_action']) && $_POST['form_action'] === 'delete') {
+//   $delete_id = $_POST['delete_id'];
   
-  $sql_delete = "DELETE FROM sua_tabela WHERE id = $delete_id";
-  $result_delete = mysqli_query($conn, $sql_delete);
+//   $sql_delete = "DELETE FROM sua_tabela WHERE id = $delete_id";
+//   $result_delete = mysqli_query($conn, $sql_delete);
 
-  if ($result_delete) {
-      echo "Exclusão realizada com sucesso!";
-  } else {
-      echo "Erro ao excluir: " . mysqli_error($conn);
-  }
-}
+//   if ($result_delete) {
+//       echo "Exclusão realizada com sucesso!";
+//   } else {
+//       echo "Erro ao excluir: " . mysqli_error($conn);
+//   }
+// }
 
 ?>
 </body>
