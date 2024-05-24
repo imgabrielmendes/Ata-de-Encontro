@@ -121,7 +121,7 @@ mysqli_close($conn);
       </div>
     </div>
 </header>
-<form method="POST" id="seu-formulario-id" action="">
+<form method="POST" id="" action="">
     <main class="container_fluid d-flex justify-content-center align-items-center">
       <div class="form-group col-8">
         <div class="row"> 
@@ -214,17 +214,19 @@ mysqli_close($conn);
     </div>
     <?php endforeach; ?>
     
+</form>
+
+<form id="seu-formulario-id">
+    <input type="hidden" name="id" value="<?php echo $_GET['updateid']; ?>">
     <div class="row">
         <div class="col-3 mt-3">
             <div class="btn-atas">
-
-                
-                <input type="hidden"  name="id" value="<?php echo $_GET['updateid']; ?>">
-              <button type="submit"  class="btn btn-primary">Atualizar</button>
+                <button type="submit" class="btn btn-primary">Atualizar</button>
             </div>
         </div>
     </div>
 </form>
+
           <div class="row">
             <footer class="col main-footer p-4" style="margin-left: 0 !important; margin-top: 1em;">
               <strong>Copyright © 2021 <a href="http://www.hospitalriogrande.com.br/" target="_blank">Hospital Rio Grande</a></strong>. Todos os direitos reservados.
@@ -254,56 +256,38 @@ mysqli_close($conn);
                 // console.log(facilitadoresSelecionadosLabel);
             }
       });
+      document.addEventListener('DOMContentLoaded', function () {
+    var form = document.getElementById("seu-formulario-id");
 
-      var form = document.getElementById("seu-formulario-id");
-form.addEventListener('submit', function(event) {
-    event.preventDefault(); // Evita que o formulário seja enviado normalmente
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        var objetivo = document.getElementById('objetivo').value;
+        var local = document.getElementById('local').value;
+        var id = <?php echo json_encode($_GET['updateid']); ?>;
 
-    var objetivo = document.getElementById('objetivo').value;
-    var id = <?php echo $_GET['updateid']; ?>;
-    var local = document.getElementById('local').value;
- 
-
-    if (objetivo === "" && local === "" && facilitadores === "") { 
-        window.alert("Preencha as informações");
-    } else {
-        $.ajax({
-            type: 'POST',
-            url: 'acoesdeupdate.php',
-            data: {
-                objetivo: objetivo,
-                id: id,
-                local: local,
-            
-            },
-            success: function(response) {
-                alert(response);
-                console.log("DEU CERTO");
-            },
-            error: function(xhr, status, error) {
-                console.error(xhr.responseText);
-                console.log("DEU RUIM");
-            }
-        });
-    }
+        if (objetivo === "" || local === "") {
+            window.alert("Preencha as informações");
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: 'acoesdeupdate.php',
+                data: {
+                    objetivo: objetivo,
+                    id: id,
+                    local: local,
+                },
+                success: function(response) {
+                    alert(response);
+                    console.log("DEU CERTO");
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    console.log("DEU RUIM");
+                }
+            });
+        }
+    });
 });
-    </script>
-<?php
-
-
-// if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['form_action']) && $_POST['form_action'] === 'delete') {
-//   $delete_id = $_POST['delete_id'];
-  
-//   $sql_delete = "DELETE FROM sua_tabela WHERE id = $delete_id";
-//   $result_delete = mysqli_query($conn, $sql_delete);
-
-//   if ($result_delete) {
-//       echo "Exclusão realizada com sucesso!";
-//   } else {
-//       echo "Erro ao excluir: " . mysqli_error($conn);
-//   }
-// }
-
-?>
+</script>
 </body>
 </html>
