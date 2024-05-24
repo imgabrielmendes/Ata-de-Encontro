@@ -42,6 +42,8 @@ if ($conn->connect_error) {
     <title>Ata de encontro - HRG</title>
     <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
     <!---------------------------------------------------------------->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
 
@@ -83,7 +85,7 @@ if ($conn->connect_error) {
       <div class="container-fluid">
         <div class="row py-1">
           <div class="col-sm-6">
-            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Histórico</h2>
+            <h2 class="m-3 text-light shadow"><i class="fas "></i> Histórico</h2>
           </div>
         </div>
       </div>
@@ -101,7 +103,7 @@ if ($conn->connect_error) {
                                         <h2 class="accordion-header">
                                             <button class="accordion-button shadow-sm text-white text-center" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background-color: #1c8f69 ">
                                                 <i class="fa fa-info-circle" aria-hidden="true"></i>
-                                                <i class="fa-solid fa-circle-info"></i>
+                                                
                                                 <h5>Filtro de Atas</h5>
                                             </button>
                                         </h2>
@@ -155,9 +157,8 @@ if ($conn->connect_error) {
         <tr>
             <th class="text-center">Data</th>
             <th class="text-center">Objetivo</th>
-            <th class="text-center">Facilitador</th>
-            <th class="text-center">Tema</th>
-            <th class="text-center">Local</th>
+            <th class="text-start">Tema</th>
+            <th class="text-start">Local</th>
             <th class="text-center">Status</th>
             <th class="text-center">Ação</th>
             <th class="text-center">Imprimir</th>
@@ -173,7 +174,7 @@ if ($conn->connect_error) {
         assunto.local, 
         assunto.status, 
         
-        GROUP_CONCAT(DISTINCT facilitadores.nome_facilitador SEPARATOR '<br>') AS facilitadores,
+        GROUP_CONCAT(DISTINCT facilitadores.nome_facilitador SEPARATOR ',') AS facilitadores,
         GROUP_CONCAT(DISTINCT CONCAT(facilitadores.nome_facilitador, ': ', textoprinc.texto_princ) ORDER BY facilitadores.nome_facilitador SEPARATOR '<li>') AS deliberadores_deliberacoes
         
     FROM 
@@ -205,9 +206,9 @@ if ($conn->connect_error) {
                 echo "<tr>";
                 echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_formatada"] . "</td>";
                 echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
-                echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["facilitadores"] . "</td>";
-                echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
-                echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
+                echo "<td class='align-middle ' style='display: none;' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["facilitadores"] . "</td>";
+                echo "<td class='text-start'   onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
+                echo "<td class='text-start'' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
                 echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
                 echo "<td class='text-center align-middle'>
                         <a href='pagatribuida.php?updateid=".$id."' class='btn btn-warning' style='color: white;'>
@@ -228,24 +229,25 @@ if ($conn->connect_error) {
                         // Exibir o PDF sem deliberação, mas com participante
                         echo "<td class='text-center align-middle'>
                                     <a class='text-light btn btn-success' href='arquivo_semdel.php?updateid=".$id."'>
-                                        Exibir PDF Sem Deliberação
+                                        <i class='fas fa-file-pdf'></i>
                                     </a>
                                 </td>";
                     } elseif (empty($deliberacoes) && empty($puxaparticipantes)) {
                         // Exibir o PDF sem participante e sem deliberação
                         echo "<td class='text-center align-middle'>
                                     <a class='text-light btn btn-success' href='arquivo_sempart.php?updateid=".$id."'>
-                                        Exibir PDF Sem Participante
+                                        <i class='fas fa-file-pdf'></i>
                                     </a>
                                 </td>";
                     } else {
                         // Exibir o PDF com deliberação e participante
                         echo "<td class='text-center align-middle'>
                                     <a class='text-light btn btn-success' href='arquivopdf.php?updateid=".$id."'>
-                                        Exibir PDF
+                                        <i class='fas fa-file-pdf'></i>
                                     </a>
                                 </td>";
                     }
+                    
                    
 
 

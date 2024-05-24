@@ -278,6 +278,45 @@ $data = $_SESSION['data'];
 </div>
   </div>
 
+
+
+  <!-- texto principal -->
+
+
+
+
+  <div class="accordion mt-4">
+<div class="accordion-item shadow">
+  <h2 class="accordion-header">
+    <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
+      <h5>Descrição do Encontro</h5>
+</div>
+  </h2>
+
+<!-----------------------------4° FASE-------------------------------->
+
+<div class="accordion-collapse collapse show">
+<div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+    <div class="col-md-12 text-center">               
+    </div>
+    <div class="row">
+    <div class ="col">
+        <label style="height: 35px;"><b>Informe o texto principal:</b></label>
+        <textarea id="textoprinc" style="height: 110px;" class="form-control"></textarea>
+
+              </div>
+    </div>   
+        
+    <div class="d-flex justify-content-center">
+            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Registrar Texto</button>
+        </div>
+
+            </div>          
+</div>
+
+  </div>
+    </div>
+
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 
 <div class="accordion mt-4">
@@ -295,11 +334,7 @@ $data = $_SESSION['data'];
     <div class="col-md-12 text-center">               
     </div>
     <div class="row">
-    <div class ="col">
-        <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-        <textarea id="textoprinc" style="height: 110px;" class="form-control"></textarea>
-
-              </div>
+   
     </div>   
     <span class="col d-flex align-items-end flex-column" id="inputContainer"></span>
         <form id="addForm">
@@ -368,9 +403,28 @@ $data = $_SESSION['data'];
     </div>
 
         <br>
-        <!-- <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
+        <!-- <button id="" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
         <div class="d-flex justify-content-center">
-            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Atualizar a ata</button>
+           <button id="finalizarAtaBtn" type="button" class="btn btn-primary" data-bs-toggle="modal">Finalizar Ata</button>
+<script>  
+document.getElementById("finalizarAtaBtn").addEventListener("click", function() {
+    // Exibe a mensagem de sucesso usando SweetAlert2
+    Swal.fire({
+        title: "Parabéns!",
+        text: "Você finalizou sua ata com sucesso!",
+        icon: "success",
+        confirmButtonText: "OK"
+    }).then((result) => {
+        // Redireciona para outra página após o usuário clicar em "OK"
+        if (result.isConfirmed) {
+            window.location.href = "paghistorico.php";
+        }
+    });
+
+
+});</script>
+          
+
         </div>
 
     </form>
