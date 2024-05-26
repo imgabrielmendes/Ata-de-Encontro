@@ -35,6 +35,16 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
             }
         })
 
+        inputContainer.addEventListener('click', () => {
+            if (drawer.classList.contains('hidden')) {
+                initOptions();
+                enableItemSelection();
+                drawer.classList.remove('hidden');
+                input.focus();
+                
+            }
+        });
+
         input.addEventListener('keyup', (e) => {
                 initOptions(e.target.value)
                 enableItemSelection()
