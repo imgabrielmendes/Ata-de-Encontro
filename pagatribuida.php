@@ -488,9 +488,18 @@ function adicionarParticipanteAoLabel(participante) {
       </div>
     </div>
         <br>
-        <div class="col text-center">
-            <button  id="atribuida"   class="btn btn-primary">Atualizar a ATA</button>
+        <div class="row">
+    <div class="col text-center">
+        <button id="atribuida" class="btn btn-primary">Atualizar a ATA</button>
     </div>
+    <div class="col text-center">
+        <!-- Botão "Finalizar ATA" com Popover -->
+        <button id="finalizar-ata" class="btn btn-secondary" data-bs-toggle="popover" data-bs-trigger="focus" title="Atenção!" data-bs-content="Depois de finalizar a ATA, ela não poderá ser alterada. Tem certeza que deseja prosseguir?">Finalizar ATA</button>
+    </div>
+</div>
+
+
+
     </form>       
       </div>          
 </div>
@@ -555,5 +564,6 @@ function adicionarParticipanteAoLabel(participante) {
     <script src="app/deliberacoes.js"></script>
     <script src="app/gravaratribuida.js" data-id-ata="<?php echo $id_ata; ?>"></script>
     <script src="app/excluiratribuida.js"></script>
+    
 </body>
 </html>
