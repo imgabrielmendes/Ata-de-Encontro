@@ -10,7 +10,7 @@ $facilitadores=$puxarform->selecionarFacilitadores();
 $pegarfa=$puxarform->pegarfacilitador();
 $resultados = $puxarform->pegandoTudo();
 $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
-$ultimaata = $puxarform->pegarUltimaAta();
+$id_ata = $puxarform->pegarUltimaAta();
 $ultimosfacilitadores = $puxarform->puxandoUltimosFacilitadores();
 
 $facilitadores = $_GET['facilitadores'];
@@ -32,7 +32,7 @@ $data = $_GET['data'];
 
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
-
+print_r($id_ata);
 
 ?>
 <!DOCTYPE html>
@@ -277,14 +277,16 @@ $local = $_GET['local'];
           <div class="btnsparticipante">
 
           <div class="p-2 col-lg-3 col-md-5 col-sm-12">
-              <button id="botaocontinuarata" type="button" class="btn form-control btn-success" data-bs-toggle="modal">
-                Prosseguir com a ata
-              </button>
-              <script>
-                function abrirDeliberacoes(){
-                  window.location.href = 'pagdeliberacoes.php';
-                }
-              </script>
+          <button id="botaocontinuarata" type="button" class="btn form-control btn-success" onclick="abrirDeliberacoes(<?php echo $id_ata; ?>)" data-bs-toggle="modal">
+            Prosseguir com a ata
+          </button>
+          <script>
+            var id_ata = '<?php echo $id_ata; ?>'; 
+            function abrirDeliberacoes(){
+                window.location.href = 'pagdeliberacoes.php?updateid=' + id_ata;
+            }
+          </script>
+
         </div>
         <br>
         <div class="p-2 col-lg-3 col-md-5 col-sm-12">

@@ -60,17 +60,9 @@ function addDeliberacoes() {
                 success: function(response) {
         
                     console.log("(4.2) Deu bom! AJAX está enviando os participantes");
-                    console.log("Response:", response); // Adicionado para depuração
-                    
-                    var ultimoID = response.ultimoID;
-        
+                    console.log("Response:", response);   
                     setTimeout(function() {
-                        console.log("Redirecionando..."); // Adicionado para depuração
-        
-                        window.location.href = 'pagdeliberacoes.php' +
-                        '?ultimoID=' + encodeURIComponent(ultimoID) +
-                        '&participantesAdicionados=' + encodeURIComponent(participantesAdicionadosLabel);
-        
+                        console.log("Redirecionando..."); // Adicionado para depuração  
                     }, 1500);
                     
                     // Limpa a lista de participantes adicionados
