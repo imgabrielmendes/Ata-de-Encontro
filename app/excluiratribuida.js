@@ -11,7 +11,7 @@ function excluirParticipante(id_ata, participante) {
                 var res = JSON.parse(response);
                 if (res.success) {
                     console.log("Participante excluído com sucesso:", res.message);
-                    // Remover o participante da lista no frontend
+
                     var participanteElements = document.querySelectorAll("li");
                     participanteElements.forEach(function(element) {
                         if (element.innerText.includes(participante)) {

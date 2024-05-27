@@ -36,7 +36,7 @@ $_SESSION['data'] = $data_formatada;
   <!---------------------------------------------------------------->
   <script src="view/js/popper.min.js" crossorigin="anonymous"></script>
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" />
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" /> -->
 
   <!-- <link rel="stylesheet" href="view/fontawesome/css/fontawesome.css"> -->
 
@@ -48,6 +48,7 @@ $_SESSION['data'] = $data_formatada;
   <link rel="stylesheet" href="view/css/bootstrap-grid.css">
   <link rel="stylesheet" href="view/css/bootstrap-grid.min.css">
   <link rel="stylesheet" href="view/css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" href="view/css/selectize.bootstrap5.min.css">
 
   <link rel="stylesheet" href="view\css\multi-select-tag.css">
@@ -106,8 +107,8 @@ $_SESSION['data'] = $data_formatada;
       <div class="accordion-item shadow">
         <h2 class="accordion-header">
           <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne" style="background-color: #001f3f;">
-            <h5>Informações de Registro</h5>
-            <i class="fas fa-plus"></i>
+          <i class="fa-solid fa-circle-info p-1 mb-1"></i><h5>Informações de Registro</h5>
+           
           </button>
         </h2>
 
@@ -209,7 +210,7 @@ $_SESSION['data'] = $data_formatada;
     <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo" style="background-color: #1c8f69;">
 
     <i class="fas"></i>
-    <h5>Participantes Adicionados </h5>
+    <i class="fa-solid fa-user p-1 mb-1"></i><h5>Participantes Adicionados </h5>
 
     </button>
   </h2>
@@ -292,7 +293,8 @@ $_SESSION['data'] = $data_formatada;
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
     <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
-      <h5>Descrição do Encontro</h5>
+    <i class="fa-regular fa-pen-to-square p-1 mb-1"></i><h5>Descrição do Encontro</h5>
+
 </div>
   </h2>
 
@@ -326,7 +328,8 @@ $_SESSION['data'] = $data_formatada;
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
     <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
-      <h5>Deliberações</h5>
+    <i class="fa-solid fa-file p-1 mb-1"></i><h5>Deliberações</h5>
+
 </div>
   </h2>
 
