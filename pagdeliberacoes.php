@@ -237,13 +237,26 @@ $_SESSION['data'] = $data_formatada;
         <div>
             <div style="margin: 6px" class='form-control bg-body-secondary border rounded'>
                 <ul>
-                    <?php 
-                    foreach ($participantesArray as $participante) {
-                        $participante = trim($participante);
-                        // Adicione a chamada para a função excluirParticipante() no evento onclick
-                        echo "<li><b>{$participante}</b> <button class='btn btn-danger btn-sm excluir-participante' onclick='excluirParticipante(\"{$participante}\")'>Excluir</button></li>";
-                    } 
-                    ?>
+                <?php
+                  if (isset($_GET['updateid'])) {
+                      $id_ata = $_GET['updateid'];
+                      $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+                      if (!empty($participantes)) {
+                          echo "<ul class='list-unstyled'>";
+                          foreach ($participantes as $participante) {
+                              echo "<li>";
+                              echo "<span class='fw-bold' style='font-size: 18px;'>$participante</span>";
+                              echo "<button type='button' class='btn btn-danger btn-sm ms-2 py-0' style='font-size: 12px;' onclick='excluirParticipante($id_ata, \"$participante\")'>Excluir</button>";
+                              echo "</li>";
+                          }
+                          echo "</ul>";
+                      } else {
+                          echo "Nenhum participante encontrado para esta ATA.";
+                      }
+                  } else {
+                      echo "Nenhum ID de ATA fornecido.";
+                  }
+                ?>
                 </ul>
             </div>
         </div>
@@ -251,30 +264,16 @@ $_SESSION['data'] = $data_formatada;
 </div>
 
 <script>
-    function excluirParticipante(participante) {
-        if (confirm("Tem certeza que deseja excluir " + participante + "?")) {
-            // Enviar solicitação para excluir o participante
-            $.ajax({
-                url: 'enviarprobanco.php',
-                type: 'POST',
-                data: {
-                    participante: participante
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        alert(response.message);
-                        location.reload();
-                    } else {
-                        alert(response.message);
-                    }
-                },
-                error: function() {
-                    alert('Erro ao tentar excluir o participante.');
-                }
-            });
-        }
+  function excluirParticipante(participante) {
+    if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
+      var participanteElement = document.querySelector("li:contains('" + participante + "')");
+      if (participanteElement) {
+        participanteElement.remove();
+      } else {
+        alert("Participante não encontrado na lista.");
+      }
     }
+  }
 </script>
 
 
@@ -466,6 +465,7 @@ document.getElementById("finalizarAtaBtn").addEventListener("click", function() 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
     <script src="app/pagdeliberacoes.js"></script>
+    <script src="app/excluiratribuida.js"></script>
 
 </body>
 
