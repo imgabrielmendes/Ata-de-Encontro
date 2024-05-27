@@ -200,7 +200,7 @@ document.getElementById('addItemButton').addEventListener('click', function() {
 enviarDadosParaServidor();
   
     var deleteButton = document.createElement('button');
-        deleteButton.textContent = 'x';
+        deleteButton.textContent = 'Excluir deliberação';
         deleteButton.className = 'btn btn-danger';
         deleteButton.style.width = '37px'; 
         deleteButton.style.height = '37px';

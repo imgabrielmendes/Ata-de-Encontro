@@ -1,6 +1,7 @@
 <?php
 
 namespace formulario;
+session_destroy();
 
 // include("vendor/autoload.php");
 include_once("app/acoesform.php");

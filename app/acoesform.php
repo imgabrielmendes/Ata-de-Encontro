@@ -89,7 +89,6 @@ class AcoesForm {
 
 
     public function pegarUltimaAta() {
-        session_start();
         try {
             $sql = "SELECT id, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
                     FROM assunto 

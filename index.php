@@ -217,7 +217,7 @@ $pegarlocal=$puxarform->pegarlocais();
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-          <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
+          <button id="registraremail" type="button" class="btn btn-primary" data-bs-dismiss="modal">Registrar</button>
         </div>
       </div>
     </div>
