@@ -110,7 +110,7 @@ $pegarlocal=$puxarform->pegarlocais();
 
   </div>
            <!---ABA DE OBJETIVO - REUNIÃO---->
-          <div class="row ">
+          
           <div class="col mt-1" id="objetivo">
             <label for="form-control"> <b>Objetivo:</b> </label>
  
@@ -152,7 +152,7 @@ $pegarlocal=$puxarform->pegarlocais();
 </div>
          
           <!---ABA DE ADICIONAR FACILITADORES---->
-          <div class="row">
+          
           <div class="col mt-3"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> 
           </div>
 
@@ -181,9 +181,9 @@ $pegarlocal=$puxarform->pegarlocais();
             <div class="col d-flex justify-content-center">
               <div class="btn-atas p-4">
                 
-              <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-12 col-lg-3 btn btn-success">salvar</button>
+              <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-success">salvar</button>
 
-              <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-12 col-lg-3 btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
+              <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
               </div>
               
               <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

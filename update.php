@@ -130,20 +130,20 @@ mysqli_close($conn);
           </div>
           <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
             <label><b>Data</b></label>
-            <input id="datainicio" class="form-control bg-body-secondary" placeholder="dd-mm-aaaa" min="2024-04-01" type="date" value="<?php echo $datasolicitada ?>" readonly>
+            <input id="datainicio" class="form-control" placeholder="dd-mm-aaaa" min="2024-04-01" type="date" value="<?php echo $datasolicitada;?>" >
           </div>
           <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
             <label for="nomeMedico"><b>Horário de Início:</b></label>
             
-            <input class="form-control bg-body-secondary" type="time" id="horainicio" name="appt" min="" max="18:00" value="<?php echo $horainic ?>" readonly>
+            <input class="form-control " type="time" id="horainicio" name="appt" min="" max="18:00" value="<?php echo $horainic ?>" >
           </div>
           <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
             <label for="form-control"> <b> Horário de Término:</b> </label>
-            <input class="form-control bg-body-secondary" type="time" id="horaterm" name="appt" min="13:00" max="12:00" value="<?php echo $horaterm ?>" readonly>
+            <input class="form-control " type="time" id="horaterm" name="appt" min="13:00" max="12:00" value="<?php echo $horaterm ?>" >
           </div>
           <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
             <label for="form-control"> <b> Tempo Estimado (horas):</b> </label>
-            <input value="1" class="form-control bg-body-secondary" type="number" id="tempoestim" name="appt" min="0" max="5" readonly>
+            <input value="1" class="form-control " type="number" id="tempoestim" name="appt" min="0" max="5" >
           </div>
           <div class="col-sm-6 col-lg-6 col-md-6 col-xl-2 mt-2" >
             <label for="objetivo pb-2"> <b>Objetivo:</b> </label>
@@ -169,7 +169,7 @@ mysqli_close($conn);
       </div>
           <div class="col-md-5 col-xl-5 col-lg-12 col-sm-6 mt-2 pb-2"><b>Tema:</b>
             
-            <input id="temaprincipal" class="form-control bg-body-secondary" type="text" value="<?php echo $tema ?>" readonly/>
+            <input id="temaprincipal" class="form-control" type="text" value="<?php echo $tema ?>">
           </div>
           <div class="row">
             <div class="col-4 pt-2 pb-2"> 
@@ -200,7 +200,7 @@ mysqli_close($conn);
     <p class="pt-2"><b>Texto Principal:</b></p>
       <div class="row">
         <div class="col">
-          <input class="form-control bg-body-secondary" value="<?php echo $textoprincipal;?>" >
+          <input id="textoprincipal" class="form-control" value="<?php echo $textoprincipal;?>" >
         </div> 
       </div>
 
@@ -256,16 +256,24 @@ mysqli_close($conn);
                 // console.log(facilitadoresSelecionadosLabel);
             }
       });
-      document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById("seu-formulario-id");
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
+       
+        var hora_inicio = document.getElementById('horainicio').value;
+        var hora_term = document.getElementById('horaterm').value;
         var objetivo = document.getElementById('objetivo').value;
         var local = document.getElementById('local').value;
+        var tema = document.getElementById('temaprincipal').value;
+        var texto = document.getElementById('textoprincipal').value;
         var id = <?php echo json_encode($_GET['updateid']); ?>;
+        console.log(texto);
+      // texto é de outro banco de dados
 
-        if (objetivo === "" || local === "") {
+       
+        if (objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "" || texto === "" ) {
             window.alert("Preencha as informações");
         } else {
             $.ajax({
@@ -275,6 +283,10 @@ mysqli_close($conn);
                     objetivo: objetivo,
                     id: id,
                     local: local,
+                    hora_inicio:hora_inicio,
+                    hora_term: hora_term,
+                    tema: tema,
+                    texto: texto,
                 },
                 success: function(response) {
                     alert(response);
@@ -288,6 +300,26 @@ mysqli_close($conn);
         }
     });
 });
+
+
+// function formatarData(data) {
+//     var dataObj = new Date(data);
+//     var dia = dataObj.getDate();
+//     var mes = dataObj.getMonth() + 1; // Adicionando 1 para ajustar o mês
+//     var ano = dataObj.getFullYear();
+
+//     // Adicionando zeros à esquerda para garantir que tenham dois dígitos
+//     if (dia < 10) {
+//         dia = '0' + dia;
+//     }
+//     if (mes < 10) {
+//         mes = '0' + mes;
+//     }
+
+//     // Formata a data como "dia/mês/ano" (por exemplo, "28/05/2024")
+//     return dia + '/' + mes + '/' + ano;
+// }
+
 </script>
 </body>
 </html>
