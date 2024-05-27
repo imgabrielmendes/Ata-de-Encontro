@@ -17,18 +17,12 @@ foreach ($ultimosfacilitadores as $facilitador) {
 
 $facilitadoresString = rtrim($facilitadoresString, ', ');
 
-$participantesAdicionados = $_GET['participantesAdicionados'];
-$participantesArray = explode(",", $participantesAdicionados);
-foreach ($participantesArray as $participante) {
-}
-
 $ultimaata = $puxarform->pegarUltimaAta();
 $data = $_SESSION['data'];
 $dateTime = new \DateTime($data);
 $data_formatada = $dateTime->format('d/m/Y');
 $_SESSION['data'] = $data_formatada;
 ?>
-
 
 <!DOCTYPE html>
 <html lang="pt-br">
