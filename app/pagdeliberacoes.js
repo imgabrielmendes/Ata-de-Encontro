@@ -231,21 +231,19 @@ function irparaHist() {
         // Se pelo menos uma das informações estiver preenchida, solicita confirmação do usuário
         Swal.fire({
             title: "Confirmação",
-            text: "Deseja continuar modificando ou ir para o histórico?",
+            text: "Deseja Finalizar encontro ou continuar modificando?",
             icon: "question",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Ir para o histórico",
-            cancelButtonText: "Continuar modificando",
-            // Adiciona o terceiro botão ao footer
-            footer: "<button id='updateAndContinueBtn' class='btn btn-info'>Atualizar e continuar</button>"
+            confirmButtonText: "Finalizar",
+            cancelButtonText: "Continuar"
         }).then((result) => {
             if (result.isConfirmed) {
                 // Se o usuário escolher ir para o histórico, exibe mensagem de sucesso
                 Swal.fire({
                     title: "Perfeito!",
-                    text: "Seus Deliberadores foram registrados",
+                    text: "Seu texto principal foi Adicionado!",
                     icon: "success",
                 });
 
@@ -259,7 +257,7 @@ function irparaHist() {
                         deliberadoresSelecionados: JSON.stringify(deliberadoresSelecionadosLabel)
                     },
                     success: function() {
-                        console.log ("AJAX DO TEXTO FOI PUXADO");
+                        console.log("AJAX DO TEXTO FOI PUXADO");
                         
                         // Redireciona para a página de histórico após o envio bem-sucedido
                         setTimeout(function() {
@@ -271,15 +269,28 @@ function irparaHist() {
                         console.error('Erro na solicitação AJAX:', error);
                     }
                 });
-            } else if (result.isDismissed) {
-                // Se o usuário escolher continuar modificando, não faz nada
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // Se o usuário escolher continuar modificando, envia os dados para o servidor sem redirecionar
+                $.ajax({
+                    url: 'registrartextop.php',
+                    method: 'POST',
+                    data: {
+                        textoprincipal1: textoprincipal,
+                        // Enviar deliberadores selecionados junto com os dados
+                        deliberadoresSelecionados: JSON.stringify(deliberadoresSelecionadosLabel)
+                    },
+                    success: function() {
+                        console.log("AJAX DO TEXTO FOI PUXADO - Continuar modificando");
+                        // Exibe o toast de sucesso
+                        var toastLiveExample = document.getElementById('liveToast3');
+                        var toast = new bootstrap.Toast(toastLiveExample);
+                        toast.show();
+                    },
+                    error: function(error) {
+                        console.error('Erro na solicitação AJAX:', error);
+                    }
+                });
             }
-        });
-
-        // Adiciona um event listener para o botão "Atualizar e continuar"
-        document.getElementById('updateAndContinueBtn').addEventListener('click', function() {
-            // Coloque aqui a lógica para atualizar e continuar na página
-            console.log("Atualizando e continuando na página...");
         });
     }
 }

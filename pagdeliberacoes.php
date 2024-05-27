@@ -92,7 +92,7 @@ $_SESSION['data'] = $data_formatada;
       <div class="container-fluid">
         <div class="row py-1">
           <div class="col-sm-6">
-            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Deliberações</h2>
+            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Registro de Encontro</h2>
           </div>
         </div>
       </div>
@@ -374,16 +374,31 @@ $_SESSION['data'] = $data_formatada;
         </select>
     </div>
         </div>
-        <div class="row">
-          <div class="col-10"></div>
-          <div class="col-2 d-flex justify-content-end">
-              <div class="d-flex flex-column align-items-end">
-                  <ul id="caixadeselecaodel"></ul>
-                  <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
-              </div>
-          </div>
-    </div>
+        <div class="col-12">
+          <ul id="caixadeselecaodel"></ul>
+  <div class="col d-flex justify-content-center align-content-center">
+    
+    <button type="button" id="addItemButton" class="btn btn-success  a">Criar deliberações</button>
   </div>
+</div>
+
+  </div>
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast3" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="view/img/check.svg" class="rounded me-2" alt="..." style="width: 20px";>
+          <strong class="me-auto">Perfeito!</strong>
+          <small>Agora</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+         Descrição de encontro adicionado!
+        </div>
+      </div>
+    </div>
+
+
+
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
@@ -413,15 +428,18 @@ $_SESSION['data'] = $data_formatada;
     </div>
 
         <br>
+        
+        <div class="col-12">
+
         <!-- <button id="" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
-        <div class="d-flex justify-content-center">
-           <button id="finalizarAtaBtn" type="button" class="btn btn-primary" data-bs-toggle="modal">Finalizar Ata</button>
+        <div class=" col d-flex justify-content-center align-content-center">
+           <button id="finalizarAtaBtn" type="button" class="btn btn-secondary" data-bs-toggle="modal">Finalizar Encontro</button>
 <script>  
 document.getElementById("finalizarAtaBtn").addEventListener("click", function() {
     // Exibe a mensagem de sucesso usando SweetAlert2
     Swal.fire({
-        title: "Parabéns!",
-        text: "Você finalizou sua ata com sucesso!",
+        title: "Finalizada!",
+        text: "Você finalizou seu encontro com sucesso!",
         icon: "success",
         confirmButtonText: "OK"
     }).then((result) => {
@@ -435,7 +453,7 @@ document.getElementById("finalizarAtaBtn").addEventListener("click", function() 
 });</script>
           
 
-        </div>
+        </div></div>
 
     </form>
           
