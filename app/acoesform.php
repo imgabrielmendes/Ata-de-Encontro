@@ -90,30 +90,35 @@ class AcoesForm {
 
     public function pegarUltimaAta() {
         try {
-            $sql = "SELECT  tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
+            $sql = "SELECT id, tema, hora_inicial, hora_termino, data_solicitada, objetivo, local 
                     FROM assunto 
                     ORDER BY data_registro DESC 
                     LIMIT 1";
-
+    
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
-
+    
             if ($stmt->rowCount() > 0) {
                 $row = $stmt->fetch(\PDO::FETCH_ASSOC);
+                $_SESSION['id'] = $row["id"];
                 $_SESSION['conteudo'] = $row["tema"];
                 $_SESSION['horainicio'] = substr($row["hora_inicial"], 0, 5);
                 $_SESSION['horaterm'] = substr($row["hora_termino"], 0, 5);
                 $_SESSION['data'] = substr($row["data_solicitada"], 0, 10);
                 $_SESSION['objetivoSelecionado'] = $row["objetivo"];
                 $_SESSION['local'] = $row["local"];
-
+                return $row["id"]; // Retorna o ID
             } else {
                 echo "Nenhum resultado encontrado";
+                return null;
             }
         } catch (\PDOException $e) {
             echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+            return null;
         }
     }
+    
+    
     public function puxandoUltimosFacilitadores() {
         try {
             

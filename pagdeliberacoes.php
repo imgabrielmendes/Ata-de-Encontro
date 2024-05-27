@@ -17,18 +17,12 @@ foreach ($ultimosfacilitadores as $facilitador) {
 
 $facilitadoresString = rtrim($facilitadoresString, ', ');
 
-$participantesAdicionados = $_GET['participantesAdicionados'];
-$participantesArray = explode(",", $participantesAdicionados);
-foreach ($participantesArray as $participante) {
-}
-
 $ultimaata = $puxarform->pegarUltimaAta();
 $data = $_SESSION['data'];
 $dateTime = new \DateTime($data);
 $data_formatada = $dateTime->format('d/m/Y');
 $_SESSION['data'] = $data_formatada;
 ?>
-
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -92,7 +86,7 @@ $_SESSION['data'] = $data_formatada;
       <div class="container-fluid">
         <div class="row py-1">
           <div class="col-sm-6">
-            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Deliberações</h2>
+            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i> Registro de Encontro</h2>
           </div>
         </div>
       </div>
@@ -237,13 +231,26 @@ $_SESSION['data'] = $data_formatada;
         <div>
             <div style="margin: 6px" class='form-control bg-body-secondary border rounded'>
                 <ul>
-                    <?php 
-                    foreach ($participantesArray as $participante) {
-                        $participante = trim($participante);
-                        // Adicione a chamada para a função excluirParticipante() no evento onclick
-                        echo "<li><b>{$participante}</b> <button class='btn btn-danger btn-sm excluir-participante' onclick='excluirParticipante(\"{$participante}\")'>Excluir</button></li>";
-                    } 
-                    ?>
+                <?php
+                  if (isset($_GET['updateid'])) {
+                      $id_ata = $_GET['updateid'];
+                      $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+                      if (!empty($participantes)) {
+                          echo "<ul class='list-unstyled'>";
+                          foreach ($participantes as $participante) {
+                              echo "<li>";
+                              echo "<span class='fw-bold' style='font-size: 18px;'>$participante</span>";
+                              echo "<button type='button' class='btn btn-danger btn-sm ms-2 py-0' style='font-size: 12px;' onclick='excluirParticipante($id_ata, \"$participante\")'>Excluir</button>";
+                              echo "</li>";
+                          }
+                          echo "</ul>";
+                      } else {
+                          echo "Nenhum participante encontrado para esta ATA.";
+                      }
+                  } else {
+                      echo "Nenhum ID de ATA fornecido.";
+                  }
+                ?>
                 </ul>
             </div>
         </div>
@@ -251,30 +258,16 @@ $_SESSION['data'] = $data_formatada;
 </div>
 
 <script>
-    function excluirParticipante(participante) {
-        if (confirm("Tem certeza que deseja excluir " + participante + "?")) {
-            // Enviar solicitação para excluir o participante
-            $.ajax({
-                url: 'enviarprobanco.php',
-                type: 'POST',
-                data: {
-                    participante: participante
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        alert(response.message);
-                        location.reload();
-                    } else {
-                        alert(response.message);
-                    }
-                },
-                error: function() {
-                    alert('Erro ao tentar excluir o participante.');
-                }
-            });
-        }
+  function excluirParticipante(participante) {
+    if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
+      var participanteElement = document.querySelector("li:contains('" + participante + "')");
+      if (participanteElement) {
+        participanteElement.remove();
+      } else {
+        alert("Participante não encontrado na lista.");
+      }
     }
+  }
 </script>
 
 
@@ -371,16 +364,31 @@ $_SESSION['data'] = $data_formatada;
         </select>
     </div>
         </div>
-        <div class="row">
-          <div class="col-10"></div>
-          <div class="col-2 d-flex justify-content-end">
-              <div class="d-flex flex-column align-items-end">
-                  <ul id="caixadeselecaodel"></ul>
-                  <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
-              </div>
-          </div>
-    </div>
+        <div class="col-12">
+          <ul id="caixadeselecaodel"></ul>
+  <div class="col d-flex justify-content-center align-content-center">
+    
+    <button type="button" id="addItemButton" class="btn btn-success  a">Criar deliberações</button>
   </div>
+</div>
+
+  </div>
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast3" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="view/img/check.svg" class="rounded me-2" alt="..." style="width: 20px";>
+          <strong class="me-auto">Perfeito!</strong>
+          <small>Agora</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+         Descrição de encontro adicionado!
+        </div>
+      </div>
+    </div>
+
+
+
     <div class="toast-container position-fixed bottom-0 end-0 p-3">
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
@@ -410,13 +418,17 @@ $_SESSION['data'] = $data_formatada;
     </div>
 
         <br>
-        <div class="d-flex justify-content-center">
-           <button id="finalizarAtaBtn" type="button" class="btn btn-primary" data-bs-toggle="modal">Finalizar Ata</button>
+        
+        <div class="col-12">
+
+        <!-- <button id="" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
+        <div class=" col d-flex justify-content-center align-content-center">
+           <button id="finalizarAtaBtn" type="button" class="btn btn-secondary" data-bs-toggle="modal">Finalizar Encontro</button>
 <script>  
 document.getElementById("finalizarAtaBtn").addEventListener("click", function() {
     Swal.fire({
-        title: "Parabéns!",
-        text: "Você finalizou sua ata com sucesso!",
+        title: "Finalizada!",
+        text: "Você finalizou seu encontro com sucesso!",
         icon: "success",
         confirmButtonText: "OK"
     }).then((result) => {
@@ -429,7 +441,7 @@ document.getElementById("finalizarAtaBtn").addEventListener("click", function() 
 });</script>
           
 
-        </div>
+        </div></div>
 
     </form>
           
@@ -460,6 +472,7 @@ document.getElementById("finalizarAtaBtn").addEventListener("click", function() 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
     <script src="app/pagdeliberacoes.js"></script>
+    <script src="app/excluiratribuida.js"></script>
 
 </body>
 
