@@ -142,8 +142,7 @@ mysqli_close($conn);
             <input class="form-control " type="time" id="horaterm" name="appt" min="13:00" max="12:00" value="<?php echo $horaterm ?>" >
           </div>
           <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
-            <label for="form-control"> <b> Tempo Estimado (horas):</b> </label>
-            <input value="1" class="form-control " type="number" id="tempoestim" name="appt" min="0" max="5" >
+
           </div>
           <div class="col-sm-6 col-lg-6 col-md-6 col-xl-2 mt-2" >
             <label for="objetivo pb-2"> <b>Objetivo:</b> </label>
@@ -173,7 +172,7 @@ mysqli_close($conn);
           </div>
           <div class="row">
             <div class="col-4 pt-2 pb-2"> 
-              <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> 
+              <label for="form-control"> <b> Facilitador(es) responsável*:</b> </label> 
             </div>
           </div>
           <select class="col-6 form-control" id="selecionandofacilitador" name="facilitador" multiple value="">
@@ -208,9 +207,9 @@ mysqli_close($conn);
     <?php foreach ($deliberacoes_array as $index => $deliberacao) : ?>
     <div class="row pt-3">
         <div class="col-4">
-            <input class="form-control" value="<?php echo $deliberador_array[$index]?>" >
+            <input id="deliberador" class="form-control" value="<?php echo $deliberador_array[$index]?>" >
         </div> 
-        <input class="col form-control" value="<?php echo $deliberacao ?>" >
+        <input id="deliberacao" class="col form-control" value="<?php echo $deliberacao ?>" >
     </div>
     <?php endforeach; ?>
     
@@ -262,18 +261,28 @@ mysqli_close($conn);
     form.addEventListener('submit', function(event) {
         event.preventDefault();
        
+        var data = document.getElementById('datainicio').value;
+        var dataf = formatarData(data);
         var hora_inicio = document.getElementById('horainicio').value;
         var hora_term = document.getElementById('horaterm').value;
         var objetivo = document.getElementById('objetivo').value;
         var local = document.getElementById('local').value;
         var tema = document.getElementById('temaprincipal').value;
         var texto = document.getElementById('textoprincipal').value;
+        var deliberador = document.getElementById('deliberador').value;
+        var deliberacao = document.getElementById('deliberacao').value;
         var id = <?php echo json_encode($_GET['updateid']); ?>;
-        console.log(texto);
-      // texto é de outro banco de dados
-
+        console.log(deliberador);
+        console.log(deliberacao);
+      
+ // Capturar os facilitadores selecionados
+ var facilitadoresSelecionados = [];
+        var selectFacilitadores = document.getElementById('selecionandofacilitador');
+        for (var i = 0; i < selectFacilitadores.selectedOptions.length; i++) {
+            facilitadoresSelecionados.push(selectFacilitadores.selectedOptions[i].value);
+        }
        
-        if (objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "" || texto === "" ) {
+        if (data === "" || objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "" || texto === "" || deliberador === "" || deliberacao === ""  ) {
             window.alert("Preencha as informações");
         } else {
             $.ajax({
@@ -287,6 +296,10 @@ mysqli_close($conn);
                     hora_term: hora_term,
                     tema: tema,
                     texto: texto,
+                    data: data,
+                    deliberador: deliberador,
+                    deliberacao: deliberacao,
+                    facilitadores: facilitadoresSelecionados
                 },
                 success: function(response) {
                     alert(response);
@@ -302,23 +315,23 @@ mysqli_close($conn);
 });
 
 
-// function formatarData(data) {
-//     var dataObj = new Date(data);
-//     var dia = dataObj.getDate();
-//     var mes = dataObj.getMonth() + 1; // Adicionando 1 para ajustar o mês
-//     var ano = dataObj.getFullYear();
+function formatarData(data) {
+    var dataObj = new Date(data);
+    var dia = dataObj.getDate() + 1;
+    var mes = dataObj.getMonth() + 1; // Adicionando 1 para ajustar o mês
+    var ano = dataObj.getFullYear();
 
-//     // Adicionando zeros à esquerda para garantir que tenham dois dígitos
-//     if (dia < 10) {
-//         dia = '0' + dia;
-//     }
-//     if (mes < 10) {
-//         mes = '0' + mes;
-//     }
+    // Adicionando zeros à esquerda para garantir que tenham dois dígitos
+    if (dia < 10) {
+        dia = '0' + dia;
+    }
+    if (mes < 10) {
+        mes = '0' + mes;
+    }
 
-//     // Formata a data como "dia/mês/ano" (por exemplo, "28/05/2024")
-//     return dia + '/' + mes + '/' + ano;
-// }
+    // Formata a data como "dia/mês/ano" (por exemplo, "28/05/2024")
+    return dia + '/' + mes + '/' + ano;
+}
 
 </script>
 </body>
