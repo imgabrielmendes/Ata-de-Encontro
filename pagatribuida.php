@@ -10,7 +10,8 @@ $facilitadores = $puxarform->selecionarFacilitadores();
 $pegarfa = $puxarform->pegarfacilitador();
 $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
 $puxadeliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata = "?");
-
+$puxatexto = $puxarform->textprinc($id_ata = "?");
+print_r($puxatexto);
 $resultados = $puxarform->pegandoTudo();
 $pegarid = $puxarform->puxarId();
 $sql="SELECT * FROM assunto where id=$id ";
@@ -266,7 +267,7 @@ print_r($id_pagina);
   <span class="ms-2">Participantes da ata</span>
 </div>
 <div class="modal fade" id="listaParticipantesModal" tabindex="-1" aria-labelledby="listaParticipantesModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-lg">
+  <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="listaParticipantesModalLabel">Participantes da ata</h5>
@@ -279,13 +280,17 @@ if (isset($_GET['updateid'])) {
     $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
     if (!empty($participantes)) {
         echo "<table class='table'>";
-        echo "<thead><tr><th>Nome</th><th>Ações</th></tr></thead>";
+        echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
         echo "<tbody>";
         foreach ($participantes as $participante) {
-            echo "<tr id='participante-$id_ata-$participante'>";
-            echo "<td style='font-weight: bold; font-size: 18px;'>$participante</td>";
-            // Passa o ID da ATA e o nome do participante como parâmetros
-            echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"$participante\")'>Excluir</button></td>";
+            // Aqui, você pode acessar os dados adicionais do facilitador usando $participante
+            // Suponho que $participante já contenha os dados da tabela facilitadores
+            echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
+            echo "<td>{$participante['matricula']}</td>"; // Coluna de Matrícula
+            echo "<td>{$participante['nome_facilitador']}</td>"; // Coluna de Nome
+            echo "<td>{$participante['email_facilitador']}</td>"; // Coluna de Email
+            // Botão de Excluir com chamada para a função JavaScript excluirParticipante
+            echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";
             echo "</tr>";
         }
         echo "</tbody></table>";
@@ -297,30 +302,21 @@ if (isset($_GET['updateid'])) {
 }
 ?>
 
+
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  function excluirParticipante(idAta, participante) {
+  function excluirParticipante(participante) {
     if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
-      // Aqui você pode adicionar a lógica para fazer a requisição ao servidor e excluir o participante
-      fetch(`excluir_participante.php?id_ata=${idAta}&participante=${participante}`)
-        .then(response => {
-          if (response.ok) {
-            var participanteRow = document.getElementById('participante-' + idAta + '-' + participante);
-            if (participanteRow) {
-              participanteRow.remove();
-            }
-          } else {
-            throw new Error('Erro ao excluir participante');
-          }
-        })
-        .catch(error => {
-          console.error(error);
-          alert('Erro ao excluir participante');
-        });
+      var participanteElement = document.querySelector("li:contains('" + participante + "')");
+      if (participanteElement) {
+        participanteElement.remove();
+      } else {
+        alert("Participante não encontrado na lista.");
+      }
     }
   }
 </script>

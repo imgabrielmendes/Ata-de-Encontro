@@ -275,42 +275,30 @@ class AcoesForm {
         }
     }
     
-    // public function buscarParticipantesPorIdAta($id_ata) {
-    //     try {
-    //         $sql = "SELECT F.nome_facilitador, F.matricula, F.email_facilitador
-    //                 FROM facilitadores AS F
-    //                 WHERE F.id IN (SELECT participantes FROM participantes WHERE id_ata = :id_ata)";
-    //         $stmt = $this->pdo->prepare($sql);
-    //         $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
-    //         $stmt->execute();
-    //         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    //     } catch (\PDOException $e) {
-    //         throw $e;
-    //     }
-    // }
     public function buscarParticipantesPorIdAta($id_ata) {
         try {
-            $sql = "SELECT F.nome_facilitador
+            $sql = "SELECT F.nome_facilitador, F.matricula, F.email_facilitador
                     FROM facilitadores AS F
                     WHERE F.id IN (SELECT participantes FROM participantes WHERE id_ata = :id_ata)";
-    
-            // Prepara a consulta
             $stmt = $this->pdo->prepare($sql);
-            
-            // Vincula o parâmetro :id_ata com o valor fornecido
             $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
-            
-            // Executa a consulta
             $stmt->execute();
-            
-            // Retorna os resultados como um array de strings contendo os nomes dos facilitadores
-            return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            // Em caso de erro, lança uma exceção para que o erro possa ser tratado
             throw $e;
         }
     }
- 
+    public function textprinc($id_ata) {
+        try {
+            $sql = "SELECT texto_princ FROM textoprinc WHERE id_ata = :id_ata";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+    }
         public function pegandoTudo(){
             try {
                 $sql = "SELECT 
