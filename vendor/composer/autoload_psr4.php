@@ -6,8 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Zebra\\' => array($vendorDir . '/robgridley/zebra/src'),
-    'PHPMailer\\PHPMailer\\' => array($vendorDir . '/phpmailer/phpmailer/src'),
-    'Mike42\\' => array($vendorDir . '/mike42/escpos-php/src/Mike42'),
-    'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),
+    'App\\' => array($baseDir . '/app'),
 );

@@ -1,15 +1,15 @@
 <?php
 namespace formulario;
 use \PDOException;
+
+
 $dbhost = "localhost";
 $dbname = "atareu";
 $dbuser = "root";
 $dbpass = "";
 
-// Create connection
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
-// Check connection
 if (!$conn) {
     die("Conexão deu ruim: " . mysqli_connect_error());
 }

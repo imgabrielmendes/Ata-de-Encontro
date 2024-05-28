@@ -1,11 +1,11 @@
-<?php 
+<?php
 include 'database.php';
 session_start();
 
 $dbhost = 'localhost';
-$dbname = 'atareu';  
-$dbuser = 'root';  
-$dbpass = '';     
+$dbname = 'atareu';
+$dbuser = 'root';
+$dbpass = '';
 
 $conn = new mysqli($dbhost, $dbuser, $dbpass, $dbname);
 
@@ -13,36 +13,32 @@ if ($conn->connect_error) {
     die("Erro ao conectar ao banco de dados: " . $conn->connect_error);
 }
 
-    $deliberador = $_POST['deliberaDores'];
-    $deliberacoes =$_POST['deliberAcoes'];
+$id_ata = $_POST['id_ata']; // Recebe o id_ata enviado via POST
 
-    $sql = "SELECT id FROM assunto ORDER BY id DESC LIMIT 1";
-    $result = $conn->query($sql);
+if (!empty($id_ata)) { // Verifica se o id_ata não está vazio
+    $deliberadoresSelecionados = json_decode($_POST['deliberaDores'], true);
+    $newItem = $_POST['newItem'];
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $ultimoID = $row["id"];
-
-        // Insere os dados na tabela participantes
-        $enviarbanco = "INSERT INTO deliberacoes (id_ata, deliberacoes, deliberadores) VALUES ('$ultimoID', '$deliberador','$deliberacoes')";
+    foreach ($deliberadoresSelecionados as $deliberadorValue) {
+        $enviarbanco = "INSERT INTO deliberacoes (id_ata, deliberacoes, deliberadores) VALUES ('$id_ata', '$newItem', '$deliberadorValue')";
+        $alterarstatus = "UPDATE assunto SET status = 'FECHADA' WHERE id = $id_ata";
 
         if ($conn->query($enviarbanco) === TRUE) {
-
-            echo "Novo registro inserido com sucesso.";
-            echo $enviarbanco;
-            
+            echo "Novo registro inserido com sucesso para o deliberador $deliberadorValue.<br>";
         } else {
-
-            echo "Erro ao inserir registro: " . $conn->error;
+            echo "Erro ao inserir registro para o deliberador $deliberadorValue: " . $conn->error . "<br>";
         }
-        
-    } else {
 
-        echo "Nenhum ID encontrado na tabela assunto";
-        echo "Dados não recebidos.";
-
+        if ($conn->query($alterarstatus) === TRUE) {
+            echo "Status da tarefa atualizado para 'FECHADA' com sucesso para o deliberador $deliberadorValue.<br>";
+        } else {
+            echo "Erro ao atualizar status da tarefa para 'FECHADA' para o deliberador $deliberadorValue: " . $conn->error . "<br>";
+        }
     }
+} else {
+    echo "ID da ATA não recebido.<br>";
+}
 
-// Fecha a conexão com o banco de dados
+
 $conn->close();
 ?>
