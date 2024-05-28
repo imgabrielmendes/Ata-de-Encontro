@@ -256,7 +256,6 @@ print_r($id_pagina);
                   </div>
               </div>
           </form>
-
           
           <div class="d-flex align-items-center">
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#listaParticipantesModal" style="background-color: #001f3f; border-color: #001f3f;">
@@ -279,15 +278,17 @@ if (isset($_GET['updateid'])) {
     $id_ata = $_GET['updateid'];
     $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
     if (!empty($participantes)) {
-        echo "<ul>";
+        echo "<table class='table'>";
+        echo "<thead><tr><th>Nome</th><th>Ações</th></tr></thead>";
+        echo "<tbody>";
         foreach ($participantes as $participante) {
-            echo "<li class='mb-2' style='font-weight: bold; font-size: 18px;'>";
-            echo "$participante";
+            echo "<tr id='participante-$id_ata-$participante'>";
+            echo "<td style='font-weight: bold; font-size: 18px;'>$participante</td>";
             // Passa o ID da ATA e o nome do participante como parâmetros
-            echo "<button type='button' class='btn btn-danger btn-sm ms-2' onclick='excluirParticipante($id_ata, \"$participante\")'>Excluir</button>";
-            echo "</li>";
+            echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"$participante\")'>Excluir</button></td>";
+            echo "</tr>";
         }
-        echo "</ul>";
+        echo "</tbody></table>";
     } else {
         echo "Nenhum participante encontrado para esta ATA.";
     }
@@ -296,38 +297,48 @@ if (isset($_GET['updateid'])) {
 }
 ?>
 
-
-
-
-
-
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  function excluirParticipante(participante) {
+  function excluirParticipante(idAta, participante) {
     if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
-      var participanteElement = document.querySelector("li:contains('" + participante + "')");
-      if (participanteElement) {
-        participanteElement.remove();
-      } else {
-        alert("Participante não encontrado na lista.");
-      }
+      // Aqui você pode adicionar a lógica para fazer a requisição ao servidor e excluir o participante
+      fetch(`excluir_participante.php?id_ata=${idAta}&participante=${participante}`)
+        .then(response => {
+          if (response.ok) {
+            var participanteRow = document.getElementById('participante-' + idAta + '-' + participante);
+            if (participanteRow) {
+              participanteRow.remove();
+            }
+          } else {
+            throw new Error('Erro ao excluir participante');
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          alert('Erro ao excluir participante');
+        });
     }
   }
 </script>
-            <br>
-            <?php
-            $conn->close();
-            ?>
-          </div>
-        </div>
-      </main>
-    </div>
-  </div>
+
+<br>
+<?php
+$conn->close();
+?>
+</div>
+</div>
+</main>
+</div>
+</div>
 </form>
+
+
+
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

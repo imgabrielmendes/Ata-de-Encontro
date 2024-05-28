@@ -275,7 +275,19 @@ class AcoesForm {
         }
     }
     
-    
+    // public function buscarParticipantesPorIdAta($id_ata) {
+    //     try {
+    //         $sql = "SELECT F.nome_facilitador, F.matricula, F.email_facilitador
+    //                 FROM facilitadores AS F
+    //                 WHERE F.id IN (SELECT participantes FROM participantes WHERE id_ata = :id_ata)";
+    //         $stmt = $this->pdo->prepare($sql);
+    //         $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
+    //         $stmt->execute();
+    //         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    //     } catch (\PDOException $e) {
+    //         throw $e;
+    //     }
+    // }
     public function buscarParticipantesPorIdAta($id_ata) {
         try {
             $sql = "SELECT F.nome_facilitador
