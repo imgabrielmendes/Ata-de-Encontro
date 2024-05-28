@@ -213,6 +213,7 @@ $_SESSION['data'] = $data_formatada;
     <i class="fa-solid fa-user p-1 mb-1"></i><h5>Participantes Adicionados </h5>
 
     </button>
+    
   </h2>
 
 <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse ">
@@ -270,10 +271,6 @@ $_SESSION['data'] = $data_formatada;
     }
   }
 </script>
-
-
-
-
 
 
 </div>

@@ -10,8 +10,6 @@ $facilitadores = $puxarform->selecionarFacilitadores();
 $pegarfa = $puxarform->pegarfacilitador();
 $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
 $puxadeliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata = "?");
-$puxatexto = $puxarform->textprinc($id_ata = "?");
-print_r($puxatexto);
 $resultados = $puxarform->pegandoTudo();
 $pegarid = $puxarform->puxarId();
 $sql="SELECT * FROM assunto where id=$id ";
@@ -71,6 +69,11 @@ function identificarIdPagina() {
 }
 $id_pagina = identificarIdPagina();
 print_r($id_pagina);
+
+$puxatexto = $puxarform->textprinc($id_pagina);
+$texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
+print_r($puxatexto);
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -395,7 +398,7 @@ function adicionarParticipanteAoLabel(participante) {
         <div class="row">
             <div class="col">
                 <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-                <textarea id="textoprinc" style="height: 110px;" class="form-control"></textarea>
+                <textarea id="textoprinc" style="height: 110px;" class="form-control"><?php echo $texto_principal; ?></textarea>
             </div>
         </div>    
         <div id="existingDeliberations" class="mt-3">
