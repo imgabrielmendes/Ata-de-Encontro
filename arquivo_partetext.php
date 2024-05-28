@@ -16,15 +16,12 @@ assunto.data_solicitada,
 date_format(assunto.data_solicitada, '%d/%m/%y') as data,
 fac_delib.matricula as matric,
 GROUP_CONCAT(DISTINCT fac_parti.nome_facilitador) AS nome_participantes,
-GROUP_CONCAT(DISTINCT delib.deliberacoes) AS deliberacoes,
-GROUP_CONCAT(DISTINCT CONCAT(fac_delib.nome_facilitador, ':', delib.deliberacoes)) AS deliberadores_deliberacoes,
 tp.texto_princ
 FROM
 atareu.assunto AS assunto
 INNER JOIN atareu.participantes AS parti ON parti.id_ata = assunto.id
 INNER JOIN atareu.facilitadores AS fac_parti ON fac_parti.id = parti.participantes
 INNER JOIN atareu.deliberacoes AS delib ON delib.id_ata = assunto.id
-INNER JOIN atareu.facilitadores AS fac_delib ON fac_delib.id = delib.deliberadores
 INNER JOIN atareu.textoprinc AS tp ON tp.id_ata = assunto.id
 WHERE
 delib.id_ata = $id
@@ -48,8 +45,6 @@ if ($result->num_rows > 0) {
         $horafinal = !empty($row['horatermi']) ? substr($row['horatermi'], 0, -3) : '';
         $objetivo = !empty($row['objetivo']) ? $row['objetivo'] : '';
         $nomeParticipantes = !empty($row['nome_participantes']) ? $row['nome_participantes'] : '';
-        $deliberacoes = !empty($row['deliberacoes']) ? $row['deliberacoes'] : '';
-        $deliberadores_deliberacoes = !empty($row['deliberadores_deliberacoes']) ? $row['deliberadores_deliberacoes'] : '';
         $textop = !empty($row['texto_princ']) ? $row['texto_princ'] : '';
 
 
@@ -132,36 +127,14 @@ if ($result->num_rows > 0) {
             $html .= '<p>' . htmlspecialchars($textop) . '</p>';
         }
 
-        $html .= '<h2> DELIBERAÇÕES </h2>';
-
-        $deliberadores_por_deliberacao = array();
-
-        if (!empty($deliberadores_deliberacoes)) {
-            foreach (explode(",", $deliberadores_deliberacoes) as $deliberador_deliberacao) {
-                list($deliberador, $deliberacao) = explode(":", $deliberador_deliberacao);
-                if (isset($deliberadores_por_deliberacao[$deliberacao])) {
-                    $deliberadores_por_deliberacao[$deliberacao][] = $deliberador;
-                } else {
-                    $deliberadores_por_deliberacao[$deliberacao] = array($deliberador);
-                }
-            }
-        }
-
-        if (!empty($deliberadores_por_deliberacao)) {
-            foreach ($deliberadores_por_deliberacao as $deliberacao => $deliberadores) {
-                $html .= '
-                    <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
-                        <tbody>
-                            <tr style="">
-                                <td style="text-align: center; border: 1px solid black; background-color: #c0c0c0; width: 130px; font-size: 9.5px;"><ul><b>' . implode(",<br>", array_map('htmlspecialchars', $deliberadores)) . '</b></ul></td>
-                                <td style="text-align: left; border: 1px solid black; height: 30px; width: 409px; font-size: 10px;">'."  " . htmlspecialchars($deliberacao) . '</td>
-                            </tr>
-                        </tbody>
-                    </table>';
-            }
-        } else {
-            $html .= '<p>Deliberações não informadas</p>';
-        }      
+        $html .= '<h2> DELIBERAÇÕES </h2>
+        <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
+            <tbody>
+                <tr style="">
+                    <td style="text-align: left; border: 1px solid black; height: 120px; width: 539px; font-size: 10px;"></td>
+                </tr>
+            </tbody>
+        </table>';
 
         $html .= '<hr style="margin-right: auto; width: 40%;" align="center">
                   <p style="display: block; text-align: center;">Assinatura do Responsável</p>

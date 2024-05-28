@@ -244,31 +244,23 @@ if ($conn->connect_error) {
                         </a>
                     </td>";
 
-                    
-                    // código para exibir as colunas da tabela...
-                // Definindo $puxaparticipantes dentro do loop
     $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id);
-    
-    // Definindo $deliberacoes dentro do loop
     $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id);
+    $textoprin = $puxarform->buscarTextoPrincipalPorIdAta($id);
     
-                    // Lógica para exibir os botões de acordo com $deliberacoes e $puxaparticipantes
                     if (empty($deliberacoes) && !empty($puxaparticipantes)) {
-                        // Exibir o PDF sem deliberação, mas com participante
                         echo "<td class='text-center align-middle'>
                                     <a class='text-light btn btn-success' href='arquivo_semdel.php?updateid=".$id."'>
                                         <i class='fas fa-file-pdf'></i>
                                     </a>
                                 </td>";
                     } elseif (empty($deliberacoes) && empty($puxaparticipantes)) {
-                        // Exibir o PDF sem participante e sem deliberação
                         echo "<td class='text-center align-middle'>
                                     <a class='text-light btn btn-success' href='arquivo_sempart.php?updateid=".$id."'>
                                         <i class='fas fa-file-pdf'></i>
                                     </a>
                                 </td>";
                     } else {
-                        // Exibir o PDF com deliberação e participante
                         echo "<td class='text-center align-middle'>
                                     <a class='text-light btn btn-success' href='arquivopdf.php?updateid=".$id."'>
                                         <i class='fas fa-file-pdf'></i>

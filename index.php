@@ -183,7 +183,7 @@ $pegarlocal=$puxarform->pegarlocais();
                 
               <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-success">salvar</button>
 
-              <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
+              <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-secondary opacity-75" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
               </div>
               
               <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
