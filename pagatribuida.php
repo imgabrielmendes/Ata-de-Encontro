@@ -279,31 +279,37 @@ print_r($puxatexto);
       <div class="modal-body">
       <?php
 if (isset($_GET['updateid'])) {
-    $id_ata = $_GET['updateid'];
-    $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-    if (!empty($participantes)) {
-        echo "<table class='table'>";
-        echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
-        echo "<tbody>";
-        foreach ($participantes as $participante) {
-            // Aqui, você pode acessar os dados adicionais do facilitador usando $participante
-            // Suponho que $participante já contenha os dados da tabela facilitadores
-            echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
-            echo "<td>{$participante['matricula']}</td>"; // Coluna de Matrícula
-            echo "<td>{$participante['nome_facilitador']}</td>"; // Coluna de Nome
-            echo "<td>{$participante['email_facilitador']}</td>"; // Coluna de Email
-            // Botão de Excluir com chamada para a função JavaScript excluirParticipante
-            echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";
-            echo "</tr>";
-        }
-        echo "</tbody></table>";
-    } else {
-        echo "Nenhum participante encontrado para esta ATA.";
-    }
+  $id_ata = $_GET['updateid'];
+  $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+  if (!empty($participantes)) {
+      // Ordena os participantes em ordem alfabética pelo nome do facilitador
+      usort($participantes, function($a, $b) {
+          return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
+      });
+
+      echo "<table class='table'>";
+      echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
+      echo "<tbody>";
+      foreach ($participantes as $participante) {
+          // Aqui, você pode acessar os dados adicionais do facilitador usando $participante
+          // Suponho que $participante já contenha os dados da tabela facilitadores
+          echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
+          echo "<td>{$participante['matricula']}</td>"; // Coluna de Matrícula
+          echo "<td>{$participante['nome_facilitador']}</td>"; // Coluna de Nome
+          echo "<td>{$participante['email_facilitador']}</td>"; // Coluna de Email
+          // Botão de Excluir com chamada para a função JavaScript excluirParticipante
+          echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";
+          echo "</tr>";
+      }
+      echo "</tbody></table>";
+  } else {
+      echo "Nenhum participante encontrado para esta ATA.";
+  }
 } else {
-    echo "Nenhum ID de ATA fornecido.";
+  echo "Nenhum ID de ATA fornecido.";
 }
 ?>
+
 
 
       </div>
