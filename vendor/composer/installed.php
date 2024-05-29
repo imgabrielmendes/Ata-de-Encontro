@@ -1,19 +1,19 @@
 <?php return array(
     'root' => array(
-        'name' => '__root__',
+        'name' => 'ataencontro/pdf',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '61a0d301040f967e0a5d5dd72c27aa3a83a2c2ce',
+        'reference' => '940fc7666b2fe32522d1188b4f356ec4843f5461',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        '__root__' => array(
+        'ataencontro/pdf' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '61a0d301040f967e0a5d5dd72c27aa3a83a2c2ce',
+            'reference' => '940fc7666b2fe32522d1188b4f356ec4843f5461',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

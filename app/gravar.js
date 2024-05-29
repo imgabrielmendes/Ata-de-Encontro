@@ -14,20 +14,16 @@ new MultiSelectTag('selecionandofacilitador', {
 
         facilitadoresSelecionados = selected_ids;
         facilitadoresSelecionadosLabel = selected_names;
-
-        console.log(facilitadoresSelecionados);
-        console.log(facilitadoresSelecionadosLabel);
+        // console.log(facilitadoresSelecionados);
+        // console.log(facilitadoresSelecionadosLabel);
     }
 });
 
-// Pegar inputs 
-var gravarinformacoes = document.getElementById("botaoregistrar");
 
 //1° LINHAS
 var data = document.getElementById("datainicio").value;
 var horainicio = document.getElementById("horainicio").value;
 var horaterm = document.getElementById("horaterm").value;
-// var tempoes = document.getElementById("tempoestim").value;
 
 // 2° LINHAS
 var objetivomarc = document.getElementsByName("objetivo");
@@ -36,15 +32,13 @@ var objetivoSelecionado = null;
 //3° LINHA
 var temaprincipal = document.getElementById("temaprincipal");
 
-// Botões
+var gravarinformacoes = document.getElementById("botaoregistrar");
 gravarinformacoes.addEventListener('click', gravando);
-
 function gravando() {
 
     var data = document.getElementById("datainicio").value;
     var horainicio = document.getElementById("horainicio").value;
     var horaterm = document.getElementById("horaterm").value;
-    // var tempoes = document.getElementById("tempoestim").value;
 
     var objetivomarc = document.getElementsByName("objetivo");
     var objetivoSelecionado = null;
@@ -63,7 +57,9 @@ function gravando() {
     var conteudo = temaprincipal.value;
     var data = document.getElementById("datainicio").value;
 
-    if (data.trim() === "" || horainicio.trim() === "" || objetivoSelecionado.trim() === "" || conteudo.trim() === "" ) {
+    
+    if (data.trim() === "" || horainicio.trim() ==="" || objetivoSelecionado.trim() === "" || conteudo.trim() === "" ||
+    facilitadoresSelecionados.length === 0 || facilitadoresSelecionadosLabel.length === 0) { 
 
         Swal.fire({
             title: "Erro no registro",
@@ -72,12 +68,19 @@ function gravando() {
         });
 
         console.log("(X) Puxou a function, mas está faltando informações");
+
         // console.log(objetivoSelecionado);
         // console.log(local);
         // console.log(facilitadores);
-
     } 
-    
+
+    else if (horaterm !== ""  && horainicio > horaterm) {
+        Swal.fire({
+            title: "Horário incorreto",
+            icon: "error"
+        });
+    }
+
     else {
 
         Swal.fire({
@@ -100,7 +103,6 @@ function gravando() {
             datainic: data,
             objetivos: objetivoSelecionado,
             local: local,
-            // tempoestimado: tempoes,
         },
         
         success: function () {
@@ -121,7 +123,6 @@ function gravando() {
 
         error: function (error) {
             console.error('Erro na solicitação AJAX:', error);
-            // console.log(facilitadores);
         },
     });
 }}

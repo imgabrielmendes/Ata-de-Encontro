@@ -35,6 +35,16 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
             }
         })
 
+        inputContainer.addEventListener('click', () => {
+            if (drawer.classList.contains('hidden')) {
+                initOptions();
+                enableItemSelection();
+                drawer.classList.remove('hidden');
+                input.focus();
+                
+            }
+        });
+
         input.addEventListener('keyup', (e) => {
                 initOptions(e.target.value)
                 enableItemSelection()
@@ -223,12 +233,14 @@ function MultiSelectTag (el, customs = {shadow: false, rounded:true}) {
     }
 
     function setValues(fireEvent = true) {
+
         var selected_ids = [];
         var selected_names = [];
-    
+
         for (var i = 0; i < options.length; i++) {
             element.options[i].selected = options[i].selected;
             if (options[i].selected) {
+
                 selected_ids.push(options[i].value);
                 selected_names.push(options[i].label);
             }
