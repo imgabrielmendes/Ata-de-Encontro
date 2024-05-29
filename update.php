@@ -4,8 +4,8 @@ namespace formulario;
 require_once __DIR__.'/vendor/autoload.php';
 include "conexao.php";
 require_once 'app/acoesform.php';
-
-
+$puxarform = new AcoesForm;
+$puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
 $id = $_GET['updateid'];
 $puxarform = new AcoesForm;
 $pegarfa = $puxarform->pegarfacilitador();
@@ -194,11 +194,12 @@ mysqli_close($conn);
             </optgroup>
           </select>
           <div class="col-6  form-control mt-2">
-            <ul>
-                <?php foreach ($facilitadores as $facilitador): ?>
-                    <li><?php echo $facilitador['facilitadores']; ?></li>
-                <?php endforeach; ?>
-            </ul>   
+          <ul>
+    <?php foreach ($facilitadores as $facilitador): ?>
+        <li><?php echo $facilitador['facilitadores']; ?> <?php echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirFacilitador(\"{$facilitador['facilitadores']}\")'>Excluir</button></td>";?>    </li> 
+    <?php endforeach; ?>
+</ul>
+  
           </div>
 
 
@@ -325,6 +326,21 @@ mysqli_close($conn);
         }
     });
 });
+function excluirFacilitador(facilitador) {
+  if (confirm("Tem certeza de que deseja excluir o Facilitador '" + facilitador + "'?")) {
+    var facilitadorOptions = document.querySelectorAll("#selecionandofacilitador option");
+    var found = false;
+    facilitadorOptions.forEach(function(option) {
+        if (option.text === facilitador) {
+            option.remove();
+            found = true;
+        }
+    });
+    if (!found) {
+        alert("Facilitador não encontrado na lista.");
+    }
+}
+}
 
 
 function formatarData(data) {
