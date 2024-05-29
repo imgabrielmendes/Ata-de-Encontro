@@ -14,17 +14,16 @@ assunto.tema AS tema,
 assunto.objetivo AS objetivo,
 assunto.data_solicitada,
 date_format(assunto.data_solicitada, '%d/%m/%y') as data,
-fac_delib.matricula as matric,
 GROUP_CONCAT(DISTINCT fac_parti.nome_facilitador) AS nome_participantes,
 tp.texto_princ
+
 FROM
 atareu.assunto AS assunto
 INNER JOIN atareu.participantes AS parti ON parti.id_ata = assunto.id
 INNER JOIN atareu.facilitadores AS fac_parti ON fac_parti.id = parti.participantes
-INNER JOIN atareu.deliberacoes AS delib ON delib.id_ata = assunto.id
 INNER JOIN atareu.textoprinc AS tp ON tp.id_ata = assunto.id
 WHERE
-delib.id_ata = $id
+assunto.id = $id
 GROUP BY
 assunto.id;
 ";
@@ -57,8 +56,6 @@ if ($result->num_rows > 0) {
         // echo($horafinal). "<br>" ;
         // echo($objetivo). "<br>" ;
         // echo($nomeParticipantes). "<br>" ;
-        // echo( $deliberacoes). "<br>";
-        // echo( $deliberadores_deliberacoes). "<br>";
         // echo($textop). "<br>";
         
         $pdf = new \TCPDF();
