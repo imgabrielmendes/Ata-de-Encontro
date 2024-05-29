@@ -67,6 +67,7 @@ function identificarIdPagina() {
       return null;
   }
 }
+
 $id_pagina = identificarIdPagina();
 print_r($id_pagina);
 
