@@ -328,14 +328,11 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
             </div>
         </div>
     </div>
+    
 </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
     <script src="view/js/multi-select-tag.js"></script>
-    <script src="app/gravar.js"></script>
-    <script src="app/deliberacoes.js"></script>
-    <script src="app/gravaratribuida.js" data-id-ata="<?php echo $id_ata; ?>"></script>
-    <script src="app/excluiratribuida.js"></script>
 </body>
 </html>

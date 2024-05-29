@@ -500,16 +500,19 @@ function adicionarParticipanteAoLabel(participante) {
         <br>
         <div class="row">
     <div class="col text-center">
-        <button id="atribuida" class="btn btn-primary">Atualizar a ATA</button>
+        <button id="atribuida" class="btn btn-primary">Atualizar reunião</button>
     </div>
     <div class="col text-center">
-        <!-- Botão "Finalizar ATA" com Popover -->
-        <button id="finalizar-ata" class="btn btn-secondary" data-bs-toggle="popover" data-bs-trigger="focus" title="Atenção!" data-bs-content="Depois de finalizar a ATA, ela não poderá ser alterada. Tem certeza que deseja prosseguir?">Finalizar ATA</button>
+    <button id="finalizar-ata" type="button" class="btn btn-secondary" onclick="finalizarAta()" data-bs-toggle="popover" data-bs-trigger="focus" title="Atenção!" data-bs-content="Depois de finalizar a ATA, ela não poderá ser alterada. Tem certeza que deseja prosseguir?">Finalizar ATA</button>
+    <script>
+        function finalizarAta() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const updateId = urlParams.get('updateid');
+            window.location.href = 'pagatafinalizada.php?updateid=' + id_ata;
+        }
+    </script>
     </div>
 </div>
-
-
-
     </form>       
       </div>          
 </div>
