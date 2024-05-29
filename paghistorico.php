@@ -1,7 +1,6 @@
 <?php
 
 namespace formulario;
-session_destroy();
 
 // include("vendor/autoload.php");
 include_once("app/acoesform.php");
@@ -244,44 +243,48 @@ if ($conn->connect_error) {
                         </a>
                     </td>";
 
-                    
-                    // código para exibir as colunas da tabela...
-                // Definindo $puxaparticipantes dentro do loop
     $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id);
-    
-    // Definindo $deliberacoes dentro do loop
     $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id);
+    $textoprin = $puxarform->buscarTextoPrincipalPorIdAta($id);
+
+    // print_r($puxaparticipantes);
+    // print_r($deliberacoes);
+    // print_r($textoprin);
+
+        if (empty($deliberacoes) && !empty($puxaparticipantes)) {
+            echo "<td class='text-center align-middle'>
+                    <a class='text-light btn btn-success' href='arquivo_semdel.php?updateid=".$id."'>
+                        <i class='fas fa-file-pdf'></i>
+                    </a>
+                </td>";
+
+        } elseif (empty($deliberacoes) && empty($puxaparticipantes)) {
+            echo "<td class='text-center align-middle'>
+                    <a class='text-light btn btn-success' href='arquivo_sempart.php?updateid=".$id."'>
+                        <i class='fas fa-file-pdf'></i>
+                    </a>
+                </td>";
+
+        } elseif (!empty($textoprin)) {
+            echo "<td class='text-center align-middle'>
+                    <a class='text-light btn btn-danger' href='arquivo_partetext.php?updateid=".$id."'>
+                        <i class='fas fa-file-pdf'></i>
+                    </a>
+                </td>";
+
+        } else {
+            echo "<td class='text-center align-middle'>
+                    <a class='text-light btn btn-success' href='arquivopdf.php?updateid=".$id."'>
+                        <i class='fas fa-file-pdf'></i>
+                    </a>
+                </td>";
+        }
     
-                    // Lógica para exibir os botões de acordo com $deliberacoes e $puxaparticipantes
-                    if (empty($deliberacoes) && !empty($puxaparticipantes)) {
-                        // Exibir o PDF sem deliberação, mas com participante
-                        echo "<td class='text-center align-middle'>
-                                    <a class='text-light btn btn-success' href='arquivo_semdel.php?updateid=".$id."'>
-                                        <i class='fas fa-file-pdf'></i>
-                                    </a>
-                                </td>";
-                    } elseif (empty($deliberacoes) && empty($puxaparticipantes)) {
-                        // Exibir o PDF sem participante e sem deliberação
-                        echo "<td class='text-center align-middle'>
-                                    <a class='text-light btn btn-success' href='arquivo_sempart.php?updateid=".$id."'>
-                                        <i class='fas fa-file-pdf'></i>
-                                    </a>
-                                </td>";
-                    } else {
-                        // Exibir o PDF com deliberação e participante
-                        echo "<td class='text-center align-middle'>
-                                    <a class='text-light btn btn-success' href='arquivopdf.php?updateid=".$id."'>
-                                        <i class='fas fa-file-pdf'></i>
-                                    </a>
-                                </td>";
-                    }
+
+
+
+
                     
-                   
-
-
-
-
-                    ;
                 echo "<td class='align-middle' style='display:none;' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
 
                 echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
