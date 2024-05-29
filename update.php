@@ -51,8 +51,9 @@ $deliberador_array = array();
 
 if ($result3 && mysqli_num_rows($result3) > 0) {
     while ($row3 = mysqli_fetch_assoc($result3)) {
-      
+
         $iddeliberacao_array[] = $row3 ['id'];
+
 
         $deliberacoesid_array[] = $row3['id_ata'];
         $deliberacoes_array[] = $row3['deliberacoes'];
@@ -308,7 +309,6 @@ mysqli_close($conn);
                     tema: tema,
                     texto: texto,
                     data: data,
-                    iddeliberacao : 
                     deliberador: deliberador,
                     deliberacao: deliberacao,
                     facilitadores: facilitadoresSelecionados
