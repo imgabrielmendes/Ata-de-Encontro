@@ -34,54 +34,40 @@ var mensagemInfo = document.getElementById('infoMessage');
 botaocont.addEventListener('click', addDeliberacoes);
 
 function addDeliberacoes() {
+    if (participantesAdicionadosLabel.length === 0 || participantesAdicionadosLabel.length === 0) {
+        Swal.fire({
+            title: "Erro no registro",
+            text: "Você não adicionou os seus participantes",
+            icon: "error"
+        });
+    } else {
+        $.ajax({
+            url: 'registrarfacilitadores.php',
+            method: 'POST',
+            data: {
+                particadd: JSON.stringify(ParticipantesAdicionadosvalor)
+            },
+            success: function(response) {
+                console.log("(4.2) Deu bom! AJAX está enviando os participantes");
+                console.log("Response:", response);   
 
-    if (participantesAdicionadosLabel.length === 0 || participantesAdicionadosLabel.length === 0) 
-        {
-            
-            Swal.fire({
-                title: "Erro no registro",
-                text: "Você não adicionou os seus participantes",
-                icon: "error"
-              });
-       
-        } else {
-            Swal.fire({
-            title: "Perfeito!",
-            text: "Seus participantes foram registrados",
-            icon: "success" });
-
-            $.ajax({
-                url: 'registrarfacilitadores.php',
-                method: 'POST',
-                data: {
-                    particadd: JSON.stringify(ParticipantesAdicionadosvalor)
-                },
-        
-                success: function(response) {
-        
-                    console.log("(4.2) Deu bom! AJAX está enviando os participantes");
-                    console.log("Response:", response);   
-                    setTimeout(function() {
-                        console.log("Redirecionando..."); // Adicionado para depuração  
-                    }, 1500);
-                    
-                    // Limpa a lista de participantes adicionados
-                    ParticipantesAdicionadosvalor = [];
-                    atualizarListaParticipantes();
-        
-                },
-        
-                error: function(error) {
-                    console.error('Erro na solicitação AJAX:', error);
-                }
-            });
-        }
-  
+               
+                
+                // Limpa a lista de participantes adicionados
+                ParticipantesAdicionadosvalor = [];
+                atualizarListaParticipantes();
+            },
+            error: function(error) {
+                console.error('Erro na solicitação AJAX:', error);
+            }
+        });
+    }
 }
 
 function atualizarListaParticipantes() {
     itemList.innerHTML = ''; // Limpa a lista visualmente
 }
+
 
 ///------------BOTÃO DE REGISTRAR EMAIL DENTRO DA MODAL------------------------------
 
