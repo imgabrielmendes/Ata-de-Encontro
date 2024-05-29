@@ -57,7 +57,13 @@ class AcoesForm {
 
     public function pegarfacilitador() {
         try {
-            $sql = "SELECT id, nome_facilitador, matricula FROM facilitadores ORDER BY nome_facilitador ASC ";
+            $sql = "SELECT 
+                        id, 
+                        nome_facilitador, 
+                        matricula 
+                    FROM facilitadores 
+                    ORDER BY nome_facilitador ASC ";
+
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -156,9 +162,14 @@ class AcoesForm {
     }
     
     public function puxandoUltimosParticipantes($id_ata) {
-        $sql = "SELECT F.nome_facilitador
+        $sql = "SELECT 
+                        F.id as id,
+                        F.nome_facilitador as nome_facilitador ,
+                        F.matricula as matricula
+
                 FROM facilitadores as F
-                INNER JOIN ata_has_fac as AF ON F.id = AF.facilitadores
+                    INNER JOIN ata_has_fac as AF 
+                        ON F.id = AF.facilitadores
                 WHERE AF.id_ata = :id_ata";
         
         $stmt = $this->pdo->prepare($sql);

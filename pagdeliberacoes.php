@@ -5,7 +5,7 @@ include_once ("app/acoesform.php");
 include ("conexao.php");
 
 $puxarform = new AcoesForm;
-$pegarde = $puxarform->pegarfacilitador();
+// $pegarde = $puxarform->pegarfacilitador();
 
 $ultimosfacilitadores = $puxarform->puxandoUltimosFacilitadores();
 
@@ -351,22 +351,47 @@ $_SESSION['data'] = $data_formatada;
               <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;"></textarea>
             </div>
 
-    <div class="col">
+            <div class="col">
     <!-- Primeira caixa de texto e select de facilitadores -->
     <div class="mb-2">
         <label for="" class="mb-2">Deliberado para:</label>
-        <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
-        <optgroup label="Selecione Facilitadores">
-                  <?php foreach ($pegarde as $facnull) : ?>
-                      <option value="<?php echo $facnull['id']; ?>"
-                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                          <?php echo $facnull['nome_facilitador']; ?>
-                      </option>
-                  <?php endforeach ?>
-              </optgroup>
-        </select>
+        <?php
+        if (isset($_GET['updateid'])) {
+            $id_ata = $_GET['updateid'];
+            $pegarde = $puxarform->buscarParticipantesPorIdAta($id_ata);
+            echo "Estou puxando os valores: ";
+            var_dump($pegarde);
+        ?>
+            <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
+                <optgroup label="Selecione Facilitadores">
+                    <?php
+                    foreach ($pegarde as $index => $nome) {
+
+                        if (is_string($nome)) {
+                            ?>
+                            <option value="<?php echo htmlspecialchars($index); ?>"
+                                data-tokens="<?php echo htmlspecialchars($nome); ?>">
+                                <?php echo htmlspecialchars($nome); ?>
+                            </option>
+                            <?php
+                        } else {
+                            echo "<!-- Dado inválido: ";
+                            var_dump($nome);
+                            echo " -->";
+                        }
+                    }
+                    ?>
+                </optgroup>
+            </select>
+        <?php
+        } else {
+            echo "PORRA, DEU ERRADO";
+        }
+        ?>
     </div>
-        </div>
+</div>
+
+
         <div class="col-12">
           <ul id="caixadeselecaodel"></ul>
   <div class="col d-flex justify-content-center align-content-center">
