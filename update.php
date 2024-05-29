@@ -37,6 +37,7 @@ while ($row2 = mysqli_fetch_assoc($result2)) {
 }
 
 $sql3 = "SELECT 
+    del.id,
     del.id_ata,
     fac.nome_facilitador AS deliberador,
     del.deliberacoes AS deliberacoes
@@ -50,9 +51,14 @@ $deliberador_array = array();
 
 if ($result3 && mysqli_num_rows($result3) > 0) {
     while ($row3 = mysqli_fetch_assoc($result3)) {
+      
+        $iddeliberacao_array[] = $row3 ['id'];
+
+        $deliberacoesid_array[] = $row3['id_ata'];
         $deliberacoes_array[] = $row3['deliberacoes'];
         $deliberador_array[] = $row3['deliberador'];
     }
+    print_r($iddeliberacao_array);
 }
 
 
@@ -302,6 +308,7 @@ mysqli_close($conn);
                     tema: tema,
                     texto: texto,
                     data: data,
+                    iddeliberacao : 
                     deliberador: deliberador,
                     deliberacao: deliberacao,
                     facilitadores: facilitadoresSelecionados
