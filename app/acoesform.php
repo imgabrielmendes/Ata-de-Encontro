@@ -104,7 +104,7 @@ class AcoesForm {
                 $_SESSION['conteudo'] = $row["tema"];
                 $_SESSION['horainicio'] = substr($row["hora_inicial"], 0, 5);
                 $_SESSION['horaterm'] = substr($row["hora_termino"], 0, 5);
-                $_SESSION['data'] = substr($row["data_solicitada"], 0, 10);
+                $_SESSION['data'] = date('d/m/Y', strtotime(substr($row["data_solicitada"], 0, 10)));
                 $_SESSION['objetivoSelecionado'] = $row["objetivo"];
                 $_SESSION['local'] = $row["local"];
                 return $row["id"]; // Retorna o ID
@@ -297,18 +297,6 @@ class AcoesForm {
             }
         }
         
-      public  $sql4 = "SELECT 
-        part.id_ata,
-        part.participantes,
-        fac.nome_facilitador as participante
-    FROM 
-        assunto as assu
-    INNER JOIN 
-        participantes as part ON part.id_ata = assu.id
-    INNER JOIN 
-        facilitadores as fac ON fac.id = part.participantes
-    WHERE 
-        part.id_ata = 558";
-    
+      
     
        }

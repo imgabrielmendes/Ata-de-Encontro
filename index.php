@@ -263,4 +263,6 @@ $pegarlocal=$puxarform->pegarlocais();
       <script src="view/js/bootstrap.js"></script>
       <script src="app/gravar.js"></script>
 </body>
+
+
 </html>

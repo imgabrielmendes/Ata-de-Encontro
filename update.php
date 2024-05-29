@@ -128,22 +128,24 @@ mysqli_close($conn);
           <div class="col-md-12 text-center p-5">
             <h2>INFORMAÇÕES - ATA N°<?php echo $id ?></h2>
           </div>
-          <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
+          <div class="row d-flex justify-content-center align-items-center">
+          <div class="col-lg-6 col-xl-4 col-md-6 col-sm-6">
             <label><b>Data</b></label>
             <input id="datainicio" class="form-control" placeholder="dd-mm-aaaa" min="2024-04-01" type="date" value="<?php echo $datasolicitada;?>" >
           </div>
-          <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
+          <div class="col-lg-6 col-xl-4 col-md-6 col-sm-6">
             <label for="nomeMedico"><b>Horário de Início:</b></label>
             
             <input class="form-control " type="time" id="horainicio" name="appt" min="" max="18:00" value="<?php echo $horainic ?>" >
           </div>
-          <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
+          <div class="col-lg-6 col-xl-4 col-md-6 col-sm-6">
             <label for="form-control"> <b> Horário de Término:</b> </label>
             <input class="form-control " type="time" id="horaterm" name="appt" min="13:00" max="12:00" value="<?php echo $horaterm ?>" >
           </div>
-          <div class="col-lg-6 col-xl-3 col-md-6 col-sm-6">
-
-          </div>
+          
+   
+         
+     
           <div class="col-sm-6 col-lg-6 col-md-6 col-xl-2 mt-2" >
             <label for="objetivo pb-2"> <b>Objetivo:</b> </label>
             <select class="form-control" name="objetivo" id="objetivo">
@@ -171,7 +173,7 @@ mysqli_close($conn);
             <input id="temaprincipal" class="form-control" type="text" value="<?php echo $tema ?>">
           </div>
           <div class="row">
-            <div class="col-4 pt-2 pb-2"> 
+            <div class="col-4 mt-2 pt-2 pb-2"> 
               <label for="form-control"> <b> Facilitador(es) responsável*:</b> </label> 
             </div>
           </div>
@@ -184,7 +186,7 @@ mysqli_close($conn);
                 <?php endforeach ?>
             </optgroup>
           </select>
-          <div class="col-6 form-control mt-2">
+          <div class="col-6  form-control mt-2">
             <ul>
                 <?php foreach ($facilitadores as $facilitador): ?>
                     <li><?php echo $facilitador['facilitadores']; ?></li>
@@ -196,7 +198,7 @@ mysqli_close($conn);
     <input type="hidden" name="form_action" value="delete">
     <input type="hidden" name="delete_id" value="<?php echo $_GET['updateid']; ?>">
     
-    <p class="pt-2"><b>Texto Principal:</b></p>
+    <p class="pt-2 mt-2"><b>Texto Principal:</b></p>
       <div class="row">
         <div class="col">
           <input id="textoprincipal" class="form-control" value="<?php echo $textoprincipal;?>" >
@@ -210,6 +212,9 @@ mysqli_close($conn);
             <input id="deliberador" class="form-control" value="<?php echo $deliberador_array[$index]?>" >
         </div> 
         <input id="deliberacao" class="col form-control" value="<?php echo $deliberacao ?>" >
+        <?php 
+
+        ?>
     </div>
     <?php endforeach; ?>
     
