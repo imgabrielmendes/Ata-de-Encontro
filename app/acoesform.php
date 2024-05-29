@@ -176,7 +176,26 @@ class AcoesForm {
     }
     
 
+    public function ParticipantesPorIdAta($id_ata) {
+        try {
+            $sql = "SELECT F.nome_facilitador
+                    FROM facilitadores AS F
+                    WHERE F.id IN (SELECT participantes FROM participantes WHERE id_ata = :id_ata)"
+                    
+                    ;
     
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
+            $stmt->execute();
+            
+
+            return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+            
+        } catch (\PDOException $e) {
+
+            throw $e;
+        }
+    }
 
     public function pegarParticipantes($id_ata) {
         $sql = "SELECT F.nome_facilitador
@@ -224,81 +243,31 @@ class AcoesForm {
             // Em caso de erro, lança uma exceção para que o erro possa ser tratado
             throw $e;
         }
-    }
-    public function apagarDeliberacoesPorIdAta($id_ata) {
-        try {
-            // Prepara a consulta para excluir as deliberações por ID da ATA
-            $sql = "DELETE FROM deliberacoes WHERE id_ata = :id_ata";
-    
-            // Prepara a consulta
-            $stmt = $this->pdo->prepare($sql);
-    
-            // Vincula o parâmetro :id_ata com o valor fornecido
-            $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
-    
-            // Executa a consulta
-            $stmt->execute();
-    
-            // Retorna true para indicar que as deliberações foram excluídas com sucesso
-            return true;
-        } catch (\PDOException $e) {
-            // Em caso de erro, lança uma exceção para que o erro possa ser tratado
-            throw $e;
-        }
-    }
-    
-    public function excluirParticipantePorIdAta($id_ata, $nome_participante) {
-        try {
-            // Primeiro, encontrar o ID do participante pelo nome
-            $sql = "SELECT id FROM facilitadores WHERE nome_facilitador = :nome_participante";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':nome_participante', $nome_participante, \PDO::PARAM_STR);
-            $stmt->execute();
-            $participante_id = $stmt->fetchColumn();
-    
-            if ($participante_id) {
-                // Prepara a consulta para excluir o participante da ata
-                $sql = "DELETE FROM participantes WHERE id_ata = :id_ata AND participantes = :participante_id";
-                $stmt = $this->pdo->prepare($sql);
-                $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
-                $stmt->bindParam(':participante_id', $participante_id, \PDO::PARAM_INT);
-                $stmt->execute();
-    
-                // Retorna verdadeiro se a exclusão for bem-sucedida
-                return true;
-            } else {
-                return false; // Retorna falso se o participante não foi encontrado
-            }
-        } catch (\PDOException $e) {
-            // Em caso de erro, lança uma exceção para que o erro possa ser tratado
-            throw $e;
-        }
-    }
-    
-    
+    }   
     public function buscarParticipantesPorIdAta($id_ata) {
         try {
-            $sql = "SELECT F.nome_facilitador
+            $sql = "SELECT F.nome_facilitador, F.matricula, F.email_facilitador
                     FROM facilitadores AS F
                     WHERE F.id IN (SELECT participantes FROM participantes WHERE id_ata = :id_ata)";
-    
-            // Prepara a consulta
             $stmt = $this->pdo->prepare($sql);
-            
-            // Vincula o parâmetro :id_ata com o valor fornecido
             $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
-            
-            // Executa a consulta
             $stmt->execute();
-            
-            // Retorna os resultados como um array de strings contendo os nomes dos facilitadores
-            return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
-            // Em caso de erro, lança uma exceção para que o erro possa ser tratado
             throw $e;
         }
     }
- 
+    public function textprinc($id_ata) {
+        try {
+            $sql = "SELECT texto_princ FROM textoprinc WHERE id_ata = :id_ata";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+    }
         public function pegandoTudo(){
             try {
                 $sql = "SELECT 

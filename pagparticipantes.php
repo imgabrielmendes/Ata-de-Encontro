@@ -280,17 +280,30 @@ print_r($id_ata);
           <div class="btnsparticipante">
 
           <div class="p-2 col-lg-3 col-md-5 col-sm-12">
-          <button id="botaocontinuarata" type="button" class="btn form-control btn-success" onclick="abrirDeliberacoes(<?php echo $id_ata; ?>)" data-bs-toggle="modal">
-            Prosseguir com a ata
-          </button>
-          <script>
-            var id_ata = '<?php echo $id_ata; ?>'; 
-            function abrirDeliberacoes(){
-                window.location.href = 'pagdeliberacoes.php?updateid=' + id_ata;
-            }
-          </script>
+    <button id="botaocontinuarata" type="button" class="btn form-control btn-success" onclick="abrirDeliberacoes(<?php echo $id_ata; ?>)" data-bs-toggle="modal">
+        Prosseguir com a ata
+    </button>
+    <script>
+        var id_ata = '<?php echo $id_ata; ?>'; 
+        function abrirDeliberacoes() {
+            // Exibe a mensagem de sucesso com um pop-up
+            Swal.fire({
+                title: "Perfeito!",
+                text: "Seus participantes foram registrados",
+                icon: "success",
+                showConfirmButton: true, // Exibir apenas o botão de confirmação
+                allowOutsideClick: false // Impedir que o usuário feche clicando fora do pop-up
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Redireciona para a página desejada após o clique no botão "OK"
+                    window.location.href = 'pagdeliberacoes.php?updateid=' + id_ata;
+                }
+            });
+        }
+    </script>
+</div>
 
-        </div>
+
         <br>
         <div class="p-2 col-lg-3 col-md-5 col-sm-12">
               <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn form-control btn-primary" data-bs-toggle="modal">
