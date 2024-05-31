@@ -67,7 +67,6 @@ function identificarIdPagina() {
       return null;
   }
 }
-
 $id_pagina = identificarIdPagina();
 print_r($id_pagina);
 
@@ -387,46 +386,6 @@ function adicionarParticipanteAoLabel(participante) {
 }
 </script>
 
-<script>
-  document.getElementById("addForm").addEventListener("submit", function(event) {
-  event.preventDefault(); 
-  var select = document.getElementById("participantesadicionado");
-  var selectedOptions = select.selectedOptions;
-  for (var i = 0; i < selectedOptions.length; i++) {
-    var selectedOption = selectedOptions[i];
-    var participante = selectedOption.textContent.trim();
-    var participanteId = selectedOption.value;
-    if (!participanteJaAdicionado(participante)) {
-      adicionarParticipanteAoLabel(participante);
-      selectedOption.remove();
-    }
-  }
-});
-$(document).ready(function() {
-    $('#participantesadicionado').change(function() {
-        var selected_ids = [];
-        var selected_names = [];
-        $('#participantesadicionado option:selected').each(function() {
-            selected_ids.push($(this).val());
-            selected_names.push($(this).text());
-        });
-        console.log(selected_ids);
-        console.log(selected_names);
-
-    });
-});
-function participanteJaAdicionado(participante) {
-  var label = document.getElementById("participantesLabel");
-  return label.textContent.includes(participante);
-}
-function adicionarParticipanteAoLabel(participante) {
-  var label = document.getElementById("participantesLabel");
-  var participanteItem = document.createElement("span");
-  participanteItem.textContent = participante;
-  participanteItem.classList.add("badge", "bg-secondary", "me-1");
-  label.appendChild(participanteItem);
-}
-</script>
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 <br>
 <div class="accordion">
@@ -545,46 +504,11 @@ function adicionarParticipanteAoLabel(participante) {
       </div>
     </div>
         <br>
-<<<<<<< HEAD
-        
-    </form>
-          
-            </div>          
-</div>
-</form>
-<div class="col">
-        <button  id="atribuida"   class="btn btn-primary">Atualizar a ATA</button>
-    
-</div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var botaoatribuicao = document.getElementById("atribuida");
-        if (botaoatribuicao) {
-            botaoatribuicao.addEventListener('click', gravaratribuida);
-        } else {
-            console.error("Elemento com o ID 'atribuida' não encontrado.");
-        }
-
-        // Verifique se id_ata está definido
-        if (id_ata !== null) {
-            // Código para executar se id_ata estiver definido
-            console.log("ID da página:", id_ata);
-            // Aqui você pode usar id_ata conforme necessário
-        } else {
-            console.error("id_ata não está definido.");
-        }
-    });
-</script>
-
-  </div>
-=======
         <div class="row">
     <div class="col text-center">
         <button id="atribuida" class="btn btn-primary">Atualizar reunião</button>
     </div>
     <div class="col text-center">
-<<<<<<< HEAD
     <button id="finalizar-ata" type="button" class="btn btn-secondary" onclick="finalizarAta()" data-bs-toggle="popover" data-bs-trigger="focus" title="Atenção!" data-bs-content="Depois de finalizar a ATA, ela não poderá ser alterada. Tem certeza que deseja prosseguir?">Finalizar ATA</button>
     <script>
         function finalizarAta() {
@@ -595,27 +519,6 @@ function adicionarParticipanteAoLabel(participante) {
     </script>
     </div>
 </div>
-=======
-        <!-- Botão "Finalizar ATA" com Popover -->
-        <button id="finalizar-ata" class="btn btn-secondary" data-bs-toggle="popover" data-bs-trigger="focus" title="Atenção!" data-bs-content="Depois de finalizar a ATA, ela não poderá ser alterada. Tem certeza que deseja prosseguir?">Finalizar ATA</button>
->>>>>>> origin/area_desenvolvimento_pedro
-    </div>
-</div>
-<<<<<<< HEAD
-       
-    <script src="view\js\multi-select-tag.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script src="view/js/bootstrap.js"></script>
-    <script src="app/gravar.js"></script>
-    <script src="app/gravaratribuida.js" data-id-ata="<?php echo $id_ata; ?>"></script>
-
-=======
-
-
-
->>>>>>> area-desenvolvimento-jhon
     </form>       
       </div>          
 </div>
@@ -681,6 +584,5 @@ function adicionarParticipanteAoLabel(participante) {
     <script src="app/gravaratribuida.js" data-id-ata="<?php echo $id_ata; ?>"></script>
     <script src="app/excluiratribuida.js"></script>
     
->>>>>>> origin/area_desenvolvimento_pedro
 </body>
 </html>

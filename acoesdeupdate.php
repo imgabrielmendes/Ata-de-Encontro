@@ -55,7 +55,7 @@ if (!empty($objetivo) && !empty($local) && !empty($hora_inicio) && !empty($hora_
 foreach ($iddelibe as $deliberacoes) {
     $enviarbanco_deliberacoes = "UPDATE deliberacoes SET deliberacoes = ? WHERE id_ata = ?";
     if ($stmt_deliberacoes = $conexao->prepare($enviarbanco_deliberacoes)) {
-        $stmt_deliberacoes->bind_param("si", $deliberacao, $deliberacoes);
+        $stmt_deliberacoes->bind_param("si", $deliberacao, $id_ataenviar);
         $stmt_deliberacoes->execute();
         $stmt_deliberacoes->close();
         echo "Dados atualizados com sucesso na tabela 'deliberacoes' para o ID de deliberação $deliberacoes!<br>";

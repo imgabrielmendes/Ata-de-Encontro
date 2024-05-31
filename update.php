@@ -305,7 +305,7 @@ mysqli_close($conn);
         var id = <?php echo json_encode($_GET['updateid']); ?>;
         var iddelibe = <?php echo json_encode($iddeliberacao_array); ?>;
       
-        console.log(iddelibe);
+        window.alert(iddelibe);
         // console.log(deliberacao);$enviarbanco_deliberacoes = "UPDATE deliberacoes SET deliberacoes = ? WHERE id_ata = ?";
 
 
