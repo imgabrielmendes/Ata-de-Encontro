@@ -237,11 +237,21 @@ if ($conn->connect_error) {
                 echo "<td class='text-start'   onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
                 echo "<td class='text-start'' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
                 echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
-                echo "<td class='text-center align-middle'>
-                        <a href='pagatribuida.php?updateid=".$id."' class='btn btn-warning' style='color: white;'>
-                            <button class='text-center align-middle' style='color:white; border: none; background: transparent;'>&plus;</button>
-                        </a>
-                    </td>";
+                if ($row['status'] === 'ABERTA') {
+                    echo "<td class='text-center align-middle'> 
+                            <a href='pagatribuida.php?updateid=$id' class='btn btn-warning' style='color: white;'>
+                                <button class='text-center align-middle' style='color:white; border: none; background: transparent; font-size: 1rem;'>&plus;</button>
+                            </a>
+                          </td>";
+                } else {
+                    echo "<td class='text-center align-middle'> 
+                            <button class='btn btn-success' style='color: white; font-size: 1.2rem; background-color: #076421;'>
+                                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' style='width: 1em; height: 1em; vertical-align: middle;'>
+                                    <path fill='#ffffff' d='M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z'/>
+                                </svg>
+                            </button>
+                          </td>";
+                }
 
     $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id);
     $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id);
