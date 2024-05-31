@@ -2,7 +2,6 @@
 include 'database.php';
 session_start();
 
-
 //Falta atualizar deliberadores. Deliberações está atualizando, porém em todos os campos.
 
 $data = $_POST['data'];
@@ -16,6 +15,15 @@ $deliberador = $_POST['deliberador'];
 $deliberacao = $_POST['deliberacao'];
 $facilitadoresSelecionados = $_POST['facilitadores'];
 $id_ataenviar = $_POST['id'];
+$iddelibe = $_POST['iddelibe'];
+
+var_dump("aaaaaaaaaaaaaaaa");
+    var_dump($iddelibe);
+
+
+
+
+    
 
 
 
@@ -43,18 +51,20 @@ if (!empty($objetivo) && !empty($local) && !empty($hora_inicio) && !empty($hora_
         echo "Erro ao preparar a consulta SQL para a tabela 'textoprinc': " . $conexao->error;
     }
 
-  
-    // Atualização na tabela "deliberacoes" apenas para o registro correto
+  // Atualização na tabela "deliberacoes" para cada ID de deliberação
+foreach ($iddelibe as $deliberacoes) {
     $enviarbanco_deliberacoes = "UPDATE deliberacoes SET deliberacoes = ? WHERE id_ata = ?";
     if ($stmt_deliberacoes = $conexao->prepare($enviarbanco_deliberacoes)) {
-        $stmt_deliberacoes->bind_param("si", $deliberacao, $id_ataenviar); 
+        $stmt_deliberacoes->bind_param("si", $deliberacao, $deliberacoes);
         $stmt_deliberacoes->execute();
         $stmt_deliberacoes->close();
-        echo "Dados atualizados com sucesso na tabela 'deliberacoes'!<br>";
+        echo "Dados atualizados com sucesso na tabela 'deliberacoes' para o ID de deliberação $deliberacoes!<br>";
     } else {
-        echo "Erro ao preparar a consulta SQL para a tabela 'deliberacoes': " . $conexao->error . "<br>";
+        echo "Erro ao preparar a consulta SQL para a tabela 'deliberacoes' com o ID de deliberação $deliberacoes: " . $conexao->error . "<br>";
     }
+}
 
+    
     $enviarbanco_deliberador = "UPDATE facilitadores SET nome_facilitador = ? WHERE id = ?";
     if ($stmt_deliberador = $conexao->prepare($enviarbanco_deliberador)) {
         $stmt_deliberador->bind_param("si", $deliberador, $id_ataenviar); 
