@@ -234,29 +234,85 @@ $_SESSION['data'] = $data_formatada;
                 <ul>
                 <?php
                   if (isset($_GET['updateid'])) {
-                      $id_ata = $_GET['updateid'];
-                      $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-                      if (!empty($participantes)) {
-                          echo "<ul class='list-unstyled'>";
-                          foreach ($participantes as $participante) {
-                              echo "<li>";
-                              echo "<span class='fw-bold' style='font-size: 18px;'>$participante</span>";
-                              echo "<button type='button' class='btn btn-danger btn-sm ms-2 py-0' style='font-size: 12px;' onclick='excluirParticipante($id_ata, \"$participante\")'>Excluir</button>";
-                              echo "</li>";
-                          }
-                          echo "</ul>";
-                      } else {
-                          echo "Nenhum participante encontrado para esta ATA.";
-                      }
-                  } else {
-                      echo "Nenhum ID de ATA fornecido.";
-                  }
+                    $id_ata = $_GET['updateid'];
+                    $participantes = $puxarform->ParticipantesPorIdAta($id_ata);
+                    if (!empty($participantes)) {
+                        // Ordena os participantes em ordem alfabética
+                        sort($participantes);
+                        
+                        // Exibe os participantes separados por vírgulas
+                        echo "<span style='font-size: 18px;'>";
+                        echo implode(', ', $participantes);
+                        echo "</span>";
+                    } else {
+                        echo "Nenhum participante encontrado para esta ATA.";
+                    }
+                } else {
+                    echo "Nenhum ID de ATA fornecido.";
+                }
                 ?>
                 </ul>
             </div>
         </div>
     </div>
 </div>
+
+<div class="d-flex align-items-center">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#listaParticipantesModal" style="background-color: #001f3f; border-color: #001f3f;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 1em; height: 1em; vertical-align: -0.125em;">
+      <path fill="#ffffff" d="M96 0C60.7 0 32 28.7 32 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H96zM208 288h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H144c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm-32-96a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM512 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V80zM496 192c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm16 144c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V336z"/>
+    </svg>
+  </button>
+  <span class="ms-2">Participantes da reunião</span>
+</div>
+<div class="modal fade" id="listaParticipantesModal" tabindex="-1" aria-labelledby="listaParticipantesModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="listaParticipantesModalLabel">Participantes da reunião</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <?php
+          if (isset($_GET['updateid'])) {
+            $id_ata = $_GET['updateid'];
+            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+            if (!empty($participantes)) {
+                // Ordena os participantes em ordem alfabética pelo nome do facilitador
+                usort($participantes, function($a, $b) {
+                    return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
+                });
+
+                echo "<table class='table'>";
+                echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
+                echo "<tbody>";
+                foreach ($participantes as $participante) {
+                    // Aqui, você pode acessar os dados adicionais do facilitador usando $participante
+                    // Suponho que $participante já contenha os dados da tabela facilitadores
+                    echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
+                    echo "<td>{$participante['matricula']}</td>"; // Coluna de Matrícula
+                    echo "<td>{$participante['nome_facilitador']}</td>"; // Coluna de Nome
+                    echo "<td>{$participante['email_facilitador']}</td>"; // Coluna de Email
+                    // Botão de Excluir com chamada para a função JavaScript excluirParticipante
+                    echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";
+                    echo "</tr>";
+                }
+                echo "</tbody></table>";
+            } else {
+                echo "Nenhum participante encontrado para esta ATA.";
+            }
+          } else {
+            echo "Nenhum ID de ATA fornecido.";
+          }
+        ?>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 
 <script>
   function excluirParticipante(participante) {
@@ -358,7 +414,7 @@ $_SESSION['data'] = $data_formatada;
         <?php
         if (isset($_GET['updateid'])) {
             $id_ata = $_GET['updateid'];
-            $pegarde = $puxarform->buscarParticipantesPorIdAta($id_ata);
+            $pegarde = $puxarform->ParticipantesPorIdAta($id_ata);
             echo "Estou puxando os valores: ";
             var_dump($pegarde);
         ?>
