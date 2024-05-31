@@ -326,8 +326,9 @@ mysqli_close($conn);
         }
     });
 });
+
 function excluirFacilitador(facilitador) {
-  if (confirm("Tem certeza de que deseja excluir o Facilitador '" + facilitador + "'?")) {
+  if (confirm("Tem certeza de que deseja excluir o Facilitador '" + facilitador + "?")) {
     var facilitadorOptions = document.querySelectorAll("#selecionandofacilitador option");
     var found = false;
     facilitadorOptions.forEach(function(option) {
