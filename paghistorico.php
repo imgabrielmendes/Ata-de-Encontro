@@ -256,11 +256,6 @@ if ($conn->connect_error) {
     $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id);
     $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id);
     $textoprin = $puxarform->buscarTextoPrincipalPorIdAta($id);
-
-    // print_r($puxaparticipantes);
-    // print_r($deliberacoes);
-    // print_r($textoprin);
-
         if (empty($deliberacoes) && !empty($puxaparticipantes)) {
             echo "<td class='text-center align-middle'>
                     <a class='text-light btn btn-success' href='arquivo_semdel.php?updateid=".$id."'>
@@ -305,7 +300,7 @@ if ($conn->connect_error) {
                         $totalParticipantes = count($puxaparticipantes);
                         $count = 0;
                         foreach ($puxaparticipantes as $participante) {
-                            echo   $participante ;
+                            echo $participante['nome_facilitador']; // Exibir apenas o nome do participante
                             $count++;
                             if ($count < $totalParticipantes) {
                                 echo ",";
@@ -316,7 +311,7 @@ if ($conn->connect_error) {
                     }
                 } else {
                     echo "ID da ata não disponível";
-                }
+                }                
                 echo "</td>";
 
                 if (isset($row['id'])) {
