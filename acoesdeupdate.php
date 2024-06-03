@@ -13,19 +13,15 @@ $tema = $_POST['tema'];
 $texto = $_POST['texto'];
 $deliberador = $_POST['deliberador'];
 $deliberacao = $_POST['deliberacao'];
-$facilitadoresSelecionados = $_POST['facilitadores'];
+
+$facilitadoresSelecionados = $_POST['facilitadoresSelecionados'];
+var_dump($facilitadoresSelecionados);
+
+
+
+
 $id_ataenviar = $_POST['id'];
-$iddelibe = $_POST['iddelibe'];
-
-var_dump("aaaaaaaaaaaaaaaa");
-    var_dump($iddelibe);
-
-
-
-
-    
-
-
+$iddelibe = $_POST['iddelibe']; 
 
 
 if (!empty($objetivo) && !empty($local) && !empty($hora_inicio) && !empty($hora_term) && !empty($tema) ) {
@@ -75,25 +71,27 @@ foreach ($iddelibe as $deliberacoes) {
         echo "Erro ao preparar a consulta SQL para a tabela 'facilitadores': " . $conexao->error;
     }
 }
-$sql_delete_facilitadores = "DELETE FROM ata_has_fac WHERE id_ata = ?";
-    if ($stmt_delete_facilitadores = $conexao->prepare($sql_delete_facilitadores)) {
-        $stmt_delete_facilitadores->bind_param("i", $id_ataenviar); 
-        $stmt_delete_facilitadores->execute();
-        $stmt_delete_facilitadores->close();
+
+foreach ($facilitadoresSelecionados as $facilitador) {
+    // Excluir facilitador marcado para exclusão
+    $sql_excluir_facilitador = "DELETE FROM ata_has_fac WHERE id_ata = ? AND facilitadores = ?";
+    if ($stmt_excluir_facilitador = $conexao->prepare($sql_excluir_facilitador)) {
+        $stmt_excluir_facilitador->bind_param("ii", $id_ataenviar, $facilitador);
+        $stmt_excluir_facilitador->execute();
+        $stmt_excluir_facilitador->close();
     } else {
-        echo "Erro ao preparar a consulta SQL para excluir os facilitadores associados: " . $conexao->error;
+        echo "Erro ao preparar a consulta SQL para excluir facilitador: " . $conexao->error;
     }
 
-    // Em seguida, insira os facilitadores selecionados
-    foreach ($facilitadoresSelecionados as $facilitador) {
-        $sql_insert_facilitador = "INSERT INTO ata_has_fac (id_ata, facilitadores) VALUES (?, ?)";
-        if ($stmt_insert_facilitador = $conexao->prepare($sql_insert_facilitador)) {
-            $stmt_insert_facilitador->bind_param("ii", $id_ataenviar, $facilitador); 
-            $stmt_insert_facilitador->execute();
-            $stmt_insert_facilitador->close();
-        } else {
-            echo "Erro ao preparar a consulta SQL para inserir facilitador: " . $conexao->error;
-        }
+    // Inserir facilitador
+    $sql_insert_facilitador = "INSERT INTO ata_has_fac (id_ata, facilitadores) VALUES (?, ?)";
+    if ($stmt_insert_facilitador = $conexao->prepare($sql_insert_facilitador)) {
+        $stmt_insert_facilitador->bind_param("ii", $id_ataenviar, $facilitador); 
+        $stmt_insert_facilitador->execute();
+        $stmt_insert_facilitador->close();
+    } else {
+        echo "Erro ao preparar a consulta SQL para inserir facilitador: " . $conexao->error;
     }
+}
 
-    echo "Dados atualizados com sucesso na tabela 'facilitadores'!";
+echo "Dados atualizados com sucesso na tabela 'facilitadores'!";

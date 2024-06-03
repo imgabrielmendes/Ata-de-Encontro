@@ -198,10 +198,10 @@ mysqli_close($conn);
                 <label for="form-control"> <b> Facilitador(es) responsável*:</b> </label>
               </div>
             </div>
-            <select class="col-6 form-control" id="selecionandofacilitador" name="facilitador" multiple value="">
-              <optgroup label="Selecione Facilitadores">
+            <select class="col-6 form-control" id="selecionandofacilitador" name="facilitadoresSelecionados" multiple value="">
+              <optgroup label="Selecione Facilitadores" >
                 <?php foreach ($pegarfa as $facnull): ?>
-                  <option value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                  <option  value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador'];  ?>" class="excluir">
                     <?php echo $facnull['nome_facilitador']; ?>
                   </option>
                 <?php endforeach ?>
@@ -211,7 +211,7 @@ mysqli_close($conn);
               <ul>
                 <?php foreach ($facilitadores as $facilitador): ?>
                   <li><?php echo $facilitador['facilitadores']; ?>
-                    <?php echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirFacilitador(\"{$facilitador['facilitadores']}\")'>Excluir</button></td>"; ?>
+                    <?php echo "<button type='button' class='btn btn-danger btn-sm' onclick='excluirFacilitador(\"{$facilitador['facilitadores']}\")'>Excluir</button>"; ?>
                   </li>
                 <?php endforeach; ?>
               </ul>
@@ -269,6 +269,9 @@ mysqli_close($conn);
 
   <script>
 
+    facilitadoresSelecionados = [];
+    facilitadoresSelecionadosLabel = [];
+
     new MultiSelectTag('selecionandofacilitador', {
       rounded: true,
       shadow: false,
@@ -281,8 +284,8 @@ mysqli_close($conn);
       onChange: function (selected_ids, selected_names) {
         facilitadoresSelecionados = selected_ids;
         facilitadoresSelecionadosLabel = selected_names;
-        // console.log(facilitadoresSelecionados);
-        // console.log(facilitadoresSelecionadosLabel);
+
+    
       }
     });
 
@@ -299,25 +302,24 @@ mysqli_close($conn);
         var objetivo = document.getElementById('objetivo').value;
         var local = document.getElementById('local').value;
         var tema = document.getElementById('temaprincipal').value;
+
         var texto = document.getElementById('textoprincipal').value;
+
         var deliberador = document.getElementById('deliberador').value;
         var deliberacao = document.getElementById('deliberacao').value;
+    
+        
+
+        console.log(facilitadoresSelecionados);
+
         var id = <?php echo json_encode($_GET['updateid']); ?>;
+
         var iddelibe = <?php echo json_encode($iddeliberacao_array); ?>;
-      
-        window.alert(iddelibe);
-        // console.log(deliberacao);$enviarbanco_deliberacoes = "UPDATE deliberacoes SET deliberacoes = ? WHERE id_ata = ?";
+  
 
+     
 
-
-        // Capturar os facilitadores selecionados
-        var facilitadoresSelecionados = [];
-        var selectFacilitadores = document.getElementById('selecionandofacilitador');
-        for (var i = 0; i < selectFacilitadores.selectedOptions.length; i++) {
-          facilitadoresSelecionados.push(selectFacilitadores.selectedOptions[i].value);
-        }
-
-        if (data === "" || objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "" || texto === "" || deliberador === "" || deliberacao === "") {
+        if (data === "" || objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "" || texto === "" || deliberador === "" || deliberacao === "" || facilitadoresSelecionados === "") {
           window.alert("Preencha as informações");
         } else {
           $.ajax({
@@ -334,7 +336,7 @@ mysqli_close($conn);
               data: data,
               deliberador: deliberador,
               deliberacao: deliberacao,
-              facilitadores: facilitadoresSelecionados,
+              facilitadoresSelecionados: facilitadoresSelecionados,
               iddelibe: iddelibe,
             },
             success: function (response) {
@@ -353,20 +355,22 @@ mysqli_close($conn);
     });
 
     function excluirFacilitador(facilitador) {
-      if (confirm("Tem certeza de que deseja excluir o Facilitador '" + facilitador + "?")) {
-        var facilitadorOptions = document.querySelectorAll("#selecionandofacilitador option");
-        var found = false;
-        facilitadorOptions.forEach(function (option) {
-          if (option.text === facilitador) {
-            option.remove();
-            found = true;
-          }
-        });
-        if (!found) {
-          alert("Facilitador não encontrado na lista.");
-        }
+  if (confirm("Tem certeza de que deseja excluir o Facilitador '" + facilitador + "'?")) {
+    var facilitadorOptions = document.querySelectorAll("#selecionandofacilitador option");
+    var found = false;
+    facilitadorOptions.forEach(function (option) {
+      if (option.text === facilitador) {
+        option.remove(); // Remover o elemento <option> da lista
+        console.log("Excluindo facilitador:", facilitador);
+        found = true;
       }
+    });
+    if (!found) {
+      alert("Facilitador não encontrado na lista.");
     }
+  }
+}
+
 
 
     function formatarData(data) {
