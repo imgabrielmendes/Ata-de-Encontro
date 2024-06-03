@@ -68,7 +68,10 @@ print_r($id_ata);
       }
       .content-header{
         background-color: #001f3f;
-        }
+      }
+      .histor{
+        text-decoration: none;
+      }
 </style>
 
       <header>
@@ -120,7 +123,7 @@ print_r($id_ata);
         <path fill="currentColor" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
       </svg>
             <p class="mb-0">
-              <b class="text-danger">ATENÇÃO!</b> Caso deseje apenas abrir uma ata sem informar os participantes, clique em <b class="text-primary">Ir para histórico</b>.
+              <b class="text-danger">ATENÇÃO!</b> Caso deseje apenas abrir uma ata sem informar os participantes, clique em <b class="text-primary"><a class="histor" href="paghistorico.php">Ir para histórico</b></a>.
             </p>
           </div>
         </div>
@@ -277,30 +280,17 @@ print_r($id_ata);
           <div class="btnsparticipante">
 
           <div class="p-2 col-lg-3 col-md-5 col-sm-12">
-    <button id="botaocontinuarata" type="button" class="btn form-control btn-success" onclick="abrirDeliberacoes(<?php echo $id_ata; ?>)" data-bs-toggle="modal">
-        Prosseguir com a ata
-    </button>
-    <script>
-        var id_ata = '<?php echo $id_ata; ?>'; 
-        function abrirDeliberacoes() {
-            // Exibe a mensagem de sucesso com um pop-up
-            Swal.fire({
-                title: "Perfeito!",
-                text: "Seus participantes foram registrados",
-                icon: "success",
-                showConfirmButton: true, // Exibir apenas o botão de confirmação
-                allowOutsideClick: false // Impedir que o usuário feche clicando fora do pop-up
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // Redireciona para a página desejada após o clique no botão "OK"
-                    window.location.href = 'pagdeliberacoes.php?updateid=' + id_ata;
-                }
-            });
-        }
-    </script>
-</div>
+          <button id="botaocontinuarata" type="button" class="btn form-control btn-success" onclick="abrirDeliberacoes(<?php echo $id_ata; ?>)" data-bs-toggle="modal">
+            Prosseguir com a ata
+          </button>
+          <script>
+            var id_ata = '<?php echo $id_ata; ?>'; 
+            function abrirDeliberacoes(){
+                window.location.href = 'pagdeliberacoes.php?updateid=' + id_ata;
+            }
+          </script>
 
-
+        </div>
         <br>
         <div class="p-2 col-lg-3 col-md-5 col-sm-12">
               <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn form-control btn-primary" data-bs-toggle="modal">

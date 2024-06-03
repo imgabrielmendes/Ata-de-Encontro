@@ -178,7 +178,8 @@ class AcoesForm {
 
     public function ParticipantesPorIdAta($id_ata) {
         try {
-            $sql = "SELECT F.nome_facilitador
+            $sql = "SELECT F.nome_facilitador as participantes,
+            F.id as id
                     FROM facilitadores AS F
                     WHERE F.id IN (SELECT participantes FROM participantes WHERE id_ata = :id_ata)"
                     
@@ -189,7 +190,7 @@ class AcoesForm {
             $stmt->execute();
             
 
-            return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
             
         } catch (\PDOException $e) {
 
@@ -253,6 +254,28 @@ class AcoesForm {
             $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+    }
+    
+    public function buscarTextoPrincipalPorIdAta($id_ata) {
+        try {
+            $sql = "SELECT 
+                        a.id,
+                        txt.texto_princ
+                    FROM atareu.assunto as a
+                        INNER JOIN atareu.textoprinc as txt
+                            ON txt.id_ata = a.id
+                            
+                    WHERE a.id = :id_ata";
+    
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
+            $stmt->execute();
+    
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    
         } catch (\PDOException $e) {
             throw $e;
         }

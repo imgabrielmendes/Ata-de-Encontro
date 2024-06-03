@@ -5,7 +5,7 @@ include_once ("app/acoesform.php");
 include ("conexao.php");
 
 $puxarform = new AcoesForm;
-$pegarde = $puxarform->pegarfacilitador();
+// $pegarde = $puxarform->pegarfacilitador();
 
 $ultimosfacilitadores = $puxarform->puxandoUltimosFacilitadores();
 
@@ -213,7 +213,6 @@ $_SESSION['data'] = $data_formatada;
     <i class="fa-solid fa-user p-1 mb-1"></i><h5>Participantes Adicionados </h5>
 
     </button>
-    
   </h2>
 
 <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse ">
@@ -235,30 +234,36 @@ $_SESSION['data'] = $data_formatada;
                 <ul>
                 <?php
                   if (isset($_GET['updateid'])) {
-                    $id_ata = $_GET['updateid'];
-                    $participantes = $puxarform->ParticipantesPorIdAta($id_ata);
-                    if (!empty($participantes)) {
-                        // Ordena os participantes em ordem alfabética
-                        sort($participantes);
-                        
-                        // Exibe os participantes separados por vírgulas
-                        echo "<span style='font-size: 18px;'>";
-                        echo implode(', ', $participantes);
-                        echo "</span>";
-                    } else {
-                        echo "Nenhum participante encontrado para esta ATA.";
-                    }
-                } else {
-                    echo "Nenhum ID de ATA fornecido.";
-                }
+                      $id_ata = $_GET['updateid'];
+                      $participantes = $puxarform->ParticipantesPorIdAta($id_ata);
+                      if (!empty($participantes)) {
+                          // Array para armazenar apenas os nomes dos participantes
+                          $nomesParticipantes = array();
+
+                          // Extrai apenas os nomes dos participantes
+                          foreach ($participantes as $participante) {
+                              $nomesParticipantes[] = $participante['participantes'];
+                          }
+
+                          // Ordena os participantes em ordem alfabética
+                          sort($nomesParticipantes);
+
+                          // Exibe os participantes separados por vírgulas
+                          echo "<span style='font-size: 18px;'>";
+                          echo implode(', ', $nomesParticipantes);
+                          echo "</span>";
+                      } else {
+                          echo "Nenhum participante encontrado para esta ATA.";
+                      }
+                  } else {
+                      echo "Nenhum ID de ATA fornecido.";
+                  }
                 ?>
                 </ul>
             </div>
         </div>
     </div>
 </div>
-
-
 
 <div class="d-flex align-items-center">
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#listaParticipantesModal" style="background-color: #001f3f; border-color: #001f3f;">
@@ -314,6 +319,9 @@ $_SESSION['data'] = $data_formatada;
 </div>
 
 
+
+
+
 <script>
   function excluirParticipante(participante) {
     if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
@@ -326,6 +334,10 @@ $_SESSION['data'] = $data_formatada;
     }
   }
 </script>
+
+
+
+
 
 
 </div>
@@ -391,7 +403,7 @@ $_SESSION['data'] = $data_formatada;
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
     <div class="col-md-12 text-center">               
     </div>
- 
+    
     <span class="col d-flex align-items-end flex-column" id="inputContainer"></span>
 
         <form id="addForm">
@@ -403,22 +415,50 @@ $_SESSION['data'] = $data_formatada;
               <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;"></textarea>
             </div>
 
-    <div class="col">
+            <div class="col">
     <!-- Primeira caixa de texto e select de facilitadores -->
     <div class="mb-2">
         <label for="" class="mb-2">Deliberado para:</label>
-        <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
-        <optgroup label="Selecione Facilitadores">
-                  <?php foreach ($pegarde as $facnull) : ?>
-                      <option value="<?php echo $facnull['id']; ?>"
-                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                          <?php echo $facnull['nome_facilitador']; ?>
-                      </option>
-                  <?php endforeach ?>
-              </optgroup>
-        </select>
+        <?php
+          if (isset($_GET['updateid'])) {
+            $id_ata = $_GET['updateid'];
+            $resultados = $puxarform->ParticipantesPorIdAta($id_ata);
+            // var_dump($resultados);
+
+            $pegarde = [];
+            foreach ($resultados as $row) {
+              $pegarde[$row['id']] = $row['participantes'];
+            }
+        ?>
+            <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
+                <optgroup label="Selecione Facilitadores">
+                    <?php
+                    foreach ($pegarde as $index => $nome) {
+                        if (is_string($nome)) {
+                            ?>
+                            <option value="<?php echo htmlspecialchars($index); ?>"
+                                data-tokens="<?php echo htmlspecialchars($nome); ?>">
+                                <?php echo htmlspecialchars($nome); ?>
+                            </option>
+                            <?php
+                        } else {
+                            echo "<!-- Dado inválido: ";
+                            var_dump($nome);
+                            echo " -->";
+                        }
+                    }
+                    ?>
+                </optgroup>
+            </select>
+        <?php
+        } else {
+            echo "PORRA, DEU ERRADO";
+        }
+        ?>
     </div>
-        </div>
+</div>
+
+
         <div class="col-12">
           <ul id="caixadeselecaodel"></ul>
   <div class="col d-flex justify-content-center align-content-center">

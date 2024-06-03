@@ -1,7 +1,6 @@
 <?php
 
 namespace formulario;
-session_destroy();
 
 // include("vendor/autoload.php");
 include_once("app/acoesform.php");
@@ -253,92 +252,132 @@ if ($conn->connect_error) {
                             </button>
                           </td>";
                 }
-                
-                
-                
 
-
-        $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id);
-        $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id);
+    $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id);
+    $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id);
+    $textoprin = $puxarform->buscarTextoPrincipalPorIdAta($id);
         if (empty($deliberacoes) && !empty($puxaparticipantes)) {
-                echo "<td class='text-center align-middle'>
-                        <a class='text-light btn btn-success' href='arquivo_semdel.php?updateid=".$id."'>
-                            <i class='fas fa-file-pdf'></i>
-                        </a>
-                    </td>";
+            echo "<td class='text-center align-middle'>
+                    <a class='text-light btn btn-success' href='arquivo_semdel.php?updateid=".$id."'>
+                        <i class='fas fa-file-pdf'></i>
+                    </a>
+                </td>";
+
         } elseif (empty($deliberacoes) && empty($puxaparticipantes)) {
-                echo "<td class='text-center align-middle'>
-                        <a class='text-light btn btn-success' href='arquivo_sempart.php?updateid=".$id."'>
-                            <i class='fas fa-file-pdf'></i>
-                        </a>
-                        </td>";
+            echo "<td class='text-center align-middle'>
+                    <a class='text-light btn btn-success' href='arquivo_sempart.php?updateid=".$id."'>
+                        <i class='fas fa-file-pdf'></i>
+                    </a>
+                </td>";
+
+        } elseif (!empty($textoprin)) {
+            echo "<td class='text-center align-middle'>
+                    <a class='text-light btn btn-danger' href='arquivo_partetext.php?updateid=".$id."'>
+                        <i class='fas fa-file-pdf'></i>
+                    </a>
+                </td>";
+
         } else {
-                echo "<td class='text-center align-middle'>
-                        <a class='text-light btn btn-success' href='arquivopdf.php?updateid=".$id."'>
-                            <i class='fas fa-file-pdf'></i>
-                        </a>
-                        </td>";
-                };
-        echo "<td class='align-middle' style='display:none;' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
-            echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
-            if (isset($row['id'])) {
-                $id_ata = $row['id'];
-                $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-                if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
-                    $nomesParticipantes = array_column($puxaparticipantes, 'nome_facilitador');
-                    echo implode(", ", $nomesParticipantes);
-                } else {
-                    echo "Nenhum participante";
-                }
-            } else {
-                echo "ID da ata não disponível";
-            }
-            echo "</td>";
-        if (isset($row['id'])) {
-            $id_ata = $row['id'];
-            $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
-            if (!empty($deliberacoes) && is_array($deliberacoes)) {
-                $deliberacoes_unicas = array();
-                foreach ($deliberacoes as $deliberacao) {
-                    $texto_deliberacao = $deliberacao['deliberacoes'];
-                    $deliberador = $deliberacao['deliberador'];
-                    if (!isset($deliberacoes_unicas[$texto_deliberacao])) {
-                        $deliberacoes_unicas[$texto_deliberacao] = array();
+            echo "<td class='text-center align-middle'>
+                    <a class='text-light btn btn-success' href='arquivopdf.php?updateid=".$id."'>
+                        <i class='fas fa-file-pdf'></i>
+                    </a>
+                </td>";
+        }
+    
+
+
+
+
+                    
+                echo "<td class='align-middle' style='display:none;' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
+
+                echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
+                if (isset($row['id'])) {
+                    $id_ata = $row['id'];
+                    $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+                    if (!empty($puxaparticipantes) && is_array($puxaparticipantes)) {
+                        $totalParticipantes = count($puxaparticipantes);
+                        $count = 0;
+                        foreach ($puxaparticipantes as $participante) {
+                            echo $participante['nome_facilitador']; // Exibir apenas o nome do participante
+                            $count++;
+                            if ($count < $totalParticipantes) {
+                                echo ",";
+                            }
+                        }
+                    } else {
+                        echo "Nenhum participante";
                     }
-                    $deliberacoes_unicas[$texto_deliberacao][] = $deliberador;
-                } 
-        echo "<td class='deliberacao-cell text-left' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
-            foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
-                echo "<div class='col-6 bg-body-secondary form-control deliberacao' style='max-height: 80px;'>" . $texto_deliberacao . "<br>";
-                $deliberadores_concatenados = implode(", ", $deliberadores);
-                echo "<div class='deliberador'>" . $deliberadores_concatenados . "</div>";
-                echo "</div><br>";
+                } else {
+                    echo "ID da ata não disponível";
+                }                
+                echo "</td>";
+
+                if (isset($row['id'])) {
+                    $id_ata = $row['id'];
+                    $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+                    if (!empty($deliberacoes) && is_array($deliberacoes)) {
+                        // Inicializa um array associativo para armazenar as deliberações únicas e os deliberadores associados a cada deliberação
+                        $deliberacoes_unicas = array();
+                        
+                        // Agrupa os deliberadores por deliberação, evitando repetições
+                        foreach ($deliberacoes as $deliberacao) {
+                            $texto_deliberacao = $deliberacao['deliberacoes'];
+                            $deliberador = $deliberacao['deliberador'];
+                            // Adiciona o deliberador apenas se esta deliberação ainda não estiver presente no array
+                            if (!isset($deliberacoes_unicas[$texto_deliberacao])) {
+                                $deliberacoes_unicas[$texto_deliberacao] = array();
+                            }
+                            // Adiciona o deliberador ao array associado à deliberação
+                            $deliberacoes_unicas[$texto_deliberacao][] = $deliberador;
+                        }
+                        
+                        echo "<td class='deliberacao-cell text-left' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        // Exibe as deliberações únicas e os deliberadores associados a cada deliberação
+                        foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
+                            echo "<div class='col-6 bg-body-secondary form-control deliberacao' style='max-height: 80px;'>" . $texto_deliberacao . "<br>";
+                            // Exibe os deliberadores associados a esta deliberação
+                            $deliberadores_concatenados = implode(", ", $deliberadores);
+                            echo "<div class='deliberador'>" . $deliberadores_concatenados . "</div>";
+                            echo "</div><br>"; // Adiciona uma quebra de linha após cada bloco de deliberação
+                        }
+                        echo "</td>";
+                        echo "<td  class='deliberador-cell text-left' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                        // Exibe os deliberadores associados a cada deliberação única
+                        foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
+                            $deliberadores_concatenados = implode(", ", $deliberadores);
+                            echo "<div class='col-6 bg-body-secondary form-control deliberador'>" . $deliberadores_concatenados . "</div>";
+                            echo "<br>"; // Adiciona uma quebra de linha após cada bloco de deliberadores
+                        }
+                        echo "</td>";
+                    } else {
+                        echo "<td class='deliberacao-cell align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
+                        echo "<div class='col-6 bg-body-secondary form-control'>Nenhuma deliberação</div>";
+                        echo "</td>";
+                        
+                        echo "<td class='deliberador-cell align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
+                        echo "<div class='col-6 bg-body-secondary form-control'>Nenhum deliberador</div>";
+                        echo "</td>";
+                    }
+                    
+                    
+                    
+                    
+                      
+                    
+                }                     
+                
+                echo "</tr>";
             }
-        echo "</td>";
-        echo "<td  class='deliberador-cell text-left' style='display:none;' id='deliberadores" . $row['id'] . "'>";
-            foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
-                $deliberadores_concatenados = implode(", ", $deliberadores);
-                echo "<div class='col-6 bg-body-secondary form-control deliberador'>" . $deliberadores_concatenados . "</div>";
-                echo "<br>"; 
-            }
-        echo "</td>";
         } else {
-            echo "<td class='deliberacao-cell align-middle' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
-            echo "<div class='col-6 bg-body-secondary form-control'>Nenhuma deliberação</div>";
-            echo "</td>";    
-            echo "<td class='deliberador-cell align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
-            echo "<div class='col-6 bg-body-secondary form-control'>Nenhum deliberador</div>";
-            echo "</td>";
-            }                   
-        }                                    
-        echo "</tr>";
-            }
-        } else {
-                echo "<tr><td colspan='8'>Nenhum registro encontrado.</td></tr>";
+            echo "<tr><td colspan='8'>Nenhum registro encontrado.</td></tr>";
         }
         ?>
     </tbody>
 </table>
+
+
         </div>
     </div>
 </div>
