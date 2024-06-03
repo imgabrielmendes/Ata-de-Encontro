@@ -506,17 +506,7 @@ function adicionarParticipanteAoLabel(participante) {
         <br>
         <div class="row">
     <div class="col text-center">
-        <button id="atribuida" class="btn btn-primary">Atualizar reunião</button>
-    </div>
-    <div class="col text-center">
-    <button id="finalizar-ata" type="button" class="btn btn-secondary" onclick="finalizarAta()" data-bs-toggle="popover" data-bs-trigger="focus" title="Atenção!" data-bs-content="Depois de finalizar a ATA, ela não poderá ser alterada. Tem certeza que deseja prosseguir?">Finalizar ATA</button>
-    <script>
-        function finalizarAta() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const updateId = urlParams.get('updateid');
-            window.location.href = 'pagatafinalizada.php?updateid=' + id_ata;
-        }
-    </script>
+        <button id="atribuida" class="btn btn-primary">Finalizar reunião</button>
     </div>
 </div>
     </form>       
@@ -555,19 +545,7 @@ function adicionarParticipanteAoLabel(participante) {
     </div>
 </form>
 <script>
-    var id_ata = <?php echo json_encode($id_pagina); ?>;
-    document.addEventListener('DOMContentLoaded', function() {
-        var botaoatribuicao = document.getElementById("atribuida");
-        if (botaoatribuicao) {
-            botaoatribuicao.addEventListener('click', gravaratribuida);
-        } else {
-            console.error("Elemento com o ID 'atribuida' não encontrado.");
-        }
-        if (typeof id_ata !== 'undefined' && window.location.pathname !== '/paghistorico.php') {
-        } else {
-            console.error("id_ata não está definido ou estamos na página de histórico.");
-        }
-    });
+
 </script>
       </div>
     </div>
@@ -579,7 +557,6 @@ function adicionarParticipanteAoLabel(participante) {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
     <script src="view/js/multi-select-tag.js"></script>
-    <script src="app/gravar.js"></script>
     <script src="app/deliberacoes.js"></script>
     <script src="app/gravaratribuida.js" data-id-ata="<?php echo $id_ata; ?>"></script>
     <script src="app/excluiratribuida.js"></script>
