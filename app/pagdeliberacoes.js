@@ -48,26 +48,22 @@ addItemButton.addEventListener('click', function() {
             icon: "error"
         });
     } else {
-        // Incrementa o contador de ações bem-sucedidas
+
         acoesBemSucedidas++;
 
-        // Remove a caixa de texto existente
         var inputField = document.getElementById('item');
         inputField.parentNode.removeChild(inputField);
 
-        // Cria uma div para a list-group-item do texto digitado
         var textListItemDiv = document.createElement('div');
         textListItemDiv.className = 'list-group-item';
         textListItemDiv.textContent = newItem;
 
         itemList.appendChild(textListItemDiv);
 
-        // Cria uma label para o texto digitado
         var textLabelElement = document.createElement('label');
         textLabelElement.textContent = newItem;
         textListItemDiv.appendChild(textLabelElement);
 
-        // Adiciona os deliberadores selecionados à lista
         selectedDeliberators.forEach(function(deliberator) {
             var deliberatorDiv = document.createElement('div');
             deliberatorDiv.className = 'form-control bg-body-secondary border rounded';
@@ -78,7 +74,6 @@ addItemButton.addEventListener('click', function() {
             itemList.appendChild(deliberatorDiv);
         });
 
-        // Adiciona um botão de exclusão para o item
         var deleteButton = document.createElement('button');
         deleteButton.textContent = 'Excluir';
         deleteButton.className = 'btn btn-danger btn-sm ml-2 delete-item';
@@ -100,7 +95,6 @@ addItemButton.addEventListener('click', function() {
     }
 });
 
-// Adicione o evento de clique para o botão 'addItemButton'
 document.getElementById('addItemButton').addEventListener('click', function() {
     var newItem = document.querySelector('.item').value.trim();
     
@@ -125,6 +119,7 @@ document.getElementById('addItemButton').addEventListener('click', function() {
         });
         return;
     } else {
+
         // Incrementa o contador de ações bem-sucedidas
         acoesBemSucedidas++;
 
@@ -171,23 +166,30 @@ document.getElementById('addItemButton').addEventListener('click', function() {
             toastBootstrap.show();
         });
 
+        
+
         var textListItemDiv = document.createElement('div');
         textListItemDiv.className = 'black text-break form-control border rounded';
         textListItemDiv.textContent = newItem;
+
+        // Cria e adiciona a label "Deliberação" + contador
+        var deliberationLabel = document.createElement('label');
+        deliberationLabel.className = "d-flex justify-content-start mb-2 badge rounded-pill text-bg-success opacity-75";
+        deliberationLabel.style.marginRight = "auto";
+        deliberationLabel.textContent = "Deliberação N°" + acoesBemSucedidas;
+        
+        // textListItemDiv.appendChild(deliberationLabel);
 
         var facilitatorListItemDiv = document.createElement('div');
         facilitatorListItemDiv.className = 'form-control bg-body-secondary border rounded';
         facilitatorListItemDiv.textContent = deliberadoresSelecionadosLabel;
 
         var itemList = document.getElementById('inputContainer');
+        itemList.appendChild(deliberationLabel);
         itemList.appendChild(textListItemDiv);
         itemList.appendChild(facilitatorListItemDiv);
         itemList.appendChild(deleteButton);
 
-        // Cria e adiciona a label "Deliberação" + contador
-        var deliberationLabel = document.createElement('label');
-        deliberationLabel.textContent = "Deliberação " + acoesBemSucedidas;
-        textListItemDiv.appendChild(deliberationLabel);
     }
 });
 

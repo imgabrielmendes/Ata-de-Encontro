@@ -259,9 +259,21 @@ if ($conn->connect_error) {
 
     // print_r($puxaparticipantes);
     // print_r($deliberacoes);
-    // print_r($textoprin);
+    print_r($textoprin);
 
-        if (empty($deliberacoes) && !empty($puxaparticipantes)) {
+
+
+
+        if (empty($deliberacoes) && !empty($textoprin)) {
+            echo "<td class='text-center align-middle'>
+                    <a class='text-light btn btn-danger' href='arquivo_partetext.php?updateid=".$id."'>
+                        <i class='fas fa-file-pdf'></i>
+                    </a>
+                </td>";
+
+        }
+
+        elseif (empty($deliberacoes) && !empty($puxaparticipantes)) {
             echo "<td class='text-center align-middle'>
                     <a class='text-light btn btn-success' href='arquivo_semdel.php?updateid=".$id."'>
                         <i class='fas fa-file-pdf'></i>
@@ -275,14 +287,7 @@ if ($conn->connect_error) {
                     </a>
                 </td>";
 
-        } elseif (!empty($textoprin)) {
-            echo "<td class='text-center align-middle'>
-                    <a class='text-light btn btn-danger' href='arquivo_partetext.php?updateid=".$id."'>
-                        <i class='fas fa-file-pdf'></i>
-                    </a>
-                </td>";
-
-        } else {
+        }  else {
             echo "<td class='text-center align-middle'>
                     <a class='text-light btn btn-success' href='arquivopdf.php?updateid=".$id."'>
                         <i class='fas fa-file-pdf'></i>
