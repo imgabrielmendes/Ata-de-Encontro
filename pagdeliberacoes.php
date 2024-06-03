@@ -395,7 +395,7 @@ $_SESSION['data'] = $data_formatada;
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
     <div class="col-md-12 text-center">               
     </div>
- 
+    
     <span class="col d-flex align-items-end flex-column" id="inputContainer"></span>
 
         <form id="addForm">
@@ -412,17 +412,20 @@ $_SESSION['data'] = $data_formatada;
     <div class="mb-2">
         <label for="" class="mb-2">Deliberado para:</label>
         <?php
-        if (isset($_GET['updateid'])) {
+          if (isset($_GET['updateid'])) {
             $id_ata = $_GET['updateid'];
-            $pegarde = $puxarform->ParticipantesPorIdAta($id_ata);
-            echo "Estou puxando os valores: ";
-            var_dump($pegarde);
+            $resultados = $puxarform->ParticipantesPorIdAta($id_ata);
+            // var_dump($resultados);
+
+            $pegarde = [];
+            foreach ($resultados as $row) {
+              $pegarde[$row['id']] = $row['participantes'];
+            }
         ?>
             <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
                 <optgroup label="Selecione Facilitadores">
                     <?php
                     foreach ($pegarde as $index => $nome) {
-
                         if (is_string($nome)) {
                             ?>
                             <option value="<?php echo htmlspecialchars($index); ?>"

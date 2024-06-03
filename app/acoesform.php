@@ -162,7 +162,8 @@ class AcoesForm {
     }
     public function ParticipantesPorIdAta($id_ata) {
         try {
-            $sql = "SELECT F.nome_facilitador
+            $sql = "SELECT F.nome_facilitador as participantes,
+            F.id as id
                     FROM facilitadores AS F
                     WHERE F.id IN (SELECT participantes FROM participantes WHERE id_ata = :id_ata)"
                     
@@ -173,7 +174,7 @@ class AcoesForm {
             $stmt->execute();
             
 
-            return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
             
         } catch (\PDOException $e) {
 

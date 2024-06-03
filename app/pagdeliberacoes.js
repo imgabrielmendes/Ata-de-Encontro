@@ -32,25 +32,24 @@ var mensagemInfo = document.getElementById('infoMessage');
 
 
 //LINKANDO AS VARÍAVEIS QUE VÃO SER ENVIADO JUNTO COM PARTICIPANTES
+// Declare uma variável de contagem
+// Declare uma variável de contagem global
+var acoesBemSucedidas = 0;
 
+// Adicione o evento de clique para o botão 'addItemButton'
 addItemButton.addEventListener('click', function() {
     var newItem = document.getElementById('item').value.trim();
     
-    // Obtém o elemento <select>
-    // var selectElement = document.getElementById('selectFacilitators');
-    // Obtém o valor selecionado
-    // var selectedFacilitator = document.querySelector('.facilitator-select').value;
-    
+    // Se o campo estiver vazio, exiba um alerta
     if (newItem === "") {
         Swal.fire({
             title: "Você não adicionou um participante",
             text: "Adicione pelo menos 1 participante para a ata",
             icon: "error"
-
         });
-    } 
-    
-    else {
+    } else {
+        // Incrementa o contador de ações bem-sucedidas
+        acoesBemSucedidas++;
 
         // Remove a caixa de texto existente
         var inputField = document.getElementById('item');
@@ -70,7 +69,6 @@ addItemButton.addEventListener('click', function() {
 
         // Adiciona os deliberadores selecionados à lista
         selectedDeliberators.forEach(function(deliberator) {
-
             var deliberatorDiv = document.createElement('div');
             deliberatorDiv.className = 'form-control bg-body-secondary border rounded';
             var deliberatorLabel = document.createElement('label');
@@ -78,9 +76,6 @@ addItemButton.addEventListener('click', function() {
             deliberatorLabel.textContent = deliberator;
             deliberatorDiv.appendChild(deliberatorLabel);
             itemList.appendChild(deliberatorDiv);
-
-
-
         });
 
         // Adiciona um botão de exclusão para o item
@@ -88,126 +83,113 @@ addItemButton.addEventListener('click', function() {
         deleteButton.textContent = 'Excluir';
         deleteButton.className = 'btn btn-danger btn-sm ml-2 delete-item';
         deleteButton.addEventListener('click', function() {
-
             itemList.removeChild(textListItemDiv);
             selectedDeliberators.forEach(function(deliberator) {
-
                 var deliberatorDiv = document.querySelector('.form-control.bg-body-secondary.border.rounded:contains(' + deliberator + ')');
                 itemList.removeChild(deliberatorDiv);
             });
-
             deleteButton.remove(); 
-            
         });
 
         itemList.appendChild(deleteButton);
+
+        // Cria e adiciona a label "Deliberação" + contador
+        var deliberationLabel = document.createElement('label');
+        deliberationLabel.textContent = "<b>Deliberação N°" + acoesBemSucedidas + "</b>";
+        textListItemDiv.appendChild(deliberationLabel);
     }
 });
 
+// Adicione o evento de clique para o botão 'addItemButton'
 document.getElementById('addItemButton').addEventListener('click', function() {
-
     var newItem = document.querySelector('.item').value.trim();
     
     if (newItem === "" && deliberadoresSelecionadosLabel.length === 0) {
-          Swal.fire({
+        Swal.fire({
             title: "Preencha os campos de deliberação",
             icon: "error"
         });
-        
         return;
-    }
-
-    else if (newItem === ""){
-
+    } else if (newItem === "") {
         Swal.fire({
             title: "Você não adicionou uma deliberação",
             text: "Adicione pelo menos 1 deliberação para a ata",
             icon: "error"
         });
-        
         return;
-    }
-
-    else if (deliberadoresSelecionadosLabel.length === 0) {
-
+    } else if (deliberadoresSelecionadosLabel.length === 0) {
         Swal.fire({
-          title: "Você não adicionou um deliberador",
-          text: "Adicione pelo menos 1 deliberador para a deliberação",
-          icon: "error"
-      });
-      
-      return;
-  }
-    else {
+            title: "Você não adicionou um deliberador",
+            text: "Adicione pelo menos 1 deliberador para a deliberação",
+            icon: "error"
+        });
+        return;
+    } else {
+        // Incrementa o contador de ações bem-sucedidas
+        acoesBemSucedidas++;
 
         const toastLiveExample = document.getElementById('liveToast')
-
         var deliberador = document.querySelector('.item').value;
         var deliberacoes = document.querySelector('.facilitator-select').value;
- 
+
         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
         toastBootstrap.show();        
         $.ajax({
             url: 'registrarpagdeliberacoes.php',
             method: 'POST',
             data: {
-               deliberaDores: JSON.stringify(deliberadoresSelecionadosNUM), 
-               deliberAcoes: deliberacoes, 
-               newItem: newItem,
-
+                deliberaDores: JSON.stringify(deliberadoresSelecionadosNUM), 
+                deliberAcoes: deliberacoes, 
+                newItem: newItem,
             },
-    
             success: function(response) {
                 console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
                 console.log(response);
-
                 console.log("AAAAAAAAAAAAA");
                 console.log(deliberadoresSelecionadosNUM);
-
-
             },
-            
             error: function(error) {
                 console.error('Erro na solicitação AJAX:', error);
             }
         });
-    }
-            
+
         var deleteButton = document.createElement('button');
-            deleteButton.textContent = 'x';
-            deleteButton.className = 'col btn btn-danger btn-mt mt-2';
-            deleteButton.style.right = '9px'; 
-            deleteButton.style.top = '0px'; 
-            deleteButton.style.width = '37px'; 
-            deleteButton.style.height = '37px'; 
-    
+        deleteButton.textContent = 'x';
+        deleteButton.className = 'col btn btn-danger btn-mt mt-2';
+        deleteButton.style.right = '9px'; 
+        deleteButton.style.top = '0px'; 
+        deleteButton.style.width = '37px'; 
+        deleteButton.style.height = '37px'; 
+
         deleteButton.addEventListener('click', function() {  
-                     
             itemList.removeChild(textListItemDiv);
             itemList.removeChild(facilitatorListItemDiv);
             deleteButton.remove(); 
 
             const toastLiveExample = document.getElementById('liveToast2');
             const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-                toastBootstrap.show();
+            toastBootstrap.show();
+        });
 
-            });
-
-    var textListItemDiv = document.createElement('div');
+        var textListItemDiv = document.createElement('div');
         textListItemDiv.className = 'black text-break form-control border rounded';
         textListItemDiv.textContent = newItem;
 
-    var facilitatorListItemDiv = document.createElement('div');
+        var facilitatorListItemDiv = document.createElement('div');
         facilitatorListItemDiv.className = 'form-control bg-body-secondary border rounded';
         facilitatorListItemDiv.textContent = deliberadoresSelecionadosLabel;
 
-    var itemList = document.getElementById('inputContainer');
+        var itemList = document.getElementById('inputContainer');
         itemList.appendChild(textListItemDiv);
         itemList.appendChild(facilitatorListItemDiv);
         itemList.appendChild(deleteButton);
 
+        // Cria e adiciona a label "Deliberação" + contador
+        var deliberationLabel = document.createElement('label');
+        deliberationLabel.textContent = "Deliberação " + acoesBemSucedidas;
+        textListItemDiv.appendChild(deliberationLabel);
+    }
 });
-
 
 
 
