@@ -382,22 +382,46 @@ function adicionarParticipanteAoLabel(participante) {
 </div>
   </h2>
 
-<!-----------------------------4° FASE-------------------------------->
+<!-----------------------------3° FASE-------------------------------->
 
 <div class="accordion-collapse collapse show">
     <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
         <div class="col-md-12 text-center"></div>
-        
         <div class="row">
-            <div class="col">
-                <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-                <textarea id="textoprinc" style="height: 110px;" class="form-control"><?php echo $texto_principal; ?></textarea>
-            </div>
-        </div>    
         <div class="d-flex justify-content-center">
-            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Registrar Texto</button>
+            <textarea id="textoprincipal" name="texto_principal" style="height: 110px;" class="form-control"><?php echo $texto_principal; ?></textarea>
         </div>
+        <div class="d-flex justify-content-center mt-3">
+            <button id="registrarTextoButton" type="button" class="btn btn-primary" data-bs-toggle="modal" data-id-ata="<?php echo $id_ata; ?>">Registrar Texto</button>
+        </div>
+        <script>
+         document.getElementById('registrarTextoButton').addEventListener('click', function() {
+          var textoPrincipal = document.getElementById('textoprincipal').value;
+          var idAata = this.getAttribute('data-id-ata');
+          var xhr = new XMLHttpRequest();
+          xhr.open('POST', 'textprincbanco.php', true);
+          xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+          xhr.onreadystatechange = function() {
+              if(xhr.readyState == 4 && xhr.status == 200) {
+                  Swal.fire({
+                      title: 'Deu certo!',
+                      text: 'O texto principal foi atualizado com sucesso.',
+                      icon: 'success',
+                      timer: 2500
+                  });
+                  document.getElementById('textoprincipal').value = "";
+              }
+          }
+          xhr.send('id_ata=' + idAata + '&textoprincipal=' + encodeURIComponent(textoPrincipal));
+      });
+
+        </script>
+    </div>    
 </div>
+
+
+<!-----------------------------4° FASE-------------------------------->
+
 <div class="accordion mt-4">
     <div class="accordion-item shadow">
         <h2 class="accordion-header">

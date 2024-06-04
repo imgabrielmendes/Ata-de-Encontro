@@ -29,6 +29,60 @@ new MultiSelectTag('participantesadicionado', {
     }
 });
 
+
+var botaohist = document.getElementById('abrirhist');
+botaohist.addEventListener('click', irparaHist);
+
+function irparaHist() {
+    console.log("Ok, a função de ir para histórico e registrar texto foi puxada");
+
+    var textoprincipal = document.getElementById('textoprinc').value;
+    console.log(textoprincipal);
+
+    if (textoprincipal === "") {
+        Swal.fire({
+            title: "Você não informou um texto principal",
+            icon: "error"
+        });
+    } else if (deliberadoresSelecionadosLabel.length === 0) {
+        Swal.fire({
+            title: "Preencha o espaço de deliberações",
+            icon: "error"
+        });
+    } else {
+        Swal.fire({
+            title: "Perfeito!",
+            text: "Seus Deliberadores foram registrados",
+            icon: "success",
+        });
+
+        $.ajax({
+            url: 'textprincbanco.php',
+            method: 'POST',
+            data: {
+                textoprincipal1: textoprincipal,
+            },
+            success: function() {
+                console.log("AJAX DO TEXTO FOI PUXADO");
+                // Adicione aqui qualquer ação adicional que você queira realizar após o sucesso da requisição AJAX
+            },
+            error: function(error) {
+                console.error('Erro na solicitação AJAX:', error);
+            }
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 var botaoatribuicao = document.getElementById("atribuida");
 botaoatribuicao.addEventListener('click', gravaratribuida);
 
