@@ -61,6 +61,7 @@ function addDeliberacoes() {
         
                     console.log("(4.2) Deu bom! AJAX está enviando os participantes");
                     console.log("Response:", response);   
+                    
                     setTimeout(function() {
                         console.log("Redirecionando..."); // Adicionado para depuração  
                     }, 1500);
