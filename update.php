@@ -261,7 +261,9 @@ mysqli_close($conn);
 
     form.addEventListener('submit', function(event) {
         event.preventDefault();
-       
+
+        var data = document.getElementById('datainicio').value;
+        var dataf = formatarData(data);
         var hora_inicio = document.getElementById('horainicio').value;
         var hora_term = document.getElementById('horaterm').value;
         var objetivo = document.getElementById('objetivo').value;
@@ -273,7 +275,7 @@ mysqli_close($conn);
       // texto é de outro banco de dados
 
        
-        if (objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "" || texto === "" ) {
+      if ( data === "" || objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "" || texto === "" ) {
             window.alert("Preencha as informações");
         } else {
             $.ajax({
@@ -287,6 +289,7 @@ mysqli_close($conn);
                     hora_term: hora_term,
                     tema: tema,
                     texto: texto,
+                    data: data,
                 },
                 success: function(response) {
                     alert(response);
@@ -301,6 +304,23 @@ mysqli_close($conn);
     });
 });
 
+function formatarData(data) {
+      var dataObj = new Date(data);
+      var dia = dataObj.getDate() + 1;
+      var mes = dataObj.getMonth() + 1; // Adicionando 1 para ajustar o mês
+      var ano = dataObj.getFullYear();
+
+      // Adicionando zeros à esquerda para garantir que tenham dois dígitos
+      if (dia < 10) {
+        dia = '0' + dia;
+      }
+      if (mes < 10) {
+        mes = '0' + mes;
+      }
+
+      // Formata a data como "dia/mês/ano" (por exemplo, "28/05/2024")
+      return dia + '/' + mes + '/' + ano;
+    }
 
 // function formatarData(data) {
 //     var dataObj = new Date(data);
