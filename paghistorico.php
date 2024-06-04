@@ -266,7 +266,7 @@ if ($conn->connect_error) {
 
         if (empty($deliberacoes) && !empty($textoprin)) {
             echo "<td class='text-center align-middle'>
-                    <a class='text-light btn btn-danger' href='arquivo_partetext.php?updateid=".$id."'>
+                    <a class='text-light btn btn-success' href='arquivo_partetext.php?updateid=".$id."'>
                         <i class='fas fa-file-pdf'></i>
                     </a>
                 </td>";

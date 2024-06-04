@@ -162,12 +162,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             <table style="border: 1px solid black; text-align: center; padding: 4px 0px;">
                 <tbody>
-                    <tr style="text-align: center; background-color: #ececed">
-                        <td style="height: 31px; border: 1px solid black; width: 59px; vertical-align: middle;"><h4>Mat.</h4></td>
-                        <td style="height: 31px; border: 1px solid black; width: 150px; vertical-align: middle;"><h4>Nome:</h4></td>
-                        <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Função:</h4></td>
-                        <td style="height: 31px; border: 1px solid black; width: 270px; vertical-align: middle;"><h4>Assinatura:</h4></td>
-                    </tr>';
+                <tr style="text-align: center; background-color: #ececed">
+                    <td style="height: 31px; border: 1px solid black; width: 79px; vertical-align: middle;"><h4>Mat.</h4></td>
+                    <td style="height: 31px; border: 1px solid black; width: 170px; vertical-align: middle;"><h4>Nome:</h4></td>
+                    <td style="height: 31px; border: 1px solid black; width: 180px; vertical-align: middle;"><h4>Função:</h4></td>
+                    <td style="height: 31px; border: 1px solid black; width: 110px; vertical-align: middle;"><h4>Assinatura:</h4></td>
+                </tr>';
 
 
                 foreach (explode(",", $nomeParticipantes) as $participante) {
