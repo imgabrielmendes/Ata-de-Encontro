@@ -280,6 +280,17 @@ class AcoesForm {
         }
     }
     
+    public function textprinc($id_ata) {
+        try {
+            $sql = "SELECT texto_princ FROM textoprinc WHERE id_ata = :id_ata";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+    }
     
     public function buscarParticipantesPorIdAta($id_ata) {
         try {
@@ -294,6 +305,8 @@ class AcoesForm {
             throw $e;
         }
     }
+
+    
         public function pegandoTudo(){
             try {
                 $sql = "SELECT 
