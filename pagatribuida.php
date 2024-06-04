@@ -113,6 +113,7 @@ print_r($puxatexto);
         </div>
       </div>
     </nav>
+
   </header>
 
   <!--FORMULÁRIO-->
@@ -267,7 +268,7 @@ print_r($puxatexto);
       <path fill="#ffffff" d="M96 0C60.7 0 32 28.7 32 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H96zM208 288h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H144c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm-32-96a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM512 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V80zM496 192c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm16 144c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V336z"/>
     </svg>
   </button>
-  <span class="ms-2">Participantes da ata</span>
+  <span class="ms-2">Participantes do encontro</span>
 </div>
 <div class="modal fade" id="listaParticipantesModal" tabindex="-1" aria-labelledby="listaParticipantesModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen">
@@ -391,7 +392,7 @@ function adicionarParticipanteAoLabel(participante) {
 <div class="accordion">
   <h2 class="accordion-header">
     <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
-      <h5>Deliberações</h5>
+      <h5>Texto principal</h5>
 </div>
   </h2>
 
@@ -407,138 +408,148 @@ function adicionarParticipanteAoLabel(participante) {
                 <textarea id="textoprinc" style="height: 110px;" class="form-control"><?php echo $texto_principal; ?></textarea>
             </div>
         </div>    
-        <div id="existingDeliberations" class="mt-3">
-    <h5>Deliberações Existentes:</h5>
-    <ul id="deliberationsList" class="list-group">
-    <?php
-      $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
-      if (!empty($deliberacoes)) {
-          $deliberacoesAgrupadas = [];
-          foreach ($deliberacoes as $deliberacao) {
-              $conteudo = $deliberacao['deliberacoes'];
-              $deliberador = $deliberacao['deliberador'];
-
-              if (!isset($deliberacoesAgrupadas[$conteudo])) {
-                  $deliberacoesAgrupadas[$conteudo] = [];
-              }
-
-              $deliberacoesAgrupadas[$conteudo][] = $deliberador;
-          }
-          foreach ($deliberacoesAgrupadas as $conteudo => $deliberadores) {
-              $deliberadoresStr = implode(', ', $deliberadores);
-              ?>
-              <li class="form-control bg-body-secondary border rounded">
-                  <div>
-                      <strong></strong> <?php echo $deliberadoresStr; ?>
-                  </div>
-              </li>
-              <li class="form-control border rounded">
-                  <div>
-                      <strong></strong> <?php echo $conteudo; ?>
-                  </div>
-              </li>
-              <?php
-          }
-      }
-    ?>
-    </ul>
+        <div class="d-flex justify-content-center">
+            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Registrar Texto</button>
+        </div>
 </div>
-        <span class="col-4" id="inputContainer"></span>   
-        <form id="addForm">
-            <div class="form-group">
-                <div class="col">
-                    <br>
-                    <ul class="list-group list-group-flush"></ul>
-                    <label class="h4" style="height: 35px;"><b>DELIBERAÇÕES</b></label>
-                    <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>"></textarea>
-                </div>
-    <div class="col">
-    <div class="mb-2">
-        <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
-        <optgroup label="Selecione Facilitadores">
-                  <?php foreach ($pegarde as $facnull) : ?>
-                      <option value="<?php echo $facnull['id']; ?>"
-                          data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                          <?php echo $facnull['nome_facilitador']; ?>
-                      </option>
-                  <?php endforeach ?>
-              </optgroup>
-        </select>
-    </div>
+<div class="accordion mt-4">
+    <div class="accordion-item shadow">
+        <h2 class="accordion-header">
+            <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
+                <i class="fa-solid fa-file p-1 mb-1"></i>
+                <h5>Deliberações do encontro</h5>
+            </div>
+        </h2>
+        <div class="accordion-collapse collapse show">
+            <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+                <div class="col-md-12 text-center"></div>
+                <div id="existingDeliberations" class="mt-3">
+                    <ul id="deliberationsList" class="list-group">
+                    <?php
+                      $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+                      if (!empty($deliberacoes)) {
+                          $deliberacoesAgrupadas = [];
+                          foreach ($deliberacoes as $deliberacao) {
+                              $conteudo = $deliberacao['deliberacoes'];
+                              $deliberador = $deliberacao['deliberador'];
+
+                              if (!isset($deliberacoesAgrupadas[$conteudo])) {
+                                  $deliberacoesAgrupadas[$conteudo] = [];
+                              }
+
+                              $deliberacoesAgrupadas[$conteudo][] = $deliberador;
+                          }
+                          foreach ($deliberacoesAgrupadas as $conteudo => $deliberadores) {
+                              $deliberadoresStr = implode(', ', $deliberadores);
+                      ?>
+                              <div style="margin-bottom: 15px;">
+                                  <li class="form-control bg-body-secondary border rounded">
+                                      <div>
+                                          <strong>Deliberador:</strong> <?php echo $deliberadoresStr; ?>
+                                      </div>
+                                  </li>
+                                  <li class="form-control border rounded">
+                                      <div>
+                                          <strong>Deliberação:</strong> <?php echo $conteudo; ?>
+                                      </div>
+                                  </li>
+                              </div>
+                      <?php
+                          }
+                      }
+                      ?>
+
+                    </ul>
+                </div>          
+            </div>
         </div>
-        <div class="row">
-          <div class="col-10"></div>
-          <div class="col-2 d-flex justify-content-end">
-              <div class="d-flex flex-column align-items-end">
-                  <ul id="caixadeselecaodel"></ul>
-                  <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
-              </div>
-          </div>
-    </div>
-  </div>
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-          <img src="view/img/check.svg" class="rounded me-2" alt="..." style="width: 20px";>
-          <strong class="me-auto">Perfeito!</strong>
-          <small>Agora</small>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          A deliberação foi atribuída.
-        </div>
-      </div>
     </div>
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div id="liveToast2" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-          <img src="view\img\x.svg" class="rounded me-2" alt="..." style="width: 15px";>
-          <strong class="me-auto">Perfeito!</strong>
-          <small>Agora</small>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+
+
+
+
+
+    <div class="accordion">
+  <h2 class="accordion-header">
+    <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
+      <h5>Deliberações</h5>
+    </div>
+  </h2>
+  <span class="col-4" id="inputContainer"></span>
+  <form id="addForm">
+    <div class="form-group">
+      <div class="col">
+        <br>
+        <ul class="list-group list-group-flush"></ul>
+        <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>"></textarea>
+      </div>
+      <div class="col">
+        <div class="mb-2">
+          <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
+            <optgroup label="Selecione Facilitadores">
+              <?php foreach ($pegarde as $facnull) : ?>
+                <option value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                  <?php echo $facnull['nome_facilitador']; ?>
+                </option>
+              <?php endforeach ?>
+            </optgroup>
+          </select>
         </div>
-        <div class="toast-body">
-          Atribuição excluída.
+      </div>
+      <div class="row">
+        <div class="col-10"></div>
+        <div class="col-2 d-flex justify-content-end">
+          <div class="d-flex flex-column align-items-end">
+            <ul id="caixadeselecaodel"></ul>
+            <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
+          </div>
         </div>
       </div>
     </div>
+  </form>
+</div>
+
         <br>
         <div class="row">
     <div class="col text-center">
-        <button id="atribuida" class="btn btn-primary">Finalizar reunião</button>
+    <style>
+        #alertIcon {
+            width: 24px; 
+            height: auto; 
+            margin-right: 5px; 
+            cursor: pointer; 
+        }
+    </style>
+    <button id="atribuida" class="btn btn-primary">Finalizar reunião</button>
+    <svg id="alertIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <path fill="#167cbb" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+    </svg>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var atribuidaButton = document.getElementById('atribuida');
+            var alertIcon = document.getElementById('alertIcon');
+
+            alertIcon.addEventListener('click', function() {
+                Swal.fire({
+                    title: 'Atenção!',
+                    html: 'Depois de finalizada, esta reunião não poderá ser alterada',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    timer: 2500 
+                });
+            });
+        });
+    </script>
     </div>
 </div>
+</div>
+</div>
+
     </form>       
       </div>          
 </div>
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-          <img src="view/img/check.svg" class="rounded me-2" alt="..." style="width: 20px";>
-          <strong class="me-auto">Perfeito!</strong>
-          <small>Agora</small>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          A deliberação foi atribuída.
-        </div>
-      </div>
-    </div>
-
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-      <div id="liveToast2" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-          <img src="view\img\x.svg" class="rounded me-2" alt="..." style="width: 15px";>
-          <strong class="me-auto">Perfeito!</strong>
-          <small>Agora</small>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          Atribuição excluída.
-        </div>
-      </div>
-    </div>
+    
         <br>  
     </form>
         </div>          
@@ -553,6 +564,37 @@ function adicionarParticipanteAoLabel(participante) {
 </div>     
 </main>
 </div> 
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="view/img/check.svg" class="rounded me-2" alt="..." style="width: 20px";>
+          <strong class="me-auto">Perfeito!</strong>
+          <small>Agora</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          A deliberação foi atribuída.
+        </div>
+      </div>
+    </div>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div id="liveToast2" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <img src="view\img\x.svg" class="rounded me-2" alt="..." style="width: 15px";>
+          <strong class="me-auto">Perfeito!</strong>
+          <small>Agora</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+          Atribuição excluída.
+        </div>
+      </div>
+    </div>
+
+
+
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
