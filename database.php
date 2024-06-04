@@ -5,4 +5,3 @@
     $dbpass = '';
     $conexao = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
-?>
