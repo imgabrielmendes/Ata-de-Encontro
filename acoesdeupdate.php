@@ -25,14 +25,14 @@ if (!empty($objetivo) && !empty($local) && !empty($hora_inicio) && !empty($hora_
     }
 
     // Atualização na tabela do outro banco de dados
-    $enviarbanco_outro = "UPDATE textoprinc SET textoprincipal = ? WHERE id_ata = ?";
-    if ($stmt_outro = $conexao_outro->prepare($enviarbanco_outro)) {
+    $enviarbanco_outro = "UPDATE textoprinc SET texto_princ = ? WHERE id_ata = ?";
+    if ($stmt_outro = $conexao->prepare($enviarbanco_outro)) {
         $stmt_outro->bind_param("si", $texto, $id_ataenviar);
         $stmt_outro->execute();
         $stmt_outro->close();
         echo "Dados atualizados com sucesso no outro banco de dados!";
     } else {
-        echo "Erro ao preparar a consulta SQL para o outro banco de dados: " . $conexao_outro->error;
+        echo "Erro ao preparar a consulta SQL para o outro banco de dados: " . $conexao->error;
     }
 } else {
     echo "Algum dos campos está vazio.";
