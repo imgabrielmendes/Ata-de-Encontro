@@ -256,6 +256,9 @@ mysqli_close($conn);
                 // console.log(facilitadoresSelecionadosLabel);
             }
       });
+
+
+
     document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById("seu-formulario-id");
 
@@ -274,8 +277,16 @@ mysqli_close($conn);
         console.log(texto);
       // texto é de outro banco de dados
 
+      var facilitadoresSelecionados = [];
+        var select = document.getElementById('selecionandofacilitador');
+        for (var i = 0; i < select.options.length; i++) {
+            if (select.options[i].selected) {
+                facilitadoresSelecionados.push(select.options[i].value);
+            }
+        }
+        console.log(facilitadoresSelecionados);
        
-      if ( data === "" || objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "" || texto === "" ) {
+      if ( data === "" || objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === ""  ) {
             window.alert("Preencha as informações");
         } else {
             $.ajax({
@@ -290,6 +301,7 @@ mysqli_close($conn);
                     tema: tema,
                     texto: texto,
                     data: data,
+                    facilitadores: facilitadoresSelecionados,
                 },
                 success: function(response) {
                     alert(response);

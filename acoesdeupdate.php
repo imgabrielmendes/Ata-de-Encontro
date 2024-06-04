@@ -12,7 +12,7 @@ $local = $_POST['local'];
 $tema = $_POST['tema'];
 $texto = $_POST['texto'];
 $id_ataenviar = $_POST['id'];
-
+$facilitadores = $_POST['facilitadores'];
 
 if (!empty($objetivo) && !empty($local) && !empty($hora_inicio) && !empty($hora_term) && !empty($tema)) {
     // Atualização na tabela "assunto" do banco de dados principal
@@ -39,3 +39,38 @@ if (!empty($objetivo) && !empty($local) && !empty($hora_inicio) && !empty($hora_
 } else {
     echo "Algum dos campos está vazio.";
 }
+
+$enviarbanco_deliberador = "UPDATE facilitadores SET nome_facilitador = ? WHERE id = ?";
+if ($stmt_deliberador = $conexao->prepare($enviarbanco_deliberador)) {
+    $stmt_deliberador->bind_param("ii", $facilitadores, $id_ataenviar); 
+    $stmt_deliberador->execute();
+    $stmt_deliberador->close();
+    echo "Dados atualizados com sucesso na tabela 'facilitadores'!";
+} else {
+    echo "Erro ao preparar a consulta SQL para a tabela 'facilitadores': " . $conexao->error;
+}
+
+
+foreach ($facilitadores as $facilitador) {
+    
+    $sql_excluir_facilitador = "DELETE FROM ata_has_fac WHERE id_ata = ? AND facilitadores = ?";
+    if ($stmt_excluir_facilitador = $conexao->prepare($sql_excluir_facilitador)) {
+        $stmt_excluir_facilitador->bind_param("ii", $id_ataenviar, $facilitador);
+        $stmt_excluir_facilitador->execute();
+        $stmt_excluir_facilitador->close();
+    } else {
+        echo "Erro ao preparar a consulta SQL para excluir facilitador: " . $conexao->error;
+    }
+
+   
+    $sql_insert_facilitador = "INSERT INTO ata_has_fac (id_ata, facilitadores) VALUES (?, ?)";
+    if ($stmt_insert_facilitador = $conexao->prepare($sql_insert_facilitador)) {
+        $stmt_insert_facilitador->bind_param("ii", $id_ataenviar, $facilitador); 
+        $stmt_insert_facilitador->execute();
+        $stmt_insert_facilitador->close();
+    } else {
+        echo "Erro ao preparar a consulta SQL para inserir facilitador: " . $conexao->error;
+    }
+}
+
+echo "Dados atualizados com sucesso na tabela 'facilitadores'!";
