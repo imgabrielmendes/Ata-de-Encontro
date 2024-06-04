@@ -68,11 +68,11 @@ function identificarIdPagina() {
   }
 }
 $id_pagina = identificarIdPagina();
-print_r($id_pagina);
+
 
 $puxatexto = $puxarform->textprinc($id_pagina);
 $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
-print_r($puxatexto);
+
 
 ?>
 <!DOCTYPE html>
@@ -465,105 +465,89 @@ function adicionarParticipanteAoLabel(participante) {
         </div>
     </div>
 
-
-
-
-
-
     <div class="accordion">
-  <h2 class="accordion-header">
-    <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
-      <h5>Deliberações</h5>
-    </div>
-  </h2>
-  <span class="col-4" id="inputContainer"></span>
-  <form id="addForm">
-    <div class="form-group">
-      <div class="col">
-        <br>
-        <ul class="list-group list-group-flush"></ul>
-        <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>"></textarea>
-      </div>
-      <div class="col">
-        <div class="mb-2">
-          <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
-            <optgroup label="Selecione Facilitadores">
-              <?php foreach ($pegarde as $facnull) : ?>
-                <option value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                  <?php echo $facnull['nome_facilitador']; ?>
-                </option>
-              <?php endforeach ?>
-            </optgroup>
-          </select>
+    <h2 class="accordion-header">
+        <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
+            <h5>Deliberações</h5>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-10"></div>
-        <div class="col-2 d-flex justify-content-end">
-          <div class="d-flex flex-column align-items-end">
-            <ul id="caixadeselecaodel"></ul>
-            <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </form>
-</div>
+    </h2>
+    <div class="accordion-collapse collapse show">
+        <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+            <div class="col-md-12 text-center"></div>
 
-        <br>
+            <span class="col d-flex align-items-end flex-column" id="inputContainer"></span>
+
+            <form id="addForm">
+                <div class="form-group">
+                    <div class="col">
+                        <div class="col">
+                            <br>
+                            <ul class="list-group list-group-flush"></ul>
+                            <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>"></textarea>
+                        </div>
+                        <div class="col">
+                            <div class="mb-2">
+                                <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
+                                    <optgroup label="Selecione Facilitadores">
+                                        <?php foreach ($pegarde as $facnull) : ?>
+                                            <option value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
+                                                <?php echo $facnull['nome_facilitador']; ?>
+                                            </option>
+                                        <?php endforeach ?>
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10"></div>
+                            <div class="col-2 d-flex justify-content-end">
+                                <div class="d-flex flex-column align-items-end">
+                                    <ul id="caixadeselecaodel"></ul>
+                                    <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div>
         <div class="row">
-    <div class="col text-center">
-    <style>
-        #alertIcon {
-            width: 24px; 
-            height: auto; 
-            margin-right: 5px; 
-            cursor: pointer; 
-        }
-    </style>
-    <button id="atribuida" class="btn btn-primary">Finalizar reunião</button>
-    <svg id="alertIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-        <path fill="#167cbb" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
-    </svg>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var atribuidaButton = document.getElementById('atribuida');
-            var alertIcon = document.getElementById('alertIcon');
+            <div class="col text-center">
+                <style>
+                    #alertIcon {
+                        width: 24px;
+                        height: auto;
+                        margin-right: 5px;
+                        cursor: pointer;
+                    }
+                </style>
+                <button id="atribuida" class="btn btn-primary">Finalizar reunião</button>
+                <svg id="alertIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path fill="#167cbb" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
+                </svg>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var atribuidaButton = document.getElementById('atribuida');
+                        var alertIcon = document.getElementById('alertIcon');
 
-            alertIcon.addEventListener('click', function() {
-                Swal.fire({
-                    title: 'Atenção!',
-                    html: 'Depois de finalizada, esta reunião não poderá ser alterada',
-                    icon: 'warning',
-                    confirmButtonText: 'OK',
-                    timer: 2500 
-                });
-            });
-        });
-    </script>
+                        alertIcon.addEventListener('click', function() {
+                            Swal.fire({
+                                title: 'Atenção!',
+                                html: 'Depois de finalizada, esta reunião não poderá ser alterada',
+                                icon: 'warning',
+                                confirmButtonText: 'OK',
+                                timer: 2500
+                            });
+                        });
+                    });
+                </script>
+            </div>
+        </div>
     </div>
 </div>
-</div>
-</div>
 
-    </form>       
-      </div>          
-</div>
-    
-        <br>  
-    </form>
-        </div>          
-    </div>
-</form>
-<script>
-
-</script>
-      </div>
-    </div>
-  </div>
-</div>     
-</main>
-</div> 
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
@@ -594,7 +578,7 @@ function adicionarParticipanteAoLabel(participante) {
 
 
 
-    
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
