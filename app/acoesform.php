@@ -57,7 +57,13 @@ class AcoesForm {
 
     public function pegarfacilitador() {
         try {
-            $sql = "SELECT id, nome_facilitador, matricula FROM facilitadores ORDER BY nome_facilitador ASC ";
+            $sql = "SELECT 
+                        id, 
+                        nome_facilitador, 
+                        matricula 
+                    FROM facilitadores 
+                    ORDER BY nome_facilitador ASC ";
+
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute();
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -154,28 +160,6 @@ class AcoesForm {
             throw $e;
         }
     }
-    
-    public function puxandoUltimosParticipantes($id_ata) {
-        $sql = "SELECT F.nome_facilitador
-                FROM facilitadores as F
-                INNER JOIN ata_has_fac as AF ON F.id = AF.facilitadores
-                WHERE AF.id_ata = :id_ata";
-        
-        $stmt = $this->pdo->prepare($sql);
-        $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
-        $stmt->execute();
-        
-        $participantes = []; // Inicializa um array para armazenar os nomes dos participantes
-    
-        // Itera sobre os resultados da consulta e armazena os nomes dos participantes no array
-        while ($row = $stmt->fetchColumn()) {
-            $participantes[] = $row; // Adiciona o nome do participante ao array
-        }
-    
-        return $participantes; // Retorna o array de participantes
-    }
-    
-
     public function ParticipantesPorIdAta($id_ata) {
         try {
             $sql = "SELECT F.nome_facilitador as participantes,
@@ -197,6 +181,33 @@ class AcoesForm {
             throw $e;
         }
     }
+    public function puxandoUltimosParticipantes($id_ata) {
+        $sql = "SELECT 
+                        F.id as id,
+                        F.nome_facilitador as nome_facilitador ,
+                        F.matricula as matricula
+
+                FROM facilitadores as F
+                    INNER JOIN ata_has_fac as AF 
+                        ON F.id = AF.facilitadores
+                WHERE AF.id_ata = :id_ata";
+        
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
+        $stmt->execute();
+        
+        $participantes = []; // Inicializa um array para armazenar os nomes dos participantes
+    
+        // Itera sobre os resultados da consulta e armazena os nomes dos participantes no array
+        while ($row = $stmt->fetchColumn()) {
+            $participantes[] = $row; // Adiciona o nome do participante ao array
+        }
+    
+        return $participantes; // Retorna o array de participantes
+    }
+    
+
+    
 
     public function pegarParticipantes($id_ata) {
         $sql = "SELECT F.nome_facilitador
@@ -244,20 +255,8 @@ class AcoesForm {
             // Em caso de erro, lança uma exceção para que o erro possa ser tratado
             throw $e;
         }
-    }   
-    public function buscarParticipantesPorIdAta($id_ata) {
-        try {
-            $sql = "SELECT F.nome_facilitador, F.matricula, F.email_facilitador
-                    FROM facilitadores AS F
-                    WHERE F.id IN (SELECT participantes FROM participantes WHERE id_ata = :id_ata)";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
-            $stmt->execute();
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        } catch (\PDOException $e) {
-            throw $e;
-        }
     }
+    
     
     public function buscarTextoPrincipalPorIdAta($id_ata) {
         try {
@@ -280,13 +279,17 @@ class AcoesForm {
             throw $e;
         }
     }
-    public function textprinc($id_ata) {
+    
+    
+    public function buscarParticipantesPorIdAta($id_ata) {
         try {
-            $sql = "SELECT texto_princ FROM textoprinc WHERE id_ata = :id_ata";
+            $sql = "SELECT F.nome_facilitador, F.matricula, F.email_facilitador
+                    FROM facilitadores AS F
+                    WHERE F.id IN (SELECT participantes FROM participantes WHERE id_ata = :id_ata)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindParam(':id_ata', $id_ata, \PDO::PARAM_INT);
             $stmt->execute();
-            return $stmt->fetchAll(\PDO::FETCH_COLUMN);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             throw $e;
         }

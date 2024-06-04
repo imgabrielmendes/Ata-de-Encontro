@@ -61,34 +61,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             
             <table style="padding: 6px 0px; text-align: center; font-size: 10px; width: 540px; height: 20px;">
             <tbody>
-                <tr style="text-align: center; background-color: #c0c0c0">
-                    <td style="padding: 5px; border: 1px solid black"><b>Data:</b></td>
-                    <td style="padding: 5px; border: 1px solid black"><h4>Horário de Inicio:</h4></td>
-                    <td style="padding: 5px; border: 1px solid black"><b>Horário de Término:</b></td>
-                    <td style="padding: 5px; border: 1px solid black"><b>Tempo estimado:</b></td>
-                    <td style="padding: 5px; border: 1px solid black"><b>Objetivo:</b></td>
+                <tr style="text-align: left">
+                    <td style="padding: 5px; border: 1px solid black"><b>  Data:</b> '.$data.'</td>
+                    <td style="padding: 5px; border: 1px solid black"><b>  Inicio:</b> '.$horainicio.'</td>
+                    <td style="padding: 5px; border: 1px solid black"><b>  Término:</b> '.$horafinal.'</td>
+                    <td style="padding: 5px; border: 1px solid black"><b>  Objetivo:</b> '.$objetivo.'</td>
                 </tr>
-                <tr style="text-align: center;">
-                    <td style="border: 1px solid black; padding: 5px;">'.$data.'</td>
-                    <td style="border: 1px solid black; padding: 5px;">'.$horainicio.'</td>
-                    <td style="border: 1px solid black; padding: 5px;">'.$horafinal.'</td>
-                    <td style="border: 1px solid black; padding: 5px;">*Colocar</td>
-                    <td style="border: 1px solid black; padding: 5px;">'.$objetivo.'</td>
+                <tr style="text-align: LEFT;">
+                <td style="padding: 5px; border: 1px solid black; width: 540px; font-size: 10px;"><b>   Facilitador(es):</b> COLOCAR A VARIÁVEL SQL</td>
                 </tr>
             </tbody>
         </table>
 
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
         <tbody>
-            <tr style="background-color: #c0c0c0">
-                <td style="border: 1px solid black; height: 30px; width: 108px;"><b>Local:</b></td>
-                <td style="border: 1px solid black; width: 432px; text-align: left;">'.'   '.'<b>Tema:</b></td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid black; text-align: center; font-size: 9px">'.$local.'</td>
-                <td style="border: 1px solid black; text-align: left; padding-left: 10px;">'.'   '.$tema.'</td>
+            <tr style="font-size: 10p">
+                <td style="border: 1px solid black; width: 178px; text-align: left; height: 30px; "><b>  Local:</b>  '.$local.'</td>
+                <td style="border: 1px solid black; width: 362px; text-align: left; height: 30px;">'.'   '.'<b>Tema:</b>  '.$tema.'</td>
             </tr>
         </tbody>
+        </table>
+
+        <h2>TEXTO PRINCIPAL:</h2>
+        <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
+            <tbody>
+                <tr style="">
+                    <td style="text-align: left; border: 1px solid black; height: 120px; width: 539px; font-size: 10px;"></td>
+                </tr>
+            </tbody>
         </table>
 
         <h2> DELIBERAÇÕES </h2>
@@ -99,15 +99,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 </tr>
             </tbody>
         </table>
-
-        <h2>TEXTO PRINCIPAL:</h2>
-        <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
-            <tbody>
-                <tr style="">
-                    <td style="text-align: left; border: 1px solid black; height: 120px; width: 539px; font-size: 10px;"></td>
-                </tr>
-            </tbody>
-        </table>'; 
+'; 
 
         $pdf->AddPage();
         $pdf->writeHTML($html, true, false, true, false, '');
@@ -120,9 +112,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         // Adicionar nova página para a lista de participantes
         $pdf->AddPage();
-        $html = '
-       
 
+        $html = '
+            <table style="border: 1px solid black; padding: 8px 0px; order-spacing:3px">
+                <tbody>
+                    <tr style="text-align: center;">
+                        <td style="height: 20px; border: 1px solid black;"><img src="view\img\logo-hrg.png" alt="Descrição da imagem"></td>
+                        <td style="height: 30px;"></td>
+                        <td style="height: 30px;"><h4>Ata de Encontro</h4></td>
+                        <td style="height: 30px;"></td>
+                        <td style="height: 30px;  border: 1px solid black;">NOR.QUA.001</td>
+                    </tr>
+                    <tr style="text-align: center;">
+                        <td style="border: 1px solid black;"><b>Data de elaboração:</b></td>
+                        <td style="border: 1px solid black;">27/09/2021</td>
+                        <td style="border: 1px solid black;"><b>Versão</b></td>
+                        <td style="border: 1px solid black;">2-2021</td>
+                        <td style="border: 1px solid black;">ANEXO 4</td>
+                    </tr>
+                </tbody>
+            </table>';
+
+        $html .= '
+       
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
         <tbody>
             <tr style="text-align: center">
@@ -136,18 +148,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             <tr style="text-align: center; background-color: #ececed">
                 <td style="height: 31px; border: 1px solid black; width: 59px; vertical-align: middle;"><h4>Mat.</h4></td>
                 <td style="height: 31px; border: 1px solid black; width: 150px; vertical-align: middle;"><h4>Nome:</h4></td>
-                <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Função:</h4></td>
-                <td style="height: 31px; border: 1px solid black; width: 270px; vertical-align: middle;"><h4>Assinatura:</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 120px; vertical-align: middle;"><h4>Função:</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 210px; vertical-align: middle;"><h4>Assinatura:</h4></td>
             </tr>';
 
-        for ($linha = 0; $linha < 10; $linha++) {
-            $html .= '<tr style="text-align: center;">
-                        <td style="border: 1px solid black; height: 37px;"></td>
-                        <td style="border: 1px solid black;"></td>
-                        <td style="border: 1px solid black;"></td>
-                        <td style="border: 1px solid black;"></td>
-                    </tr>';
-        }
+            for ($linha = 0; $linha < 8; $linha++) {
+                $html .= '<tr style="text-align: center;">
+                            <td style="height: 31px; border: 1px solid black; height: 20px;"></td>
+                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;"></td>
+                            <td style="border: 1px solid black;"></td>
+                        </tr>';
+            }
 
         $html .= '</tbody></table>';
 

@@ -10,6 +10,7 @@ $facilitadores = $puxarform->selecionarFacilitadores();
 $pegarfa = $puxarform->pegarfacilitador();
 $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
 $puxadeliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata = "?");
+
 $resultados = $puxarform->pegandoTudo();
 $pegarid = $puxarform->puxarId();
 $sql="SELECT * FROM assunto where id=$id ";
@@ -69,11 +70,6 @@ function identificarIdPagina() {
 }
 $id_pagina = identificarIdPagina();
 print_r($id_pagina);
-
-$puxatexto = $puxarform->textprinc($id_pagina);
-$texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
-print_r($puxatexto);
-
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -260,6 +256,7 @@ print_r($puxatexto);
                   </div>
               </div>
           </form>
+
           
           <div class="d-flex align-items-center">
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#listaParticipantesModal" style="background-color: #001f3f; border-color: #001f3f;">
@@ -270,7 +267,7 @@ print_r($puxatexto);
   <span class="ms-2">Participantes da ata</span>
 </div>
 <div class="modal fade" id="listaParticipantesModal" tabindex="-1" aria-labelledby="listaParticipantesModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="listaParticipantesModalLabel">Participantes da ata</h5>
@@ -279,36 +276,28 @@ print_r($puxatexto);
       <div class="modal-body">
       <?php
 if (isset($_GET['updateid'])) {
-  $id_ata = $_GET['updateid'];
-  $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-  if (!empty($participantes)) {
-      // Ordena os participantes em ordem alfabética pelo nome do facilitador
-      usort($participantes, function($a, $b) {
-          return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
-      });
-
-      echo "<table class='table'>";
-      echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
-      echo "<tbody>";
-      foreach ($participantes as $participante) {
-          // Aqui, você pode acessar os dados adicionais do facilitador usando $participante
-          // Suponho que $participante já contenha os dados da tabela facilitadores
-          echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
-          echo "<td>{$participante['matricula']}</td>"; // Coluna de Matrícula
-          echo "<td>{$participante['nome_facilitador']}</td>"; // Coluna de Nome
-          echo "<td>{$participante['email_facilitador']}</td>"; // Coluna de Email
-          // Botão de Excluir com chamada para a função JavaScript excluirParticipante
-          echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";
-          echo "</tr>";
-      }
-      echo "</tbody></table>";
-  } else {
-      echo "Nenhum participante encontrado para esta ATA.";
-  }
+    $id_ata = $_GET['updateid'];
+    $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+    if (!empty($participantes)) {
+        echo "<ul>";
+        foreach ($participantes as $participante) {
+            echo "<li class='mb-2' style='font-weight: bold; font-size: 18px;'>";
+            echo "$participante";
+            // Passa o ID da ATA e o nome do participante como parâmetros
+            echo "<button type='button' class='btn btn-danger btn-sm ms-2' onclick='excluirParticipante($id_ata, \"$participante\")'>Excluir</button>";
+            echo "</li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "Nenhum participante encontrado para esta ATA.";
+    }
 } else {
-  echo "Nenhum ID de ATA fornecido.";
+    echo "Nenhum ID de ATA fornecido.";
 }
 ?>
+
+
+
 
 
 
@@ -329,21 +318,16 @@ if (isset($_GET['updateid'])) {
     }
   }
 </script>
-
-<br>
-<?php
-$conn->close();
-?>
-</div>
-</div>
-</main>
-</div>
-</div>
+            <br>
+            <?php
+            $conn->close();
+            ?>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
 </form>
-
-
-
-
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -404,7 +388,7 @@ function adicionarParticipanteAoLabel(participante) {
         <div class="row">
             <div class="col">
                 <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-                <textarea id="textoprinc" style="height: 110px;" class="form-control"><?php echo $texto_principal; ?></textarea>
+                <textarea id="textoprinc" style="height: 110px;" class="form-control"></textarea>
             </div>
         </div>    
         <div id="existingDeliberations" class="mt-3">
@@ -506,9 +490,16 @@ function adicionarParticipanteAoLabel(participante) {
         <br>
         <div class="row">
     <div class="col text-center">
-        <button id="atribuida" class="btn btn-primary">Finalizar reunião</button>
+        <button id="atribuida" class="btn btn-primary">Atualizar a ATA</button>
+    </div>
+    <div class="col text-center">
+        <!-- Botão "Finalizar ATA" com Popover -->
+        <button id="finalizar-ata" class="btn btn-secondary" data-bs-toggle="popover" data-bs-trigger="focus" title="Atenção!" data-bs-content="Depois de finalizar a ATA, ela não poderá ser alterada. Tem certeza que deseja prosseguir?">Finalizar ATA</button>
     </div>
 </div>
+
+
+
     </form>       
       </div>          
 </div>

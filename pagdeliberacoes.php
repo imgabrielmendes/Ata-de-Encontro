@@ -221,12 +221,6 @@ $_SESSION['data'] = $data_formatada;
           
     </div>     
 
-
-
-
-
-
-
     <div class="row">
     <div class="col">
         <div>
@@ -405,7 +399,14 @@ $_SESSION['data'] = $data_formatada;
     </div>
     
     <span class="col d-flex align-items-end flex-column" id="inputContainer"></span>
-
+    <style>
+      .item-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+    </style>
         <form id="addForm">
         <div class="form-group">
         <div class="col">
@@ -418,7 +419,7 @@ $_SESSION['data'] = $data_formatada;
             <div class="col">
     <!-- Primeira caixa de texto e select de facilitadores -->
     <div class="mb-2">
-        <label for="" class="mb-2">Deliberado para:</label>
+        <label for="" class="mb-2">Atribuido para:</label>
         <?php
           if (isset($_GET['updateid'])) {
             $id_ata = $_GET['updateid'];
