@@ -259,7 +259,7 @@ if ($conn->connect_error) {
 
     // print_r($puxaparticipantes);
     // print_r($deliberacoes);
-    print_r($textoprin);
+    // print_r($textoprin);
 
 
 
