@@ -274,50 +274,42 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
   <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="listaParticipantesModalLabel">Participantes da ata</h5>
+        <h5 class="modal-title" id="listaParticipantesModalLabel">Participantes do encontro</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
       <?php
-if (isset($_GET['updateid'])) {
-  $id_ata = $_GET['updateid'];
-  $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-  if (!empty($participantes)) {
-      // Ordena os participantes em ordem alfabética pelo nome do facilitador
-      usort($participantes, function($a, $b) {
-          return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
-      });
+        if (isset($_GET['updateid'])) {
+          $id_ata = $_GET['updateid'];
+          $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+          if (!empty($participantes)) {
+              usort($participantes, function($a, $b) {
+                  return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
+              });
 
-      echo "<table class='table'>";
-      echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
-      echo "<tbody>";
-      foreach ($participantes as $participante) {
-          // Aqui, você pode acessar os dados adicionais do facilitador usando $participante
-          // Suponho que $participante já contenha os dados da tabela facilitadores
-          echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
-          echo "<td>{$participante['matricula']}</td>"; // Coluna de Matrícula
-          echo "<td>{$participante['nome_facilitador']}</td>"; // Coluna de Nome
-          echo "<td>{$participante['email_facilitador']}</td>"; // Coluna de Email
-          // Botão de Excluir com chamada para a função JavaScript excluirParticipante
-          echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";
-          echo "</tr>";
-      }
-      echo "</tbody></table>";
-  } else {
-      echo "Nenhum participante encontrado para esta ATA.";
-  }
-} else {
-  echo "Nenhum ID de ATA fornecido.";
-}
-?>
-
-
-
+              echo "<table class='table'>";
+              echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
+              echo "<tbody>";
+              foreach ($participantes as $participante) {
+                  echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
+                  echo "<td>{$participante['matricula']}</td>"; 
+                  echo "<td>{$participante['nome_facilitador']}</td>"; 
+                  echo "<td>{$participante['email_facilitador']}</td>"; 
+                  echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";
+                  echo "</tr>";
+              }
+              echo "</tbody></table>";
+          } else {
+              echo "Nenhum participante encontrado para esta ATA.";
+          }
+        } else {
+          echo "Nenhum ID de ATA fornecido.";
+        }
+        ?>
       </div>
     </div>
   </div>
 </div>
-
 <script>
   function excluirParticipante(participante) {
     if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
@@ -330,7 +322,6 @@ if (isset($_GET['updateid'])) {
     }
   }
 </script>
-
 <br>
 <?php
 $conn->close();
@@ -341,11 +332,6 @@ $conn->close();
 </div>
 </div>
 </form>
-
-
-
-
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("addForm").addEventListener("submit", function(event) {
@@ -417,7 +403,7 @@ function adicionarParticipanteAoLabel(participante) {
         <h2 class="accordion-header">
             <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
                 <i class="fa-solid fa-file p-1 mb-1"></i>
-                <h5>Deliberações do encontro</h5>
+                <h5>Deliberações existentes</h5>
             </div>
         </h2>
         <div class="accordion-collapse collapse show">
@@ -468,7 +454,7 @@ function adicionarParticipanteAoLabel(participante) {
     <div class="accordion">
     <h2 class="accordion-header">
         <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
-            <h5>Deliberações</h5>
+            <h5>Adicione deliberação</h5>
         </div>
     </h2>
     <div class="accordion-collapse collapse show">
