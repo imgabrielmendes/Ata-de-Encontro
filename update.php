@@ -181,6 +181,7 @@ mysqli_close($conn);
                 <?php foreach ($pegarfa as $facnull) : ?>
                     <option value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
                         <?php echo $facnull['nome_facilitador']; ?>
+                       
                     </option>
                 <?php endforeach ?>
             </optgroup>
@@ -188,7 +189,8 @@ mysqli_close($conn);
           <div class="col-6 form-control mt-2">
             <ul>
                 <?php foreach ($facilitadores as $facilitador): ?>
-                    <li><?php echo $facilitador['facilitadores']; ?></li>
+                    <li><?php echo $facilitador['facilitadores']; echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";?></li>
+
                 <?php endforeach; ?>
             </ul>   
           </div>
@@ -240,6 +242,18 @@ mysqli_close($conn);
 
     <script>
 
+
+function excluirParticipante(participante) {
+    if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
+      var participanteElement = document.querySelector("li:contains('" + participante + "')");
+      if (participanteElement) {
+        participanteElement.remove();
+      } else {
+        alert("Participante não encontrado na lista.");
+      }
+    }
+  }
+  
       new MultiSelectTag('selecionandofacilitador', {
             rounded: true, 
             shadow: false,     
