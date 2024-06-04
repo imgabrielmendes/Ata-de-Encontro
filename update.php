@@ -11,6 +11,9 @@ $puxarform = new AcoesForm;
 $pegarfa = $puxarform->pegarfacilitador();
 $pegarlocal = $puxarform->pegarlocais();
 
+
+
+
 $sql = "SELECT * FROM assunto WHERE id = $id";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
@@ -189,7 +192,10 @@ mysqli_close($conn);
           <div class="col-6 form-control mt-2">
             <ul>
                 <?php foreach ($facilitadores as $facilitador): ?>
-                    <li><?php echo $facilitador['facilitadores']; echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";?></li>
+         <?php
+            $id_ata = $_GET['updateid'];
+            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);?>
+                    <li><?php echo $facilitador['facilitadores']; echo "<button type='button' class='btn btn-danger btn-sm m-2' onclick='excluirParticipante($id_ata, \"{$facilitador['facilitadores']}\")'>Excluir</button>";?></li>
 
                 <?php endforeach; ?>
             </ul>   
@@ -272,6 +278,9 @@ function excluirParticipante(participante) {
       });
 
 
+      var id_ata= <?php echo json_encode($_GET['updateid']); ?>;
+     
+      
 
     document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById("seu-formulario-id");
@@ -365,7 +374,15 @@ function formatarData(data) {
 //     // Formata a data como "dia/mês/ano" (por exemplo, "28/05/2024")
 //     return dia + '/' + mes + '/' + ano;
 // }
+     
 
 </script>
+     
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="view/js/bootstrap.js"></script>
+    <script src="app/pagdeliberacoes.js"></script>
+    <script src="app/excluiratribuida.js"></script>
 </body>
 </html>

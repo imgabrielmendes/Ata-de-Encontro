@@ -1,9 +1,9 @@
 <?php
 include 'database.php';
-// precisa incluir a conexão do outro banco
+
 session_start();
 
-// texto, facili, delibe é de outro banco de dados, precisa fazer a conexão com o outro também para enviar
+
 $data = $_POST['data'];
 $hora_inicio = $_POST['hora_inicio'];
 $hora_term = $_POST['hora_term'];
@@ -14,8 +14,9 @@ $texto = $_POST['texto'];
 $id_ataenviar = $_POST['id'];
 $facilitadores = $_POST['facilitadores'];
 
+var_dump($facilitadores);
 if (!empty($objetivo) && !empty($local) && !empty($hora_inicio) && !empty($hora_term) && !empty($tema)) {
-    // Atualização na tabela "assunto" do banco de dados principal
+
     $enviarbanco_assunto = "UPDATE assunto SET data_solicitada = ?, hora_inicial = ?, hora_termino = ?, objetivo = ?, local = ?, tema = ? WHERE id = ?";
     if ($stmt_assunto = $conexao->prepare($enviarbanco_assunto)) {
         $stmt_assunto->bind_param("ssssssi", $data, $hora_inicio, $hora_term, $objetivo, $local, $tema, $id_ataenviar);
@@ -26,7 +27,7 @@ if (!empty($objetivo) && !empty($local) && !empty($hora_inicio) && !empty($hora_
         echo "Erro ao preparar a consulta SQL para a tabela 'assunto' do banco de dados principal: " . $conexao->error;
     }
 
-    // Atualização na tabela do outro banco de dados
+
     $enviarbanco_outro = "UPDATE textoprinc SET texto_princ = ? WHERE id_ata = ?";
     if ($stmt_outro = $conexao->prepare($enviarbanco_outro)) {
         $stmt_outro->bind_param("si", $texto, $id_ataenviar);
@@ -52,7 +53,7 @@ if ($stmt_deliberador = $conexao->prepare($enviarbanco_deliberador)) {
 
 
 foreach ($facilitadores as $facilitador) {
-    
+  
     $sql_excluir_facilitador = "DELETE FROM ata_has_fac WHERE id_ata = ? AND facilitadores = ?";
     if ($stmt_excluir_facilitador = $conexao->prepare($sql_excluir_facilitador)) {
         $stmt_excluir_facilitador->bind_param("ii", $id_ataenviar, $facilitador);
