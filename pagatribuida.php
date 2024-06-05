@@ -598,6 +598,21 @@ function adicionarParticipanteAoLabel(participante) {
                                 <div class="d-flex flex-column align-items-end">
                                     <ul id="caixadeselecaodel"></ul>
                                     <button type="button" id="addItemButton" class="btn btn-success  a">+</button>
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                        var addItemButton = document.getElementById('addItemButton');
+                                        var deliberacoesTextarea = document.getElementById('deliberacoes');
+                                        var deliberadorSelect = document.getElementById('deliberador');
+                                        addItemButton.addEventListener('click', function() {
+                                            deliberacoesTextarea.value = '';
+                                            for (var i = 0; i < deliberadorSelect.options.length; i++) {
+                                                deliberadorSelect.options[i].selected = false;
+                                            }
+
+                                            console.log('Textarea and select options have been reset');
+                                        });
+                                    });
+                                    </script>
                                 </div>
                             </div>
                         </div>
