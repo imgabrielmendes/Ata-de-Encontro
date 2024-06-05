@@ -94,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         </tbody>
         </table>
 
-        <h2>PARTICIPANTES</h2>';
+        <h3>PARTICIPANTES</h3>';
         if (!empty($nomeParticipantes)) {
             foreach (explode(",", $nomeParticipantes) as $participante) {
                 $html .= htmlspecialchars($participante) . ',  ';
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
 
             $html .= '
-            <h2>TEXTO PRINCIPAL:</h2>
+            <h3>TEXTO PRINCIPAL:</h3>
             <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
                 <tbody>
                     <tr style="">
@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 </tbody>
             </table>
             
-            <h2> DELIBERAÇÕES </h2>
+            <h3> DELIBERAÇÕES </h3>
             <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
                 <tbody>
                     <tr style="">
@@ -180,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 }
 
 
-            for ($linha = 0; $linha < 8; $linha++) {
+            for ($linha = 0; $linha < 15; $linha++) {
                 $html .= '<tr style="text-align: center;">
                             <td style="border: 1px solid black; height: 20px;"></td>
                             <td style="border: 1px solid black;"></td>

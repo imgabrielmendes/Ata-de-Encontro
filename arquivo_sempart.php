@@ -75,14 +75,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
         <tbody>
-            <tr style="font-size: 10p">
+            <tr style="font-size: 10px">
                 <td style="border: 1px solid black; width: 178px; text-align: left; height: 30px; "><b>  Local:</b>  '.$local.'</td>
                 <td style="border: 1px solid black; width: 362px; text-align: left; height: 30px;">'.'   '.'<b>Tema:</b>  '.$tema.'</td>
             </tr>
         </tbody>
         </table>
 
-        <h2>TEXTO PRINCIPAL:</h2>
+        <h3>TEXTO PRINCIPAL:</h3>
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
             <tbody>
                 <tr style="">
@@ -91,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </tbody>
         </table>
 
-        <h2> DELIBERAÇÕES </h2>
+        <h3> DELIBERAÇÕES </h3>
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
             <tbody>
                 <tr style="">
