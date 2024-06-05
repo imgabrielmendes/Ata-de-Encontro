@@ -237,26 +237,32 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
                   <div class="col">
                   <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
     <optgroup label="Selecione Facilitadores">
-        <?php foreach ($pegarfa as $facilitador) : ?>
-            <?php
-            // Verifica se o facilitador já está na ATA
+        <?php 
+        // Obter a lista de participantes na ATA para a ID específica
+        $participantesNaAta = $puxarform->ParticipantesPorIdAta($_GET['updateid']);
+
+        foreach ($pegarfa as $facilitador) {
+            // Verifique se o facilitador não está na ATA
             $estaNaAta = false;
-            foreach ($participantes as $participante) {
+            foreach ($participantesNaAta as $participante) {
                 if ($participante['id'] == $facilitador['id']) {
                     $estaNaAta = true;
                     break;
                 }
             }
-            // Se o facilitador não estiver na ATA, exibe no seletor
-            if (!$estaNaAta) :
-            ?>
-                <option value="<?php echo $facilitador['id']; ?>" data-tokens="<?php echo $facilitador['nome_facilitador']; ?>">
-                    <?php echo $facilitador['nome_facilitador']; ?>
-                </option>
-            <?php endif; ?>
-        <?php endforeach; ?>
+            
+            if (!$estaNaAta) {
+        ?>
+            <option value="<?php echo $facilitador['id']; ?>" data-tokens="<?php echo $facilitador['nome_facilitador']; ?>">
+                <?php echo $facilitador['nome_facilitador']; ?>
+            </option>
+        <?php 
+            }
+        } 
+        ?>
     </optgroup>
 </select>
+
 
                   </div>
               </div>
@@ -270,6 +276,61 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
   </button>
   <span class="ms-2">Participantes do encontro</span>
 </div>
+
+
+
+<div class="d-flex justify-content-center mt-3">
+    <button id="registrarparticipantes" type="button" class="btn btn-primary" data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">Registrar participante</button>
+</div>
+<script>
+document.getElementById('registrarparticipantes').addEventListener('click', function() {
+    var idAata = this.getAttribute('data-id-ata');
+    var select = document.getElementById('participantesadicionado');
+    var participantesSelecionados = [];
+    for (var option of select.options) {
+        if (option.selected) {
+            participantesSelecionados.push(option.value);
+        }
+    }
+    if (participantesSelecionados.length === 0) {
+        Swal.fire({
+            title: 'Atenção!',
+            text: 'Por favor, selecione ao menos um participante.',
+            icon: 'warning'
+        });
+        return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'particibanco.php', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            Swal.fire({
+                title: 'Deu certo!',
+                text: 'Participantes adicionados com sucesso.',
+                icon: 'success',
+                timer: 2500
+            }).then(() => {
+                location.reload();
+            });
+        } else if (xhr.readyState == 4) {
+            Swal.fire({
+                title: 'Erro!',
+                text: 'Ocorreu um erro ao adicionar os participantes.',
+                icon: 'error',
+                timer: 2500
+            }).then(() => {
+                location.reload();
+            });
+        }
+    }
+    xhr.send('id_ata=' + idAata + '&participanteatribu=' + encodeURIComponent(JSON.stringify(participantesSelecionados)));
+});
+</script>
+
+
+
 <div class="modal fade" id="listaParticipantesModal" tabindex="-1" aria-labelledby="listaParticipantesModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen">
     <div class="modal-content">
@@ -388,33 +449,48 @@ function adicionarParticipanteAoLabel(participante) {
     <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
         <div class="col-md-12 text-center"></div>
         <div class="row">
-        <div class="d-flex justify-content-center">
-            <textarea id="textoprincipal" name="texto_principal" style="height: 110px;" class="form-control"><?php echo $texto_principal; ?></textarea>
+        <div class="d-flex justify-content-center mt-3">
+          <textarea id="textoprincipal" name="texto_principal" style="height: 110px;" class="form-control"><?php echo $texto_principal; ?></textarea>
         </div>
         <div class="d-flex justify-content-center mt-3">
-            <button id="registrarTextoButton" type="button" class="btn btn-primary" data-bs-toggle="modal" data-id-ata="<?php echo $id_ata; ?>">Registrar Texto</button>
+            <button id="registrarTextoButton" type="button" class="btn btn-primary" data-id-ata="<?php echo $id_ata; ?>">Registrar Texto</button>
         </div>
         <script>
-         document.getElementById('registrarTextoButton').addEventListener('click', function() {
-          var textoPrincipal = document.getElementById('textoprincipal').value;
-          var idAata = this.getAttribute('data-id-ata');
-          var xhr = new XMLHttpRequest();
-          xhr.open('POST', 'textprincbanco.php', true);
-          xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-          xhr.onreadystatechange = function() {
-              if(xhr.readyState == 4 && xhr.status == 200) {
-                  Swal.fire({
-                      title: 'Deu certo!',
-                      text: 'O texto principal foi atualizado com sucesso.',
-                      icon: 'success',
-                      timer: 2500
-                  });
-                  document.getElementById('textoprincipal').value = "";
-              }
-          }
-          xhr.send('id_ata=' + idAata + '&textoprincipal=' + encodeURIComponent(textoPrincipal));
-      });
-
+        document.getElementById('registrarTextoButton').addEventListener('click', function() {
+            var textoPrincipal = document.getElementById('textoprincipal').value;
+            var idAata = this.getAttribute('data-id-ata');
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'textprincbanco.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState == 4 && xhr.status == 200) {
+                    Swal.fire({
+                        title: 'Sucesso!',
+                        text: 'O texto foi atualizado com sucesso.',
+                        icon: 'success',
+                        confirmButtonText: 'OK',
+                        timer: 2500
+                    }).then((result) => {
+                        if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                            location.reload();
+                        }
+                    });
+                } else if (xhr.readyState == 4) {
+                    Swal.fire({
+                        title: 'Erro!',
+                        text: 'Ocorreu um erro ao atualizar o texto.',
+                        icon: 'error',
+                        confirmButtonText: 'OK',
+                        timer: 2500
+                    }).then((result) => {
+                        if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                            location.reload();
+                        }
+                    });
+                }
+            }
+            xhr.send('id_ata=' + idAata + '&textoprincipal=' + encodeURIComponent(textoPrincipal));
+        });
         </script>
     </div>    
 </div>
@@ -497,15 +573,23 @@ function adicionarParticipanteAoLabel(participante) {
                         </div>
                         <div class="col">
                             <div class="mb-2">
-                                <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
-                                    <optgroup label="Selecione Facilitadores">
-                                        <?php foreach ($pegarde as $facnull) : ?>
-                                            <option value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
-                                                <?php echo $facnull['nome_facilitador']; ?>
-                                            </option>
-                                        <?php endforeach ?>
-                                    </optgroup>
-                                </select>
+                            <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
+                              <optgroup label="Selecione Facilitadores">
+                              <?php 
+                              $participantesNaAta = $puxarform->ParticipantesPorIdAta($id_ata);
+                              foreach ($pegarde as $facilitador) {
+                                  if (in_array($facilitador['id'], array_column($participantesNaAta, 'id'))) {
+                              ?>
+                                      <option value="<?php echo $facilitador['id']; ?>" data-tokens="<?php echo $facilitador['nome_facilitador']; ?>">
+                                          <?php echo $facilitador['nome_facilitador']; ?>
+                                      </option>
+                              <?php 
+                                  }
+                              } 
+                              ?>
+                          </optgroup>
+                          </select>
+
                             </div>
                         </div>
                         <div class="row">
@@ -523,40 +607,63 @@ function adicionarParticipanteAoLabel(participante) {
         </div>
     </div>
     <div>
-        <div class="row">
-            <div class="col text-center">
-                <style>
-                    #alertIcon {
-                        width: 24px;
-                        height: auto;
-                        margin-right: 5px;
-                        cursor: pointer;
-                    }
-                </style>
+    <div class="row">
+        <div class="col text-center">
+            <style>
+                #alertIcon {
+                    width: 24px;
+                    height: auto;
+                    margin-right: 5px;
+                    cursor: pointer;
+                }
+                .btn-container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 10px; /* Espaçamento entre os botões */
+                }
+            </style>
+            <div class="btn-container">
+                <button id="reloadPageButton" type="button" class="btn btn-secondary">Atualizar encontro</button>
                 <button id="atribuida" class="btn btn-primary">Finalizar reunião</button>
                 <svg id="alertIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path fill="#167cbb" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
                 </svg>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        var atribuidaButton = document.getElementById('atribuida');
-                        var alertIcon = document.getElementById('alertIcon');
+            </div>
+            <script>
+                document.getElementById('reloadPageButton').addEventListener('click', function() {
+                    Swal.fire({
+                        title: 'Sucesso!',
+                        text: 'O encontro foi atualizado com sucesso.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                });
 
-                        alertIcon.addEventListener('click', function() {
-                            Swal.fire({
-                                title: 'Atenção!',
-                                html: 'Depois de finalizada, esta reunião não poderá ser alterada',
-                                icon: 'warning',
-                                confirmButtonText: 'OK',
-                                timer: 2500
-                            });
+                document.addEventListener('DOMContentLoaded', function() {
+                    var atribuidaButton = document.getElementById('atribuida');
+                    var alertIcon = document.getElementById('alertIcon');
+
+                    alertIcon.addEventListener('click', function() {
+                        Swal.fire({
+                            title: 'Atenção!',
+                            html: 'Depois de finalizada, esta reunião não poderá ser alterada',
+                            icon: 'warning',
+                            confirmButtonText: 'OK',
+                            timer: 2500
                         });
                     });
-                </script>
-            </div>
+                });
+            </script>
         </div>
     </div>
 </div>
+
+
 
 <div class="toast-container position-fixed bottom-0 end-0 p-3">
       <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -590,6 +697,7 @@ function adicionarParticipanteAoLabel(participante) {
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
     <script src="view/js/multi-select-tag.js"></script>

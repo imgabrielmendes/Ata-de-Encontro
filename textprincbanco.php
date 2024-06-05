@@ -19,14 +19,43 @@ $id_ata = $_POST['id_ata'];
 // Recupera o texto principal enviado via POST
 $textoprincipal = $_POST['textoprincipal'];
 
-// Atualiza o registro na tabela "textoprinc" com o texto principal para o id_ata especificado
-$sqlUpdate = "UPDATE textoprinc SET texto_princ = '$textoprincipal' WHERE id_ata = $id_ata";
+// Verifica se já existe um registro com o id_ata
+$sqlCheck = "SELECT COUNT(*) as count FROM textoprinc WHERE id_ata = ?";
+$stmtCheck = $conn->prepare($sqlCheck);
+$stmtCheck->bind_param("i", $id_ata);
+$stmtCheck->execute();
+$resultCheck = $stmtCheck->get_result();
+$rowCheck = $resultCheck->fetch_assoc();
+$stmtCheck->close();
 
-if ($conn->query($sqlUpdate) === TRUE) {
-    echo "O texto foi atualizado com sucesso para o ID $id_ata.";
+if ($rowCheck['count'] > 0) {
+    // Se existir, atualiza o registro
+    $sqlUpdate = "UPDATE textoprinc SET texto_princ = ? WHERE id_ata = ?";
+    $stmtUpdate = $conn->prepare($sqlUpdate);
+    $stmtUpdate->bind_param("si", $textoprincipal, $id_ata);
+
+    if ($stmtUpdate->execute()) {
+        echo "O texto foi atualizado com sucesso para o ID $id_ata.";
+    } else {
+        echo "Erro ao atualizar o texto para o ID $id_ata: " . $stmtUpdate->error;
+    }
+
+    $stmtUpdate->close();
 } else {
-    echo "Erro ao atualizar o texto para o ID $id_ata: " . $conn->error;
+    // Se não existir, insere um novo registro
+    $sqlInsert = "INSERT INTO textoprinc (id_ata, texto_princ) VALUES (?, ?)";
+    $stmtInsert = $conn->prepare($sqlInsert);
+    $stmtInsert->bind_param("is", $id_ata, $textoprincipal);
+
+    if ($stmtInsert->execute()) {
+        echo "O texto foi inserido com sucesso para o ID $id_ata.";
+    } else {
+        echo "Erro ao inserir o texto para o ID $id_ata: " . $stmtInsert->error;
+    }
+
+    $stmtInsert->close();
 }
 
 $conn->close();
 ?>
+

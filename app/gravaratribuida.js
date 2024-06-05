@@ -72,17 +72,6 @@ function irparaHist() {
         });
     }
 }
-
-
-
-
-
-
-
-
-
-
-
 var botaoatribuicao = document.getElementById("atribuida");
 botaoatribuicao.addEventListener('click', gravaratribuida);
 
