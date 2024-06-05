@@ -626,6 +626,49 @@ function adicionarParticipanteAoLabel(participante) {
             <div class="btn-container">
                 <button id="reloadPageButton" type="button" class="btn btn-secondary">Inserir deliberação</button>
                 <button id="atribuida" class="btn btn-primary">Finalizar reunião</button>
+                <script>
+                    var botaoatribuicao = document.getElementById("atribuida");
+                    botaoatribuicao.addEventListener('click', gravaratribuida);
+
+                    function gravaratribuida() {
+                        var id_ata = document.getElementById("participantesadicionado").getAttribute("data-id-ata");
+                        console.log(id_ata);
+
+                        if (!id_ata) {
+                            console.error("id_ata não está definido.");
+                            return; 
+                        }
+
+                        Swal.fire({
+                            title: "Confirmação",
+                            text: "Tem certeza que deseja finalizar o encontro?",
+                            icon: "question",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            cancelButtonText: "Cancelar",
+                            confirmButtonText: "Sim"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: 'atualizar_status.php',
+                                    method: 'POST',
+                                    data: {
+                                        id_ata: id_ata,
+                                        status: 'FECHADA'
+                                    },
+                                    success: function(response) {
+                                        console.log("Status atualizado com sucesso.");
+                                        window.location.href = 'paghistorico.php';
+                                    },
+                                    error: function(error) {
+                                        console.error('Erro na solicitação AJAX:', error);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                </script>
             </div>
             <script>
                 document.getElementById('reloadPageButton').addEventListener('click', function() {
@@ -687,6 +730,7 @@ function adicionarParticipanteAoLabel(participante) {
     <script src="app/deliberacoes.js"></script>
     <script src="app/gravaratribuida.js" data-id-ata="<?php echo $id_ata; ?>"></script>
     <script src="app/excluiratribuida.js"></script>
+    
     
 </body>
 </html>
