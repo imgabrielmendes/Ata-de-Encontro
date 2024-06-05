@@ -190,16 +190,19 @@ mysqli_close($conn);
             </optgroup>
           </select>
           <div class="col-6 form-control mt-2">
-            <ul>
-                <?php foreach ($facilitadores as $facilitador): ?>
-         <?php
+    <ul>
+        <?php foreach ($facilitadores as $index => $facilitador): ?>
+            <?php
             $id_ata = $_GET['updateid'];
-            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);?>
-                    <li><?php echo $facilitador['facilitadores']; echo "<button type='button' class='btn btn-danger btn-sm m-2' onclick='excluirParticipante($id_ata, \"{$facilitador['facilitadores']}\")'>Excluir</button>";?></li>
-
-                <?php endforeach; ?>
-            </ul>   
-          </div>
+            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+            ?>
+            <li>
+                <?php echo $facilitador['facilitadores']; ?>
+                <button type='button' class='btn btn-danger btn-sm m-2 excluir-button' data-index='<?php echo $index; ?>' onclick='excluirParticipante("<?php echo $id_ata; ?>", "<?php echo $facilitador['facilitadores']; ?>")'>Excluir</button>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
 
 
     <input type="hidden" name="form_action" value="delete">
@@ -247,18 +250,9 @@ mysqli_close($conn);
     </main>
 
     <script>
+     
 
 
-function excluirParticipante(participante) {
-    if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
-      var participanteElement = document.querySelector("li:contains('" + participante + "')");
-      if (participanteElement) {
-        participanteElement.remove();
-      } else {
-        alert("Participante não encontrado na lista.");
-      }
-    }
-  }
   
       new MultiSelectTag('selecionandofacilitador', {
             rounded: true, 
@@ -277,12 +271,9 @@ function excluirParticipante(participante) {
             }
       });
 
-
-      var id_ata= <?php echo json_encode($_GET['updateid']); ?>;
-     
-      
-
-    document.addEventListener('DOMContentLoaded', function () {
+        
+ 
+      document.addEventListener('DOMContentLoaded', function () {
     var form = document.getElementById("seu-formulario-id");
 
     form.addEventListener('submit', function(event) {
@@ -297,21 +288,26 @@ function excluirParticipante(participante) {
         var tema = document.getElementById('temaprincipal').value;
         var texto = document.getElementById('textoprincipal').value;
         var id = <?php echo json_encode($_GET['updateid']); ?>;
-        console.log(texto);
-      // texto é de outro banco de dados
 
-      var facilitadoresSelecionados = [];
-        var select = document.getElementById('selecionandofacilitador');
-        for (var i = 0; i < select.options.length; i++) {
-            if (select.options[i].selected) {
-                facilitadoresSelecionados.push(select.options[i].value);
-            }
-        }
-        console.log(facilitadoresSelecionados);
-       
-      if ( data === "" || objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === ""  ) {
+        var facilitadoresSelecionados = [];
+var select = document.getElementById('selecionandofacilitador');
+for (var i = 0; i < select.options.length; i++) {
+    if (select.options[i].selected) {
+        facilitadoresSelecionados.push(select.options[i].value);
+    }
+}
+
+
+if (facilitadoresSelecionados.length > 0) {
+    console.log(facilitadoresSelecionados);
+} else {
+    console.log("Nenhum facilitador selecionado.");
+}
+
+        if (data === "" || objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "") {
             window.alert("Preencha as informações");
         } else {
+            
             $.ajax({
                 type: 'POST',
                 url: 'acoesdeupdate.php',
@@ -319,12 +315,12 @@ function excluirParticipante(participante) {
                     objetivo: objetivo,
                     id: id,
                     local: local,
-                    hora_inicio:hora_inicio,
+                    hora_inicio: hora_inicio,
                     hora_term: hora_term,
                     tema: tema,
                     texto: texto,
                     data: data,
-                    facilitadores: facilitadoresSelecionados,
+                    
                 },
                 success: function(response) {
                     alert(response);
@@ -335,17 +331,62 @@ function excluirParticipante(participante) {
                     console.log("DEU RUIM");
                 }
             });
+
+            // Realiza a exclusão dos participantes selecionados
+            var facili = [];
+            var buttons = document.querySelectorAll('.excluir-button');
+            buttons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var index = this.getAttribute('data-index');
+                    var participante = this.getAttribute('data-participante');
+                    facili.push(index);
+
+                    if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
+                        $.ajax({
+                            url: 'excluirpartici.php',
+                            method: 'POST',
+                            data: {
+                                facili: facili,
+                            },
+                            success: function(response) {
+                                var res = JSON.parse(response);
+                                if (res.success) {
+                                    console.log("Participante excluído com sucesso:", res.message);
+                                    
+                                    // Remover o participante da interface
+                                    var participanteElement = document.querySelector("li:contains('" + participante + "')");
+                                    if (participanteElement) {
+                                        participanteElement.remove();
+                                    }
+
+                                    // Recarregar a página para atualizar os dados no banco de dados
+                                    location.reload();
+                                } else {
+                                    alert("Erro ao excluir o participante: " + res.message);
+                                }
+                            },
+                            error: function(error) {
+                                console.error('Erro na solicitação AJAX:', error);
+                                alert('Erro ao excluir o participante. Tente novamente.');
+                            }
+                        });
+                    }
+                });
+            });
         }
     });
 });
 
+
+
+
 function formatarData(data) {
       var dataObj = new Date(data);
       var dia = dataObj.getDate() + 1;
-      var mes = dataObj.getMonth() + 1; // Adicionando 1 para ajustar o mês
+      var mes = dataObj.getMonth() + 1;
       var ano = dataObj.getFullYear();
 
-      // Adicionando zeros à esquerda para garantir que tenham dois dígitos
+ 
       if (dia < 10) {
         dia = '0' + dia;
       }
@@ -353,28 +394,11 @@ function formatarData(data) {
         mes = '0' + mes;
       }
 
-      // Formata a data como "dia/mês/ano" (por exemplo, "28/05/2024")
+
       return dia + '/' + mes + '/' + ano;
     }
 
-// function formatarData(data) {
-//     var dataObj = new Date(data);
-//     var dia = dataObj.getDate();
-//     var mes = dataObj.getMonth() + 1; // Adicionando 1 para ajustar o mês
-//     var ano = dataObj.getFullYear();
 
-//     // Adicionando zeros à esquerda para garantir que tenham dois dígitos
-//     if (dia < 10) {
-//         dia = '0' + dia;
-//     }
-//     if (mes < 10) {
-//         mes = '0' + mes;
-//     }
-
-//     // Formata a data como "dia/mês/ano" (por exemplo, "28/05/2024")
-//     return dia + '/' + mes + '/' + ano;
-// }
-     
 
 </script>
      
