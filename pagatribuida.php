@@ -597,7 +597,7 @@ function adicionarParticipanteAoLabel(participante) {
                             <div class="col-2 d-flex justify-content-end">
                                 <div class="d-flex flex-column align-items-end">
                                     <ul id="caixadeselecaodel"></ul>
-                                    <button type="button" id="addItemButton" class="btn btn-success mt-2">+</button>
+                                    <button type="button" id="addItemButton" class="btn btn-success  a">+</button>
                                 </div>
                             </div>
                         </div>
@@ -620,7 +620,7 @@ function adicionarParticipanteAoLabel(participante) {
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    gap: 10px; /* Espaçamento entre os botões */
+                    gap: 10px; 
                 }
             </style>
             <div class="btn-container">
@@ -634,7 +634,7 @@ function adicionarParticipanteAoLabel(participante) {
                 document.getElementById('reloadPageButton').addEventListener('click', function() {
                     Swal.fire({
                         title: 'Sucesso!',
-                        text: 'O encontro foi atualizado com sucesso.',
+                        text: 'A deliberação foi inserida com sucesso.',
                         icon: 'success',
                         confirmButtonText: 'OK'
                     }).then((result) => {
