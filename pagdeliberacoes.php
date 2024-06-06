@@ -8,6 +8,8 @@ $puxarform = new AcoesForm;
 // $pegarde = $puxarform->pegarfacilitador();
 
 $ultimosfacilitadores = $puxarform->puxandoUltimosFacilitadores();
+
+
 $facilitadoresString = '';
 foreach ($ultimosfacilitadores as $facilitador) {
     $facilitadoresString .= $facilitador['nome_facilitador'] . ', ';
@@ -31,6 +33,7 @@ function identificarIdPagina() {
 $id_ata = identificarIdPagina();
 $puxatexto = $puxarform->textprinc($id_ata);
 $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
+
 ?>
 
 <!DOCTYPE html>
@@ -509,6 +512,22 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
   <div class="col d-flex justify-content-center align-content-center">
     
     <button type="button" id="addItemButton" class="btn btn-success  a">Criar deliberações</button>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        var addItemButton = document.getElementById('addItemButton');
+        var deliberacoesTextarea = document.getElementById('deliberacoes');
+        var deliberadorSelect = document.getElementById('deliberador');
+        addItemButton.addEventListener('click', function() {
+            deliberacoesTextarea.value = '';
+            var options = deliberadorSelect.options;
+            for (var i = 0; i < options.length; i++) {
+                options[i].selected = false;
+            }
+
+            console.log('Textarea and select options have been reset');
+        });
+    });
+                                  </script>
   </div>
 </div>
 
