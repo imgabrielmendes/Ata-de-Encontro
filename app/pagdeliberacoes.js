@@ -159,6 +159,7 @@ document.getElementById('addItemButton').addEventListener('click', function() {
         deleteButton.addEventListener('click', function() {  
             itemList.removeChild(textListItemDiv);
             itemList.removeChild(facilitatorListItemDiv);
+            itemList.removeChild(deliberationLabel);
             deleteButton.remove(); 
 
             const toastLiveExample = document.getElementById('liveToast2');
@@ -260,7 +261,6 @@ function irparaHist() {
                     method: 'POST',
                     data: {
                         textoprincipal1: textoprincipal,
-                        // Enviar deliberadores selecionados junto com os dados
                         deliberadoresSelecionados: JSON.stringify(deliberadoresSelecionadosLabel)
                     },
                     success: function() {

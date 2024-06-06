@@ -277,10 +277,12 @@ print_r($id_ata);
           <div class="btnsparticipante">
 
           <div class="p-2 col-lg-3 col-md-5 col-sm-12">
-    <button id="botaocontinuarata" type="button" class="btn form-control btn-success" onclick="redirecionar()">
+    <button id="botaocontinuarata" type="button" class="btn form-control btn-success" onclick="">
         Prosseguir com a ata
     </button>
-
+<script>
+    var id_ata = <?php echo $id_ata; ?>;
+</script>
 
 </div>
         <div class="p-2 col-lg-3 col-md-5 col-sm-12">
@@ -288,15 +290,7 @@ print_r($id_ata);
                 Ir para histórico
               </button>         
     </div>
-<script>
-    var id_ata = <?php echo $id_ata; ?>;
-    function redirecionar() {
-        console.log("Redirecionando em 2 segundos...");
-        setTimeout(() => {
-            window.location.href = 'pagdeliberacoes.php?updateid=' + id_ata;
-        }, 1500);
-    }
-</script>
+
 
 
         </div>

@@ -236,23 +236,28 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
             <div style="margin: 6px" class='form-control bg-body-secondary border rounded'>
                 <ul>
                 <?php
-                  if (isset($_GET['updateid'])) {
-                    $id_ata = $_GET['updateid'];
-                    $participantes = $puxarform->ParticipantesPorIdAta($id_ata);
-                    if (!empty($participantes)) {
-                        // Ordena os participantes em ordem alfabética
-                        sort($participantes);
-                        
-                        // Exibe os participantes separados por vírgulas
-                        echo "<span style='font-size: 18px;'>";
-                        echo implode(', ', $participantes);
-                        echo "</span>";
+                    if (isset($_GET['updateid'])) {
+                      $id_ata = $_GET['updateid'];
+                      $participantes = $puxarform->ParticipantesPorIdAta($id_ata);
+                      if (!empty($participantes)) {
+
+                          $nomesParticipantes = array();
+
+                          foreach ($participantes as $participante) {
+                              $nomesParticipantes[] = $participante['participantes'];
+                          }
+
+                          sort($nomesParticipantes);
+
+                          echo "<span style='font-size: 18px;'>";
+                          echo implode(', ', $nomesParticipantes);
+                          echo "</span>";
+                      } else {
+                          echo "Nenhum participante encontrado para esta ATA.";
+                      }
                     } else {
-                        echo "Nenhum participante encontrado para esta ATA.";
+                      echo "Nenhum ID de ATA fornecido.";
                     }
-                } else {
-                    echo "Nenhum ID de ATA fornecido.";
-                }
                 ?>
                 </ul>
             </div>

@@ -65,7 +65,8 @@ function addDeliberacoes() {
                     // Limpa a lista de participantes adicionados
                     ParticipantesAdicionadosvalor = [];
                     atualizarListaParticipantes();
-        
+                    redirecionar();
+
                 },
         
                 error: function(error) {
@@ -74,6 +75,13 @@ function addDeliberacoes() {
             });
         }
   
+}
+
+function redirecionar() {
+    console.log("Redirecionando em 2 segundos...");
+    setTimeout(() => {
+        window.location.href = 'pagdeliberacoes.php?updateid=' + id_ata;
+    }, 1500);
 }
 
 function atualizarListaParticipantes() {
