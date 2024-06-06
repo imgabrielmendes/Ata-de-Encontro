@@ -8,6 +8,8 @@ $puxarform = new AcoesForm;
 // $pegarde = $puxarform->pegarfacilitador();
 
 $ultimosfacilitadores = $puxarform->puxandoUltimosFacilitadores();
+
+
 $facilitadoresString = '';
 foreach ($ultimosfacilitadores as $facilitador) {
     $facilitadoresString .= $facilitador['nome_facilitador'] . ', ';
@@ -31,6 +33,7 @@ function identificarIdPagina() {
 $id_ata = identificarIdPagina();
 $puxatexto = $puxarform->textprinc($id_ata);
 $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
+
 ?>
 
 <!DOCTYPE html>
@@ -230,12 +233,6 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
           
     </div>     
 
-
-
-
-
-
-
     <div class="row">
     <div class="col">
         <div>
@@ -243,22 +240,30 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
                 <ul>
                 <?php
                   if (isset($_GET['updateid'])) {
-                    $id_ata = $_GET['updateid'];
-                    $participantes = $puxarform->ParticipantesPorIdAta($id_ata);
-                    if (!empty($participantes)) {
-                        // Ordena os participantes em ordem alfabética
-                        sort($participantes);
-                        
-                        // Exibe os participantes separados por vírgulas
-                        echo "<span style='font-size: 18px;'>";
-                        echo implode(', ', $participantes);
-                        echo "</span>";
-                    } else {
-                        echo "Nenhum participante encontrado para esta ATA.";
-                    }
-                } else {
-                    echo "Nenhum ID de ATA fornecido.";
-                }
+                      $id_ata = $_GET['updateid'];
+                      $participantes = $puxarform->ParticipantesPorIdAta($id_ata);
+                      if (!empty($participantes)) {
+                          // Array para armazenar apenas os nomes dos participantes
+                          $nomesParticipantes = array();
+
+                          // Extrai apenas os nomes dos participantes
+                          foreach ($participantes as $participante) {
+                              $nomesParticipantes[] = $participante['participantes'];
+                          }
+
+                          // Ordena os participantes em ordem alfabética
+                          sort($nomesParticipantes);
+
+                          // Exibe os participantes separados por vírgulas
+                          echo "<span style='font-size: 18px;'>";
+                          echo implode(', ', $nomesParticipantes);
+                          echo "</span>";
+                      } else {
+                          echo "Nenhum participante encontrado para esta ATA.";
+                      }
+                  } else {
+                      echo "Nenhum ID de ATA fornecido.";
+                  }
                 ?>
                 </ul>
             </div>
@@ -510,6 +515,22 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
   <div class="col d-flex justify-content-center align-content-center">
     
     <button type="button" id="addItemButton" class="btn btn-success  a">Criar deliberações</button>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        var addItemButton = document.getElementById('addItemButton');
+        var deliberacoesTextarea = document.getElementById('deliberacoes');
+        var deliberadorSelect = document.getElementById('deliberador');
+        addItemButton.addEventListener('click', function() {
+            deliberacoesTextarea.value = '';
+            var options = deliberadorSelect.options;
+            for (var i = 0; i < options.length; i++) {
+                options[i].selected = false;
+            }
+
+            console.log('Textarea and select options have been reset');
+        });
+    });
+                                  </script>
   </div>
 </div>
 

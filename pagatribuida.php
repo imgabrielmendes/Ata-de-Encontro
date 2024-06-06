@@ -349,14 +349,22 @@ document.getElementById('registrarparticipantes').addEventListener('click', func
                 });
 
                 echo "<table class='table table-bordered table-striped'>";
-                echo "<thead class='thead-dark'><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
+                echo "<thead class='thead-dark'><tr><th style='background-color: #001f3f; color: white;'>Matrícula</th>
+                <th  style='background-color: #001f3f; color: white;'>Nome</th><th style='background-color: #001f3f; color: white;'>Email</th><th class='text-center' style='background-color: #001f3f; color: white;'>Excluir</th></tr></thead>";
+
                 echo "<tbody>";
                 foreach ($participantes as $participante) {
                     echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
                     echo "<td>{$participante['matricula']}</td>"; 
                     echo "<td>{$participante['nome_facilitador']}</td>"; 
                     echo "<td>{$participante['email_facilitador']}</td>"; 
-                    echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";
+                    echo "<td class='d-flex justify-content-center'>
+                            <button type='button' class='btn btn-danger btn-sm align-items-center' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>
+                                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' style='width: 1em; height: 1em;'>
+                                    <path fill='#ffffff' d='M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z'/>
+                                </svg>
+                            </button>
+                        </td>";
                     echo "</tr>";
                 }
                 echo "</tbody></table>";
@@ -512,45 +520,68 @@ function adicionarParticipanteAoLabel(participante) {
                 <div id="existingDeliberations" class="mt-3">
                     <ul id="deliberationsList" class="list-group">
                     <?php
-                      $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
-                      if (!empty($deliberacoes)) {
-                          $deliberacoesAgrupadas = [];
-                          foreach ($deliberacoes as $deliberacao) {
-                              $conteudo = $deliberacao['deliberacoes'];
-                              $deliberador = $deliberacao['deliberador'];
+                        $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+                        if (!empty($deliberacoes)) {
+                            $deliberacoesAgrupadas = [];
+                            foreach ($deliberacoes as $deliberacao) {
+                                $conteudo = $deliberacao['deliberacoes'];
+                                $deliberador = $deliberacao['deliberador'];
 
-                              if (!isset($deliberacoesAgrupadas[$conteudo])) {
-                                  $deliberacoesAgrupadas[$conteudo] = [];
-                              }
+                                if (!isset($deliberacoesAgrupadas[$conteudo])) {
+                                    $deliberacoesAgrupadas[$conteudo] = [];
+                                }
 
-                              $deliberacoesAgrupadas[$conteudo][] = $deliberador;
-                          }
-                          foreach ($deliberacoesAgrupadas as $conteudo => $deliberadores) {
-                              $deliberadoresStr = implode(', ', $deliberadores);
-                      ?>
-                              <div style="margin-bottom: 15px;">
-                                  <li class="form-control bg-body-secondary border rounded">
-                                      <div>
-                                          <strong>Deliberador:</strong> <?php echo $deliberadoresStr; ?>
-                                      </div>
-                                  </li>
-                                  <li class="form-control border rounded">
-                                      <div>
-                                          <strong>Deliberação:</strong> <?php echo $conteudo; ?>
-                                      </div>
-                                  </li>
-                              </div>
-                      <?php
-                          }
-                      }
-                      ?>
-
+                                $deliberacoesAgrupadas[$conteudo][] = $deliberador;
+                            }
+                            foreach ($deliberacoesAgrupadas as $conteudo => $deliberadores) {
+                                $deliberadoresStr = implode(', ', $deliberadores);
+                                ?>
+                                <div style="margin-bottom: 15px;" data-conteudo="<?php echo $conteudo; ?>">
+                                    <li class="form-control bg-body-secondary border rounded">
+                                        <div>
+                                            <strong>Deliberador:</strong> <?php echo $deliberadoresStr; ?>
+                                        </div>
+                                    </li>
+                                    <li class="form-control border rounded">
+                                        <div>
+                                            <strong>Deliberação:</strong> <?php echo $conteudo; ?>
+                                        </div>
+                                        <button class="btn btn-danger btn-sm delete-deliberacao" data-id-ata="<?php echo $id_ata; ?>" data-conteudo="<?php echo $conteudo; ?>">Excluir</button>
+                                    </li>
+                                </div>
+                                <?php
+                            }
+                        }
+                        ?>
                     </ul>
                 </div>          
             </div>
         </div>
     </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.delete-deliberacao').forEach(button => {
+        button.addEventListener('click', function() {
+            var idAta = this.getAttribute('data-id-ata');
+            var conteudo = this.getAttribute('data-conteudo');
 
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'excluirdeli.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            xhr.onreadystatechange = function() {
+                if(xhr.readyState == 4 && xhr.status == 200) {
+                    document.querySelector('div[data-conteudo="' + conteudo + '"]').remove();
+                    location.reload(); // Recarrega a página após a exclusão
+                }
+            };
+            xhr.send('id_ata=' + encodeURIComponent(idAta) + '&conteudo=' + encodeURIComponent(conteudo));
+        });
+    });
+});
+
+
+
+</script>
     <div class="accordion">
     <h2 class="accordion-header">
         <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
@@ -574,51 +605,22 @@ function adicionarParticipanteAoLabel(participante) {
                         <div class="col">
                             <div class="mb-2">
                             <select id="deliberador" class="form-control facilitator-select" placeholder="Deliberações" multiple>
-                              <optgroup label="Selecione Facilitadores">
-                              <?php 
-                              $participantesNaAta = $puxarform->ParticipantesPorIdAta($id_ata);
-                              foreach ($pegarde as $facilitador) {
-                                  if (in_array($facilitador['id'], array_column($participantesNaAta, 'id'))) {
-                              ?>
-                                      <option value="<?php echo $facilitador['id']; ?>" data-tokens="<?php echo $facilitador['nome_facilitador']; ?>">
-                                          <?php echo $facilitador['nome_facilitador']; ?>
-                                      </option>
-                              <?php 
-                                  }
-                              } 
-                              ?>
-                          </optgroup>
-                          </select>
+                                <optgroup label="Selecione Facilitadores">
+                                    <?php 
+                                    $participantesNaAta = $puxarform->ParticipantesPorIdAta($id_ata);
+                                    foreach ($pegarde as $facilitador) {
+                                        if (in_array($facilitador['id'], array_column($participantesNaAta, 'id'))) {
+                                    ?>
+                                        <option value="<?php echo $facilitador['id']; ?>" data-tokens="<?php echo $facilitador['nome_facilitador']; ?>">
+                                            <?php echo $facilitador['nome_facilitador']; ?>
+                                        </option>
+                                    <?php 
+                                        }
+                                    } 
+                                    ?>
+                                </optgroup>
+                            </select>
 
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-10"></div>
-                            <div class="col-2 d-flex justify-content-end">
-                                <div class="d-flex flex-column align-items-end">
-                                    <ul id="caixadeselecaodel"></ul>
-                                    <button type="button" id="addItemButton" class="btn btn-success  a">+</button>
-                                    <script>
-                                          document.addEventListener('DOMContentLoaded', function() {
-        var addItemButton = document.getElementById('addItemButton');
-        var deliberacoesTextarea = document.getElementById('deliberacoes');
-        var deliberadorSelect = document.getElementById('deliberador');
-
-        addItemButton.addEventListener('click', function() {
-            // Limpar o textarea
-            deliberacoesTextarea.value = '';
-
-            // Limpar as opções selecionadas no select múltiplo
-            var options = deliberadorSelect.options;
-            for (var i = 0; i < options.length; i++) {
-                options[i].selected = false;
-            }
-
-            console.log('Textarea and select options have been reset');
-        });
-    });
-                                  </script>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -644,7 +646,7 @@ function adicionarParticipanteAoLabel(participante) {
                 }
             </style>
             <div class="btn-container">
-                <button id="reloadPageButton" type="button" class="btn btn-secondary">Inserir deliberação</button>
+            <button id="reloadPageButton" type="button" class="btn btn-secondary">Inserir deliberação</button>
                 <button id="atribuida" class="btn btn-primary">Finalizar encontro</button>
                 <script>
                     var botaoatribuicao = document.getElementById("atribuida");
@@ -692,18 +694,65 @@ function adicionarParticipanteAoLabel(participante) {
             </div>
             <script>
                 document.getElementById('reloadPageButton').addEventListener('click', function() {
-                    Swal.fire({
-                        title: 'Sucesso!',
-                        text: 'A deliberação foi inserida com sucesso.',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        }
-                    });
-                });
+                var newItem = document.querySelector('.item').value.trim();
+                var deliberadoresSelecionados = document.querySelector('.facilitator-select').selectedOptions;
+                var deliberadoresSelecionadosLabel = Array.from(deliberadoresSelecionados).map(option => option.label);
+                var deliberadoresSelecionadosNUM = Array.from(deliberadoresSelecionados).map(option => option.value);
+                var idAata = document.querySelector('.item').getAttribute('data-id-ata');
 
+                if (newItem === "" && deliberadoresSelecionadosLabel.length === 0) {
+                    Swal.fire({
+                        title: "Preencha os campos de deliberação",
+                        icon: "error"
+                    });
+                    return;
+                } else if (newItem === "") {
+                    Swal.fire({
+                        title: "Você não adicionou uma deliberação",
+                        text: "Adicione pelo menos 1 deliberação para a ata",
+                        icon: "error"
+                    });
+                    return;
+                } else if (deliberadoresSelecionadosLabel.length === 0) {
+                    Swal.fire({
+                        title: "Você não adicionou um deliberador",
+                        text: "Adicione pelo menos 1 deliberador para a deliberação",
+                        icon: "error"
+                    });
+                    return;
+                } else {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'enviardeli.php', true);
+                    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xhr.onreadystatechange = function() {
+                        if(xhr.readyState == 4 && xhr.status == 200) {
+                            Swal.fire({
+                                title: 'Sucesso!',
+                                text: 'A deliberação foi inserida com sucesso.',
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            }).then((result) => {
+                                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                                    location.reload();
+                                }
+                            });
+                        } else if (xhr.readyState == 4) {
+                            Swal.fire({
+                                title: 'Erro!',
+                                text: 'Ocorreu um erro ao inserir a deliberação.',
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                timer: 2500
+                            }).then((result) => {
+                                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                                    location.reload();
+                                }
+                            });
+                        }
+                    }
+                    xhr.send('id_ata=' + encodeURIComponent(idAata) + '&deliberaDores=' + JSON.stringify(deliberadoresSelecionadosNUM) + '&newItem=' + encodeURIComponent(newItem));
+                    }
+                });
             </script>
         </div>
     </div>
