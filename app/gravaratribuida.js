@@ -72,61 +72,6 @@ function irparaHist() {
         });
     }
 }
-var botaoatribuicao = document.getElementById("atribuida");
-botaoatribuicao.addEventListener('click', gravaratribuida);
-
-function gravaratribuida() {
-    // Recuperar o id_ata da página
-    var id_ata = document.getElementById("participantesadicionado").getAttribute("data-id-ata");
-    console.log(id_ata);
-
-    // Verificar se o id_ata está definido
-    if (!id_ata) {
-        console.error("id_ata não está definido.");
-        return; // Sai da função se id_ata não estiver definido
-    }
-
-    // Exibir popup de confirmação
-    Swal.fire({
-        title: "Confirmação",
-        text: "Tem certeza que deseja finalizar o encontro?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        cancelButtonText: "Cancelar",
-        confirmButtonText: "Sim"
-        
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: 'enviarprobancoatribuida.php',
-                method: 'POST',
-                data: {
-                    id_ata: id_ata, 
-                    participanteatribu: JSON.stringify(participantesSelecionados),
-
-                },
-                success: function() {
-                    console.log("(3) Deu bom! AJAX está enviando");
-                    console.log(id_ata);
-                    setTimeout(function() {
-                        window.location.href = 'paghistorico.php';
-                    }, 1500);
-                },
-                error: function(error) {
-                    console.error('Erro na solicitação AJAX:', error);
-                },
-            });
-            Swal.fire({
-                title: "Cadastrado com sucesso!",
-                text: "Atualize a página e continue a operação",
-                icon: "success"
-            });
-        }
-    });
-}
-
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("addForm").addEventListener("submit", function(event) {
         event.preventDefault(); 

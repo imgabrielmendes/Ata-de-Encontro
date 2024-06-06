@@ -344,30 +344,30 @@ document.getElementById('registrarparticipantes').addEventListener('click', func
       <div class="modal-body">
       <?php
         if (isset($_GET['updateid'])) {
-          $id_ata = $_GET['updateid'];
-          $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-          if (!empty($participantes)) {
-              usort($participantes, function($a, $b) {
-                  return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
-              });
+            $id_ata = $_GET['updateid'];
+            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+            if (!empty($participantes)) {
+                usort($participantes, function($a, $b) {
+                    return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
+                });
 
-              echo "<table class='table'>";
-              echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
-              echo "<tbody>";
-              foreach ($participantes as $participante) {
-                  echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
-                  echo "<td>{$participante['matricula']}</td>"; 
-                  echo "<td>{$participante['nome_facilitador']}</td>"; 
-                  echo "<td>{$participante['email_facilitador']}</td>"; 
-                  echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";
-                  echo "</tr>";
-              }
-              echo "</tbody></table>";
-          } else {
-              echo "Nenhum participante encontrado para esta ATA.";
-          }
+                echo "<table class='table table-bordered table-striped'>";
+                echo "<thead class='thead-dark'><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
+                echo "<tbody>";
+                foreach ($participantes as $participante) {
+                    echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
+                    echo "<td>{$participante['matricula']}</td>"; 
+                    echo "<td>{$participante['nome_facilitador']}</td>"; 
+                    echo "<td>{$participante['email_facilitador']}</td>"; 
+                    echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";
+                    echo "</tr>";
+                }
+                echo "</tbody></table>";
+            } else {
+                echo "<div class='alert alert-warning'>Nenhum participante encontrado para esta ATA.</div>";
+            }
         } else {
-          echo "Nenhum ID de ATA fornecido.";
+            echo "<div class='alert alert-danger'>Nenhum ID de ATA fornecido.</div>";
         }
         ?>
       </div>
@@ -601,6 +601,26 @@ function adicionarParticipanteAoLabel(participante) {
                                 <div class="d-flex flex-column align-items-end">
                                     <ul id="caixadeselecaodel"></ul>
                                     <button type="button" id="addItemButton" class="btn btn-success  a">+</button>
+                                    <script>
+                                          document.addEventListener('DOMContentLoaded', function() {
+        var addItemButton = document.getElementById('addItemButton');
+        var deliberacoesTextarea = document.getElementById('deliberacoes');
+        var deliberadorSelect = document.getElementById('deliberador');
+
+        addItemButton.addEventListener('click', function() {
+            // Limpar o textarea
+            deliberacoesTextarea.value = '';
+
+            // Limpar as opções selecionadas no select múltiplo
+            var options = deliberadorSelect.options;
+            for (var i = 0; i < options.length; i++) {
+                options[i].selected = false;
+            }
+
+            console.log('Textarea and select options have been reset');
+        });
+    });
+                                  </script>
                                 </div>
                             </div>
                         </div>
@@ -628,10 +648,50 @@ function adicionarParticipanteAoLabel(participante) {
             </style>
             <div class="btn-container">
                 <button id="reloadPageButton" type="button" class="btn btn-secondary">Inserir deliberação</button>
-                <button id="atribuida" class="btn btn-primary">Finalizar reunião</button>
-                <svg id="alertIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                    <path fill="#167cbb" d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm0-384c13.3 0 24 10.7 24 24V264c0 13.3-10.7 24-24 24s-24-10.7-24-24V152c0-13.3 10.7-24 24-24zM224 352a32 32 0 1 1 64 0 32 32 0 1 1 -64 0z"/>
-                </svg>
+                <button id="atribuida" class="btn btn-primary">Finalizar encontro</button>
+                <script>
+                    var botaoatribuicao = document.getElementById("atribuida");
+                    botaoatribuicao.addEventListener('click', gravaratribuida);
+
+                    function gravaratribuida() {
+                        var id_ata = document.getElementById("participantesadicionado").getAttribute("data-id-ata");
+                        console.log(id_ata);
+
+                        if (!id_ata) {
+                            console.error("id_ata não está definido.");
+                            return; 
+                        }
+
+                        Swal.fire({
+                            title: "Confirmação",
+                            text: "Após finalizar o encontro, não poderá ser alterado. Tem certeza de que deseja finalizar o encontro?",
+                            icon: "question",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            cancelButtonText: "Cancelar",
+                            confirmButtonText: "Sim"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $.ajax({
+                                    url: 'atualizar_status.php',
+                                    method: 'POST',
+                                    data: {
+                                        id_ata: id_ata,
+                                        status: 'FECHADA'
+                                    },
+                                    success: function(response) {
+                                        console.log("Status atualizado com sucesso.");
+                                        window.location.href = 'paghistorico.php';
+                                    },
+                                    error: function(error) {
+                                        console.error('Erro na solicitação AJAX:', error);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                </script>
             </div>
             <script>
                 document.getElementById('reloadPageButton').addEventListener('click', function() {
@@ -647,20 +707,6 @@ function adicionarParticipanteAoLabel(participante) {
                     });
                 });
 
-                document.addEventListener('DOMContentLoaded', function() {
-                    var atribuidaButton = document.getElementById('atribuida');
-                    var alertIcon = document.getElementById('alertIcon');
-
-                    alertIcon.addEventListener('click', function() {
-                        Swal.fire({
-                            title: 'Atenção!',
-                            html: 'Depois de finalizada, esta reunião não poderá ser alterada',
-                            icon: 'warning',
-                            confirmButtonText: 'OK',
-                            timer: 2500
-                        });
-                    });
-                });
             </script>
         </div>
     </div>
@@ -707,6 +753,7 @@ function adicionarParticipanteAoLabel(participante) {
     <script src="app/deliberacoes.js"></script>
     <script src="app/gravaratribuida.js" data-id-ata="<?php echo $id_ata; ?>"></script>
     <script src="app/excluiratribuida.js"></script>
+    
     
 </body>
 </html>
