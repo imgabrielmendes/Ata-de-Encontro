@@ -1,29 +1,29 @@
 <?php
 include 'database.php';
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['facili']) && isset($_POST['id'])) {
-        $participante = $_POST['facili'];
-        $id_ataenviar = $_POST['id'];
-
-        foreach ($participante as $faci) {
-            $sql_excluir_facilitador = "DELETE FROM ata_has_fac WHERE id_ata = ? AND facilitadores = ?";
-            if ($stmt_excluir_facilitador = $conexao->prepare($sql_excluir_facilitador)) {
-                $stmt_excluir_facilitador->bind_param("ii", $id_ataenviar, $faci);
-                $stmt_excluir_facilitador->execute();
-                $stmt_excluir_facilitador->close();
-                echo json_encode(array("success" => true, "message" => "Participante excluído com sucesso."));
-            } else {
-                echo json_encode(array("success" => false, "message" => "Erro ao preparar a consulta SQL para excluir o facilitador: " . $conexao->error));
-            }
+    if (isset($_POST['id_ata']) && isset($_POST['index'])) {
+        $id_ata = $_POST['id_ata'];
+        $index = $_POST['participante'];
+        var_dump($index);
+    
+        $sql = "DELETE FROM  ata_has_fac WHERE id_ata = ? AND facilitadores = $index";
+        $stmt = $conexao->prepare($sql);
+        $stmt->bind_param("ii", $id_ata, $index);
+        if ($stmt->execute()) {
+            echo json_encode(array("success" => true));
+        } else {
+            echo json_encode(array("success" => false, "message" => "Erro ao excluir participante do banco de dados"));
         }
     } else {
-        echo json_encode(array("success" => false, "message" => "Campos 'facili' ou 'id' não estão definidos no POST."));
+        echo json_encode(array("success" => false, "message" => "Parâmetros 'id_ata' ou 'index' não foram recebidos"));
     }
 } else {
-    echo json_encode(array("success" => false, "message" => "O método de solicitação não é POST."));
+    echo json_encode(array("success" => false, "message" => "O método de requisição não é POST"));
 }
+
+
+ 
 
 
 // var facili = [];

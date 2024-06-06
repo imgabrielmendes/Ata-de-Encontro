@@ -3,7 +3,7 @@ include 'database.php';
 
 session_start();
 
- 
+
 $data = $_POST['data'];
 $hora_inicio = $_POST['hora_inicio'];
 $hora_term = $_POST['hora_term'];
@@ -12,6 +12,9 @@ $local = $_POST['local'];
 $tema = $_POST['tema'];
 $texto = $_POST['texto'];
 $id_ataenviar = $_POST['id'];
+
+
+
 // $facilitadores = $_POST['facilitadores'];
 // var_dump($facilitadores);
 
@@ -51,6 +54,7 @@ if ($stmt_deliberador = $conexao->prepare($enviarbanco_deliberador)) {
 } else {
     echo "Erro ao preparar a consulta SQL para a tabela 'facilitadores': " . $conexao->error;
 }
+
 
 
 

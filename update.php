@@ -194,11 +194,10 @@ mysqli_close($conn);
         <?php foreach ($facilitadores as $index => $facilitador): ?>
             <?php
             $id_ata = $_GET['updateid'];
-            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
             ?>
-            <li>
+            <li id="participante-<?php echo $index; ?>">
                 <?php echo $facilitador['facilitadores']; ?>
-                <button type='button' class='btn btn-danger btn-sm m-2 excluir-button' data-index='<?php echo $index; ?>' onclick='excluirParticipante("<?php echo $id_ata; ?>", "<?php echo $facilitador['facilitadores']; ?>")'>Excluir</button>
+                <button type="click" class='btn btn-danger btn-sm m-2 excluir-button' data-idata="<?php echo $id_ata; ?>" data-participante="<?php echo $facilitador['facilitadores']; ?>" data-index="<?php echo $index; ?>" class="excluir-button">Excluir</button>
             </li>
         <?php endforeach; ?>
     </ul>
@@ -266,116 +265,106 @@ mysqli_close($conn);
             onChange: function(selected_ids, selected_names) {
                 facilitadoresSelecionados = selected_ids;
                 facilitadoresSelecionadosLabel = selected_names;
-                // console.log(facilitadoresSelecionados);
-                // console.log(facilitadoresSelecionadosLabel);
+          
             }
       });
 
-        
- 
-      document.addEventListener('DOMContentLoaded', function () {
-    var form = document.getElementById("seu-formulario-id");
 
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
+function processarFormulario() {
+    event.preventDefault();
 
-        var data = document.getElementById('datainicio').value;
-        var dataf = formatarData(data);
-        var hora_inicio = document.getElementById('horainicio').value;
-        var hora_term = document.getElementById('horaterm').value;
-        var objetivo = document.getElementById('objetivo').value;
-        var local = document.getElementById('local').value;
-        var tema = document.getElementById('temaprincipal').value;
-        var texto = document.getElementById('textoprincipal').value;
-        var id = <?php echo json_encode($_GET['updateid']); ?>;
+    var data = document.getElementById('datainicio').value;
+    var dataf = formatarData(data);
+    var hora_inicio = document.getElementById('horainicio').value;
+    var hora_term = document.getElementById('horaterm').value;
+    var objetivo = document.getElementById('objetivo').value;
+    var local = document.getElementById('local').value;
+    var tema = document.getElementById('temaprincipal').value;
+    var texto = document.getElementById('textoprincipal').value;
+    var id = <?php echo json_encode($_GET['updateid']); ?>;
 
-        var facilitadoresSelecionados = [];
-var select = document.getElementById('selecionandofacilitador');
-for (var i = 0; i < select.options.length; i++) {
-    if (select.options[i].selected) {
-        facilitadoresSelecionados.push(select.options[i].value);
+    if (data === "" || objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "") {
+        window.alert("Preencha as informações");
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: 'acoesdeupdate.php',
+            data: {
+                objetivo: objetivo,
+                id: id,
+                local: local,
+                hora_inicio: hora_inicio,
+                hora_term: hora_term,
+                tema: tema,
+                texto: texto,
+                data: data,
+            },
+            success: function(response) {
+                alert(response);
+                console.log("Dados atualizados com sucesso!");
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                console.log("Erro ao atualizar os dados.");
+            }
+        });
     }
 }
 
 
-if (facilitadoresSelecionados.length > 0) {
-    console.log(facilitadoresSelecionados);
-} else {
-    console.log("Nenhum facilitador selecionado.");
-}
+var form = document.getElementById("seu-formulario-id");
+form.addEventListener('submit', processarFormulario);
 
-        if (data === "" || objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "") {
-            window.alert("Preencha as informações");
-        } else {
-            
-            $.ajax({
-                type: 'POST',
-                url: 'acoesdeupdate.php',
-                data: {
-                    objetivo: objetivo,
-                    id: id,
-                    local: local,
-                    hora_inicio: hora_inicio,
-                    hora_term: hora_term,
-                    tema: tema,
-                    texto: texto,
-                    data: data,
-                    
-                },
-                success: function(response) {
-                    alert(response);
-                    console.log("DEU CERTO");
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    console.log("DEU RUIM");
-                }
-            });
 
-            // Realiza a exclusão dos participantes selecionados
-            var facili = [];
-            var buttons = document.querySelectorAll('.excluir-button');
-            buttons.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    var index = this.getAttribute('data-index');
-                    var participante = this.getAttribute('data-participante');
-                    facili.push(index);
-
-                    if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
-                        $.ajax({
-                            url: 'excluirpartici.php',
-                            method: 'POST',
-                            data: {
-                                facili: facili,
-                            },
-                            success: function(response) {
-                                var res = JSON.parse(response);
-                                if (res.success) {
-                                    console.log("Participante excluído com sucesso:", res.message);
-                                    
-                                    // Remover o participante da interface
-                                    var participanteElement = document.querySelector("li:contains('" + participante + "')");
-                                    if (participanteElement) {
-                                        participanteElement.remove();
-                                    }
-
-                                    // Recarregar a página para atualizar os dados no banco de dados
-                                    location.reload();
-                                } else {
-                                    alert("Erro ao excluir o participante: " + res.message);
-                                }
-                            },
-                            error: function(error) {
-                                console.error('Erro na solicitação AJAX:', error);
-                                alert('Erro ao excluir o participante. Tente novamente.');
-                            }
-                        });
-                    }
-                });
-            });
-        }
-    });
+$(document).on('click', '.excluir-button', function(){
+    var id_ata = $(this).data('idata');
+    var participante = $(this).data('participante');
+    var index = $(this).data('index');
+    
+    if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
+        $.ajax({
+            type: 'POST',
+            url: 'excluirpartici.php',
+            data: {
+                id_ata: id_ata,
+                participante: participante,
+            },
+            success: function(response) {
+                alert('Participante excluído com sucesso: ' + participante);
+                $('#participante-' + index).remove();
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('Erro ao excluir o participante. Tente novamente.');
+            }
+        });
+    }
 });
+
+
+// $(document).on('click', '.excluir-button', function(){
+//     var id_ata = $(this).data('idata');
+//     var participante = $(this).data('participante');
+//     var index = $(this).data('index');
+    
+//     if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
+//         $.ajax({
+//            type: 'POST',
+//            url: 'excluirpartici.php',
+//            data: { id_ata: id_ata,
+//              index: index },
+//            success: function(response){
+//               alert('Participante excluído com sucesso: ' + participante);
+//               $('#participante-' + index).remove();
+//               alert( participante);
+//            },
+//            error: function(xhr, status, error) {
+//                console.error(xhr.responseText);
+//                alert('Erro ao excluir o participante. Tente novamente.');
+//            }
+//         });
+//     }
+// });
 
 
 
@@ -406,7 +395,7 @@ function formatarData(data) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="view/js/bootstrap.js"></script>
-    <script src="app/pagdeliberacoes.js"></script>
+
     <script src="app/excluiratribuida.js"></script>
 </body>
 </html>
