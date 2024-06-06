@@ -5,6 +5,39 @@ $id = $_GET['updateid'];
 
 require_once(__DIR__ . "/view/TCPDF/tcpdf.php");
 
+$sql2 = "SELECT 
+        ass.id,
+        ahf.id_ata,
+        fac.matricula,
+        fac.nome_facilitador as facilitadores,
+        fac.email_facilitador
+    FROM atareu.assunto as ass
+    INNER JOIN atareu.ata_has_fac as ahf
+        ON ahf.id_ata = ass.id
+    INNER JOIN atareu.facilitadores as fac
+        ON fac.id = ahf.facilitadores
+    WHERE ahf.id_ata = $id";
+
+$result2 = $conn->query($sql2);
+$facilitadoresArray = [];
+
+if ($result2 === false) {
+    echo "Erro na consulta: " . $conn->error;
+} else {
+    if ($result2->num_rows > 0) {
+        while ($row = $result2->fetch_assoc()) {
+            $facilitadores = !empty($row['facilitadores']) ? $row['facilitadores'] : '';
+            $facilitadoresArray[] = $facilitadores; // Armazena facilitadores em um array
+        }
+    } else {
+        echo "Nenhum resultado encontrado.";
+    }
+}
+
+$facilitadoresString = implode(", ", $facilitadoresArray);
+
+
+
 $sql = "SELECT
 assunto.id AS IDASSUNTO,
 assunto.hora_inicial AS horainicio,
@@ -100,7 +133,7 @@ if ($result->num_rows > 0) {
                     <td style="padding: 5px; border: 1px solid black"><b>  Objetivo:</b> '.$objetivo.'</td>
                 </tr>
                 <tr style="text-align: LEFT;">
-                <td style="padding: 5px; border: 1px solid black; width: 540px; font-size: 10px;"><b>   Facilitador(es):</b> COLOCAR A VARIÁVEL SQL</td>
+                <td style="padding: 5px; border: 1px solid black; width: 540px; font-size: 10px;"><b>   Facilitador(es):</b>'.'  '. $facilitadoresString. '.'.'</td>
                 </tr>
             </tbody>
         </table>
@@ -199,7 +232,7 @@ if ($result->num_rows > 0) {
         </tbody>
         </table>
 
-        <table style=" border: 1px solid black; text-align: center;">
+        <table style=" border: 1px solid black; padding: 6px 0px; text-align: center;">
         <tbody>
         <tr style="text-align: center; background-color: #ececed">
             <td style="height: 31px; border: 1px solid black; width: 79px; vertical-align: middle;"><h4>Mat.</h4></td>
