@@ -189,6 +189,9 @@ document.getElementById('addItemButton').addEventListener('click', function() {
             console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
             console.log(response);
             console.log(deliberadoresSelecionadosNUM);
+            if (response = true){
+                location.reload();
+            }
         },
 
         error: function(error) {

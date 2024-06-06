@@ -371,6 +371,7 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
     <div class="col-md-12 text-center">               
     </div>
+    
     <div class="row">
     <div class ="col">
         <label style="height: 35px;"><b>Informe o texto principal:</b></label>
@@ -434,7 +435,6 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
   <h2 class="accordion-header">
     <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
     <i class="fa-solid fa-file p-1 mb-1"></i><h5>Deliberações</h5>
-
 </div>
   </h2>
 
@@ -446,6 +446,7 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
     </div>
     
     <span class="col d-flex align-items-end flex-column" id="inputContainer"></span>
+    
     <style>
       .item-container {
   display: flex;
@@ -454,6 +455,76 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
   margin-bottom: 10px;
 }
     </style>
+
+    <div id="existingDeliberations" class="mt-3">
+                    <ul id="deliberationsList" class="list-group">
+                    <?php
+                        $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+                        if (!empty($deliberacoes)) {
+                            $deliberacoesAgrupadas = [];
+                            foreach ($deliberacoes as $deliberacao) {
+                                $conteudo = $deliberacao['deliberacoes'];
+                                $deliberador = $deliberacao['deliberador'];
+
+                                if (!isset($deliberacoesAgrupadas[$conteudo])) {
+                                    $deliberacoesAgrupadas[$conteudo] = [];
+                                }
+
+                                $deliberacoesAgrupadas[$conteudo][] = $deliberador;
+                            }
+                            $contagemdeli = 0;
+                            foreach ($deliberacoesAgrupadas as $conteudo => $deliberadores) {
+
+                                $contagemdeli++;
+
+                                $deliberadoresStr = implode(', ', $deliberadores);
+                                ?>
+                          
+                                <div style="margin-bottom: 15px;" data-conteudo="<?php echo $conteudo; ?>">
+                                <span class="col-12 badge rounded-pill text-bg-secondary mb-2">Deliberação <?php echo $contagemdeli; ?></span>
+                                    <li class="form-control bg-body-secondary border rounded">
+                             
+                                        <div>
+                                            <strong>Deliberador:</strong> <?php echo $deliberadoresStr; ?>
+                                        </div>
+                                    </li>
+                                    <li class="form-control border rounded">
+                                        <div>
+                                            <strong>Deliberação:</strong> <?php echo $conteudo; ?>
+                                        </div>
+                                    </li>
+                                    
+                                    <button class="col btn btn-danger btn-sm d-flex align-items-end flex-column delete-deliberacao mt-2" data-id-ata="<?php echo $id_ata; ?>" data-conteudo="<?php echo $conteudo; ?>">Excluir</button>
+                                </div>
+                                <?php
+                            }
+                        }
+                        ?>
+                    </ul>
+                    <script>
+                          document.addEventListener('DOMContentLoaded', function() {
+                          document.querySelectorAll('.delete-deliberacao').forEach(button => {
+                              button.addEventListener('click', function() {
+
+                                  var idAta = this.getAttribute('data-id-ata');
+                                  var conteudo = this.getAttribute('data-conteudo');
+
+                                  var xhr = new XMLHttpRequest();
+                                  xhr.open('POST', 'excluirdeli.php', true);
+                                  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                                  xhr.onreadystatechange = function() {
+                                      if(xhr.readyState == 4 && xhr.status == 200) {
+                                          document.querySelector('div[data-conteudo="' + conteudo + '"]').remove();
+                                          location.reload(); // Recarrega a página após a exclusão
+                                      }
+                                  };
+                                  xhr.send('id_ata=' + encodeURIComponent(idAta) + '&conteudo=' + encodeURIComponent(conteudo));
+                              });
+                          });
+                      });
+
+                    </script>
+                </div>   
         <form id="addForm">
         <div class="form-group">
         <div class="col">
