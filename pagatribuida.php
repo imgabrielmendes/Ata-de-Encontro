@@ -341,30 +341,30 @@ document.getElementById('registrarparticipantes').addEventListener('click', func
       <div class="modal-body">
       <?php
         if (isset($_GET['updateid'])) {
-          $id_ata = $_GET['updateid'];
-          $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-          if (!empty($participantes)) {
-              usort($participantes, function($a, $b) {
-                  return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
-              });
+            $id_ata = $_GET['updateid'];
+            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+            if (!empty($participantes)) {
+                usort($participantes, function($a, $b) {
+                    return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
+                });
 
-              echo "<table class='table'>";
-              echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
-              echo "<tbody>";
-              foreach ($participantes as $participante) {
-                  echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
-                  echo "<td>{$participante['matricula']}</td>"; 
-                  echo "<td>{$participante['nome_facilitador']}</td>"; 
-                  echo "<td>{$participante['email_facilitador']}</td>"; 
-                  echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";
-                  echo "</tr>";
-              }
-              echo "</tbody></table>";
-          } else {
-              echo "Nenhum participante encontrado para esta ATA.";
-          }
+                echo "<table class='table table-bordered table-striped'>";
+                echo "<thead class='thead-dark'><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
+                echo "<tbody>";
+                foreach ($participantes as $participante) {
+                    echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
+                    echo "<td>{$participante['matricula']}</td>"; 
+                    echo "<td>{$participante['nome_facilitador']}</td>"; 
+                    echo "<td>{$participante['email_facilitador']}</td>"; 
+                    echo "<td><button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>Excluir</button></td>";
+                    echo "</tr>";
+                }
+                echo "</tbody></table>";
+            } else {
+                echo "<div class='alert alert-warning'>Nenhum participante encontrado para esta ATA.</div>";
+            }
         } else {
-          echo "Nenhum ID de ATA fornecido.";
+            echo "<div class='alert alert-danger'>Nenhum ID de ATA fornecido.</div>";
         }
         ?>
       </div>
@@ -599,20 +599,25 @@ function adicionarParticipanteAoLabel(participante) {
                                     <ul id="caixadeselecaodel"></ul>
                                     <button type="button" id="addItemButton" class="btn btn-success  a">+</button>
                                     <script>
-                                        document.addEventListener('DOMContentLoaded', function() {
-                                        var addItemButton = document.getElementById('addItemButton');
-                                        var deliberacoesTextarea = document.getElementById('deliberacoes');
-                                        var deliberadorSelect = document.getElementById('deliberador');
-                                        addItemButton.addEventListener('click', function() {
-                                            deliberacoesTextarea.value = '';
-                                            for (var i = 0; i < deliberadorSelect.options.length; i++) {
-                                                deliberadorSelect.options[i].selected = false;
-                                            }
+                                          document.addEventListener('DOMContentLoaded', function() {
+        var addItemButton = document.getElementById('addItemButton');
+        var deliberacoesTextarea = document.getElementById('deliberacoes');
+        var deliberadorSelect = document.getElementById('deliberador');
 
-                                            console.log('Textarea and select options have been reset');
-                                        });
-                                    });
-                                    </script>
+        addItemButton.addEventListener('click', function() {
+            // Limpar o textarea
+            deliberacoesTextarea.value = '';
+
+            // Limpar as opções selecionadas no select múltiplo
+            var options = deliberadorSelect.options;
+            for (var i = 0; i < options.length; i++) {
+                options[i].selected = false;
+            }
+
+            console.log('Textarea and select options have been reset');
+        });
+    });
+                                  </script>
                                 </div>
                             </div>
                         </div>
@@ -640,7 +645,7 @@ function adicionarParticipanteAoLabel(participante) {
             </style>
             <div class="btn-container">
                 <button id="reloadPageButton" type="button" class="btn btn-secondary">Inserir deliberação</button>
-                <button id="atribuida" class="btn btn-primary">Finalizar reunião</button>
+                <button id="atribuida" class="btn btn-primary">Finalizar encontro</button>
                 <script>
                     var botaoatribuicao = document.getElementById("atribuida");
                     botaoatribuicao.addEventListener('click', gravaratribuida);
@@ -656,7 +661,7 @@ function adicionarParticipanteAoLabel(participante) {
 
                         Swal.fire({
                             title: "Confirmação",
-                            text: "Tem certeza que deseja finalizar o encontro?",
+                            text: "Após finalizar o encontro, não poderá ser alterado. Tem certeza de que deseja finalizar o encontro?",
                             icon: "question",
                             showCancelButton: true,
                             confirmButtonColor: "#3085d6",

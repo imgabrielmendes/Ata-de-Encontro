@@ -5,10 +5,9 @@ include_once ("app/acoesform.php");
 include ("conexao.php");
 
 $puxarform = new AcoesForm;
+// $pegarde = $puxarform->pegarfacilitador();
 
 $ultimosfacilitadores = $puxarform->puxandoUltimosFacilitadores();
-
-
 $facilitadoresString = '';
 foreach ($ultimosfacilitadores as $facilitador) {
     $facilitadoresString .= $facilitador['nome_facilitador'] . ', ';
@@ -21,6 +20,17 @@ $data = $_SESSION['data'];
 $dateTime = new \DateTime($data);
 $data_formatada = $dateTime->format('d/m/Y');
 $_SESSION['data'] = $data_formatada;
+
+function identificarIdPagina() {
+  if(isset($_GET['updateid'])) {
+      return $_GET['updateid'];
+  } else {
+      return null;
+  }
+}
+$id_ata = identificarIdPagina();
+$puxatexto = $puxarform->textprinc($id_ata);
+$texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
 ?>
 
 <!DOCTYPE html>
@@ -32,8 +42,12 @@ $_SESSION['data'] = $data_formatada;
   <title>Ata de encontro - HRG</title>
   <link rel="icon" href="view\img\Logobordab.png" type="image/x-icon">
 
+  <!---------------------------------------------------------------->
   <script src="view/js/popper.min.js" crossorigin="anonymous"></script>
 
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-JCHjo1FjBu5zj08fFZ8niXNt6IuPO3WJ10Ii+XXITZ7IU46Scij9MJTf/ZZTK5HVm/BwOxAnoxO8cSvDaz9VWg==" crossorigin="anonymous" /> -->
+
+  <!-- <link rel="stylesheet" href="view/fontawesome/css/fontawesome.css"> -->
 
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -229,30 +243,22 @@ $_SESSION['data'] = $data_formatada;
                 <ul>
                 <?php
                   if (isset($_GET['updateid'])) {
-                      $id_ata = $_GET['updateid'];
-                      $participantes = $puxarform->ParticipantesPorIdAta($id_ata);
-                      if (!empty($participantes)) {
-                          // Array para armazenar apenas os nomes dos participantes
-                          $nomesParticipantes = array();
-
-                          // Extrai apenas os nomes dos participantes
-                          foreach ($participantes as $participante) {
-                              $nomesParticipantes[] = $participante['participantes'];
-                          }
-
-                          // Ordena os participantes em ordem alfabética
-                          sort($nomesParticipantes);
-
-                          // Exibe os participantes separados por vírgulas
-                          echo "<span style='font-size: 18px;'>";
-                          echo implode(', ', $nomesParticipantes);
-                          echo "</span>";
-                      } else {
-                          echo "Nenhum participante encontrado para esta ATA.";
-                      }
-                  } else {
-                      echo "Nenhum ID de ATA fornecido.";
-                  }
+                    $id_ata = $_GET['updateid'];
+                    $participantes = $puxarform->ParticipantesPorIdAta($id_ata);
+                    if (!empty($participantes)) {
+                        // Ordena os participantes em ordem alfabética
+                        sort($participantes);
+                        
+                        // Exibe os participantes separados por vírgulas
+                        echo "<span style='font-size: 18px;'>";
+                        echo implode(', ', $participantes);
+                        echo "</span>";
+                    } else {
+                        echo "Nenhum participante encontrado para esta ATA.";
+                    }
+                } else {
+                    echo "Nenhum ID de ATA fornecido.";
+                }
                 ?>
                 </ul>
             </div>
@@ -366,14 +372,52 @@ $_SESSION['data'] = $data_formatada;
     <div class="row">
     <div class ="col">
         <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-        <textarea id="textoprinc" style="height: 110px;" class="form-control"></textarea>
+        <textarea id="textoprinc" name="texto_principal" style="height: 110px;" class="form-control"><?php echo $texto_principal; ?></textarea>
 
               </div>
     </div>   
         
-    <div class="d-flex justify-content-center">
-            <button id="abrirhist" type="button" class="btn btn-primary" data-bs-toggle="modal">Registrar Texto</button>
-        </div>
+    <div class="d-flex justify-content-center mt-3">
+    <button id="registrarTextoButton" type="button" class="btn btn-primary" data-id-ata="<?php echo $id_ata; ?>">Registrar Texto</button>
+</div>
+
+<script>
+document.getElementById('registrarTextoButton').addEventListener('click', function() {
+    var textoPrincipal = document.getElementById('textoprinc').value; // Corrigido o ID aqui
+    var idAta = this.getAttribute('data-id-ata');
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'textprincbanco.php', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+            Swal.fire({
+                title: 'Sucesso!',
+                text: 'O texto foi atualizado com sucesso.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                timer: 2500
+            }).then((result) => {
+                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                    location.reload();
+                }
+            });
+        } else if (xhr.readyState == 4) {
+            Swal.fire({
+                title: 'Erro!',
+                text: 'Ocorreu um erro ao atualizar o texto.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                timer: 2500
+            }).then((result) => {
+                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                    location.reload();
+                }
+            });
+        }
+    }
+    xhr.send('id_ata=' + idAta + '&textoprincipal=' + encodeURIComponent(textoPrincipal));
+});
+</script>
 
             </div>          
 </div>
@@ -400,7 +444,14 @@ $_SESSION['data'] = $data_formatada;
     </div>
     
     <span class="col d-flex align-items-end flex-column" id="inputContainer"></span>
-
+    <style>
+      .item-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+    </style>
         <form id="addForm">
         <div class="form-group">
         <div class="col">
@@ -413,7 +464,7 @@ $_SESSION['data'] = $data_formatada;
             <div class="col">
     <!-- Primeira caixa de texto e select de facilitadores -->
     <div class="mb-2">
-        <label for="" class="mb-2">Deliberado para:</label>
+        <label for="" class="mb-2">Atribuido para:</label>
         <?php
           if (isset($_GET['updateid'])) {
             $id_ata = $_GET['updateid'];

@@ -266,7 +266,7 @@ function irparaHist() {
         });
 
         $.ajax({
-            url: 'registrartextop.php',
+            url: 'textprincbanco.php',
             method: 'POST',
             data: {
                 textoprincipal1: textoprincipal,  
