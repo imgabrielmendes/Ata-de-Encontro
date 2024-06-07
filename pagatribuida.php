@@ -530,44 +530,45 @@ function adicionarParticipanteAoLabel(participante) {
                 <div id="existingDeliberations" class="mt-3">
                     <ul id="deliberationsList" class="list-group">
                     <?php
-                        $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
-                        if (!empty($deliberacoes)) {
-                            $deliberacoesAgrupadas = [];
-                            foreach ($deliberacoes as $deliberacao) {
-                                $conteudo = $deliberacao['deliberacoes'];
-                                $deliberador = $deliberacao['deliberador'];
+$deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+if (!empty($deliberacoes)) {
+    $deliberacoesAgrupadas = [];
+    foreach ($deliberacoes as $deliberacao) {
+        $conteudo = $deliberacao['deliberacoes'];
+        $deliberador = $deliberacao['deliberador'];
 
-                                if (!isset($deliberacoesAgrupadas[$conteudo])) {
-                                    $deliberacoesAgrupadas[$conteudo] = [];
-                                }
+        if (!isset($deliberacoesAgrupadas[$conteudo])) {
+            $deliberacoesAgrupadas[$conteudo] = [];
+        }
 
-                                $deliberacoesAgrupadas[$conteudo][] = $deliberador;
-                            }
-                            foreach ($deliberacoesAgrupadas as $conteudo => $deliberadores) {
-                                $deliberadoresStr = implode(', ', $deliberadores);
-                            ?>
-                                <div style="margin-bottom: 15px;" data-conteudo="<?php echo $conteudo; ?>">
-                                    <li class="form-control bg-body-secondary border rounded">
-                                        <div>
-                                            <strong>Deliberador:</strong> <?php echo $deliberadoresStr; ?>
-                                        </div>
-                                    </li>
-                                    <li class="form-control border rounded">
-                                        <div>
-                                            <strong>Deliberação:</strong> <?php echo $conteudo; ?>
-                                        </div>
-                                    </li>
-                                    <button class="btn btn-danger btn-sm delete-deliberacao float-right mt-2" data-id-ata="<?php echo $id_ata; ?>" data-conteudo="<?php echo $conteudo; ?>">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="mr-2" style="width: 1em; height: 1em;">
-                                            <path fill="#ffffff" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
-                                        </svg>
-                                    </button>
+        $deliberacoesAgrupadas[$conteudo][] = $deliberador;
+    }
+    foreach ($deliberacoesAgrupadas as $conteudo => $deliberadores) {
+        $deliberadoresStr = implode(', ', $deliberadores);
+?>
+        <div style="margin-bottom: 15px;" data-conteudo="<?php echo $conteudo; ?>">
+            <div class="form-control bg-body-secondary border rounded smaller-width">
+                <strong>Deliberador:</strong> <?php echo $deliberadoresStr; ?>
+            </div>
+            <div class="form-control border rounded smaller-width">
+                <strong>Deliberação:</strong> <?php echo $conteudo; ?>
+            </div>
+            <div class="float-right"> <!-- Adicionando a classe float-right -->
+                <button class="btn btn-danger btn-sm delete-deliberacao mt-2" data-id-ata="<?php echo $id_ata; ?>" data-conteudo="<?php echo $conteudo; ?>">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="mr-2" style="width: 1em; height: 1em;">
+                        <path fill="#ffffff" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+<?php
+    }
+}
+?>
 
-                                </div>
-                        <?php
-                                }
-                            }
-                        ?>
+
+
+
                     </ul>
                 </div>          
             </div>
@@ -650,48 +651,54 @@ function adicionarParticipanteAoLabel(participante) {
             <button id="reloadPageButton" type="button" class="btn btn-secondary">Inserir deliberação</button>
                 <button id="atribuida" class="btn btn-primary">Finalizar encontro</button>
                 <script>
-                    var botaoatribuicao = document.getElementById("atribuida");
-                    botaoatribuicao.addEventListener('click', gravaratribuida);
+        var botaoatribuicao = document.getElementById("atribuida");
+        botaoatribuicao.addEventListener('click', gravaratribuida);
 
-                    function gravaratribuida() {
-                        var id_ata = document.getElementById("participantesadicionado").getAttribute("data-id-ata");
-                        console.log(id_ata);
+        function gravaratribuida() {
+            var id_ata = document.getElementById("participantesadicionado").getAttribute("data-id-ata");
+            console.log(id_ata);
 
-                        if (!id_ata) {
-                            console.error("id_ata não está definido.");
-                            return; 
+            if (!id_ata) {
+                console.error("id_ata não está definido.");
+                return; 
+            }
+
+            Swal.fire({
+                title: "Confirmação",
+                text: "Após finalizado, o encontro não poderá ser alterado. Tem certeza de que deseja finalizar o encontro?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                cancelButtonText: "Cancelar",
+                confirmButtonText: "Sim"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'atualizar_status.php',
+                        method: 'POST',
+                        data: {
+                            id_ata: id_ata,
+                            status: 'FECHADA'
+                        },
+                        success: function(response) {
+                            console.log("Status atualizado com sucesso.");
+
+        
+                            history.replaceState(null, null, 'paghistorico.php');
+                             window.location.href = 'paghistorico.php';
+                        },
+                        error: function(error) {
+                            console.error('Erro na solicitação AJAX:', error);
                         }
-
-                        Swal.fire({
-                            title: "Confirmação",
-                            text: "Após finalizado, o encontro não poderá ser alterado. Tem certeza de que deseja finalizar o encontro?",
-                            icon: "question",
-                            showCancelButton: true,
-                            confirmButtonColor: "#3085d6",
-                            cancelButtonColor: "#d33",
-                            cancelButtonText: "Cancelar",
-                            confirmButtonText: "Sim"
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                $.ajax({
-                                    url: 'atualizar_status.php',
-                                    method: 'POST',
-                                    data: {
-                                        id_ata: id_ata,
-                                        status: 'FECHADA'
-                                    },
-                                    success: function(response) {
-                                        console.log("Status atualizado com sucesso.");
-                                        window.location.href = 'paghistorico.php';
-                                    },
-                                    error: function(error) {
-                                        console.error('Erro na solicitação AJAX:', error);
-                                    }
-                                });
-                            }
-                        });
-                    }
-                </script>
+                    });
+                }
+            });
+        }
+        window.addEventListener('popstate', function(event) {
+            history.pushState(null, null, window.location.href);
+        });
+    </script>
             </div>
             <script>
                 document.getElementById('reloadPageButton').addEventListener('click', function() {
