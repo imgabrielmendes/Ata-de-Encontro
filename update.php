@@ -13,7 +13,6 @@ $pegarlocal = $puxarform->pegarlocais();
 
 
 
-
 $sql = "SELECT * FROM assunto WHERE id = $id";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
@@ -37,10 +36,28 @@ $facilitadores = array();
 
 while ($row2 = mysqli_fetch_assoc($result2)) { 
     $facilitadores[] = $row2;
+    $idfacilitadores[] = $row2['idfacilitadores'];
+  
 }
+
+$sql8 = "SELECT F.nome_facilitador as participantes,
+F.id as id
+        FROM facilitadores AS F
+        WHERE F.id IN (SELECT participantes FROM participantes WHERE id_ata = id_ata)";
+
+$result8 = mysqli_query($conn, $sql8);
+$facilitadores8 = array(); 
+
+while ($row8 = mysqli_fetch_assoc($result8)) { 
+    $facilitadores8[] = $row8;
+    $idfacilitadores8[] = $row8['id'];
+   
+}
+
 
 $sql3 = "SELECT 
     del.id_ata,
+    del.id as id,
     fac.nome_facilitador AS deliberador,
     del.deliberacoes AS deliberacoes
     FROM atareu.deliberacoes AS del
@@ -50,13 +67,16 @@ $sql3 = "SELECT
 $result3 = mysqli_query($conn, $sql3);
 $deliberacoes_array = array();
 $deliberador_array = array();
+$deliberacoesid = array();
 
 if ($result3 && mysqli_num_rows($result3) > 0) {
     while ($row3 = mysqli_fetch_assoc($result3)) {
         $deliberacoes_array[] = $row3['deliberacoes'];
+        $deliberacoesid[] = $row3['id'];
         $deliberador_array[] = $row3['deliberador'];
     }
 }
+print_r($deliberacoesid);
 
 
 $sql4= "SELECT 
@@ -191,13 +211,33 @@ mysqli_close($conn);
           </select>
           <div class="col-6 form-control mt-2">
     <ul>
+
+    <?php
+          
+            $id_ata = $_GET['updateid'];
+            $resultados = $facilitadores8 ;
+       
+
+            $pegarde = [];
+            foreach ($resultados as $row) {
+            $pegarde[$row['id']] = $row['participantes'];
+            
+            }
+            
+        ?>
+
+
         <?php foreach ($facilitadores as $index => $facilitador): ?>
             <?php
             $id_ata = $_GET['updateid'];
             ?>
             <li id="participante-<?php echo $index; ?>">
                 <?php echo $facilitador['facilitadores']; ?>
-                <button type="click" class='btn btn-danger btn-sm m-2 excluir-button' data-idata="<?php echo $id_ata; ?>" data-participante="<?php echo $facilitador['facilitadores']; ?>" data-index="<?php echo $index; ?>" class="excluir-button">Excluir</button>
+                <button type="click" class='btn btn-danger btn-sm m-2 excluir-button' data-idata="<?php echo $id_ata; ?>"
+                 data-participante="<?php echo $facilitador['facilitadores']; ?>" data-id="<?php echo $facilitador['idfacilitadores']; ?>"
+                 data-index="<?php echo $index; ?>" class="excluir-button">
+                    Excluir
+                </button>
             </li>
         <?php endforeach; ?>
     </ul>
@@ -220,7 +260,7 @@ mysqli_close($conn);
         <div class="col-4">
             <input class="form-control" value="<?php echo $deliberador_array[$index]?>" >
         </div> 
-        <input class="col form-control" value="<?php echo $deliberacao ?>" >
+        <input id="deliberacao" class="col form-control" value="<?php echo $deliberacao ?>" >
     </div>
     <?php endforeach; ?>
     
@@ -252,7 +292,7 @@ mysqli_close($conn);
      
 
 
-  
+     facilitadoresSelecionados = [];
       new MultiSelectTag('selecionandofacilitador', {
             rounded: true, 
             shadow: false,     
@@ -282,6 +322,13 @@ function processarFormulario() {
     var tema = document.getElementById('temaprincipal').value;
     var texto = document.getElementById('textoprincipal').value;
     var id = <?php echo json_encode($_GET['updateid']); ?>;
+    var facilitadores = document.getElementById('selecionandofacilitador').value;
+    var deliberacoes = document.getElementById('deliberacao').value;
+    console.log(deliberacoes);
+    var iddelibe = <?php echo json_encode($deliberacoesid); ?>;
+
+
+console.log(iddelibe);
 
     if (data === "" || objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "") {
         window.alert("Preencha as informações");
@@ -298,6 +345,9 @@ function processarFormulario() {
                 tema: tema,
                 texto: texto,
                 data: data,
+                facilitadoresSelecionados: facilitadoresSelecionados,
+                deliberacoes: deliberacoes,
+                iddelibe: iddelibe,
             },
             success: function(response) {
                 alert(response);
@@ -319,13 +369,19 @@ form.addEventListener('submit', processarFormulario);
 $(document).on('click', '.excluir-button', function(){
     var id_ata = $(this).data('idata');
     var participante = $(this).data('participante');
-    var index = $(this).data('index');
-    
-    if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
+    var idpart = $(this).data('id');
+
+
+    console.log(idpart);
+    console.log(id_ata);
+    console.log(participante);
+
+    if (id_ata > 0) {
         $.ajax({
             type: 'POST',
             url: 'excluirpartici.php',
             data: {
+                idpart: idpart,
                 id_ata: id_ata,
                 participante: participante,
             },
@@ -338,6 +394,8 @@ $(document).on('click', '.excluir-button', function(){
                 alert('Erro ao excluir o participante. Tente novamente.');
             }
         });
+    }else{
+        confirm("deu errado");
     }
 });
 

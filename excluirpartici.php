@@ -1,15 +1,20 @@
 <?php
 include 'database.php';
+$id_ata = $_POST['id_ata'];
+$idpart = $_POST['idpart'];
+$participante = $_POST['participante'];
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if (isset($_POST['id_ata']) && isset($_POST['index'])) {
+    if (isset($_POST['id_ata']) && isset($_POST['idpart']) && isset($_POST['participante'])) {
         $id_ata = $_POST['id_ata'];
-        $index = $_POST['participante'];
-        var_dump($index);
+        $idpart = $_POST['idpart'];
+        $participante = $_POST['participante'];
+       
     
-        $sql = "DELETE FROM  ata_has_fac WHERE id_ata = ? AND facilitadores = $index";
+        $sql = "DELETE FROM  ata_has_fac WHERE id_ata = ? AND facilitadores = ?";
         $stmt = $conexao->prepare($sql);
-        $stmt->bind_param("ii", $id_ata, $index);
+        $stmt->bind_param("ii", $id_ata, $idpart);
         if ($stmt->execute()) {
             echo json_encode(array("success" => true));
         } else {
