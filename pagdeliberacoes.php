@@ -24,12 +24,9 @@ $data_formatada = $dateTime->format('d/m/Y');
 $_SESSION['data'] = $data_formatada;
 
 function identificarIdPagina() {
-  if(isset($_GET['updateid'])) {
-      return $_GET['updateid'];
-  } else {
-      return null;
-  }
+  return isset($_GET['updateid']) ? $_GET['updateid'] : null;
 }
+
 $id_ata = identificarIdPagina();
 $puxatexto = $puxarform->textprinc($id_ata);
 $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
@@ -375,7 +372,9 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
     <div class="row">
     <div class ="col">
         <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-        <textarea id="textoprinc" name="texto_principal" style="height: 110px;" class="form-control"><?php echo $texto_principal; ?></textarea>
+        <textarea id="textoprinc" name="texto_principal" style="height: 110px;" class="form-control"><?php echo htmlspecialchars($texto_principal, ENT_QUOTES, 'UTF-8'); ?></textarea>
+
+
 
               </div>
     </div>   
