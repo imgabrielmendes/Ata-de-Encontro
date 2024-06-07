@@ -179,7 +179,6 @@ if ($conn->connect_error) {
                     </table>
                     <div class="table-responsive custom-scrollbar">
                     <table id="myTable" class="table table-hover shadow custom-table">
-
     <thead>
         <tr>
             <th class="text-center">Data</th>
@@ -187,7 +186,7 @@ if ($conn->connect_error) {
             <th class="text-start">Tema</th>
             <th class="text-start">Local</th>
             <th class="text-center">Status</th>
-            <th class="text-center">Ação</th>
+            <th class="text-center">Editar</th>
             <th class="text-center">Imprimir</th>
         </tr>
     </thead>
@@ -231,67 +230,66 @@ if ($conn->connect_error) {
                 $facilitadores = $row['facilitadores'];
 
                 echo "<tr>";
-                echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["data_formatada"] . "</td>";
-                echo "<td class='align-middle' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["objetivo"] . "</td>";
-                echo "<td class='align-middle ' style='display: none;' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["facilitadores"] . "</td>";
-                echo "<td class='text-start'   onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["tema"] . "</td>";
-                echo "<td class='text-start'' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $row["local"] . "</td>";
+                echo "<td class='align-middle text-center' style='font-size: 14.5px;' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $data_formatada . "</td>";
+                echo "<td class='align-middle text-center' style='font-size: 14.5px;' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $objetivo . "</td>";
+                echo "<td class='align-middle text-start' style='font-size: 14.5px;' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $tema;
+                if (!empty($facilitadores)) {
+                    echo "<br>";
+                    $facilitadores_array = explode(',', $facilitadores);
+                    $facilitadores_count = count($facilitadores_array);
+                    foreach ($facilitadores_array as $index => $facilitador) {
+                        if ($index < $facilitadores_count - 1) {
+                            echo "<span style='font-weight: 500; font-style: italic; font-size: 12px;'>$facilitador</span>, ";
+                        } else {
+                            echo "<span style='font-weight: 500; font-style: italic; font-size: 12px;'>$facilitador</span>";
+                        }
+                    }
+                }
+                echo "</td>";
+                echo "<td class='align-middle text-start' style='font-size: 14.5px;' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . $local . "</td>";             
                 echo "<td class='align-middle status-cell' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>" . ($row['status'] === 'ABERTA' ? "<span class='badge bg-primary'>ABERTA</span>" : "<span class='badge bg-success'>FECHADA</span>") . "</td>";
                 if ($row['status'] === 'ABERTA') {
                     echo "<td class='text-center align-middle'> 
-                            <a href='pagatribuida.php?updateid=$id' class='btn btn-warning' style='color: white;'>
-                                <button class='text-center align-middle' style='color:white; border: none; background: transparent; font-size: 1rem;'>&plus;</button>
+                            <a href='pagatribuida.php?updateid=$id' class='btn btn-warning btn-md' style='color: white;'>
+                                <i class='fa-solid fa-pen-to-square' style='color: #ffffff;'></i>
                             </a>
-                          </td>";
+                        </td>";
                 } else {
                     echo "<td class='text-center align-middle'> 
-                            <button class='btn btn-success' style='color: white; font-size: 1.2rem; background-color: #076421;'>
-                                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' style='width: 1em; height: 1em; vertical-align: middle;'>
-                                    <path fill='#ffffff' d='M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z'/>
-                                </svg>
-                            </button>
+                            <div class='text-light btn btn-success disabled btn-md' style='background-color: #0b980e;'>
+                                <i class='fas fa-check-square' style='color: white; font-size: 1.2rem;'></i>
+                            </div>
                           </td>";
+                }              
+                $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id);
+                $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id);
+                $textoprin = $puxarform->buscarTextoPrincipalPorIdAta($id);
+                if (empty($deliberacoes) && !empty($textoprin)) {
+                    echo "<td class='text-center align-middle'>
+                            <a class='text-light btn btn-success btn-md' href='arquivo_partetext.php?updateid=".$id."'>
+                                <i class='fas fa-file-pdf'></i>
+                            </a>
+                        </td>";
+                } elseif (empty($deliberacoes) && !empty($puxaparticipantes)) {
+                    echo "<td class='text-center align-middle'>
+                            <a class='text-light btn btn-success btn-md' href='arquivo_semdel.php?updateid=".$id."'>
+                                <i class='fas fa-file-pdf'></i>
+                            </a>
+                        </td>";
+                } elseif (empty($deliberacoes) && empty($puxaparticipantes)) {
+                    echo "<td class='text-center align-middle'>
+                            <a class='text-light btn btn-success btn-md' href='arquivo_sempart.php?updateid=".$id."'>
+                                <i class='fas fa-file-pdf'></i>
+                            </a>
+                        </td>";
+                } else {
+                    echo "<td class='text-center align-middle'>
+                            <a class='text-light btn btn-success btn-md' href='arquivopdf.php?updateid=".$id."'>
+                                <i class='fas fa-file-pdf'></i>
+                            </a>
+                        </td>";
                 }
-
-    $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id);
-    $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id);
-    $textoprin = $puxarform->buscarTextoPrincipalPorIdAta($id);
-        if (empty($deliberacoes) && !empty($puxaparticipantes)) {
-            echo "<td class='text-center align-middle'>
-                    <a class='text-light btn btn-success' href='arquivo_semdel.php?updateid=".$id."'>
-                        <i class='fas fa-file-pdf'></i>
-                    </a>
-                </td>";
-
-        } elseif (empty($deliberacoes) && empty($puxaparticipantes)) {
-            echo "<td class='text-center align-middle'>
-                    <a class='text-light btn btn-success' href='arquivo_sempart.php?updateid=".$id."'>
-                        <i class='fas fa-file-pdf'></i>
-                    </a>
-                </td>";
-
-        } elseif (!empty($textoprin)) {
-            echo "<td class='text-center align-middle'>
-                    <a class='text-light btn btn-danger' href='arquivo_partetext.php?updateid=".$id."'>
-                        <i class='fas fa-file-pdf'></i>
-                    </a>
-                </td>";
-
-        } else {
-            echo "<td class='text-center align-middle'>
-                    <a class='text-light btn btn-success' href='arquivopdf.php?updateid=".$id."'>
-                        <i class='fas fa-file-pdf'></i>
-                    </a>
-                </td>";
-        }
-    
-
-
-
-
-                    
                 echo "<td class='align-middle' style='display:none;' onclick='abrirModalDetalhes(" . json_encode($row) . ")'>";
-
                 echo "<td class='align-middle' style='display:none;' id='participantes" . $row['id'] . "'>"; 
                 if (isset($row['id'])) {
                     $id_ata = $row['id'];
@@ -300,7 +298,7 @@ if ($conn->connect_error) {
                         $totalParticipantes = count($puxaparticipantes);
                         $count = 0;
                         foreach ($puxaparticipantes as $participante) {
-                            echo $participante['nome_facilitador']; // Exibir apenas o nome do participante
+                            echo $participante['nome_facilitador']; 
                             $count++;
                             if ($count < $totalParticipantes) {
                                 echo ",";
@@ -311,44 +309,35 @@ if ($conn->connect_error) {
                     }
                 } else {
                     echo "ID da ata não disponível";
-                }                
+                }
                 echo "</td>";
-
                 if (isset($row['id'])) {
                     $id_ata = $row['id'];
                     $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
                     if (!empty($deliberacoes) && is_array($deliberacoes)) {
-                        // Inicializa um array associativo para armazenar as deliberações únicas e os deliberadores associados a cada deliberação
                         $deliberacoes_unicas = array();
-                        
-                        // Agrupa os deliberadores por deliberação, evitando repetições
                         foreach ($deliberacoes as $deliberacao) {
                             $texto_deliberacao = $deliberacao['deliberacoes'];
                             $deliberador = $deliberacao['deliberador'];
-                            // Adiciona o deliberador apenas se esta deliberação ainda não estiver presente no array
                             if (!isset($deliberacoes_unicas[$texto_deliberacao])) {
                                 $deliberacoes_unicas[$texto_deliberacao] = array();
                             }
-                            // Adiciona o deliberador ao array associado à deliberação
                             $deliberacoes_unicas[$texto_deliberacao][] = $deliberador;
                         }
                         
                         echo "<td class='deliberacao-cell text-left' style='display:none;' id='deliberacoes" . $row['id'] . "'>";
-                        // Exibe as deliberações únicas e os deliberadores associados a cada deliberação
                         foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
                             echo "<div class='col-6 bg-body-secondary form-control deliberacao' style='max-height: 80px;'>" . $texto_deliberacao . "<br>";
-                            // Exibe os deliberadores associados a esta deliberação
                             $deliberadores_concatenados = implode(", ", $deliberadores);
                             echo "<div class='deliberador'>" . $deliberadores_concatenados . "</div>";
-                            echo "</div><br>"; // Adiciona uma quebra de linha após cada bloco de deliberação
+                            echo "</div><br>"; 
                         }
                         echo "</td>";
                         echo "<td  class='deliberador-cell text-left' style='display:none;' id='deliberadores" . $row['id'] . "'>";
-                        // Exibe os deliberadores associados a cada deliberação única
                         foreach ($deliberacoes_unicas as $texto_deliberacao => $deliberadores) {
                             $deliberadores_concatenados = implode(", ", $deliberadores);
                             echo "<div class='col-6 bg-body-secondary form-control deliberador'>" . $deliberadores_concatenados . "</div>";
-                            echo "<br>"; // Adiciona uma quebra de linha após cada bloco de deliberadores
+                            echo "<br>"; 
                         }
                         echo "</td>";
                     } else {
@@ -359,15 +348,8 @@ if ($conn->connect_error) {
                         echo "<td class='deliberador-cell align-middle' style='display:none;' id='deliberadores" . $row['id'] . "'>";
                         echo "<div class='col-6 bg-body-secondary form-control'>Nenhum deliberador</div>";
                         echo "</td>";
-                    }
-                    
-                    
-                    
-                    
-                      
-                    
-                }                     
-                
+                    }                                                   
+                }                             
                 echo "</tr>";
             }
         } else {
@@ -376,8 +358,6 @@ if ($conn->connect_error) {
         ?>
     </tbody>
 </table>
-
-
         </div>
     </div>
 </div>
@@ -415,42 +395,23 @@ if ($conn->connect_error) {
                                     
                                 </div>
                                 <div class="col-12">
-    <label><b>Facilitador:</b></label>
-    <ul class="form-control bg-body-secondary border rounded "id="modal_facilitador" >
-    
-            </ul>
-</div>
-
+                                <label><b>Facilitador:</b></label>
+                                <ul class="form-control bg-body-secondary border rounded "id="modal_facilitador" ></ul>
+                                </div>
                                 <div class="col-12"> 
                                     <label for="form-control"><b>Participantes</b></label>
-                                    <ul class="form-control bg-body-secondary  border rounded" id="modal_participantes"></ul>
-                                    
+                                    <ul class="form-control bg-body-secondary  border rounded" id="modal_participantes"></ul>                     
                                 </div>
                                 <br><br>
-                                <div class=" col-12 ">
-                                        
+                                <div class=" col-12 ">                  
                                     <label class="h3  "><b>Deliberações</b></label>
-                                    <div class="row d-flex">
-                                 
-
-
-
-
-   
-<div class="col " id="modal_deliberacoes">
-<br>
-</div>
-
-
-<br>
-
-
-
-               
-              
+                                <div class="row d-flex">        
+                                <div class="col " id="modal_deliberacoes">
+                                <br>
                                 </div>
+                                <br>                        
                                 </div>
-                                                                 
+                                </div>                                                                 
                                 </div>
                             </div>
                         </div>
@@ -482,19 +443,6 @@ if ($conn->connect_error) {
         myModal.show();
         }
     </script>
-
-
-
-
-
-
-<!-- var participantes = document.getElementById("participantes" + row.id).innerText;
-        document.getElementById("modal_participantes").innerText = participantes;  -->
-
-
-
-
-
     <script>
         function filtrarTabela() {
             var input, filtro, tabela, linhas, celula, texto;
