@@ -85,10 +85,11 @@ $pegarlocal=$puxarform->pegarlocais();
           <!--Título do formulário ----------------------->
           <div class="col-md-12 text-center m-3 p-2">
             <h2><b>Formulário de Solicitação</b></h2>
+            <h4>Registro de Encontro</h4>
           </div>         
           <!---ABA DE DATA---->
           <div class="col-xl-4 col-lg-xl-3 col-md-6">
-            <label><b>Data*</b></label>
+            <label><b>Data</b></label>
             <input id="datainicio" class="mt-2 mb-2 form-control" placeholder="dd-mm-aaaa" min="2024-04-01" type="date">
           </div>
           <script>
@@ -98,7 +99,7 @@ $pegarlocal=$puxarform->pegarlocais();
           
           <!---ABA DE HORÁRIO INICIO---->
           <div class="col-xl-4 col-lg-xl-3 col-md-6">
-            <label for="nomeMedico"><b>Horário de Início*:</b></label>
+            <label for="nomeMedico"><b>Horário de Início:</b></label>
             <input class="mt-2 mb-2 form-control" type="time" id="horainicio" name="appt" min="" max="18:00">
           </div>
 
@@ -153,7 +154,7 @@ $pegarlocal=$puxarform->pegarlocais();
          
           <!---ABA DE ADICIONAR FACILITADORES---->
           
-          <div class="col mt-3"> <label for="form-control"> <b> Facilitador(res) responsável*:</b> </label> 
+          <div class="col mt-3"> <label for="form-control"> <b> Facilitador(res) responsável:</b> </label> 
           </div>
 
           <div class="row">
@@ -172,7 +173,7 @@ $pegarlocal=$puxarform->pegarlocais();
  
           <!--CAIXA DE TEXTO SOBRE O QUE SE TRATA A ATA-->
 
-          <div class="col mt-2"><b>Tema*:</b>
+          <div class="col mt-2"><b>Tema:</b>
             <input id="temaprincipal" class="mt-2 form-control" type="text" />
           </div>
 
@@ -181,7 +182,7 @@ $pegarlocal=$puxarform->pegarlocais();
             <div class="col d-flex justify-content-center">
               <div class="btn-atas p-4">
                 
-              <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-success">salvar</button>
+              <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-success">Registrar encontro</button>
 
               <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-secondary opacity-75" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
               </div>

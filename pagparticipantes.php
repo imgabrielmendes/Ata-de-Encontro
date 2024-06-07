@@ -148,13 +148,13 @@ print_r($id_ata);
           <div class="row">
     <br>
     <div class="col-sm-12 col-xl-3  col-md-6">
-        <label><b>Data*:</b></label>
+        <label><b>Data:</b></label>
         <ul class="form-control bg-body-secondary"> <?php echo $_SESSION['data']; ?> </ul>
     </div>
 
     <!---ABA DE HORÁRIO INICIO---->
     <div class="col-sm-12 col-xl-3  col-md-6">
-        <label for="nomeMedico"><b>Horário de Início*:</b></label>
+        <label for="nomeMedico"><b>Horário de Início:</b></label>
         <br>
         <ul class="form-control bg-body-secondary"><?php echo $_SESSION['horainicio']; ?></ul>
     </div>

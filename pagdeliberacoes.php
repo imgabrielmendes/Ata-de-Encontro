@@ -130,13 +130,13 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
           <div class="row">
     <br>
     <div class="col-sm-12 col-xl-3  col-md-6">
-        <label><b>Data*:</b></label>
+        <label><b>Data:</b></label>
         <ul class="form-control bg-body-secondary"> <?php echo $_SESSION['data']; ?> </ul>
     </div>
 
     <!---ABA DE HORÁRIO INICIO---->
     <div class="col-sm-12 col-xl-3  col-md-6">
-        <label for="nomeMedico"><b>Horário de Início*:</b></label>
+        <label for="nomeMedico"><b>Horário de Início:</b></label>
         <br>
         <ul class="form-control bg-body-secondary"><?php echo $_SESSION['horainicio']; ?></ul>
     </div>
@@ -151,22 +151,17 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
     <div class="col-sm-12 col-xl-3  col-md-6">
         <label for="form-control"><b>Tempo Estimado:</b></label>
         <?php
-        // Verifica se as variáveis estão definidas antes de calcular o tempo estimado
         if (isset($_SESSION['horainicio']) && isset($_SESSION['horaterm'])) {
-            // Calcula a diferença de tempo em minutos
             $inicio = strtotime($_SESSION['horainicio']);
             $termino = strtotime($_SESSION['horaterm']);
             $diferencaMinutos = ($termino - $inicio) / 60;
 
-            // Calcula horas e minutos
             $horas = floor($diferencaMinutos / 60);
             $minutos = $diferencaMinutos % 60;
 
-            // Formata os números com dois dígitos
             $horas_formatado = sprintf("%02d", $horas);
             $minutos_formatado = sprintf("%02d", $minutos);
 
-            // Exibe o tempo estimado no formato "00:00"
             echo "<div class='form-control bg-body-secondary tempo-estimado'>" . $horas_formatado . ":" . $minutos_formatado . ":00". "</div>";
         } else {
             echo "Horário de início e/ou término não definidos.";
@@ -213,7 +208,6 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
   </div>
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
 <div class="accordion mt-4" id="accordionPanelsStayOpenExample">
-
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
     <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo" style="background-color: #1c8f69;">
@@ -318,10 +312,6 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
   </div>
 </div>
 
-
-
-
-
 <script>
   function excluirParticipante(participante) {
     if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
@@ -334,11 +324,6 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
     }
   }
 </script>
-
-
-
-
-
 
 </div>
 </div>
@@ -353,7 +338,7 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
 
 
 
-  <div class="accordion mt-4">
+<div class="accordion mt-4">
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
     <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
@@ -426,6 +411,144 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
 
   </div>
     </div>
+<!---------------------------------------------------------------------->
+
+<div class="accordion mt-4">
+  <div class="accordion-item shadow">
+    <h2 class="accordion-header">
+      <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
+      <i class="fa-regular fa-pen-to-square p-1 mb-1"></i><h5>Deliberações Adicionadas</h5>
+  </div></h2>
+  
+  <div class="accordion-collapse collapse show">
+    <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+      <div class="col-md-12 text-center"></div>
+      
+      <div class="row">
+        <div class ="col">
+          <div id="existingDeliberations" class="mt-3">
+                          <div id="deliberationsList" class="list-group">
+                          <?php
+                              $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+                              if (!empty($deliberacoes)) {
+                                  $deliberacoesAgrupadas = [];
+                                  foreach ($deliberacoes as $deliberacao) {
+                                      $conteudo = $deliberacao['deliberacoes'];
+                                      $deliberador = $deliberacao['deliberador'];
+          
+                                      if (!isset($deliberacoesAgrupadas[$conteudo])) {
+                                          $deliberacoesAgrupadas[$conteudo] = [];
+                                      }
+          
+                                      $deliberacoesAgrupadas[$conteudo][] = $deliberador;
+                                  }
+                                  $contagemdeli = 0;
+                                  foreach ($deliberacoesAgrupadas as $conteudo => $deliberadores) {
+                                      $contagemdeli++;
+                                      $deliberadoresStr = implode(', ', $deliberadores);
+                                      ?>
+                                      <div style="margin-bottom: 15px;" data-conteudo="<?php echo $conteudo; ?>">
+    <span class="col-2 badge rounded-pill text-bg-secondary mt-2 mb-2">
+        <label for="" class="mb-1 mt-1">
+            Deliberação N°<?php echo $contagemdeli; ?>
+        </label>
+    </span>
+    <div class="row">
+        <div class="row"></div>
+        <div class="col-12">
+            <li class="form-control bg-body-secondary border rounded">
+                <div>
+                    <strong>Deliberador:</strong> <?php echo $deliberadoresStr; ?>
+                </div>
+            </li>
+        </div>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-11">
+            <div class="form-control border rounded">
+                <strong>Deliberação:</strong> <?php echo $conteudo; ?>
+            </div>
+        </div>
+        <div class="col-1">
+            <button style=" "class="btn btn-danger delete-deliberacao" data-id-ata="<?php echo $id_ata; ?>" data-conteudo="<?php echo $conteudo; ?>">Excluir</button>
+        </div>
+    </div>
+</div>
+
+                                     
+                                      <?php
+                                  }
+                              }
+                              ?>
+                          </div>
+                          <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                document.querySelectorAll('.delete-deliberacao').forEach(button => {
+                                    button.addEventListener('click', function() {
+          
+                                        var idAta = this.getAttribute('data-id-ata');
+                                        var conteudo = this.getAttribute('data-conteudo');
+          
+                                        var xhr = new XMLHttpRequest();
+                                        xhr.open('POST', 'excluirdeli.php', true);
+                                        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                                        xhr.onreadystatechange = function() {
+                                            if(xhr.readyState == 4 && xhr.status == 200) {
+                                                document.querySelector('div[data-conteudo="' + conteudo + '"]').remove();
+                                                location.reload(); // Recarrega a página após a exclusão
+                                            }
+                                        };
+                                        xhr.send('id_ata=' + encodeURIComponent(idAta) + '&conteudo=' + encodeURIComponent(conteudo));
+                                    });
+                                });
+                            });
+          
+                          </script>
+      </div>
+      </div>   
+
+
+<script>
+document.getElementById('registrarTextoButton').addEventListener('click', function() {
+    var textoPrincipal = document.getElementById('textoprinc').value; // Corrigido o ID aqui
+    var idAta = this.getAttribute('data-id-ata');
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', 'textprincbanco.php', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+            Swal.fire({
+                title: 'Sucesso!',
+                text: 'O texto foi atualizado com sucesso.',
+                icon: 'success',
+                confirmButtonText: 'OK',
+                timer: 2500
+            }).then((result) => {
+                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                    location.reload();
+                }
+            });
+        } else if (xhr.readyState == 4) {
+            Swal.fire({
+                title: 'Erro!',
+                text: 'Ocorreu um erro ao atualizar o texto.',
+                icon: 'error',
+                confirmButtonText: 'OK',
+                timer: 2500
+            }).then((result) => {
+                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                    location.reload();
+                }
+            });
+        }
+    }
+    xhr.send('id_ata=' + idAta + '&textoprincipal=' + encodeURIComponent(textoPrincipal));
+});
+</script>
+</div>          
+</div>
+</div>
+</div>
 
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 
@@ -436,8 +559,6 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
     <i class="fa-solid fa-file p-1 mb-1"></i><h5>Deliberações</h5>
 </div>
   </h2>
-
-<!-----------------------------4° FASE-------------------------------->
 
 <div class="accordion-collapse collapse show">
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
@@ -455,75 +576,6 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
 }
     </style>
 
-    <div id="existingDeliberations" class="mt-3">
-                    <ul id="deliberationsList" class="list-group">
-                    <?php
-                        $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
-                        if (!empty($deliberacoes)) {
-                            $deliberacoesAgrupadas = [];
-                            foreach ($deliberacoes as $deliberacao) {
-                                $conteudo = $deliberacao['deliberacoes'];
-                                $deliberador = $deliberacao['deliberador'];
-
-                                if (!isset($deliberacoesAgrupadas[$conteudo])) {
-                                    $deliberacoesAgrupadas[$conteudo] = [];
-                                }
-
-                                $deliberacoesAgrupadas[$conteudo][] = $deliberador;
-                            }
-                            $contagemdeli = 0;
-                            foreach ($deliberacoesAgrupadas as $conteudo => $deliberadores) {
-
-                                $contagemdeli++;
-
-                                $deliberadoresStr = implode(', ', $deliberadores);
-                                ?>
-                          
-                                <div style="margin-bottom: 15px;" data-conteudo="<?php echo $conteudo; ?>">
-                                <span class="col-12 badge rounded-pill text-bg-secondary mb-2">Deliberação <?php echo $contagemdeli; ?></span>
-                                    <li class="form-control bg-body-secondary border rounded">
-                             
-                                        <div>
-                                            <strong>Deliberador:</strong> <?php echo $deliberadoresStr; ?>
-                                        </div>
-                                    </li>
-                                    <li class="form-control border rounded">
-                                        <div>
-                                            <strong>Deliberação:</strong> <?php echo $conteudo; ?>
-                                        </div>
-                                    </li>
-                                    
-                                    <button class="col btn btn-danger btn-sm d-flex align-items-end flex-column delete-deliberacao mt-2" data-id-ata="<?php echo $id_ata; ?>" data-conteudo="<?php echo $conteudo; ?>">Excluir</button>
-                                </div>
-                                <?php
-                            }
-                        }
-                        ?>
-                    </ul>
-                    <script>
-                          document.addEventListener('DOMContentLoaded', function() {
-                          document.querySelectorAll('.delete-deliberacao').forEach(button => {
-                              button.addEventListener('click', function() {
-
-                                  var idAta = this.getAttribute('data-id-ata');
-                                  var conteudo = this.getAttribute('data-conteudo');
-
-                                  var xhr = new XMLHttpRequest();
-                                  xhr.open('POST', 'excluirdeli.php', true);
-                                  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                                  xhr.onreadystatechange = function() {
-                                      if(xhr.readyState == 4 && xhr.status == 200) {
-                                          document.querySelector('div[data-conteudo="' + conteudo + '"]').remove();
-                                          location.reload(); // Recarrega a página após a exclusão
-                                      }
-                                  };
-                                  xhr.send('id_ata=' + encodeURIComponent(idAta) + '&conteudo=' + encodeURIComponent(conteudo));
-                              });
-                          });
-                      });
-
-                    </script>
-                </div>   
         <form id="addForm">
         <div class="form-group">
         <div class="col">
