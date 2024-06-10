@@ -99,32 +99,30 @@ if ($result->num_rows > 0) {
 
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
         <tbody>
-            <tr style="font-size: 10p">
+            <tr style="font-size: 10px">
                 <td style="border: 1px solid black; width: 178px; text-align: left; height: 30px; "><b>  Local:</b>  '.$local.'</td>
                 <td style="border: 1px solid black; width: 362px; text-align: left; height: 30px;">'.'   '.'<b>Tema:</b>  '.$tema.'</td>
             </tr>
         </tbody>
         </table>';
 
-        $html .= '<h2>PARTICIPANTES</h2>';
+        $html .= '<h3>PARTICIPANTES</h3>';
         if (!empty($nomeParticipantes)) {
+
             foreach (explode(",", $nomeParticipantes) as $participante) {
                 $html .= htmlspecialchars($participante) . ',  ';
             }
+            
         } else {
             $html .= '<p>Participantes não informados</p>';
         }
         }
 
-        $html .= '<h2>TEXTO PRINCIPAL: </h2>';
+        $html .= '<h3>TEXTO PRINCIPAL:</h3>';
+        $html .= '<p style="font-size: 10px; text-align: justify;">' . htmlspecialchars($textop) . '</p>';
+        
 
-        if (empty($textop)) {
-            $html .= '<p>Texto principal não informado</p>';
-        } else {
-            $html .= '<p>' . htmlspecialchars($textop) . '</p>';
-        }
-
-        $html .= '<h2> DELIBERAÇÕES </h2>
+        $html .= '<h3> DELIBERAÇÕES </h3>
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
             <tbody>
                 <tr style="">
@@ -189,7 +187,7 @@ if ($result->num_rows > 0) {
             }
         } else { $html .= '<p>Texto principal não informado</p>'; }
 
-        for ($linha = 0; $linha < 15; $linha++) {
+        for ($linha = 0; $linha < 20; $linha++) {
             $html .= '<tr style="text-align: center;">
                         <td style="height: 31px; border: 1px solid black; height: 20px;"></td>
                         <td style="border: 1px solid black;"></td>

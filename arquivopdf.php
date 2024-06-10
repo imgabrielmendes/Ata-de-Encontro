@@ -77,7 +77,7 @@ if ($result->num_rows > 0) {
                         <td style="height: 30px;"></td>
                         <td style="height: 30px;"><h4>Ata de Encontro</h4></td>
                         <td style="height: 30px;"></td>
-                        <td style="height: 30px;  border: 1px solid black;">NOR.QUA.001</td>
+                        <td style="height: 30px;  border: 1px solid black;">NOR.QUA.-E</td>
                     </tr>
                     <tr style="text-align: center;">
                         <td style="border: 1px solid black;"><b>Data de elaboração:</b></td>
@@ -114,7 +114,7 @@ if ($result->num_rows > 0) {
         </tbody>
         </table>';
 
-        $html .= '<h2>PARTICIPANTES</h2>';
+        $html .= '<h3>PARTICIPANTES</h3>';
         if (!empty($nomeParticipantes)) {
             foreach (explode(",", $nomeParticipantes) as $participante) {
                 $html .= htmlspecialchars($participante) . ',  ';
@@ -124,7 +124,7 @@ if ($result->num_rows > 0) {
         }
         }
 
-        $html .= '<h2>TEXTO PRINCIPAL: </h2>';
+        $html .= '<h3>TEXTO PRINCIPAL: </h3>';
 
         if (empty($textop)) {
             $html .= '<p>Texto principal não informado</p>';
@@ -132,7 +132,7 @@ if ($result->num_rows > 0) {
             $html .= '<p>' . htmlspecialchars($textop) . '</p>';
         }
 
-        $html .= '<h2> DELIBERAÇÕES </h2>';
+        $html .= '<h3> DELIBERAÇÕES </h3>';
 
         $deliberadores_por_deliberacao = array();
 
@@ -153,7 +153,7 @@ if ($result->num_rows > 0) {
                     <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
                         <tbody>
                             <tr style="">
-                                <td style="text-align: center; border: 1px solid black; background-color: #c0c0c0; width: 130px; font-size: 9.5px;"><ul><b>' . implode(",<br>", array_map('htmlspecialchars', $deliberadores)) . '</b></ul></td>
+                                <td style="text-align: center; border: 1px solid black; background-color: #c0c0c0; width: 130px; font-size: 9.5px;"><ul><b>' . implode(",", array_map('htmlspecialchars', $deliberadores)) . '</b></ul></td>
                                 <td style="text-align: left; border: 1px solid black; height: 30px; width: 409px; font-size: 10px;">'."  " . htmlspecialchars($deliberacao) . '</td>
                             </tr>
                         </tbody>
@@ -165,7 +165,7 @@ if ($result->num_rows > 0) {
 
         $html .= '<hr style="margin-right: auto; width: 40%;" align="center">
                   <p style="display: block; text-align: center;">Assinatura do Responsável</p>
-                  <br><br><br>';
+                  ';
 
         $pdf->AddPage();
         $pdf->writeHTML($html, true, false, true, false, '');
@@ -199,7 +199,7 @@ if ($result->num_rows > 0) {
         </tbody>
         </table>
 
-        <table style="border: 1px solid black; text-align: center; padding: 4px 0px;">
+        <table style=" border: 1px solid black; text-align: center;">
         <tbody>
         <tr style="text-align: center; background-color: #ececed">
             <td style="height: 31px; border: 1px solid black; width: 79px; vertical-align: middle;"><h4>Mat.</h4></td>
@@ -219,7 +219,7 @@ if ($result->num_rows > 0) {
             }
         } else { $html .= '<p>Texto principal não informado</p>'; }
 
-        for ($linha = 0; $linha < 8; $linha++) {
+        for ($linha = 0; $linha < 15; $linha++) {
             $html .= '<tr style="text-align: center;">
                         <td style="height: 31px; border: 1px solid black; height: 20px;"></td>
                         <td style="border: 1px solid black;"></td>
