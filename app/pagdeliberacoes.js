@@ -20,7 +20,51 @@ new MultiSelectTag('deliberador', {
     }
 });
 
-console.log();
+document.getElementById('addItemButton').addEventListener('click', function() {
+    var newItem = document.querySelector('.item').value.trim();
+    var deliberadoresSelecionados = document.querySelector('.facilitator-select').selectedOptions;
+    var deliberadoresSelecionadosLabel = Array.from(deliberadoresSelecionados).map(option => option.label);
+    var deliberadoresSelecionadosNUM = Array.from(deliberadoresSelecionados).map(option => option.value);
+    var idAata = document.querySelector('.item').getAttribute('data-id-ata');
+
+    if (newItem === "" && deliberadoresSelecionadosLabel.length === 0) {
+        Swal.fire({
+            title: "Preencha os campos de deliberação",
+            icon: "error"
+        });
+        return;
+    } else {
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'enviardeli.php', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState == 4 && xhr.status == 200) {
+
+            location.reload();
+            var toastLiveExample = document.getElementById('liveToast2');
+           
+            } else if (xhr.readyState == 4) {
+                Swal.fire({
+                    title: 'Erro!',
+                    text: 'Ocorreu um erro ao inserir a deliberação.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    timer: 2500
+                }).then((result) => {
+                    if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+
+const toastLiveExample = document.getElementById('liveToast2');
+const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+toastBootstrap.show();
+                    }
+
+                });
+            }
+        }
+        xhr.send('id_ata=' + encodeURIComponent(idAata) + '&deliberaDores=' + JSON.stringify(deliberadoresSelecionadosNUM) + '&newItem=' + encodeURIComponent(newItem));
+        }
+    });
+
 
 var participantesAdicionados = [];
 
@@ -34,7 +78,6 @@ var mensagemInfo = document.getElementById('infoMessage');
 //LINKANDO AS VARÍAVEIS QUE VÃO SER ENVIADO JUNTO COM PARTICIPANTES
 // Declare uma variável de contagem
 // Declare uma variável de contagem global
-var acoesBemSucedidas = 0;
 
 // Adicione o evento de clique para o botão 'addItemButton'
 addItemButton.addEventListener('click', function() {
@@ -49,7 +92,6 @@ addItemButton.addEventListener('click', function() {
         });
     } else {
 
-        acoesBemSucedidas++;
 
         var inputField = document.getElementById('item');
         inputField.parentNode.removeChild(inputField);
@@ -86,11 +128,8 @@ addItemButton.addEventListener('click', function() {
             deleteButton.remove(); 
         });
 
-        itemList.appendChild(deleteButton);
-
         // Cria e adiciona a label "Deliberação" + contador
         var deliberationLabel = document.createElement('label');
-        deliberationLabel.textContent = "<b>Deliberação N°" + acoesBemSucedidas + "</b>";
         textListItemDiv.appendChild(deliberationLabel);
     }
 });
@@ -111,6 +150,7 @@ document.getElementById('addItemButton').addEventListener('click', function() {
             icon: "error"
         });
         return;
+
     } else if (deliberadoresSelecionadosLabel.length === 0) {
         Swal.fire({
             title: "Você não adicionou um deliberador",
@@ -118,11 +158,10 @@ document.getElementById('addItemButton').addEventListener('click', function() {
             icon: "error"
         });
         return;
+
     } else {
 
         // Incrementa o contador de ações bem-sucedidas
-        acoesBemSucedidas++;
-
         const toastLiveExample = document.getElementById('liveToast')
         var deliberador = document.querySelector('.item').value;
         var deliberacoes = document.querySelector('.facilitator-select').value;
@@ -138,9 +177,7 @@ document.getElementById('addItemButton').addEventListener('click', function() {
                 newItem: newItem,
             },
             success: function(response) {
-                console.log("(4.2) Deu bom! AJAX está enviando os Deliberadores");
                 console.log(response);
-                console.log("AAAAAAAAAAAAA");
                 console.log(deliberadoresSelecionadosNUM);
             },
             error: function(error) {
@@ -148,55 +185,12 @@ document.getElementById('addItemButton').addEventListener('click', function() {
             }
         });
 
-        var deleteButton = document.createElement('button');
-        deleteButton.textContent = 'x';
-        deleteButton.className = 'col btn btn-danger btn-mt mt-2';
-        deleteButton.style.right = '9px'; 
-        deleteButton.style.top = '0px'; 
-        deleteButton.style.width = '37px'; 
-        deleteButton.style.height = '37px'; 
-
-        deleteButton.addEventListener('click', function() {  
-            itemList.removeChild(textListItemDiv);
-            itemList.removeChild(facilitatorListItemDiv);
-            itemList.removeChild(deliberationLabel);
-            deleteButton.remove(); 
-
-            const toastLiveExample = document.getElementById('liveToast2');
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-            toastBootstrap.show();
-        });
-
-        
-
-        var textListItemDiv = document.createElement('div');
-        textListItemDiv.className = 'black text-break form-control border rounded';
-        textListItemDiv.textContent = newItem;
-
-        // Cria e adiciona a label "Deliberação" + contador
-        var deliberationLabel = document.createElement('label');
-        deliberationLabel.className = "d-flex justify-content-start mb-2 badge rounded-pill text-bg-success opacity-75";
-        deliberationLabel.style.marginRight = "auto";
-        deliberationLabel.textContent = "Deliberação N°" + acoesBemSucedidas;
-        
-        // textListItemDiv.appendChild(deliberationLabel);
-
-        var facilitatorListItemDiv = document.createElement('div');
-        facilitatorListItemDiv.className = 'form-control bg-body-secondary border rounded';
-        facilitatorListItemDiv.textContent = deliberadoresSelecionadosLabel;
-
-        var itemList = document.getElementById('inputContainer');
-        itemList.appendChild(deliberationLabel);
-        itemList.appendChild(textListItemDiv);
-        itemList.appendChild(facilitatorListItemDiv);
-        itemList.appendChild(deleteButton);
-
     }
 });
 
 
 
-var botaohist = document.getElementById('abrirhist');
+var botaohist = document.getElementById('finalizarAtaBtn');
 botaohist.addEventListener('click', irparaHist);
 
 function irparaHist() {
@@ -213,7 +207,7 @@ function irparaHist() {
             icon: "error"
         });
     } else {
-        // Se pelo menos uma das informações estiver preenchida, solicita confirmação do usuário
+
         Swal.fire({
             title: "Confirmação",
             text: "Deseja Finalizar encontro ou continuar modificando?",
@@ -224,56 +218,23 @@ function irparaHist() {
             confirmButtonText: "Finalizar",
             cancelButtonText: "Continuar"
         }).then((result) => {
+
             if (result.isConfirmed) {
-                // Se o usuário escolher ir para o histórico, exibe mensagem de sucesso
+
                 Swal.fire({
                     title: "Perfeito!",
                     text: "Seu texto principal foi Adicionado!",
                     icon: "success",
                 });
 
-                // Envia os dados para o servidor
-                $.ajax({
-                    url: 'registrartextop.php',
-                    method: 'POST',
-                    data: {
-                        textoprincipal1: textoprincipal,
-                        // Enviar deliberadores selecionados junto com os dados
-                        deliberadoresSelecionados: JSON.stringify(deliberadoresSelecionadosLabel)
-                    },
-                    success: function() {
-                        console.log("AJAX DO TEXTO FOI PUXADO");
-                        
-                        // Redireciona para a página de histórico após o envio bem-sucedido
-                        setTimeout(function() {
-                            var url = 'paghistorico.php';
-                            window.location.href = url;
-                        }, 1500);
-                    },
-                    error: function(error) {
-                        console.error('Erro na solicitação AJAX:', error);
-                    }
-                });
+                setTimeout(function() {
+                    var url = 'paghistorico.php';
+                    window.location.href = url;
+                }, 1500);
+
+                
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                // Se o usuário escolher continuar modificando, envia os dados para o servidor sem redirecionar
-                $.ajax({
-                    url: 'registrartextop.php',
-                    method: 'POST',
-                    data: {
-                        textoprincipal1: textoprincipal,
-                        deliberadoresSelecionados: JSON.stringify(deliberadoresSelecionadosLabel)
-                    },
-                    success: function() {
-                        console.log("AJAX DO TEXTO FOI PUXADO - Continuar modificando");
-                        // Exibe o toast de sucesso
-                        var toastLiveExample = document.getElementById('liveToast3');
-                        var toast = new bootstrap.Toast(toastLiveExample);
-                        toast.show();
-                    },
-                    error: function(error) {
-                        console.error('Erro na solicitação AJAX:', error);
-                    }
-                });
+
             }
         });
     }

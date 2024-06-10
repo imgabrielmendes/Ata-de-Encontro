@@ -227,7 +227,7 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
     <div class="row">
     <div class="col">
         <div>
-            <div style="margin: 6px" class='form-control bg-body-secondary border rounded'>
+            <div class='form-control bg-body-secondary border rounded'>
                 <ul>
                 <?php
                     if (isset($_GET['updateid'])) {
@@ -470,11 +470,15 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
             </div>
         </div>
         <div class="col-1">
-            <button style=" "class="btn btn-danger delete-deliberacao" data-id-ata="<?php echo $id_ata; ?>" data-conteudo="<?php echo $conteudo; ?>">Excluir</button>
+        <button class="btn btn-danger btn-sm delete-deliberacao mt-2" data-id-ata="<?php echo $id_ata; ?>" data-conteudo="<?php echo $conteudo; ?>">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="mr-2" style="width: 1em; height: 1em;">
+                        <path fill="#ffffff" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                    </svg>
+                </button>
             </div>
             </div>
             </div>
-            <hr class="mt-3 mb-3">
+            <hr class="mt-3 mb-3 ">
 
                                      
                                       <?php
@@ -631,92 +635,16 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
 </div>
 
 
-        <div class="col-12">
-          <ul id="caixadeselecaodel"></ul>
-  <div class="col d-flex justify-content-center align-content-center">
+  <div class="col-12">
+    <ul id="caixadeselecaodel"></ul>
+      <div class="col d-flex justify-content-center align-content-center">
     
     <button type="button" id="addItemButton" class="btn btn-success  a">Criar deliberações</button>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        var addItemButton = document.getElementById('addItemButton');
-        var deliberacoesTextarea = document.getElementById('deliberacoes');
-        var deliberadorSelect = document.getElementById('deliberador');
-        addItemButton.addEventListener('click', function() {
-            deliberacoesTextarea.value = '';
-            var options = deliberadorSelect.options;
-            for (var i = 0; i < options.length; i++) {
-                options[i].selected = false;
-            }
-
-            console.log('Textarea and select options have been reset');
-        });
-    });
-  </script>
-
-<script>
-                document.getElementById('addItemButton').addEventListener('click', function() {
-                var newItem = document.querySelector('.item').value.trim();
-                var deliberadoresSelecionados = document.querySelector('.facilitator-select').selectedOptions;
-                var deliberadoresSelecionadosLabel = Array.from(deliberadoresSelecionados).map(option => option.label);
-                var deliberadoresSelecionadosNUM = Array.from(deliberadoresSelecionados).map(option => option.value);
-                var idAata = document.querySelector('.item').getAttribute('data-id-ata');
-
-                if (newItem === "" && deliberadoresSelecionadosLabel.length === 0) {
-                    Swal.fire({
-                        title: "Preencha os campos de deliberação",
-                        icon: "error"
-                    });
-                    return;
-                } else if (newItem === "") {
-                    Swal.fire({
-                        title: "Você não adicionou uma deliberação",
-                        text: "Adicione pelo menos 1 deliberação para a ata",
-                        icon: "error"
-                    });
-                    return;
-                } else if (deliberadoresSelecionadosLabel.length === 0) {
-                    Swal.fire({
-                        title: "Você não adicionou um deliberador",
-                        text: "Adicione pelo menos 1 deliberador para a deliberação",
-                        icon: "error"
-                    });
-                    return;
-                } else {
-                    var xhr = new XMLHttpRequest();
-                    xhr.open('POST', 'enviardeli.php', true);
-                    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                    xhr.onreadystatechange = function() {
-                        if(xhr.readyState == 4 && xhr.status == 200) {
-
-                        location.reload();
-                        var toastLiveExample = document.getElementById('liveToast2');
-                       
-                        } else if (xhr.readyState == 4) {
-                            Swal.fire({
-                                title: 'Erro!',
-                                text: 'Ocorreu um erro ao inserir a deliberação.',
-                                icon: 'error',
-                                confirmButtonText: 'OK',
-                                timer: 2500
-                            }).then((result) => {
-                                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
-
-                                  const toastLiveExample = document.getElementById('liveToast2');
-            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-            toastBootstrap.show();
-                                }
-
-                            });
-                        }
-                    }
-                    xhr.send('id_ata=' + encodeURIComponent(idAata) + '&deliberaDores=' + JSON.stringify(deliberadoresSelecionadosNUM) + '&newItem=' + encodeURIComponent(newItem));
-                    }
-                });
-            </script>
   </div>
+
+</div>
 </div>
 
-  </div>
   <div class="toast-container position-fixed bottom-0 end-0 p-3">
       <div id="liveToast3" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
@@ -768,40 +696,12 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
         <!-- <button id="" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
         <div class=" col d-flex justify-content-center align-content-center">
            <button id="finalizarAtaBtn" type="button" class="btn btn-secondary" data-bs-toggle="modal">Finalizar Encontro</button>
-<script>  
-document.getElementById("finalizarAtaBtn").addEventListener("click", function() {
-    Swal.fire({
-        title: "Finalizada!",
-        text: "Você finalizou seu encontro com sucesso!",
-        icon: "success",
-        confirmButtonText: "OK"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = "paghistorico.php";
-        }
-    });
-
-
-});</script>
-          
-
-        </div></div>
+          </div></div>
 
     </form>
           
             </div>          
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var botaocont = document.getElementById('botaocontinuarata');
-        var botaoregistrar = document.getElementById('botaoregistrar');
-        var itemList = document.getElementById('items');
-        var filter = document.getElementById('filter');
-        var addItemButton = document.getElementById('addItemButton'); 
-
-    });
-
-</script>
   </div>
     </div>
       </div>
