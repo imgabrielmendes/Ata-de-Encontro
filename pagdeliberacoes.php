@@ -471,9 +471,10 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
         </div>
         <div class="col-1">
             <button style=" "class="btn btn-danger delete-deliberacao" data-id-ata="<?php echo $id_ata; ?>" data-conteudo="<?php echo $conteudo; ?>">Excluir</button>
-        </div>
-    </div>
-</div>
+            </div>
+            </div>
+            </div>
+            <hr class="mt-3 mb-3">
 
                                      
                                       <?php
@@ -526,6 +527,7 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
             }).then((result) => {
                 if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
                     location.reload();
+
                 }
             });
         } else if (xhr.readyState == 4) {
@@ -565,7 +567,7 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
     <div class="col-md-12 text-center">               
     </div>
     
-    <span class="col d-flex align-items-end flex-column" id="inputContainer"></span>
+    <!-- <span class="col d-flex align-items-end flex-column" id="inputContainer"></span> -->
     
     <style>
       .item-container {
@@ -649,7 +651,68 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
             console.log('Textarea and select options have been reset');
         });
     });
-                                  </script>
+  </script>
+
+<script>
+                document.getElementById('addItemButton').addEventListener('click', function() {
+                var newItem = document.querySelector('.item').value.trim();
+                var deliberadoresSelecionados = document.querySelector('.facilitator-select').selectedOptions;
+                var deliberadoresSelecionadosLabel = Array.from(deliberadoresSelecionados).map(option => option.label);
+                var deliberadoresSelecionadosNUM = Array.from(deliberadoresSelecionados).map(option => option.value);
+                var idAata = document.querySelector('.item').getAttribute('data-id-ata');
+
+                if (newItem === "" && deliberadoresSelecionadosLabel.length === 0) {
+                    Swal.fire({
+                        title: "Preencha os campos de deliberação",
+                        icon: "error"
+                    });
+                    return;
+                } else if (newItem === "") {
+                    Swal.fire({
+                        title: "Você não adicionou uma deliberação",
+                        text: "Adicione pelo menos 1 deliberação para a ata",
+                        icon: "error"
+                    });
+                    return;
+                } else if (deliberadoresSelecionadosLabel.length === 0) {
+                    Swal.fire({
+                        title: "Você não adicionou um deliberador",
+                        text: "Adicione pelo menos 1 deliberador para a deliberação",
+                        icon: "error"
+                    });
+                    return;
+                } else {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', 'enviardeli.php', true);
+                    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                    xhr.onreadystatechange = function() {
+                        if(xhr.readyState == 4 && xhr.status == 200) {
+
+                        location.reload();
+                        var toastLiveExample = document.getElementById('liveToast2');
+                       
+                        } else if (xhr.readyState == 4) {
+                            Swal.fire({
+                                title: 'Erro!',
+                                text: 'Ocorreu um erro ao inserir a deliberação.',
+                                icon: 'error',
+                                confirmButtonText: 'OK',
+                                timer: 2500
+                            }).then((result) => {
+                                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+
+                                  const toastLiveExample = document.getElementById('liveToast2');
+            const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+            toastBootstrap.show();
+                                }
+
+                            });
+                        }
+                    }
+                    xhr.send('id_ata=' + encodeURIComponent(idAata) + '&deliberaDores=' + JSON.stringify(deliberadoresSelecionadosNUM) + '&newItem=' + encodeURIComponent(newItem));
+                    }
+                });
+            </script>
   </div>
 </div>
 
