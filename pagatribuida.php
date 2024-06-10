@@ -531,27 +531,30 @@ function adicionarParticipanteAoLabel(participante) {
                     <ul id="deliberationsList" class="list-group">
                     <?php
 $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+$contagemdeli = 0;
 if (!empty($deliberacoes)) {
     $deliberacoesAgrupadas = [];
     foreach ($deliberacoes as $deliberacao) {
         $conteudo = $deliberacao['deliberacoes'];
         $deliberador = $deliberacao['deliberador'];
-
+        
         if (!isset($deliberacoesAgrupadas[$conteudo])) {
             $deliberacoesAgrupadas[$conteudo] = [];
-        }
-
-        $deliberacoesAgrupadas[$conteudo][] = $deliberador;
-    }
-    echo "<table class='table'>";
-    echo "<thead><tr><th>Deliberador</th><th>Deliberação</th><th>Editar</th><th>Excluir</th></tr></thead>";
-    echo "<tbody>";
-    foreach ($deliberacoesAgrupadas as $conteudo => $deliberadores) {
-        $deliberadoresStr = implode(', ', $deliberadores);
+            }
+            
+            $deliberacoesAgrupadas[$conteudo][] = $deliberador;
+            }
+            echo "<table class='table'>";
+            echo "<thead><tr><th>N°</th><th>Deliberador</th><th>Deliberação</th><th>Editar</th><th>Excluir</th></tr></thead>";
+            echo "<tbody>";
+            foreach ($deliberacoesAgrupadas as $conteudo => $deliberadores) {
+                $deliberadoresStr = implode(', ', $deliberadores);
+                $contagemdeli++;
         // Cria um ID único para cada modal de edição
         $modal_editar_id = 'editarModal_' . uniqid();
 ?>
         <tr class="table-row" data-conteudo="<?php echo $conteudo; ?>">
+            <td><?php echo $contagemdeli; ?></td>
             <td><?php echo $deliberadoresStr; ?></td>
             <td><?php echo strlen($conteudo) > 50 ? substr($conteudo, 0, 50) . '...' : $conteudo; ?></td>
             <td>
