@@ -350,8 +350,11 @@ console.log(iddelibe);
                 iddelibe: iddelibe,
             },
             success: function(response) {
-                alert(response);
+              
                 console.log("Dados atualizados com sucesso!");
+            
+            location.reload();
+        
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
@@ -386,8 +389,11 @@ $(document).on('click', '.excluir-button', function(){
                 participante: participante,
             },
             success: function(response) {
-                alert('Participante excluído com sucesso: ' + participante);
+               
                 $('#participante-' + index).remove();
+                setTimeout(function() {
+            location.reload();
+        }, 500);
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);
