@@ -118,10 +118,12 @@ function gravaremail(){
 
         Swal.fire({
             title: "Cadastrado com sucesso!",
-            text: "Atualize a página e continue a operação",
+            
             icon: "success"
           });
-
+          setTimeout(function() {
+            location.reload();
+        }, 1000);
         console.log ("(3.1) As informações de email foram enviadas");
 
         if (caixadenome !=="" && caixadeemail !=="" && caixamatricula !=="") 
