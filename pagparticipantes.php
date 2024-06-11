@@ -237,17 +237,17 @@ print_r($id_ata);
 <h5>Participantes</h5>
 </div>
   </h2>                                                                                                                                       
-        <div class="container-fluid ">
-        <div class="row">
+  <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);" >
+            <div class="row">
           <form id="addForm">
               <div class="form-group ">
                   <br>
                   <div id="items" class="list-group">                    
               </div>
-                  <label for="item"><b>Informe os participantes</b></label>
+                  <label class="mb-2 mt-2" for="item"><b>Informe os participantes</b></label>
 
                   <div class="row">
-                    <div class="col" > 
+                    <div class="col"> 
                     <select  class="col form-control" id="participantesadicionados" name="facilitador" multiple style="width: 100px;">
                       <optgroup label="Selecione Facilitadores">
                           <?php foreach ($pegarfa as $facnull) : ?>
@@ -261,10 +261,11 @@ print_r($id_ata);
         </div></div>
           
           </form>
+          <!-- style="wheigt: 200px; width: 200px;"  -->
           <div  class="row">
           <div class="col-lg-12 col-md-2 d-flex text-center">
-           <button  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
-           <i class='fas fa-address-card' style='color: white; font-size: 1.2rem;'></i>
+           <button id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
+           <i class='mt-2 mb-2 fas fa-address-card' style='color: white; '></i>
             </button>
        </div>
       </div>
