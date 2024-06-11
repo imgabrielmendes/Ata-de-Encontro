@@ -196,8 +196,9 @@ if ($result->num_rows > 0) {
             $html .= '<p>Deliberações não informadas</p>';
         }      
 
-        $html .= '<hr style="margin-right: auto; width: 40%;" align="center">
-                  <p style="display: block; text-align: center;">Assinatura do Responsável</p>
+        $html .= '<br><br><br><br>
+                  <hr style="margin-right: auto; width: 40%;">
+                  <p>Assinatura do Responsável</p>
                   ';
 
         $pdf->AddPage();

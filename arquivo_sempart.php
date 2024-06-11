@@ -5,38 +5,6 @@ $id = $_GET['updateid'];
 
 require_once(__DIR__ . "/view/TCPDF/tcpdf.php");
 
-$sql2 = "SELECT 
-        ass.id,
-        ahf.id_ata,
-        fac.matricula,
-        fac.nome_facilitador as facilitadores,
-        fac.email_facilitador
-    FROM atareu.assunto as ass
-    INNER JOIN atareu.ata_has_fac as ahf
-        ON ahf.id_ata = ass.id
-    INNER JOIN atareu.facilitadores as fac
-        ON fac.id = ahf.facilitadores
-    WHERE ahf.id_ata = $id";
-
-$result2 = $conn->query($sql2);
-$facilitadoresArray = [];
-
-if ($result2 === false) {
-    echo "Erro na consulta: " . $conn->error;
-} else {
-    if ($result2->num_rows > 0) {
-        while ($row = $result2->fetch_assoc()) {
-            $facilitadores = !empty($row['facilitadores']) ? $row['facilitadores'] : '';
-            $facilitadoresArray[] = $facilitadores; // Armazena facilitadores em um array
-        }
-    } else {
-        echo "Nenhum resultado encontrado.";
-    }
-}
-
-$facilitadoresString = implode(", ", $facilitadoresArray);
-
-
 $sql = "SELECT
 assunto.id AS IDASSUNTO,
 assunto.hora_inicial AS horainicio,
@@ -77,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <td style="height: 30px;"></td>
                         <td style="height: 30px;"><h4>Ata de Encontro</h4></td>
                         <td style="height: 30px;"></td>
-                        <td style="height: 30px;  border: 1px solid black;">NOR.QUA - EX</td>
+                        <td style="height: 30px;  border: 1px solid black;">NOR.QUA.001</td>
                     </tr>
                     <tr style="text-align: center;">
                         <td style="border: 1px solid black;"><b>Data de elaboração:</b></td>
@@ -93,28 +61,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             
             <table style="padding: 6px 0px; text-align: center; font-size: 10px; width: 540px; height: 20px;">
             <tbody>
-                <tr style="text-align: left">
-                    <td style="padding: 5px; border: 1px solid black"><b>  Data:</b> '.$data.'</td>
-                    <td style="padding: 5px; border: 1px solid black"><b>  Inicio:</b> '.$horainicio.'</td>
-                    <td style="padding: 5px; border: 1px solid black"><b>  Término:</b> '.$horafinal.'</td>
-                    <td style="padding: 5px; border: 1px solid black"><b>  Objetivo:</b> '.$objetivo.'</td>
+                <tr style="text-align: center; background-color: #c0c0c0">
+                    <td style="padding: 5px; border: 1px solid black"><b>Data:</b></td>
+                    <td style="padding: 5px; border: 1px solid black"><h4>Horário de Inicio:</h4></td>
+                    <td style="padding: 5px; border: 1px solid black"><b>Horário de Término:</b></td>
+                    <td style="padding: 5px; border: 1px solid black"><b>Tempo estimado:</b></td>
+                    <td style="padding: 5px; border: 1px solid black"><b>Objetivo:</b></td>
                 </tr>
-                <tr style="text-align: LEFT;">
-                <td style="padding: 5px; border: 1px solid black; width: 540px; font-size: 10px;"><b>   Facilitador(es):</b>'.'  '. $facilitadoresString. '.'.'</td>
+                <tr style="text-align: center;">
+                    <td style="border: 1px solid black; padding: 5px;">'.$data.'</td>
+                    <td style="border: 1px solid black; padding: 5px;">'.$horainicio.'</td>
+                    <td style="border: 1px solid black; padding: 5px;">'.$horafinal.'</td>
+                    <td style="border: 1px solid black; padding: 5px;">*Colocar</td>
+                    <td style="border: 1px solid black; padding: 5px;">'.$objetivo.'</td>
                 </tr>
             </tbody>
         </table>
 
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
         <tbody>
-            <tr style="font-size: 10px">
-                <td style="border: 1px solid black; width: 178px; text-align: left; height: 30px; "><b>  Local:</b>  '.$local.'</td>
-                <td style="border: 1px solid black; width: 362px; text-align: left; height: 30px;">'.'   '.'<b>Tema:</b>  '.$tema.'</td>
+            <tr style="background-color: #c0c0c0">
+                <td style="border: 1px solid black; height: 30px; width: 108px;"><b>Local:</b></td>
+                <td style="border: 1px solid black; width: 432px; text-align: left;">'.'   '.'<b>Tema:</b></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; text-align: center; font-size: 9px">'.$local.'</td>
+                <td style="border: 1px solid black; text-align: left; padding-left: 10px;">'.'   '.$tema.'</td>
             </tr>
         </tbody>
         </table>
 
-        <h3>TEXTO PRINCIPAL:</h3>
+        <h2> DELIBERAÇÕES </h2>
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
             <tbody>
                 <tr style="">
@@ -123,50 +100,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </tbody>
         </table>
 
-        <h3> DELIBERAÇÕES </h3>
+        <h2>TEXTO PRINCIPAL:</h2>
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
             <tbody>
                 <tr style="">
                     <td style="text-align: left; border: 1px solid black; height: 120px; width: 539px; font-size: 10px;"></td>
                 </tr>
             </tbody>
-        </table>
-'; 
+        </table>'; 
 
         $pdf->AddPage();
         $pdf->writeHTML($html, true, false, true, false, '');
 
         // Adicionar linha para assinatura do participante
-        $html = '<br><br><br><hr style="margin-right: center; width: 40%;" align="center">
-        <p style="display: block; text-align: center;">Assinatura do Participante</p>';
+        $html .= '<br><br><br><br>
+        <hr style="margin-right: auto; width: 40%;">
+        <p>Assinatura do Responsável</p>
+        ';
 
         $pdf->writeHTML($html, true, false, true, false, '');
 
         // Adicionar nova página para a lista de participantes
         $pdf->AddPage();
-
         $html = '
-            <table style="border: 1px solid black; padding: 8px 0px; order-spacing:3px">
-                <tbody>
-                    <tr style="text-align: center;">
-                        <td style="height: 20px; border: 1px solid black;"><img src="view\img\logo-hrg.png" alt="Descrição da imagem"></td>
-                        <td style="height: 30px;"></td>
-                        <td style="height: 30px;"><h4>Ata de Encontro</h4></td>
-                        <td style="height: 30px;"></td>
-                        <td style="height: 30px;  border: 1px solid black;">NOR.QUA.001</td>
-                    </tr>
-                    <tr style="text-align: center;">
-                        <td style="border: 1px solid black;"><b>Data de elaboração:</b></td>
-                        <td style="border: 1px solid black;">27/09/2021</td>
-                        <td style="border: 1px solid black;"><b>Versão</b></td>
-                        <td style="border: 1px solid black;">2-2021</td>
-                        <td style="border: 1px solid black;">ANEXO 4</td>
-                    </tr>
-                </tbody>
-            </table>';
-
-        $html .= '
        
+
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
         <tbody>
             <tr style="text-align: center">
@@ -178,20 +136,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <table style="border: 1px solid black; text-align: center; padding: 4px 0px;">
         <tbody>
             <tr style="text-align: center; background-color: #ececed">
-                <td style="height: 31px; border: 1px solid black; width: 79px; vertical-align: middle;"><h4>Mat.</h4></td>
-                <td style="height: 31px; border: 1px solid black; width: 170px; vertical-align: middle;"><h4>Nome:</h4></td>
-                <td style="height: 31px; border: 1px solid black; width: 180px; vertical-align: middle;"><h4>Função:</h4></td>
-                <td style="height: 31px; border: 1px solid black; width: 110px; vertical-align: middle;"><h4>Assinatura:</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 59px; vertical-align: middle;"><h4>Mat.</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 150px; vertical-align: middle;"><h4>Nome:</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 60px; vertical-align: middle;"><h4>Função:</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 270px; vertical-align: middle;"><h4>Assinatura:</h4></td>
             </tr>';
 
-            for ($linha = 0; $linha < 20; $linha++) {
-                $html .= '<tr style="text-align: center;">
-                            <td style="height: 31px; border: 1px solid black; height: 20px;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                        </tr>';
-            }
+        for ($linha = 0; $linha < 10; $linha++) {
+            $html .= '<tr style="text-align: center;">
+                        <td style="border: 1px solid black; height: 37px;"></td>
+                        <td style="border: 1px solid black;"></td>
+                        <td style="border: 1px solid black;"></td>
+                        <td style="border: 1px solid black;"></td>
+                    </tr>';
+        }
 
         $html .= '</tbody></table>';
 
