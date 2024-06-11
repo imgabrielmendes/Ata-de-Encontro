@@ -99,7 +99,7 @@ if ($result->num_rows > 0) {
                         <td style="height: 30px;"></td>
                         <td style="height: 30px;"><h4>Ata de Encontro</h4></td>
                         <td style="height: 30px;"></td>
-                        <td style="height: 30px;  border: 1px solid black;">NOR.QUA.001</td>
+                        <td style="height: 30px;  border: 1px solid black;">NOR.QUA - EX</td>
                     </tr>
                     <tr style="text-align: center;">
                         <td style="border: 1px solid black;"><b>Data de elaboração:</b></td>
