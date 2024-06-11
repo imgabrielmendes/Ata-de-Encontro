@@ -21,48 +21,18 @@ new MultiSelectTag('deliberador', {
 });
 
 document.getElementById('addItemButton').addEventListener('click', function() {
+
     var newItem = document.querySelector('.item').value.trim();
+
     var deliberadoresSelecionados = document.querySelector('.facilitator-select').selectedOptions;
+
     var deliberadoresSelecionadosLabel = Array.from(deliberadoresSelecionados).map(option => option.label);
+
     var deliberadoresSelecionadosNUM = Array.from(deliberadoresSelecionados).map(option => option.value);
+
     var idAata = document.querySelector('.item').getAttribute('data-id-ata');
 
-    if (newItem === "" && deliberadoresSelecionadosLabel.length === 0) {
-        Swal.fire({
-            title: "Preencha os campos de deliberação",
-            icon: "error"
-        });
-        return;
-    } else {
-        var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'enviardeli.php', true);
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function() {
-            if(xhr.readyState == 4 && xhr.status == 200) {
 
-            location.reload();
-            var toastLiveExample = document.getElementById('liveToast2');
-           
-            } else if (xhr.readyState == 4) {
-                Swal.fire({
-                    title: 'Erro!',
-                    text: 'Ocorreu um erro ao inserir a deliberação.',
-                    icon: 'error',
-                    confirmButtonText: 'OK',
-                    timer: 2500
-                }).then((result) => {
-                    if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
-
-const toastLiveExample = document.getElementById('liveToast2');
-const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-toastBootstrap.show();
-                    }
-
-                });
-            }
-        }
-        xhr.send('id_ata=' + encodeURIComponent(idAata) + '&deliberaDores=' + JSON.stringify(deliberadoresSelecionadosNUM) + '&newItem=' + encodeURIComponent(newItem));
-        }
     });
 
 
@@ -110,7 +80,7 @@ addItemButton.addEventListener('click', function() {
             var deliberatorDiv = document.createElement('div');
             deliberatorDiv.className = 'form-control bg-body-secondary border rounded';
             var deliberatorLabel = document.createElement('label');
-            
+
             deliberatorLabel.textContent = deliberator;
             deliberatorDiv.appendChild(deliberatorLabel);
             itemList.appendChild(deliberatorDiv);
@@ -139,10 +109,11 @@ document.getElementById('addItemButton').addEventListener('click', function() {
     
     if (newItem === "" && deliberadoresSelecionadosLabel.length === 0) {
         Swal.fire({
-            title: "Preencha os campos de deliberação",
+            title: "111111111111111 os campos de deliberação",
             icon: "error"
         });
         return;
+
     } else if (newItem === "") {
         Swal.fire({
             title: "Você não adicionou uma deliberação",
@@ -179,6 +150,8 @@ document.getElementById('addItemButton').addEventListener('click', function() {
             success: function(response) {
                 console.log(response);
                 console.log(deliberadoresSelecionadosNUM);
+                location.reload();
+
             },
             error: function(error) {
                 console.error('Erro na solicitação AJAX:', error);
