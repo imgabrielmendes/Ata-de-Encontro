@@ -370,21 +370,43 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
 
 <script>
 document.getElementById('registrarTextoButton').addEventListener('click', function() {
-    var textoPrincipal = document.getElementById('textoprinc').value; // Corrigido o ID aqui
-    var idAta = this.getAttribute('data-id-ata');
+    Swal.fire({
+        title: "Confirmação",
+        text: "Deseja Finalizar encontro ou continuar modificando?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Finalizar",
+        cancelButtonText: "Continuar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            enviarTexto('finalizar');
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            enviarTexto('continuar');
+        }
+    });
+});
+
+function enviarTexto(acao) {
+    var textoPrincipal = document.getElementById('textoprinc').value;
+    var idAta = document.getElementById('registrarTextoButton').getAttribute('data-id-ata');
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'textprincbanco.php', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
             Swal.fire({
-                title: 'Sucesso!',
-                text: 'O texto foi atualizado com sucesso.',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                timer: 2500
-            }).then((result) => {
-                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                title: "Sucesso!",
+                text: "O texto foi inserido com sucesso!",
+                icon: "success",
+            }).then(() => {
+                if (acao === 'finalizar') {
+                    setTimeout(function() {
+                        var url = 'paghistorico.php';
+                        window.location.href = url;
+                    }, 1500);
+                } else {
                     location.reload();
                 }
             });
@@ -403,7 +425,7 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
         }
     }
     xhr.send('id_ata=' + idAta + '&textoprincipal=' + encodeURIComponent(textoPrincipal));
-});
+}
 </script>
 
             </div>          
@@ -513,44 +535,6 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
       </div>   
 
 
-<script>
-document.getElementById('registrarTextoButton').addEventListener('click', function() {
-    var textoPrincipal = document.getElementById('textoprinc').value; // Corrigido o ID aqui
-    var idAta = this.getAttribute('data-id-ata');
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'textprincbanco.php', true);
-    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState == 4 && xhr.status == 200) {
-            Swal.fire({
-                title: 'Sucesso!',
-                text: 'O texto foi atualizado com sucesso.',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                timer: 2500
-            }).then((result) => {
-                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
-                    location.reload();
-
-                }
-            });
-        } else if (xhr.readyState == 4) {
-            Swal.fire({
-                title: 'Erro!',
-                text: 'Ocorreu um erro ao atualizar o texto.',
-                icon: 'error',
-                confirmButtonText: 'OK',
-                timer: 2500
-            }).then((result) => {
-                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
-                    location.reload();
-                }
-            });
-        }
-    }
-    xhr.send('id_ata=' + idAta + '&textoprincipal=' + encodeURIComponent(textoPrincipal));
-});
-</script>
 </div>          
 </div>
 </div>
