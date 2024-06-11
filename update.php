@@ -11,6 +11,8 @@ $puxarform = new AcoesForm;
 $pegarfa = $puxarform->pegarfacilitador();
 $pegarlocal = $puxarform->pegarlocais();
 
+
+
 $sql = "SELECT * FROM assunto WHERE id = $id";
 $result = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($result);
@@ -34,10 +36,28 @@ $facilitadores = array();
 
 while ($row2 = mysqli_fetch_assoc($result2)) { 
     $facilitadores[] = $row2;
+    $idfacilitadores[] = $row2['idfacilitadores'];
+  
 }
+
+$sql8 = "SELECT F.nome_facilitador as participantes,
+F.id as id
+        FROM facilitadores AS F
+        WHERE F.id IN (SELECT participantes FROM participantes WHERE id_ata = id_ata)";
+
+$result8 = mysqli_query($conn, $sql8);
+$facilitadores8 = array(); 
+
+while ($row8 = mysqli_fetch_assoc($result8)) { 
+    $facilitadores8[] = $row8;
+    $idfacilitadores8[] = $row8['id'];
+   
+}
+
 
 $sql3 = "SELECT 
     del.id_ata,
+    del.id as id,
     fac.nome_facilitador AS deliberador,
     del.deliberacoes AS deliberacoes
     FROM atareu.deliberacoes AS del
@@ -47,13 +67,16 @@ $sql3 = "SELECT
 $result3 = mysqli_query($conn, $sql3);
 $deliberacoes_array = array();
 $deliberador_array = array();
+$deliberacoesid = array();
 
 if ($result3 && mysqli_num_rows($result3) > 0) {
     while ($row3 = mysqli_fetch_assoc($result3)) {
         $deliberacoes_array[] = $row3['deliberacoes'];
+        $deliberacoesid[] = $row3['id'];
         $deliberador_array[] = $row3['deliberador'];
     }
 }
+print_r($deliberacoesid);
 
 
 $sql4= "SELECT 
@@ -181,17 +204,44 @@ mysqli_close($conn);
                 <?php foreach ($pegarfa as $facnull) : ?>
                     <option value="<?php echo $facnull['id']; ?>" data-tokens="<?php echo $facnull['nome_facilitador']; ?>">
                         <?php echo $facnull['nome_facilitador']; ?>
+                       
                     </option>
                 <?php endforeach ?>
             </optgroup>
           </select>
           <div class="col-6 form-control mt-2">
-            <ul>
-                <?php foreach ($facilitadores as $facilitador): ?>
-                    <li><?php echo $facilitador['facilitadores']; ?></li>
-                <?php endforeach; ?>
-            </ul>   
-          </div>
+    <ul>
+
+    <?php
+          
+            $id_ata = $_GET['updateid'];
+            $resultados = $facilitadores8 ;
+       
+
+            $pegarde = [];
+            foreach ($resultados as $row) {
+            $pegarde[$row['id']] = $row['participantes'];
+            
+            }
+            
+        ?>
+
+
+        <?php foreach ($facilitadores as $index => $facilitador): ?>
+            <?php
+            $id_ata = $_GET['updateid'];
+            ?>
+            <li id="participante-<?php echo $index; ?>">
+                <?php echo $facilitador['facilitadores']; ?>
+                <button type="click" class='btn btn-danger btn-sm m-2 excluir-button' data-idata="<?php echo $id_ata; ?>"
+                 data-participante="<?php echo $facilitador['facilitadores']; ?>" data-id="<?php echo $facilitador['idfacilitadores']; ?>"
+                 data-index="<?php echo $index; ?>" class="excluir-button">
+                    Excluir
+                </button>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+</div>
 
 
     <input type="hidden" name="form_action" value="delete">
@@ -210,7 +260,7 @@ mysqli_close($conn);
         <div class="col-4">
             <input class="form-control" value="<?php echo $deliberador_array[$index]?>" >
         </div> 
-        <input class="col form-control" value="<?php echo $deliberacao ?>" >
+        <input id="deliberacao" class="col form-control" value="<?php echo $deliberacao ?>" >
     </div>
     <?php endforeach; ?>
     
@@ -239,7 +289,10 @@ mysqli_close($conn);
     </main>
 
     <script>
+     
 
+
+     facilitadoresSelecionados = [];
       new MultiSelectTag('selecionandofacilitador', {
             rounded: true, 
             shadow: false,     
@@ -252,74 +305,161 @@ mysqli_close($conn);
             onChange: function(selected_ids, selected_names) {
                 facilitadoresSelecionados = selected_ids;
                 facilitadoresSelecionadosLabel = selected_names;
-                // console.log(facilitadoresSelecionados);
-                // console.log(facilitadoresSelecionadosLabel);
+          
             }
       });
-    document.addEventListener('DOMContentLoaded', function () {
-    var form = document.getElementById("seu-formulario-id");
 
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-       
-        var hora_inicio = document.getElementById('horainicio').value;
-        var hora_term = document.getElementById('horaterm').value;
-        var objetivo = document.getElementById('objetivo').value;
-        var local = document.getElementById('local').value;
-        var tema = document.getElementById('temaprincipal').value;
-        var texto = document.getElementById('textoprincipal').value;
-        var id = <?php echo json_encode($_GET['updateid']); ?>;
-        console.log(texto);
-      // texto é de outro banco de dados
 
-       
-        if (objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "" || texto === "" ) {
-            window.alert("Preencha as informações");
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: 'acoesdeupdate.php',
-                data: {
-                    objetivo: objetivo,
-                    id: id,
-                    local: local,
-                    hora_inicio:hora_inicio,
-                    hora_term: hora_term,
-                    tema: tema,
-                    texto: texto,
-                },
-                success: function(response) {
-                    alert(response);
-                    console.log("DEU CERTO");
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    console.log("DEU RUIM");
-                }
-            });
-        }
-    });
+function processarFormulario() {
+    event.preventDefault();
+
+    var data = document.getElementById('datainicio').value;
+    var dataf = formatarData(data);
+    var hora_inicio = document.getElementById('horainicio').value;
+    var hora_term = document.getElementById('horaterm').value;
+    var objetivo = document.getElementById('objetivo').value;
+    var local = document.getElementById('local').value;
+    var tema = document.getElementById('temaprincipal').value;
+    var texto = document.getElementById('textoprincipal').value;
+    var id = <?php echo json_encode($_GET['updateid']); ?>;
+    var facilitadores = document.getElementById('selecionandofacilitador').value;
+    var deliberacoes = document.getElementById('deliberacao').value;
+    console.log(deliberacoes);
+    var iddelibe = <?php echo json_encode($deliberacoesid); ?>;
+
+
+console.log(iddelibe);
+
+    if (data === "" || objetivo === "" || local === "" || hora_inicio === "" || hora_term === "" || tema === "") {
+        window.alert("Preencha as informações");
+    } else {
+        $.ajax({
+            type: 'POST',
+            url: 'acoesdeupdate.php',
+            data: {
+                objetivo: objetivo,
+                id: id,
+                local: local,
+                hora_inicio: hora_inicio,
+                hora_term: hora_term,
+                tema: tema,
+                texto: texto,
+                data: data,
+                facilitadoresSelecionados: facilitadoresSelecionados,
+                deliberacoes: deliberacoes,
+                iddelibe: iddelibe,
+            },
+            success: function(response) {
+              
+                console.log("Dados atualizados com sucesso!");
+            
+            location.reload();
+        
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                console.log("Erro ao atualizar os dados.");
+            }
+        });
+    }
+}
+
+
+var form = document.getElementById("seu-formulario-id");
+form.addEventListener('submit', processarFormulario);
+
+
+$(document).on('click', '.excluir-button', function(){
+    var id_ata = $(this).data('idata');
+    var participante = $(this).data('participante');
+    var idpart = $(this).data('id');
+
+
+    console.log(idpart);
+    console.log(id_ata);
+    console.log(participante);
+
+    if (id_ata > 0) {
+        $.ajax({
+            type: 'POST',
+            url: 'excluirpartici.php',
+            data: {
+                idpart: idpart,
+                id_ata: id_ata,
+                participante: participante,
+            },
+            success: function(response) {
+               
+                $('#participante-' + index).remove();
+                setTimeout(function() {
+            location.reload();
+        }, 500);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                alert('Erro ao excluir o participante. Tente novamente.');
+            }
+        });
+    }else{
+        confirm("deu errado");
+    }
 });
 
 
-// function formatarData(data) {
-//     var dataObj = new Date(data);
-//     var dia = dataObj.getDate();
-//     var mes = dataObj.getMonth() + 1; // Adicionando 1 para ajustar o mês
-//     var ano = dataObj.getFullYear();
-
-//     // Adicionando zeros à esquerda para garantir que tenham dois dígitos
-//     if (dia < 10) {
-//         dia = '0' + dia;
+// $(document).on('click', '.excluir-button', function(){
+//     var id_ata = $(this).data('idata');
+//     var participante = $(this).data('participante');
+//     var index = $(this).data('index');
+    
+//     if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
+//         $.ajax({
+//            type: 'POST',
+//            url: 'excluirpartici.php',
+//            data: { id_ata: id_ata,
+//              index: index },
+//            success: function(response){
+//               alert('Participante excluído com sucesso: ' + participante);
+//               $('#participante-' + index).remove();
+//               alert( participante);
+//            },
+//            error: function(xhr, status, error) {
+//                console.error(xhr.responseText);
+//                alert('Erro ao excluir o participante. Tente novamente.');
+//            }
+//         });
 //     }
-//     if (mes < 10) {
-//         mes = '0' + mes;
-//     }
+// });
 
-//     // Formata a data como "dia/mês/ano" (por exemplo, "28/05/2024")
-//     return dia + '/' + mes + '/' + ano;
-// }
+
+
+
+function formatarData(data) {
+      var dataObj = new Date(data);
+      var dia = dataObj.getDate() + 1;
+      var mes = dataObj.getMonth() + 1;
+      var ano = dataObj.getFullYear();
+
+ 
+      if (dia < 10) {
+        dia = '0' + dia;
+      }
+      if (mes < 10) {
+        mes = '0' + mes;
+      }
+
+
+      return dia + '/' + mes + '/' + ano;
+    }
+
+
 
 </script>
+     
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="view/js/bootstrap.js"></script>
+
+    <script src="app/excluiratribuida.js"></script>
 </body>
 </html>

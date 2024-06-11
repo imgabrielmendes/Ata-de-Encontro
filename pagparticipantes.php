@@ -263,8 +263,8 @@ print_r($id_ata);
           </form>
           <div  class="row">
           <div class="col-lg-12 col-md-2 d-flex text-center">
-           <button style=" background-color:white; color:#353535; border:none; font-size: 13px;" id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
-              Clique aqui para cadastrar usúario 
+           <button  id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
+           <i class='fas fa-address-card' style='color: white; font-size: 1.2rem;'></i>
             </button>
        </div>
       </div>
