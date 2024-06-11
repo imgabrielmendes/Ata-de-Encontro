@@ -405,7 +405,7 @@ function enviarTexto(acao) {
                     setTimeout(function() {
                         var url = 'paghistorico.php';
                         window.location.href = url;
-                    }, 1500);
+                    }, 100);
                 } else {
                     location.reload();
                 }
