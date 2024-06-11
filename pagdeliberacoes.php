@@ -24,12 +24,9 @@ $data_formatada = $dateTime->format('d/m/Y');
 $_SESSION['data'] = $data_formatada;
 
 function identificarIdPagina() {
-  if(isset($_GET['updateid'])) {
-      return $_GET['updateid'];
-  } else {
-      return null;
-  }
+  return isset($_GET['updateid']) ? $_GET['updateid'] : null;
 }
+
 $id_ata = identificarIdPagina();
 $puxatexto = $puxarform->textprinc($id_ata);
 $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
@@ -133,13 +130,13 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
           <div class="row">
     <br>
     <div class="col-sm-12 col-xl-3  col-md-6">
-        <label><b>Data*:</b></label>
+        <label><b>Data:</b></label>
         <ul class="form-control bg-body-secondary"> <?php echo $_SESSION['data']; ?> </ul>
     </div>
 
     <!---ABA DE HORÁRIO INICIO---->
     <div class="col-sm-12 col-xl-3  col-md-6">
-        <label for="nomeMedico"><b>Horário de Início*:</b></label>
+        <label for="nomeMedico"><b>Horário de Início:</b></label>
         <br>
         <ul class="form-control bg-body-secondary"><?php echo $_SESSION['horainicio']; ?></ul>
     </div>
@@ -154,22 +151,17 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
     <div class="col-sm-12 col-xl-3  col-md-6">
         <label for="form-control"><b>Tempo Estimado:</b></label>
         <?php
-        // Verifica se as variáveis estão definidas antes de calcular o tempo estimado
         if (isset($_SESSION['horainicio']) && isset($_SESSION['horaterm'])) {
-            // Calcula a diferença de tempo em minutos
             $inicio = strtotime($_SESSION['horainicio']);
             $termino = strtotime($_SESSION['horaterm']);
             $diferencaMinutos = ($termino - $inicio) / 60;
 
-            // Calcula horas e minutos
             $horas = floor($diferencaMinutos / 60);
             $minutos = $diferencaMinutos % 60;
 
-            // Formata os números com dois dígitos
             $horas_formatado = sprintf("%02d", $horas);
             $minutos_formatado = sprintf("%02d", $minutos);
 
-            // Exibe o tempo estimado no formato "00:00"
             echo "<div class='form-control bg-body-secondary tempo-estimado'>" . $horas_formatado . ":" . $minutos_formatado . ":00". "</div>";
         } else {
             echo "Horário de início e/ou término não definidos.";
@@ -216,7 +208,6 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
   </div>
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
 <div class="accordion mt-4" id="accordionPanelsStayOpenExample">
-
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
     <button class="accordion-button shadow-sm text-white" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo" style="background-color: #1c8f69;">
@@ -236,34 +227,31 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
     <div class="row">
     <div class="col">
         <div>
-            <div style="margin: 6px" class='form-control bg-body-secondary border rounded'>
+            <div class='form-control bg-body-secondary border rounded'>
                 <ul>
                 <?php
-                  if (isset($_GET['updateid'])) {
+                    if (isset($_GET['updateid'])) {
                       $id_ata = $_GET['updateid'];
                       $participantes = $puxarform->ParticipantesPorIdAta($id_ata);
                       if (!empty($participantes)) {
-                          // Array para armazenar apenas os nomes dos participantes
+
                           $nomesParticipantes = array();
 
-                          // Extrai apenas os nomes dos participantes
                           foreach ($participantes as $participante) {
                               $nomesParticipantes[] = $participante['participantes'];
                           }
 
-                          // Ordena os participantes em ordem alfabética
                           sort($nomesParticipantes);
 
-                          // Exibe os participantes separados por vírgulas
                           echo "<span style='font-size: 18px;'>";
                           echo implode(', ', $nomesParticipantes);
                           echo "</span>";
                       } else {
                           echo "Nenhum participante encontrado para esta ATA.";
                       }
-                  } else {
+                    } else {
                       echo "Nenhum ID de ATA fornecido.";
-                  }
+                    }
                 ?>
                 </ul>
             </div>
@@ -324,10 +312,6 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
   </div>
 </div>
 
-
-
-
-
 <script>
   function excluirParticipante(participante) {
     if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
@@ -340,11 +324,6 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
     }
   }
 </script>
-
-
-
-
-
 
 </div>
 </div>
@@ -359,7 +338,7 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
 
 
 
-  <div class="accordion mt-4">
+<div class="accordion mt-4">
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
     <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
@@ -374,10 +353,13 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
     <div class="col-md-12 text-center">               
     </div>
+    
     <div class="row">
     <div class ="col">
         <label style="height: 35px;"><b>Informe o texto principal:</b></label>
-        <textarea id="textoprinc" name="texto_principal" style="height: 110px;" class="form-control"><?php echo $texto_principal; ?></textarea>
+        <textarea id="textoprinc" name="texto_principal" style="height: 110px;" class="form-control"><?php echo htmlspecialchars($texto_principal, ENT_QUOTES, 'UTF-8'); ?></textarea>
+
+
 
               </div>
     </div>   
@@ -388,21 +370,43 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
 
 <script>
 document.getElementById('registrarTextoButton').addEventListener('click', function() {
-    var textoPrincipal = document.getElementById('textoprinc').value; // Corrigido o ID aqui
-    var idAta = this.getAttribute('data-id-ata');
+    Swal.fire({
+        title: "Confirmação",
+        text: "Deseja Finalizar encontro ou continuar modificando?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Finalizar",
+        cancelButtonText: "Continuar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            enviarTexto('finalizar');
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+            enviarTexto('continuar');
+        }
+    });
+});
+
+function enviarTexto(acao) {
+    var textoPrincipal = document.getElementById('textoprinc').value;
+    var idAta = document.getElementById('registrarTextoButton').getAttribute('data-id-ata');
     var xhr = new XMLHttpRequest();
     xhr.open('POST', 'textprincbanco.php', true);
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     xhr.onreadystatechange = function() {
         if(xhr.readyState == 4 && xhr.status == 200) {
             Swal.fire({
-                title: 'Sucesso!',
-                text: 'O texto foi atualizado com sucesso.',
-                icon: 'success',
-                confirmButtonText: 'OK',
-                timer: 2500
-            }).then((result) => {
-                if (result.isConfirmed || result.dismiss === Swal.DismissReason.timer) {
+                title: "Sucesso!",
+                text: "O texto foi inserido com sucesso!",
+                icon: "success",
+            }).then(() => {
+                if (acao === 'finalizar') {
+                    setTimeout(function() {
+                        var url = 'paghistorico.php';
+                        window.location.href = url;
+                    }, 1500);
+                } else {
                     location.reload();
                 }
             });
@@ -421,7 +425,7 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
         }
     }
     xhr.send('id_ata=' + idAta + '&textoprincipal=' + encodeURIComponent(textoPrincipal));
-});
+}
 </script>
 
             </div>          
@@ -429,6 +433,113 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
 
   </div>
     </div>
+<!---------------------------------------------------------------------->
+
+<div class="accordion mt-4">
+  <div class="accordion-item shadow">
+    <h2 class="accordion-header">
+      <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
+      <i class="fa-regular fa-pen-to-square p-1 mb-1"></i><h5>Deliberações Adicionadas</h5>
+  </div></h2>
+  
+  <div class="accordion-collapse collapse show">
+    <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+      <div class="col-md-12 text-center"></div>
+      
+      <div class="row">
+        <div class ="col">
+          <div id="existingDeliberations" class="mt-3">
+                          <div id="deliberationsList" class="list-group">
+                          <?php
+                              $deliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata);
+                              if (!empty($deliberacoes)) {
+                                  $deliberacoesAgrupadas = [];
+                                  foreach ($deliberacoes as $deliberacao) {
+                                      $conteudo = $deliberacao['deliberacoes'];
+                                      $deliberador = $deliberacao['deliberador'];
+          
+                                      if (!isset($deliberacoesAgrupadas[$conteudo])) {
+                                          $deliberacoesAgrupadas[$conteudo] = [];
+                                      }
+          
+                                      $deliberacoesAgrupadas[$conteudo][] = $deliberador;
+                                  }
+                                  $contagemdeli = 0;
+                                  foreach ($deliberacoesAgrupadas as $conteudo => $deliberadores) {
+                                      $contagemdeli++;
+                                      $deliberadoresStr = implode(', ', $deliberadores);
+                                      ?>
+                                      <div style="margin-bottom: 15px;" data-conteudo="<?php echo $conteudo; ?>">
+    <span class="col-2 badge rounded-pill text-bg-secondary mt-2 mb-2">
+        <label for="" class="mb-1 mt-1">
+            Deliberação N°<?php echo $contagemdeli; ?>
+        </label>
+    </span>
+    <div class="row">
+        <div class="row"></div>
+        <div class="col-12">
+            <li class="form-control bg-body-secondary border rounded">
+                <div>
+                    <strong>Deliberador:</strong> <?php echo $deliberadoresStr; ?>
+                </div>
+            </li>
+        </div>
+    </div>
+    <div class="row align-items-center">
+        <div class="col-11">
+            <div class="form-control border rounded">
+                <strong>Deliberação:</strong> <?php echo $conteudo; ?>
+            </div>
+        </div>
+        <div class="col-1">
+        <button class="btn btn-danger btn-sm delete-deliberacao mt-2" data-id-ata="<?php echo $id_ata; ?>" data-conteudo="<?php echo $conteudo; ?>">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="mr-2" style="width: 1em; height: 1em;">
+                        <path fill="#ffffff" d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                    </svg>
+                </button>
+            </div>
+            </div>
+            </div>
+            <hr class="mt-3 mb-3 ">
+
+                                     
+                                      <?php
+                                  }
+                              }
+                              ?>
+                          </div>
+                          <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                document.querySelectorAll('.delete-deliberacao').forEach(button => {
+                                    button.addEventListener('click', function() {
+          
+                                        var idAta = this.getAttribute('data-id-ata');
+                                        var conteudo = this.getAttribute('data-conteudo');
+          
+                                        var xhr = new XMLHttpRequest();
+                                        xhr.open('POST', 'excluirdeli.php', true);
+                                        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                                        xhr.onreadystatechange = function() {
+                                            if(xhr.readyState == 4 && xhr.status == 200) {
+                                                document.querySelector('div[data-conteudo="' + conteudo + '"]').remove();
+                                                location.reload(); // Recarrega a página após a exclusão
+                                            }
+                                        };
+                                        xhr.send('id_ata=' + encodeURIComponent(idAta) + '&conteudo=' + encodeURIComponent(conteudo));
+                                    });
+                                });
+                            });
+          
+                          </script>
+      </div>
+      </div>   
+
+
+
+</div>          
+</div>
+</div>
+</div>
 
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
 
@@ -437,18 +548,16 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
   <h2 class="accordion-header">
     <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
     <i class="fa-solid fa-file p-1 mb-1"></i><h5>Deliberações</h5>
-
 </div>
   </h2>
-
-<!-----------------------------4° FASE-------------------------------->
 
 <div class="accordion-collapse collapse show">
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
     <div class="col-md-12 text-center">               
     </div>
     
-    <span class="col d-flex align-items-end flex-column" id="inputContainer"></span>
+    <!-- <span class="col d-flex align-items-end flex-column" id="inputContainer"></span> -->
+    
     <style>
       .item-container {
   display: flex;
@@ -457,6 +566,7 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
   margin-bottom: 10px;
 }
     </style>
+
         <form id="addForm">
         <div class="form-group">
         <div class="col">
@@ -510,31 +620,16 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
 </div>
 
 
-        <div class="col-12">
-          <ul id="caixadeselecaodel"></ul>
-  <div class="col d-flex justify-content-center align-content-center">
+  <div class="col-12">
+    <ul id="caixadeselecaodel"></ul>
+      <div class="col d-flex justify-content-center align-content-center">
     
     <button type="button" id="addItemButton" class="btn btn-success  a">Criar deliberações</button>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        var addItemButton = document.getElementById('addItemButton');
-        var deliberacoesTextarea = document.getElementById('deliberacoes');
-        var deliberadorSelect = document.getElementById('deliberador');
-        addItemButton.addEventListener('click', function() {
-            deliberacoesTextarea.value = '';
-            var options = deliberadorSelect.options;
-            for (var i = 0; i < options.length; i++) {
-                options[i].selected = false;
-            }
-
-            console.log('Textarea and select options have been reset');
-        });
-    });
-                                  </script>
   </div>
+
+</div>
 </div>
 
-  </div>
   <div class="toast-container position-fixed bottom-0 end-0 p-3">
       <div id="liveToast3" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="toast-header">
@@ -586,40 +681,12 @@ document.getElementById('registrarTextoButton').addEventListener('click', functi
         <!-- <button id="" type="button" class="btn btn-primary" data-bs-toggle="modal"> Atualizar a ata </button> -->
         <div class=" col d-flex justify-content-center align-content-center">
            <button id="finalizarAtaBtn" type="button" class="btn btn-secondary" data-bs-toggle="modal">Finalizar Encontro</button>
-<script>  
-document.getElementById("finalizarAtaBtn").addEventListener("click", function() {
-    Swal.fire({
-        title: "Finalizada!",
-        text: "Você finalizou seu encontro com sucesso!",
-        icon: "success",
-        confirmButtonText: "OK"
-    }).then((result) => {
-        if (result.isConfirmed) {
-            window.location.href = "paghistorico.php";
-        }
-    });
-
-
-});</script>
-          
-
-        </div></div>
+          </div></div>
 
     </form>
           
             </div>          
 </div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var botaocont = document.getElementById('botaocontinuarata');
-        var botaoregistrar = document.getElementById('botaoregistrar');
-        var itemList = document.getElementById('items');
-        var filter = document.getElementById('filter');
-        var addItemButton = document.getElementById('addItemButton'); 
-
-    });
-
-</script>
   </div>
     </div>
       </div>
