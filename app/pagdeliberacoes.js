@@ -197,16 +197,6 @@ function irparaHist() {
     console.log("Ok, a função de ir para histórico e registrar texto foi puxada");
 
     var textoprincipal = document.getElementById('textoprinc').value;
-    console.log(textoprincipal);
-
-    // Verifica se pelo menos uma das informações está preenchida
-    if (textoprincipal === "" && deliberadoresSelecionadosLabel.length === 0) {
-        Swal.fire({
-            title: "Preencha pelo menos uma informação",
-            text: "Adicione pelo menos 1 texto principal ou 1 deliberador para a deliberação",
-            icon: "error"
-        });
-    } else {
 
         Swal.fire({
             title: "Confirmação",
@@ -237,7 +227,7 @@ function irparaHist() {
 
             }
         });
-    }
+    
 }
 
 
