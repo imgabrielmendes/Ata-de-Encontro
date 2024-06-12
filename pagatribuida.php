@@ -232,7 +232,6 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
                   <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
     <optgroup label="Selecione Facilitadores">
         <?php 
-        // Obter a lista de participantes na ATA para a ID específica
         $participantesNaAta = $puxarform->ParticipantesPorIdAta($_GET['updateid']);
 
         foreach ($pegarfa as $facilitador) {
@@ -337,7 +336,14 @@ document.getElementById('registrarparticipantes').addEventListener('click', func
 </h4>
 
 
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="reloadPage()"></button>
+
+<script>
+  function reloadPage() {
+    location.reload();
+  }
+</script>
+
       </div>
       <div class="modal-body">
       <?php
@@ -407,6 +413,8 @@ $conn->close();
 </div>
 </div>
 </form>
+
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("addForm").addEventListener("submit", function(event) {
