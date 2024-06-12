@@ -263,9 +263,10 @@ print_r($id_ata);
           </form>
           <!-- style="wheigt: 200px; width: 200px;"  -->
           <div  class="row">
-          <div class="col-lg-12 col-md-2 d-flex text-center">
+          <div class="col-lg-12 col-md-2 d-flex text-left ">
            <button id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
-           <i class='mt-2 mb-2 fas fa-address-card' style='color: white; '></i>
+           <i class='col mt-2 mb-2 fas fa-address-card' style='color: white; '></i>
+           <label for="" class="col mt-1 mb-2 fs-6 ">Registrar</label>
             </button>
        </div>
       </div>

@@ -128,63 +128,66 @@ function gravando() {
 }}
 
 ///------------BOTÃO DE REGISTRAR EMAIL DENTRO DA MODAL------------------------------
-
 var botaoemail = document.getElementById("registraremail");
 botaoemail.addEventListener('click', gravaremail);
 
-function gravaremail(){
-
+function gravaremail() {
     var caixadenome = document.getElementById("caixanome").value;
     var caixadeemail = document.getElementById("caixadeemail").value;
     var caixamatricula = document.getElementById("caixamatricula").value;
-   
-    if (caixadenome.trim() === "" || caixadeemail.trim() === "" || caixamatricula.trim() === "")
-    {
-        
+
+    if (caixadenome.trim() === "" || caixadeemail.trim() === "" || caixamatricula.trim() === "") {
         Swal.fire({
             title: "Erro no registro",
             text: "Preencha todas as caixas do formulário",
             icon: "error"
-          });
+        });
 
-          console.log ("(X) Puxou a function da modal, mas não preencheu todas as informações")
-          console.log ("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail)
-    } 
-    
-    else {
+        console.log("(X) Puxou a function da modal, mas não preencheu todas as informações")
+        console.log("Que bom, o seu nome é: " + caixadenome + " seu email é " + caixadeemail)
+    } else {
 
         Swal.fire({
-            title: "Cadastrado com sucesso!",
-            text: "Atualize a página e continue a operação",
-            icon: "success"
-          });
+            title: "Perfeito!",
+            text: "Seu usuário foi cadastrado",
+            icon: "success",
+            showCancelButton: false,
+            // confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            // confirmButtonText: "Finalizar",
+            cancelButtonText: "OK"
+        }).then((result) => {
 
-        console.log ("(3.1) As informações de email foram enviadas");
-        // console.log (caixamatricula + " " +caixadenome + " " + caixadeemail)
+            if (result.isConfirmed) {
+                location.reload(); 
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            }
+        });
+        // Swal.fire({
+        //     title: "Cadastrado com sucesso!",
+        //     text: "Atualize a página e continue a operação",
+        //     icon: "success"
+        // });
 
-        if (caixadenome !=="" && caixadeemail !=="" && caixamatricula !=="") 
+        console.log("(3.1) As informações de email foram enviadas");
 
         $.ajax({
             url: 'registrarpessoas.php',
             method: 'POST',
             data: {
-               caixaname: caixadenome,
-               caixaemail: caixadeemail,
-               caixamatricula: caixamatricula,
+                caixaname: caixadenome,
+                caixaemail: caixadeemail,
+                caixamatricula: caixamatricula,
             },
 
             success: function (response) {
-                console.log("(3.2) Deu bom! AJAX está enviando");
-                console.log (caixamatricula + " " +caixadenome + " " + caixadeemail)
                 console.log(response);
-
-                
             },
             error: function (error) {
-                // console.log('Erro na solicitação AJAX:', error);
+                console.error('Erro na solicitação AJAX:', error);
             }
         });
-    };
+    }
+}
 
-};
  

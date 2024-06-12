@@ -233,35 +233,7 @@ $pegarlocal=$puxarform->pegarlocais();
       </div>
     </div>
   </div>
-  <script>
-    
-    document.getElementById('registraremail').addEventListener('click', function() {
-      var caixanome = document.getElementById('caixanome').value.trim();
-      var caixadeemail = document.getElementById('caixadeemail').value.trim();
-      var caixamatricula = document.getElementById('caixamatricula').value.trim();
-      var caixacargo = document.getElementById('caixacargo').value.trim();
-
-      if (caixanome === "" || caixadeemail === "" || caixamatricula === "" || caixacargo === "") {
-        Swal.fire({
-          title: "Erro no registro",
-          text: "Preencha todas as caixas obrigatórias",
-          icon: "error"
-        });
-      } else {
-        Swal.fire({
-          title: "Registro bem-sucedido",
-          text: "Usuário registrado com sucesso",
-          icon: "success"
-
-        }).then(() => {
-          var modalElement = document.getElementById('modaldeemail');
-          var modalInstance = bootstrap.Modal.getInstance(modalElement);
-          modalInstance.hide();
-        });
-
-      }
-    });
-  </script>
+  
                           </div>
 
                         </div>
