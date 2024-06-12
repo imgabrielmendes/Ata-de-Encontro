@@ -185,8 +185,18 @@ $pegarlocal=$puxarform->pegarlocais();
               <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-success">Registrar encontro</button>
 
               <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-secondary opacity-75" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
+
+              <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-primary" data-bs-toggle="modal">
+                Ir para histórico
+              </button>  
               </div>
-              
+
+              <script>
+              function abrirHistorico() {
+                  window.location.href = 'paghistorico.php';
+              }
+              </script> 
+
               <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -224,6 +234,7 @@ $pegarlocal=$puxarform->pegarlocais();
     </div>
   </div>
   <script>
+    
     document.getElementById('registraremail').addEventListener('click', function() {
       var caixanome = document.getElementById('caixanome').value.trim();
       var caixadeemail = document.getElementById('caixadeemail').value.trim();
