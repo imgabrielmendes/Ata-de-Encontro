@@ -1,24 +1,7 @@
 var deliberadoresSelecionadosNUM = [];
 var deliberadoresSelecionadosLabel = [];
 
-new MultiSelectTag('deliberador', {
-    rounded: true, 
-    shadow: false,     
-    placeholder: 'Search', 
-    tagColor: {
-        textColor: '#1C1C1C',
-        borderColor: '#4F4F4F',
-        bgColor: '#F0F0F0',
-    },
-    onChange: function(selected_ids, selected_names) {
 
-        deliberadoresSelecionadosNUM = selected_ids;
-        deliberadoresSelecionadosLabel = selected_names;
-
-        console.log(deliberadoresSelecionadosNUM);
-        console.log(deliberadoresSelecionadosLabel);
-    }
-});
 
 console.log();
 

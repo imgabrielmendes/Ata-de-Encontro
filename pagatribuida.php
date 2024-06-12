@@ -347,40 +347,44 @@ document.getElementById('registrarparticipantes').addEventListener('click', func
       </div>
       <div class="modal-body">
       <?php
-        if (isset($_GET['updateid'])) {
+          if (isset($_GET['updateid'])) {
             $id_ata = $_GET['updateid'];
             $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
             if (!empty($participantes)) {
+                // Ordena os participantes em ordem alfabética pelo nome do facilitador
                 usort($participantes, function($a, $b) {
                     return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
                 });
 
-                echo "<table class='table table-bordered table-striped'>";
-                echo "<thead class='thead-dark'><tr><th style='background-color: #001f3f; color: white;'>Matrícula</th>
-                <th  style='background-color: #001f3f; color: white;'>Nome</th><th style='background-color: #001f3f; color: white;'>Email</th><th class='text-center' style='background-color: #001f3f; color: white;'>Excluir</th></tr></thead>";
-
+                echo "<table class='table'>";
+                echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
                 echo "<tbody>";
                 foreach ($participantes as $participante) {
+                    // Aqui, você pode acessar os dados adicionais do facilitador usando $participante
+                    // Suponho que $participante já contenha os dados da tabela facilitadores
                     echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
-                    echo "<td>{$participante['matricula']}</td>"; 
-                    echo "<td>{$participante['nome_facilitador']}</td>"; 
-                    echo "<td>{$participante['email_facilitador']}</td>"; 
-                    echo "<td class='d-flex justify-content-center'>
-                            <button type='button' class='btn btn-danger btn-sm align-items-center' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>
-                                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' style='width: 1em; height: 1em;'>
-                                    <path fill='#ffffff' d='M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z'/>
-                                </svg>
-                            </button>
-                        </td>";
+                    echo "<td>{$participante['matricula']}</td>"; // Coluna de Matrícula
+                    echo "<td>{$participante['nome_facilitador']}</td>"; // Coluna de Nome
+                    echo "<td>{$participante['email_facilitador']}</td>"; // Coluna de Email
+                    // Botão de Excluir com chamada para a função JavaScript excluirParticipante
+                    echo "<td>
+    <button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>
+        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' class='mr-2' style='width: 1em; height: 1em;'>
+            <path fill='#ffffff' d='M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z'/>
+        </svg>
+    </button>
+</td>";
+
+
                     echo "</tr>";
                 }
                 echo "</tbody></table>";
             } else {
-                echo "<div class='alert alert-warning'>Nenhum participante encontrado para esta ATA.</div>";
+                echo "Nenhum participante encontrado para esta ATA.";
             }
-        } else {
-            echo "<div class='alert alert-danger'>Nenhum ID de ATA fornecido.</div>";
-        }
+          } else {
+            echo "Nenhum ID de ATA fornecido.";
+          }
         ?>
       </div>
     </div>
@@ -398,6 +402,7 @@ document.getElementById('registrarparticipantes').addEventListener('click', func
     }
   }
 </script>
+
 <br>
 <?php
 $conn->close();
