@@ -99,179 +99,203 @@ if ($result->num_rows > 0) {
         // echo( $deliberadores_deliberacoes). "<br>";
         // echo($textop). "<br>";
         
+        class MYPDF extends \TCPDF {
+
+            public function Footer() {
+                $this->SetY(-30); 
+                $this->SetFont('helvetica', 'I', 8);
+                $this->Cell(0, 10, 'Página ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+                
+                $this->SetY(-15); 
+                $this->SetFont('helvetica', '', 10);
+                $this->Cell(0, 0, '', 'T', 1, 'C'); 
+                $this->Cell(0, 10, 'Assinatura do Responsável', 0, 1, 'C'); 
+            }
+        }
+
         $pdf = new \TCPDF();
+
+        
         $pdf->SetCreator(PDF_CREATOR);
-
-        $html = '
-            <table style="border: 1px solid black; padding: 8px 0px; order-spacing:3px">
-                <tbody>
-                    <tr style="text-align: center;">
-                        <td style="height: 20px; border: 1px solid black;"><img src="view\img\logo-hrg.png" alt="Descrição da imagem"></td>
-                        <td style="height: 30px;"></td>
-                        <td style="height: 30px;"><h4>Ata de Encontro</h4></td>
-                        <td style="height: 30px;"></td>
-                        <td style="height: 30px;  border: 1px solid black;">NOR.QUA.-E</td>
-                    </tr>
-                    <tr style="text-align: center;">
-                        <td style="border: 1px solid black;"><b>Data de elaboração:</b></td>
-                        <td style="border: 1px solid black;">27/09/2021</td>
-                        <td style="border: 1px solid black;"><b>Versão</b></td>
-                        <td style="border: 1px solid black;">2-2021</td>
-                        <td style="border: 1px solid black;">ANEXO 4</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h1 style="text-align: center;">Ata de encontro N°'.$idAssunto.'</h1>
+            $pdf->SetAuthor('HRG_SETOR DE T.I');
+            $pdf->SetTitle('Ata de encontro N°'.$id);
+            $pdf->SetSubject('Documento PDF referente ao documento de ata eletrônica, em que o documento possui a id de numeração:'.$id);
+            $pdf->SetKeywords('TCPDF, PDF, exemplo, teste, guia');
             
-            <table style="padding: 6px 0px; text-align: center; font-size: 10px; width: 540px; height: 20px;">
-            <tbody>
-                <tr style="text-align: left">
-                    <td style="padding: 5px; border: 1px solid black"><b>  Data:</b> '.$data.'</td>
-                    <td style="padding: 5px; border: 1px solid black"><b>  Inicio:</b> '.$horainicio.'</td>
-                    <td style="padding: 5px; border: 1px solid black"><b>  Término:</b> '.$horafinal.'</td>
-                    <td style="padding: 5px; border: 1px solid black"><b>  Objetivo:</b> '.$objetivo.'</td>
-                </tr>
-                <tr style="text-align: LEFT;">
-                <td style="padding: 5px; border: 1px solid black; width: 540px; font-size: 10px;"><b>   Facilitador(es):</b>'.'  '. $facilitadoresString. '.'.'</td>
-                </tr>
-            </tbody>
-        </table>
+            $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+            $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 
+            $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+            
+            $html = '
+            <table style="border: 1px solid black; padding: 8px 0px; order-spacing:3px">
+        <tbody>
+        <tr style="text-align: center;">
+        <td style="height: 20px; border: 1px solid black;"><img src="view\img\logo-hrg.png" alt="Descrição da imagem"></td>
+        <td style="height: 30px;"></td>
+        <td style="height: 30px;"><h4>Ata de Encontro</h4></td>
+        <td style="height: 30px;"></td>
+        <td style="height: 30px;  border: 1px solid black;">NOR.QUA.-E</td>
+        </tr>
+        <tr style="text-align: center;">
+        <td style="border: 1px solid black;"><b>Data de elaboração:</b></td>
+        <td style="border: 1px solid black;">27/09/2021</td>
+        <td style="border: 1px solid black;"><b>Versão</b></td>
+        <td style="border: 1px solid black;">2-2021</td>
+        <td style="border: 1px solid black;">ANEXO 4</td>
+        </tr>
+        </tbody>
+        </table>
+        
+        <h1 style="text-align: center;">Ata de encontro N°'.$idAssunto.'</h1>
+        
+        <table style="padding: 6px 0px; text-align: center; font-size: 10px; width: 540px; height: 20px;">
+        <tbody>
+        <tr style="text-align: left">
+        <td style="padding: 5px; border: 1px solid black"><b>  Data:</b> '.$data.'</td>
+        <td style="padding: 5px; border: 1px solid black"><b>  Inicio:</b> '.$horainicio.'</td>
+        <td style="padding: 5px; border: 1px solid black"><b>  Término:</b> '.$horafinal.'</td>
+        <td style="padding: 5px; border: 1px solid black"><b>  Objetivo:</b> '.$objetivo.'</td>
+        </tr>
+        <tr style="text-align: LEFT;">
+        <td style="padding: 5px; border: 1px solid black; width: 540px; font-size: 10px;"><b>   Facilitador(es):</b>'.'  '. $facilitadoresString. '.'.'</td>
+        </tr>
+        </tbody>
+        </table>
+        
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
         <tbody>
-            <tr style="font-size: 10p">
-                <td style="border: 1px solid black; width: 178px; text-align: left; height: 30px; "><b>  Local:</b>  '.$local.'</td>
-                <td style="border: 1px solid black; width: 362px; text-align: left; height: 30px;">'.'   '.'<b>Tema:</b>  '.$tema.'</td>
-            </tr>
+        <tr style="font-size: 10p">
+        <td style="border: 1px solid black; width: 178px; text-align: left; height: 30px; "><b>  Local:</b>  '.$local.'</td>
+        <td style="border: 1px solid black; width: 362px; text-align: left; height: 30px;">'.'   '.'<b>Tema:</b>  '.$tema.'</td>
+        </tr>
         </tbody>
         </table>';
-
+        
         $html .= '<h3>PARTICIPANTES</h3>';
         if (!empty($nomeParticipantes)) {
-            foreach (explode(",", $nomeParticipantes) as $participante) {
-                $html .= htmlspecialchars($participante) . ',  ';
+            $participantesArray = explode(",", $nomeParticipantes);
+            foreach ($participantesArray as $participante) {
+                $html .= htmlspecialchars($participante) . ', ';
             }
+            // Remove a última vírgula e espaço
+            $html = rtrim($html, ', ');
         } else {
             $html .= '<p>Participantes não informados</p>';
         }
-        }
+        
 
-        $html .= '<h3>TEXTO PRINCIPAL: </h3>';
+        $html .= '<h3>TEXTO PRINCIPAL:</h3>';
+        $html .= '<p style="font-size: 13px; text-align: justify;">' . htmlspecialchars($textop) . '</p>';
+                
+                $html .= '<h3> DELIBERAÇÕES </h3>';
 
-        if (empty($textop)) {
-            $html .= '<p>Texto principal não informado</p>';
-        } else {
-            $html .= '<p>' . htmlspecialchars($textop) . '</p>';
-        }
-
-        $html .= '<h3> DELIBERAÇÕES </h3>';
-
-        $deliberadores_por_deliberacao = array();
-
-        if (!empty($deliberadores_deliberacoes)) {
-            foreach (explode(",", $deliberadores_deliberacoes) as $deliberador_deliberacao) {
+                $deliberadores_por_deliberacao = array();
+                
+                if (!empty($deliberadores_deliberacoes)) {
+                    foreach (explode(",", $deliberadores_deliberacoes) as $deliberador_deliberacao) {
                 list($deliberador, $deliberacao) = explode(":", $deliberador_deliberacao);
                 if (isset($deliberadores_por_deliberacao[$deliberacao])) {
                     $deliberadores_por_deliberacao[$deliberacao][] = $deliberador;
-                } else {
-                    $deliberadores_por_deliberacao[$deliberacao] = array($deliberador);
-                }
-            }
-        }
+                    } else {
+                        $deliberadores_por_deliberacao[$deliberacao] = array($deliberador);
+                        }
+                        }
+                        }
 
-        if (!empty($deliberadores_por_deliberacao)) {
-            foreach ($deliberadores_por_deliberacao as $deliberacao => $deliberadores) {
-                $html .= '
-                    <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
-                        <tbody>
-                            <tr style="">
+                        if (!empty($deliberadores_por_deliberacao)) {
+                            foreach ($deliberadores_por_deliberacao as $deliberacao => $deliberadores) {
+                                $html .= '
+                                <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
+                                <tbody>
+                                <tr style="">
                                 <td style="text-align: center; border: 1px solid black; background-color: #c0c0c0; width: 130px; font-size: 9.5px;"><ul><b>' . implode(",", array_map('htmlspecialchars', $deliberadores)) . '</b></ul></td>
                                 <td style="text-align: left; border: 1px solid black; height: 30px; width: 409px; font-size: 10px;">'."  " . htmlspecialchars($deliberacao) . '</td>
-                            </tr>
-                        </tbody>
-                    </table>';
-            }
-        } else {
-            $html .= '<p>Deliberações não informadas</p>';
-        }      
+                                </tr>
+                                </tbody>
+                                </table>';
+                                }
+                                } else {
+                                    $html .= '<p>Deliberações não informadas</p>';
+                                    }      
+                                    
+                                    $html .= '<br><br><br><br>
+                                    <hr style="margin-right: auto; width: 40%;">
+                                    <p>Assinatura do Responsável</p>
+                                    ';
+                                    
+                                    $pdf->AddPage();
+                                    $pdf->writeHTML($html, true, false, true, false, '');
+                                    
+                                    $html = '
+                                    <table style="border: 1px solid black; padding: 8px 0px; order-spacing:3px">
+                                        <tbody>
+                                            <tr style="text-align: center;">
+                                                <td style="height: 20px; border: 1px solid black;"><img src="view\img\logo-hrg.png" alt="Descrição da imagem"></td>
+                                                <td style="height: 30px;"></td>
+                                                <td style="height: 30px;"><h4>Ata de Encontro</h4></td>
+                                                <td style="height: 30px;"></td>
+                                                <td style="height: 30px;  border: 1px solid black;">NOR.QUA.001</td>
+                                            </tr>
+                                            <tr style="text-align: center;">
+                                                <td style="border: 1px solid black;"><b>Data de elaboração:</b></td>
+                                                <td style="border: 1px solid black;">27/09/2021</td>
+                                                <td style="border: 1px solid black;"><b>Versão</b></td>
+                                                <td style="border: 1px solid black;">2-2021</td>
+                                                <td style="border: 1px solid black;">ANEXO 4</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>';
+                            
+                                    $html .= '
+                                    <table style="border: 1px solid black; padding: 6px 0px; text-align: center;">
+                                    <tbody>
+                                        <tr style="text-align: center">
+                                            <td style="height: 40px; border: 1px solid black; background-color: #c0c0c0;"><h4>Assinatura de presença:</h4></td>
+                                        </tr>
+                                    </tbody>
+                                    </table>
+                            
+                                    <table style="border: 1px solid black; text-align: center; padding: 4px 0px;">
+                                    <tbody>
+                                    <tr style="text-align: center; background-color: #ececed">
+                                        <td style="height: 31px; border: 1px solid black; width: 79px; vertical-align: middle;"><h4>Mat.</h4></td>
+                                        <td style="height: 31px; border: 1px solid black; width: 250px; vertical-align: middle;"><h4>Nome:</h4></td>
+                                        <td style="height: 31px; border: 1px solid black; width: 120px; vertical-align: middle;"><h4>Função:</h4></td>
+                                        <td style="height: 31px; border: 1px solid black; width: 90px; vertical-align: middle;"><h4>Assinatura:</h4></td>
+                                    </tr>';
+                            
+                                    if (!empty($nomeParticipantes)) {
+                                        foreach (explode(",", $nomeParticipantes) as $participante) {
+                                            $html .= '<tr style="text-align: left; font-size: 10px;">
+                                                        <td style="border: 1px solid black; height: 20px;"></td>
+                                                        <td style="border: 1px solid black;">'."  ".$participante.'</td>
+                                                        <td style="border: 1px solid black;"></td>
+                                                        <td style="border: 1px solid black;"></td>
+                                                    </tr>';
+                                        }
+                                    } else { $html .= '<p>Texto principal não informado</p>'; }
+                            
+                                    for ($linha = 0; $linha < 20; $linha++) {
+                                        $html .= '<tr style="text-align: center;">
+                                                    <td style="height: 31px; border: 1px solid black; height: 20px;"></td>
+                                                    <td style="border: 1px solid black;"></td>
+                                                    <td style="border: 1px solid black;"></td>
+                                                    <td style="border: 1px solid black;"></td>
+                                                </tr>';
+                                    }
 
-        $html .= '<br><br><br><br>
-                  <hr style="margin-right: auto; width: 40%;">
-                  <p>Assinatura do Responsável</p>
-                  ';
-
+                    $html .= '</tbody></table>';
+                    
         $pdf->AddPage();
         $pdf->writeHTML($html, true, false, true, false, '');
-
-        $html = '
-        <table style="border: 1px solid black; padding: 8px 0px; order-spacing:3px">
-            <tbody>
-                <tr style="text-align: center;">
-                    <td style="height: 20px; border: 1px solid black;"><img src="view\img\logo-hrg.png" alt="Descrição da imagem"></td>
-                    <td style="height: 30px;"></td>
-                    <td style="height: 30px;"><h4>Ata de Encontro</h4></td>
-                    <td style="height: 30px;"></td>
-                    <td style="height: 30px;  border: 1px solid black;">NOR.QUA.001</td>
-                </tr>
-                <tr style="text-align: center;">
-                    <td style="border: 1px solid black;"><b>Data de elaboração:</b></td>
-                    <td style="border: 1px solid black;">27/09/2021</td>
-                    <td style="border: 1px solid black;"><b>Versão</b></td>
-                    <td style="border: 1px solid black;">2-2021</td>
-                    <td style="border: 1px solid black;">ANEXO 4</td>
-                </tr>
-            </tbody>
-        </table>';
-
-        $html .= '
-        <table style="border: 1px solid black; padding: 6px 0px; text-align: center;">
-        <tbody>
-            <tr style="text-align: center">
-                <td style="height: 40px; border: 1px solid black; background-color: #c0c0c0;"><h4>Assinatura de presença:</h4></td>
-            </tr>
-        </tbody>
-        </table>
-
-        <table style=" border: 1px solid black; padding: 6px 0px; text-align: center;">
-        <tbody>
-        <tr style="text-align: center; background-color: #ececed">
-            <td style="height: 31px; border: 1px solid black; width: 79px; vertical-align: middle;"><h4>Mat.</h4></td>
-            <td style="height: 31px; border: 1px solid black; width: 170px; vertical-align: middle;"><h4>Nome:</h4></td>
-            <td style="height: 31px; border: 1px solid black; width: 180px; vertical-align: middle;"><h4>Função:</h4></td>
-            <td style="height: 31px; border: 1px solid black; width: 110px; vertical-align: middle;"><h4>Assinatura:</h4></td>
-        </tr>';
-
-        if (!empty($nomeParticipantes)) {
-            foreach (explode(",", $nomeParticipantes) as $participante) {
-                $html .= '<tr style="text-align: left; font-size: 10px;">
-                            <td style="border: 1px solid black; height: 20px;"></td>
-                            <td style="border: 1px solid black;">'."  ".$participante.'</td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                        </tr>';
-            }
-        } else { $html .= '<p>Texto principal não informado</p>'; }
-
-        for ($linha = 0; $linha < 15; $linha++) {
-            $html .= '<tr style="text-align: center;">
-                        <td style="height: 31px; border: 1px solid black; height: 20px;"></td>
-                        <td style="border: 1px solid black;"></td>
-                        <td style="border: 1px solid black;"></td>
-                        <td style="border: 1px solid black;"></td>
-                    </tr>';
+        
+        $pdf->Output('ata_de_encontron°'.$idAssunto.'.pdf', 'I');
         }
-
-        $html .= '</tbody></table>';
-
-        $pdf->AddPage();
-        $pdf->writeHTML($html, true, false, true, false, '');
-
-        $pdf->Output('ata_de_encontro'.$idAssunto.'.pdf', 'I');
-    }
-
-} else {
-    echo "Nenhum resultado encontrado.";
-}
-
-?>
+        
+        } else {
+            echo "Nenhum resultado encontrado.";
+            }
+        }
+            ?>

@@ -88,8 +88,29 @@ if ($result->num_rows > 0) {
         // echo($nomeParticipantes). "<br>" ;
         // echo($textop). "<br>";
         
+        class MYPDF extends \TCPDF {
+
+            public function Footer() {
+                $this->SetY(-30); 
+                $this->SetFont('helvetica', 'I', 8);
+                $this->Cell(0, 10, 'Página ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+                
+                $this->SetY(-15); 
+                $this->SetFont('helvetica', '', 10);
+                $this->Cell(0, 0, '', 'T', 1, 'C'); 
+                $this->Cell(0, 10, 'Assinatura do Responsável', 0, 1, 'C');
+            }
+        }
+
         $pdf = new \TCPDF();
         $pdf->SetCreator(PDF_CREATOR);
+            $pdf->SetAuthor('HRG_SETOR DE T.I');
+            $pdf->SetTitle('Ata de encontro N°'.$id);
+            $pdf->SetSubject('Documento PDF referente ao documento de ata eletrônica, em que o documento possui a id de numeração:'.$id);
+            $pdf->SetKeywords('TCPDF, PDF, exemplo, teste, guia');
+            $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+            $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+            $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
         $html = '
             <table style="border: 1px solid black; padding: 8px 0px; order-spacing:3px">
@@ -138,21 +159,23 @@ if ($result->num_rows > 0) {
 
         $html .= '<h3>PARTICIPANTES</h3>';
         if (!empty($nomeParticipantes)) {
-
-            foreach (explode(",", $nomeParticipantes) as $participante) {
-                $html .= htmlspecialchars($participante) . ',  ';
+            $participantesArray = explode(",", $nomeParticipantes);
+            foreach ($participantesArray as $participante) {
+                $html .= htmlspecialchars($participante) . ', ';
             }
-            
+            // Remove a última vírgula e espaço
+            $html = rtrim($html, ', ');
         } else {
             $html .= '<p>Participantes não informados</p>';
         }
         }
 
         $html .= '<h3>TEXTO PRINCIPAL:</h3>';
-        $html .= '<p style="font-size: 10px; text-align: justify;">' . htmlspecialchars($textop) . '</p>';
+        $html .= '<p style="font-size: 13px; text-align: justify;">' . htmlspecialchars($textop) . '</p>';
         
 
-        $html .= '<h3> DELIBERAÇÕES </h3>
+        $html .= '
+        <h3> DELIBERAÇÕES </h3>
         <table style="border: 1px solid black; padding: 8px 0px; text-align: center">
             <tbody>
                 <tr style="">
@@ -161,9 +184,10 @@ if ($result->num_rows > 0) {
             </tbody>
         </table>';
 
-        $html .= '<hr style="margin-right: auto; width: 40%;" align="center">
-                  <p style="display: block; text-align: center;">Assinatura do Responsável</p>
-                  <br><br><br>';
+        $html .= '<br><br><br><br>
+        <hr style="margin-right: auto; width: 40%;">
+        <p>Assinatura do Responsável</p>
+        ';
 
         $pdf->AddPage();
         $pdf->writeHTML($html, true, false, true, false, '');
@@ -201,9 +225,9 @@ if ($result->num_rows > 0) {
         <tbody>
         <tr style="text-align: center; background-color: #ececed">
             <td style="height: 31px; border: 1px solid black; width: 79px; vertical-align: middle;"><h4>Mat.</h4></td>
-            <td style="height: 31px; border: 1px solid black; width: 170px; vertical-align: middle;"><h4>Nome:</h4></td>
-            <td style="height: 31px; border: 1px solid black; width: 180px; vertical-align: middle;"><h4>Função:</h4></td>
-            <td style="height: 31px; border: 1px solid black; width: 110px; vertical-align: middle;"><h4>Assinatura:</h4></td>
+            <td style="height: 31px; border: 1px solid black; width: 250px; vertical-align: middle;"><h4>Nome:</h4></td>
+            <td style="height: 31px; border: 1px solid black; width: 120px; vertical-align: middle;"><h4>Função:</h4></td>
+            <td style="height: 31px; border: 1px solid black; width: 90px; vertical-align: middle;"><h4>Assinatura:</h4></td>
         </tr>';
 
         if (!empty($nomeParticipantes)) {

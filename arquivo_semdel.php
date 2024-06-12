@@ -76,9 +76,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $objetivo = !empty($row['objetivo']) ? $row['objetivo'] : '';
             $nomeParticipantes = !empty($row['nome_participantes']) ? $row['nome_participantes'] : '';
 
+            class MYPDF extends \TCPDF {
 
+                public function Footer() {
+                    $this->SetY(-30); 
+                    $this->SetFont('helvetica', 'I', 8);
+                    $this->Cell(0, 10, 'Página ' . $this->getAliasNumPage() . '/' . $this->getAliasNbPages(), 0, false, 'C', 0, '', 0, false, 'T', 'M');
+                    
+                    $this->SetY(-15); 
+                    $this->SetFont('helvetica', '', 10);
+                    $this->Cell(0, 0, '', 'T', 1, 'C'); 
+                    $this->Cell(0, 10, 'Assinatura do Responsável', 0, 1, 'C');
+                }
+            }
+    
             $pdf = new \TCPDF();
             $pdf->SetCreator(PDF_CREATOR);
+                $pdf->SetAuthor('HRG_SETOR DE T.I');
+                $pdf->SetTitle('Ata de encontro N°'.$id);
+                $pdf->SetSubject('Documento PDF referente ao documento de ata eletrônica, em que o documento possui a id de numeração:'.$id);
+                $pdf->SetKeywords('TCPDF, PDF, exemplo, teste, guia');
+                $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+                $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+                $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
 
             $html = '
             <table style="border: 1px solid black; padding: 8px 0px; order-spacing:3px">
@@ -123,13 +143,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 <td style="border: 1px solid black; width: 362px; text-align: left; height: 30px;">'.'   '.'<b>Tema:</b>  '.$tema.'</td>
             </tr>
         </tbody>
-        </table>
+        </table>';
 
-        <h3>PARTICIPANTES</h3>';
+        $html .= '<h3>PARTICIPANTES</h3>';
         if (!empty($nomeParticipantes)) {
-            foreach (explode(",", $nomeParticipantes) as $participante) {
-                $html .= htmlspecialchars($participante) . ',  ';
+            $participantesArray = explode(",", $nomeParticipantes);
+            foreach ($participantesArray as $participante) {
+                $html .= htmlspecialchars($participante) . ', ';
             }
+            // Remove a última vírgula e espaço
+            $html = rtrim($html, ', ');
         } else {
             $html .= '<p>Participantes não informados</p>';
         }
@@ -183,42 +206,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             // Adicionar Assinatura de presença com o nome dos participantes
             $html .= '
-            <table style="border: 1px solid black; padding: 8px 0px; text-align: center;">
-                <tbody>
-                    <tr style="text-align: center">
-                        <td style="height: 40px; border: 1px solid black; background-color: #c0c0c0;"><h4>Assinatura de presença:</h4></td>
-                    </tr>
-                </tbody>
+            <table style="border: 1px solid black; padding: 6px 0px; text-align: center;">
+            <tbody>
+                <tr style="text-align: center">
+                    <td style="height: 40px; border: 1px solid black; background-color: #c0c0c0;"><h4>Assinatura de presença:</h4></td>
+                </tr>
+            </tbody>
             </table>
-
+    
             <table style="border: 1px solid black; text-align: center; padding: 4px 0px;">
-                <tbody>
-                <tr style="text-align: center; background-color: #ececed">
-                    <td style="height: 31px; border: 1px solid black; width: 79px; vertical-align: middle;"><h4>Mat.</h4></td>
-                    <td style="height: 31px; border: 1px solid black; width: 170px; vertical-align: middle;"><h4>Nome:</h4></td>
-                    <td style="height: 31px; border: 1px solid black; width: 180px; vertical-align: middle;"><h4>Função:</h4></td>
-                    <td style="height: 31px; border: 1px solid black; width: 110px; vertical-align: middle;"><h4>Assinatura:</h4></td>
-                </tr>';
+            <tbody>
+            <tr style="text-align: center; background-color: #ececed">
+                <td style="height: 31px; border: 1px solid black; width: 79px; vertical-align: middle;"><h4>Mat.</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 250px; vertical-align: middle;"><h4>Nome:</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 120px; vertical-align: middle;"><h4>Função:</h4></td>
+                <td style="height: 31px; border: 1px solid black; width: 90px; vertical-align: middle;"><h4>Assinatura:</h4></td>
+            </tr>';
 
+                if (!empty($nomeParticipantes)) {
+                    foreach (explode(",", $nomeParticipantes) as $participante) {
+                        $html .= '<tr style="text-align: left; font-size: 10px;">
+                                    <td style="border: 1px solid black; height: 20px;"></td>
+                                    <td style="border: 1px solid black;">'."  ".$participante.'</td>
+                                    <td style="border: 1px solid black;"></td>
+                                    <td style="border: 1px solid black;"></td>
+                                </tr>';
+                    }
+                } else { $html .= '<p>Texto principal não informado</p>'; }
 
-                foreach (explode(",", $nomeParticipantes) as $participante) {
-                    $html .= '<tr style="text-align: left; font-size: 10px;">
-                                <td style="border: 1px solid black; height: 20px"></td>
-                                <td style="border: 1px solid black;">'."  ".$participante.'</td>
+                for ($linha = 0; $linha < 20; $linha++) {
+                    $html .= '<tr style="text-align: center;">
+                                <td style="height: 31px; border: 1px solid black; height: 20px;"></td>
+                                <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                                 <td style="border: 1px solid black;"></td>
                             </tr>';
                 }
-
-
-            for ($linha = 0; $linha < 15; $linha++) {
-                $html .= '<tr style="text-align: center;">
-                            <td style="border: 1px solid black; height: 20px;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                            <td style="border: 1px solid black;"></td>
-                        </tr>';
-            }
 
             $html .= '</tbody></table>';
 
