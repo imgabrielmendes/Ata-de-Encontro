@@ -12,31 +12,28 @@ $puxaparticipantes = $puxarform->buscarParticipantesPorIdAta($id_ata = "?");
 $puxadeliberacoes = $puxarform->buscarDeliberacoesPorIdAta($id_ata = "?");
 $resultados = $puxarform->pegandoTudo();
 $pegarid = $puxarform->puxarId();
-$sql="SELECT * FROM assunto where id=$id ";
-$result = mysqli_query($conn, $sql);
-$row=mysqli_fetch_assoc($result);
+$sql = "SELECT * FROM assunto WHERE id = $id";
+    $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
     $datasolicitada = $row['data_solicitada'];
     $tema = $row['tema'];
     $objetivo = $row['objetivo'];
-    $password = $row['local'];
+    $local = $row['local'];
     $horainic = $row['hora_inicial'];
     $horaterm = $row['hora_termino'];
 
+    // Código para obter os facilitadores associados à ATA
     $sql2 = "SELECT 
-    fac.nome_facilitador as facilitadores,
-    fac.id as idfacilitadores
-    
-    FROM ata_has_fac as ahf
-    INNER JOIN facilitadores as fac
-      ON fac.id = ahf.facilitadores
-    where ahf.id_ata = $id";
-
+                fac.nome_facilitador as facilitadores,
+                fac.id as idfacilitadores
+            FROM ata_has_fac as ahf
+            INNER JOIN facilitadores as fac ON fac.id = ahf.facilitadores
+            WHERE ahf.id_ata = $id";
     $result2 = mysqli_query($conn, $sql2);
     $facilitadores = array(); 
-
-      while ($row2 = mysqli_fetch_assoc($result2)) { 
-          $facilitadores[] = $row2;
-      }
+    while ($row2 = mysqli_fetch_assoc($result2)) { 
+        $facilitadores[] = $row2;
+    }
 
 $participantesArray = $pegarfa;
 
@@ -104,17 +101,25 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
 
   <!--BARRA DE NAVEGAÇÃO-->
   <header>
-    <nav class="navbar shadow">
-      <div id="container" style="background-color: #001f3f;">
-        <div class="container_align">
-          <a href="http://agendamento.hospitalriogrande.com.br/views/admin/index-a.php">
-            <img alt="Logo" class="logo_hospital" src="view\img\Logobordab.png"></a>
-          <h1 id="tittle" class="text-center">Atribuição</h1>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/">
+                <img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navBarCentral">
+            </div>
         </div>
-      </div>
     </nav>
+    <div id="container" class="d-flex justify-content-between" style="background-color: #001f3f;">
+        <div class="container_align d-flex align-items-center">
+            <h2 id="tittle">Atribuição</h2>
+        </div>
+    </div>
+</header>
 
-  </header>
 
   <!--FORMULÁRIO-->
 
@@ -133,87 +138,76 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
             <i class="fas fa-plus"></i>
           </button>
         </h2>
-
-    <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
-      <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
-          <div class="col-md-12 text-center">         
-          </div>    
-          
-
-
-          <!---- PRIMEIRA LINHA DO REGISTRO ---->
-
-          <div class="row">
-          <div class="col-md-6 col-md-2">
-              <label for="form-control"><b>Data</b></label>
-            <div class="form-control bg-body-secondary">
-              <?php
-                if (isset($_GET['updateid'])) {
-                  $id_ata = $_GET['updateid'];
-                  $atas = $puxarform->pegandoTudo();
-                  $ata_encontrada = null;
-                  foreach ($atas as $ata) {
-                    if ($ata['id'] == $id_ata) {
-                      $ata_encontrada = $ata;
-                        break;
-                    }
-                  }
-                if ($ata_encontrada) {
-                  echo $ata_encontrada['data_solicitada_formatada'];
-                } else {
-                  echo "Nenhuma ATA encontrada com o ID fornecido.";
-                }
-                } else {
-                  echo "Nenhum ID de ATA fornecido.";
-                }
-                ?>
-              </div>
-              </div>
-              <div class="col-md-6 col-md-2">
-                  <label for="form-control"><b>Objetivo</b></label>
-                  <ul class="form-control bg-body-secondary"><?php echo $row['objetivo']; ?></ul>     
-              </div>
-          <div class="col-md-6 col-md-2">
-            <label for="form-control"><b>Facilitadores</b></label>
-            <div class="form-control bg-body-secondary">
-                <?php
-                if (isset($_GET['updateid'])) {
-                    $id_ata = $_GET['updateid'];
-                    $atas = $puxarform->pegandoTudo();
-                    $ata_encontrada = null;
-                    foreach ($atas as $ata) {
-                        if ($ata['id'] == $id_ata) {
-                            $ata_encontrada = $ata;
-                            break;
+<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show">
+<div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
+        <div class="col-md-12 text-center"></div>    
+            <div class="row">
+                <br>
+                    <div class="col-sm-12 col-xl-3 col-md-6">
+                        <label><b>Data:</b></label>
+                        <ul class="form-control bg-body-secondary"><?php echo date('d/m/Y', strtotime($datasolicitada)); ?></ul>
+                    </div>
+                    <div class="col-sm-12 col-xl-3 col-md-6">
+                        <label for="nomeMedico"><b>Horário de Início:</b></label>
+                        <br>
+                        <ul class="form-control bg-body-secondary"><?php echo substr($horainic, 0, -3); ?></ul>
+                    </div>
+                    <div class="col-sm-12 col-xl-3 col-md-6">
+                        <label for="form-control"> <b> Horário de Término:</b> </label>
+                        <ul class="form-control bg-body-secondary"><?php echo substr($horaterm, 0, -3); ?></ul>
+                    </div>
+                    <div class="col-sm-12 col-xl-3 col-md-6">
+                            <label for="form-control"><b>Tempo Estimado:</b></label>
+                            <?php
+                                $inicio = strtotime($horainic);
+                                $termino = strtotime($horaterm);
+                                $diferencaMinutos = ($termino - $inicio) / 60;
+                                $horas = floor($diferencaMinutos / 60);
+                                $minutos = $diferencaMinutos % 60;
+                                $horas_formatado = sprintf("%02d", $horas);
+                                $minutos_formatado = sprintf("%02d", $minutos);
+                            ?>
+                            <div class="form-control bg-body-secondary tempo-estimado"><?php echo $horas_formatado . ":" . $minutos_formatado . ":00"; ?></div>
+                            <style>
+                                .tempo-estimado {
+                                width: 100%;
+                            }
+                        </style>
+                    </div>
+                </div>
+                <div class="row">
+                <div class="col-lg-6 col-lg-md-10 col-md-10">
+                    <label><b>Facilitador(es):</b></label>
+                    <ul class="form-control bg-body-secondary">
+                        <?php
+                        $facilitadoresString = "";
+                        foreach ($facilitadores as $index => $facilitador) {
+                            if ($index > 0) {
+                                $facilitadoresString .= ", "; // Adiciona uma vírgula antes do facilitador, exceto para o primeiro facilitador
+                            }
+                            $facilitadoresString .= $facilitador['facilitadores']; // Concatena o nome do facilitador
                         }
-                    }
-
-                    if ($ata_encontrada) {
-                        echo $ata_encontrada['facilitador'];
-                    } else {
-                        echo "Nenhuma ATA encontrada com o ID fornecido.";
-                    }
-                } else {
-                    echo "Nenhum ID de ATA fornecido.";
-                }
-                ?>
+                        echo $facilitadoresString;
+                        ?>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-lg-md-12 col-md-6">
+                    <label><b>Local:</b></label>
+                    <ul class="form-control bg-body-secondary border rounded"><?php echo $local; ?></ul>
+                </div>
+                <div class="col-lg-3 col-lg-md-12 col-md-6">
+                    <label for="form-control"> <b>Objetivo:</b> </label>
+                    <label class="form-control bg-body-secondary border rounded">
+                    <input type="checkbox" disabled checked> <?php echo $objetivo; ?>
+                    </label>
+                </div>
+                <div class="col-12">
+                    <label><b>Tema:</b></label>
+                    <ul class="form-control bg-body-secondary"><?php echo $tema; ?></ul>
+                </div>            
             </div>
         </div>
-        <div class="col-md-6 col-md-2">
-            <label for="form-control"><b>Tema</b></label>
-            <ul class="form-control bg-body-secondary"><?php echo $row["tema"]; ?></ul>
-        </div>
-        <div class="col-md-6 col-md-2">
-            <label for="form-control"> <b>Local</b> </label>
-            <ul class="form-control bg-body-secondary"><?php echo $row["local"]; ?></ul>
-        </div>
-        <div class="col-md-6 col-md-2">
-            <label for="form-control"> <b>Status</b> </label>
-            <ul class="form-control bg-body-secondary"><?php echo $row['status']; ?></ul>
-        </div>
-       
-  </div>
-      </div>
+    </div>
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
 <br>
 <form id="formSalvarInformacoes" method="post">
