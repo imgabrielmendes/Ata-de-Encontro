@@ -73,7 +73,12 @@ function gravando() {
         // console.log(local);
         // console.log(facilitadores);
     } 
-
+    else if (horaterm === horainicio) {
+        Swal.fire({
+            title: "Horário incorreto",
+            icon: "error"
+        });
+    }
     else if (horaterm !== ""  && horainicio > horaterm) {
         Swal.fire({
             title: "Horário incorreto",

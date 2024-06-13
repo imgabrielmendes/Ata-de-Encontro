@@ -146,7 +146,7 @@ print_r($id_ata);
 
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
           <div class="row">
-    <br>
+    
     <div class="col-sm-12 col-xl-3  col-md-6">
         <label><b>Data:</b></label>
         <ul class="form-control bg-body-secondary"> <?php echo $_SESSION['data']; ?> </ul>
@@ -155,7 +155,7 @@ print_r($id_ata);
     <!---ABA DE HORÁRIO INICIO---->
     <div class="col-sm-12 col-xl-3  col-md-6">
         <label for="nomeMedico"><b>Horário de Início:</b></label>
-        <br>
+        
         <ul class="form-control bg-body-secondary"><?php echo $_SESSION['horainicio']; ?></ul>
     </div>
 
@@ -228,7 +228,7 @@ print_r($id_ata);
 </div>
   </div>
 <!-----------------------------2° FASE-------------------------------->
-<br>
+
 <div class="accordion mt-4">
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
@@ -241,7 +241,7 @@ print_r($id_ata);
             <div class="row">
           <form id="addForm">
               <div class="form-group ">
-                  <br>
+                  
                   <div id="items" class="list-group">                    
               </div>
                   <label class="mb-2 mt-2" for="item"><b>Informe os participantes</b></label>
@@ -271,8 +271,8 @@ print_r($id_ata);
        </div>
       </div>
     </div>
-<br>
-           <br><br>
+
+           
       <!--BOTÕES-->
       <div class="container-fluid   justify-content-center ">
         <div class="row">
@@ -306,12 +306,12 @@ print_r($id_ata);
 
           </div>
             </div>
-            <br>
+            
           </div>
           
     
            
-          </div>  <br></div>
+          </div>  </div>
         </div>
 
             </div>

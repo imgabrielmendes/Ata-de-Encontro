@@ -142,14 +142,14 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
         <div class="col-md-12 text-center"></div>    
             <div class="row">
-                <br>
+                
                     <div class="col-sm-12 col-xl-3 col-md-6">
                         <label><b>Data:</b></label>
                         <ul class="form-control bg-body-secondary"><?php echo date('d/m/Y', strtotime($datasolicitada)); ?></ul>
                     </div>
                     <div class="col-sm-12 col-xl-3 col-md-6">
                         <label for="nomeMedico"><b>Horário de Início:</b></label>
-                        <br>
+                        
                         <ul class="form-control bg-body-secondary"><?php echo substr($horainic, 0, -3); ?></ul>
                     </div>
                     <div class="col-sm-12 col-xl-3 col-md-6">
@@ -209,7 +209,7 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
         </div>
     </div>
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
-<br>
+
 <form id="formSalvarInformacoes" method="post">
   <input type="hidden" id="idAta" name="idAta" value="">
   <div class="accordion">
@@ -222,12 +222,14 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
       </h2>
       <main class="container-fluid ">
         <div class="row">
-          <br>
-          <div class="col">
-            <label for="form-control"><b>Adicione participantes</b></label>
-            <br>
+          
+          <div class="col mt-3 mb-4">
+            <div class="mb-2"> 
+                <label for="form-control"><b>Adicione participantes</b></label>
+            </div>
+            
             <form id="addForm">
-              <div class="col-12 form-group ">
+              <div class="col-12 form-group mb-3">
                   <div class="col">
                   <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
     <optgroup label="Selecione Facilitadores">
@@ -264,10 +266,10 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
           <div class="d-flex align-items-center">
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#listaParticipantesModal" style="background-color: #001f3f; border-color: #001f3f;">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 1em; height: 1em; vertical-align: -0.125em;">
-      <path fill="#ffffff" d="M96 0C60.7 0 32 28.7 32 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H96zM208 288h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H144c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm-32-96a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM512 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V80zM496 192c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm16 144c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V336z"/>
-    </svg>
+      <path fill="#ffffff" d="M96 0C60.7 0 32 28.7 32 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H96zM208 288h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H144c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm-32-96a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM512 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V80zM496 192c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm16 144c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V336z"/> 
+    </svg>  Participantes do encontro
   </button>
-  <span class="ms-2">Participantes do encontro</span>
+  <!-- <span class="ms-2">Participantes do encontro</span> -->
 </div>
 
 
@@ -403,7 +405,7 @@ document.getElementById('registrarparticipantes').addEventListener('click', func
   }
 </script>
 
-<br>
+
 <?php
 $conn->close();
 ?>
@@ -457,7 +459,7 @@ function adicionarParticipanteAoLabel(participante) {
 </script>
 
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
-<br>
+
 <div class="accordion">
   <h2 class="accordion-header">
     <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
@@ -645,7 +647,7 @@ function adicionarParticipanteAoLabel(participante) {
                 <div class="form-group">
                     <div class="col">
                         <div class="col">
-                            <br>
+                            
                             <ul class="list-group list-group-flush"></ul>
                             <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>"></textarea>
                         </div>
