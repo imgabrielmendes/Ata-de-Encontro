@@ -53,12 +53,25 @@ $pegarlocal=$puxarform->pegarlocais();
             <div class="container-fluid">
                 <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/"><img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
                 </a>
-
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-      
 
+                    <button class="btn">
+                      <div class="btn nav-item">
+                        <a class="nav-link" href="index.php">Criar ata</a>
+                        </div>      
+                    </button>
+                    <button class="btn">
+                      <div class="btn nav-item">
+                        <a class="nav-link" href="paghistorico.php">Histórico</a>
+                        </div>      
+                    </button>
+                    <button class="btn">
+                      <div class="btn nav-item">
+                        <a class="nav-link" href="dadosanaliticos.php">Estatísticas</a>
+                        </div>      
+                    </button>
       <div class="collapse navbar-collapse" id="navBarCentral">
       </div>
     </div>
@@ -185,17 +198,7 @@ $pegarlocal=$puxarform->pegarlocais();
               <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-success">Registrar encontro</button>
 
               <button id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-secondary opacity-75" data-bs-toggle="modal" data-bs-target="#modaldeemail">Cadastre-se</button>
-
-              <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="mt-2 col-md-5 col-sm-4 col-lg-3 btn btn-primary" data-bs-toggle="modal">
-                Ir para histórico
-              </button>  
               </div>
-
-              <script>
-              function abrirHistorico() {
-                  window.location.href = 'paghistorico.php';
-              }
-              </script> 
 
               <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">

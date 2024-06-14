@@ -33,7 +33,7 @@ $data = $_GET['data'];
 
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
-print_r($id_ata);
+// print_r($id_ata);
 
 ?>
 <!DOCTYPE html>
