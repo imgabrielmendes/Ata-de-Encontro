@@ -1,13 +1,13 @@
+
 document.addEventListener('DOMContentLoaded', function() {
-    
     // Primeiro gráfico
     const ctx1 = document.getElementById('myChart').getContext('2d');
     new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: ['Reunião', 'Treinamento', 'Consulta'],
+            labels: ['Reunião',],
             datasets: [{
-                data: [1, 2, 3],
+                data: [1],
                 borderWidth: 1
             }]
         },
