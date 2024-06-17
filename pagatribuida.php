@@ -142,14 +142,14 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
 <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);">
         <div class="col-md-12 text-center"></div>    
             <div class="row">
-                <br>
+                
                     <div class="col-sm-12 col-xl-3 col-md-6">
                         <label><b>Data:</b></label>
                         <ul class="form-control bg-body-secondary"><?php echo date('d/m/Y', strtotime($datasolicitada)); ?></ul>
                     </div>
                     <div class="col-sm-12 col-xl-3 col-md-6">
                         <label for="nomeMedico"><b>Horário de Início:</b></label>
-                        <br>
+                        
                         <ul class="form-control bg-body-secondary"><?php echo substr($horainic, 0, -3); ?></ul>
                     </div>
                     <div class="col-sm-12 col-xl-3 col-md-6">
@@ -209,7 +209,7 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
         </div>
     </div>
 <!------------ACCORDION COM INFORMAÇÕES DE PARTICIPANTES---------------->
-<br>
+
 <form id="formSalvarInformacoes" method="post">
   <input type="hidden" id="idAta" name="idAta" value="">
   <div class="accordion">
@@ -222,12 +222,14 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
       </h2>
       <main class="container-fluid ">
         <div class="row">
-          <br>
-          <div class="col">
-            <label for="form-control"><b>Adicione participantes</b></label>
-            <br>
+          
+          <div class="col mt-3 mb-4">
+            <div class="mb-2"> 
+                <label for="form-control"><b>Adicione participantes</b></label>
+            </div>
+            
             <form id="addForm">
-              <div class="col-12 form-group ">
+              <div class="col-12 form-group mb-3">
                   <div class="col">
                   <select class="col-8 form-control" id="participantesadicionado" name="facilitador" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>">
     <optgroup label="Selecione Facilitadores">
@@ -264,10 +266,10 @@ $texto_principal = !empty($puxatexto) ? $puxatexto[0] : '';
           <div class="d-flex align-items-center">
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#listaParticipantesModal" style="background-color: #001f3f; border-color: #001f3f;">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="width: 1em; height: 1em; vertical-align: -0.125em;">
-      <path fill="#ffffff" d="M96 0C60.7 0 32 28.7 32 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H96zM208 288h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H144c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm-32-96a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM512 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V80zM496 192c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm16 144c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V336z"/>
-    </svg>
+      <path fill="#ffffff" d="M96 0C60.7 0 32 28.7 32 64V448c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H96zM208 288h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H144c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm-32-96a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zM512 80c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V80zM496 192c-8.8 0-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V208c0-8.8-7.2-16-16-16zm16 144c0-8.8-7.2-16-16-16s-16 7.2-16 16v64c0 8.8 7.2 16 16 16s16-7.2 16-16V336z"/> 
+    </svg>  Participantes do encontro
   </button>
-  <span class="ms-2">Participantes do encontro</span>
+  <!-- <span class="ms-2">Participantes do encontro</span> -->
 </div>
 
 
@@ -347,63 +349,71 @@ document.getElementById('registrarparticipantes').addEventListener('click', func
       </div>
       <div class="modal-body">
       <?php
-          if (isset($_GET['updateid'])) {
-            $id_ata = $_GET['updateid'];
-            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-            if (!empty($participantes)) {
-                // Ordena os participantes em ordem alfabética pelo nome do facilitador
-                usort($participantes, function($a, $b) {
-                    return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
-                });
+if (isset($_GET['updateid'])) {
+    $id_ata = $_GET['updateid'];
+    $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+    if (!empty($participantes)) {
+        // Ordena os participantes em ordem alfabética pelo nome do facilitador
+        usort($participantes, function($a, $b) {
+            return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
+        });
 
-                echo "<table class='table'>";
-                echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
-                echo "<tbody>";
-                foreach ($participantes as $participante) {
-                    // Aqui, você pode acessar os dados adicionais do facilitador usando $participante
-                    // Suponho que $participante já contenha os dados da tabela facilitadores
-                    echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
-                    echo "<td>{$participante['matricula']}</td>"; // Coluna de Matrícula
-                    echo "<td>{$participante['nome_facilitador']}</td>"; // Coluna de Nome
-                    echo "<td>{$participante['email_facilitador']}</td>"; // Coluna de Email
-                    // Botão de Excluir com chamada para a função JavaScript excluirParticipante
-                    echo "<td>
-    <button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>
-        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' class='mr-2' style='width: 1em; height: 1em;'>
-            <path fill='#ffffff' d='M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z'/>
-        </svg>
-    </button>
-</td>";
-
-
-                    echo "</tr>";
-                }
-                echo "</tbody></table>";
-            } else {
-                echo "Nenhum participante encontrado para esta ATA.";
-            }
-          } else {
-            echo "Nenhum ID de ATA fornecido.";
-          }
-        ?>
+        echo "<table class='table'>";
+        echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
+        echo "<tbody>";
+        foreach ($participantes as $participante) {
+            // Aqui, você pode acessar os dados adicionais do facilitador usando $participante
+            // Suponho que $participante já contenha os dados da tabela facilitadores
+            echo "<tr id='participante-$id_ata-{$participante['nome_facilitador']}'>";
+            echo "<td>{$participante['matricula']}</td>"; // Coluna de Matrícula
+            echo "<td>{$participante['nome_facilitador']}</td>"; // Coluna de Nome
+            echo "<td>{$participante['email_facilitador']}</td>"; // Coluna de Email
+            // Botão de Excluir com chamada para a função JavaScript excluirParticipante
+            echo "<td>
+                <button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' class='mr-2' style='width: 1em; height: 1em;'>
+                        <path fill='#ffffff' d='M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z'/>
+                    </svg>
+                </button>
+            </td>";
+            echo "</tr>";
+        }
+        echo "</tbody></table>";
+    } else {
+        echo "Nenhum participante encontrado para esta ATA.";
+    }
+} else {
+    echo "Nenhum ID de ATA fornecido.";
+}
+?>
       </div>
     </div>
   </div>
 </div>
 <script>
-  function excluirParticipante(participante) {
-    if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
-      var participanteElement = document.querySelector("li:contains('" + participante + "')");
-      if (participanteElement) {
-        participanteElement.remove();
-      } else {
-        alert("Participante não encontrado na lista.");
-      }
-    }
-  }
+function excluirParticipante(participanteId) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "excluir participante.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Exclui visualmente a linha da tabela
+            var row = document.getElementById('participante-' + participanteId);
+            if (row) {
+                row.parentNode.removeChild(row);
+            } else {
+                alert("Participante não encontrado na tabela.");
+            }
+        } else if (xhr.readyState === 4 && xhr.status !== 200) {
+            alert("Erro ao excluir o participante.");
+        }
+    };
+    xhr.send("participante_id=" + encodeURIComponent(participanteId));
+}
 </script>
 
-<br>
+
+
 <?php
 $conn->close();
 ?>
@@ -457,7 +467,7 @@ function adicionarParticipanteAoLabel(participante) {
 </script>
 
 <!-----------------------------ACCORDION COM PARTICIPANTES-------------------------------->
-<br>
+
 <div class="accordion">
   <h2 class="accordion-header">
     <div class="accordion-button shadow-sm text-white" style="background-color: #66bb6a;">
@@ -645,7 +655,7 @@ function adicionarParticipanteAoLabel(participante) {
                 <div class="form-group">
                     <div class="col">
                         <div class="col">
-                            <br>
+                            
                             <ul class="list-group list-group-flush"></ul>
                             <textarea id="deliberacoes" class="form-control item" placeholder="Informe as deliberações..." style="height: 85px;" multiple data-id-ata="<?php echo isset($_GET['updateid']) ? $_GET['updateid'] : ''; ?>"></textarea>
                         </div>
