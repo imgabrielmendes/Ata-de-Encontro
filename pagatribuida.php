@@ -413,7 +413,6 @@ function excluirParticipante(participanteId) {
 </script>
 
 
-
 <?php
 $conn->close();
 ?>

@@ -33,7 +33,7 @@ $data = $_GET['data'];
 
 $objetivoSelecionado = $_GET['objetivoSelecionado'];
 $local = $_GET['local'];
-print_r($id_ata);
+// print_r($id_ata);
 
 ?>
 <!DOCTYPE html>
@@ -68,10 +68,7 @@ print_r($id_ata);
       }
       .content-header{
         background-color: #001f3f;
-      }
-      .histor{
-        text-decoration: none;
-      }
+        }
 </style>
 
       <header>
@@ -123,7 +120,7 @@ print_r($id_ata);
         <path fill="currentColor" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
       </svg>
             <p class="mb-0">
-              <b class="text-danger">ATENÇÃO!</b> Caso deseje apenas abrir uma ata sem informar os participantes, clique em <b class="text-primary"><a class="histor" href="paghistorico.php">Ir para histórico</b></a>.
+              <b class="text-danger">ATENÇÃO!</b> Caso deseje apenas abrir uma ata sem informar os participantes, clique em <b class="text-primary">Ir para histórico</b>.
             </p>
           </div>
         </div>
@@ -149,16 +146,16 @@ print_r($id_ata);
 
           <!---- PRIMEIRA LINHA DO REGISTRO ---->
           <div class="row">
-    <br>
+    
     <div class="col-sm-12 col-xl-3  col-md-6">
-        <label><b>Data*:</b></label>
+        <label><b>Data:</b></label>
         <ul class="form-control bg-body-secondary"> <?php echo $_SESSION['data']; ?> </ul>
     </div>
 
     <!---ABA DE HORÁRIO INICIO---->
     <div class="col-sm-12 col-xl-3  col-md-6">
-        <label for="nomeMedico"><b>Horário de Início*:</b></label>
-        <br>
+        <label for="nomeMedico"><b>Horário de Início:</b></label>
+        
         <ul class="form-control bg-body-secondary"><?php echo $_SESSION['horainicio']; ?></ul>
     </div>
 
@@ -231,7 +228,7 @@ print_r($id_ata);
 </div>
   </div>
 <!-----------------------------2° FASE-------------------------------->
-<br>
+
 <div class="accordion mt-4">
 <div class="accordion-item shadow">
   <h2 class="accordion-header">
@@ -240,17 +237,17 @@ print_r($id_ata);
 <h5>Participantes</h5>
 </div>
   </h2>                                                                                                                                       
-        <div class="container-fluid ">
-        <div class="row">
+  <div class="accordion-body" style="background-color: rgba(240, 240, 240, 0.41);" >
+            <div class="row">
           <form id="addForm">
               <div class="form-group ">
-                  <br>
+                  
                   <div id="items" class="list-group">                    
               </div>
-                  <label for="item"><b>Informe os participantes</b></label>
+                  <label class="mb-2 mt-2" for="item"><b>Informe os participantes</b></label>
 
                   <div class="row">
-                    <div class="col" > 
+                    <div class="col"> 
                     <select  class="col form-control" id="participantesadicionados" name="facilitador" multiple style="width: 100px;">
                       <optgroup label="Selecione Facilitadores">
                           <?php foreach ($pegarfa as $facnull) : ?>
@@ -264,56 +261,57 @@ print_r($id_ata);
         </div></div>
           
           </form>
+          <!-- style="wheigt: 200px; width: 200px;"  -->
           <div  class="row">
-          <div class="col-lg-12 col-md-2 d-flex text-center">
-           <button style=" background-color:white; color:#353535; border:none; font-size: 13px;" id="botaoregistrar" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
-              Clique aqui para cadastrar usúario 
+          <div class="col-lg-12 col-md-2 d-flex text-left ">
+           <button id="botaoregistrar" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modaldeemail">
+           <i class='col mt-2 mb-2 fas fa-address-card' style='color: white; '></i>
+           <label for="" class="col mt-1 mb-2 fs-6 ">Registrar</label>
             </button>
        </div>
       </div>
     </div>
-<br>
-           <br><br>
+
+           
       <!--BOTÕES-->
       <div class="container-fluid   justify-content-center ">
         <div class="row">
           <div class="btnsparticipante">
 
           <div class="p-2 col-lg-3 col-md-5 col-sm-12">
-          <button id="botaocontinuarata" type="button" class="btn form-control btn-success" onclick="abrirDeliberacoes(<?php echo $id_ata; ?>)" data-bs-toggle="modal">
-            Prosseguir com a ata
-          </button>
-          <script>
-            var id_ata = '<?php echo $id_ata; ?>'; 
-            function abrirDeliberacoes(){
-                window.location.href = 'pagdeliberacoes.php?updateid=' + id_ata;
-            }
-          </script>
+    <button id="botaocontinuarata" type="button" class="btn form-control btn-success" onclick="">
+        Prosseguir com a ata
+    </button>
+<script>
+    var id_ata = <?php echo $id_ata; ?>;
+</script>
 
-        </div>
-        <br>
+</div>
         <div class="p-2 col-lg-3 col-md-5 col-sm-12">
               <button onclick="abrirHistorico()"  id="botaoregistrar" type="button" class="btn form-control btn-primary" data-bs-toggle="modal">
                 Ir para histórico
-              </button>
-           
-            
-              <script>
+              </button>         
+    </div>
+
+
+
+        </div>
+
+                  <script>
         function abrirHistorico() {
             window.location.href = 'paghistorico.php';
         }
     </script> 
-    </div>
           </div>
 
           </div>
             </div>
-            <br>
+            
           </div>
           
     
            
-          </div>  <br></div>
+          </div>  </div>
         </div>
 
             </div>
@@ -360,7 +358,7 @@ print_r($id_ata);
 
                             <div class="modal-footer">
                               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                              <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
+                              <button id="registraremail" type="button" class="btn btn-primary" data-bs-dismiss="modal">Registrar</button>
 
                             </div>
                           </div>

@@ -97,12 +97,25 @@ if ($conn->connect_error) {
             <div class="container-fluid">
                 <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/"><img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
                 </a>
-
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-      
 
+                    <button class="btn">
+                      <div class="btn nav-item">
+                        <a class="nav-link" href="index.php">Criar ata</a>
+                        </div>      
+                    </button>
+                    <button class="btn">
+                      <div class="btn nav-item">
+                        <a class="nav-link" href="paghistorico.php">Histórico</a>
+                        </div>      
+                    </button>
+                    <button class="btn">
+                      <div class="btn nav-item">
+                        <a class="nav-link" href="dadosanaliticos.php">Estatísticas</a>
+                        </div>      
+                    </button>
       <div class="collapse navbar-collapse" id="navBarCentral">
       </div>
     </div>
@@ -110,7 +123,8 @@ if ($conn->connect_error) {
   <div class="content-header shadow" style="border-bottom: solid 1px gray;">
       <div class="container-fluid">
         <div class="row py-1">
-          <div class="col-sm-6"><h2 class="m-3 text-light shadow"><i id="hist" class="fa-solid fa-clock-rotate-left"></i> Histórico</h2>
+          <div class="col-sm-6">
+            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i><b>Ata de encontro</b></h2>
           </div>
         </div>
       </div>

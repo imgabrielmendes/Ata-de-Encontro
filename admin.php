@@ -17,7 +17,6 @@
         .{
             background-color: #f4f6f9;
         }
-
         .content-header{
             background-color: #001f3f;
         }
