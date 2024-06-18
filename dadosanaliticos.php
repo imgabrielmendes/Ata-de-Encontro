@@ -43,9 +43,7 @@ $idata = array_column($cincoultimos, 'id');
 $datasolicitada = array_column($cincoultimos, 'data_solicitada');
 $objetivo = array_column($cincoultimos, 'objetivo');
 
-print_r($idata);
-print_r($datasolicitada);
-print_r($objetivo);
+
 
 
 $todasasatas = $atasabertas + $atasfechadas;
