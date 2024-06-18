@@ -349,60 +349,67 @@ document.getElementById('registrarparticipantes').addEventListener('click', func
       </div>
       <div class="modal-body">
       <?php
-          if (isset($_GET['updateid'])) {
-            $id_ata = $_GET['updateid'];
-            $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
-            if (!empty($participantes)) {
-                // Ordena os participantes em ordem alfabética pelo nome do facilitador
-                usort($participantes, function($a, $b) {
-                    return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
-                });
+if (isset($_GET['updateid'])) {
+    $id_ata = $_GET['updateid'];
+    $participantes = $puxarform->buscarParticipantesPorIdAta($id_ata);
+    if (!empty($participantes)) {
+        // Ordena os participantes em ordem alfabética pelo nome do facilitador
+        usort($participantes, function($a, $b) {
+            return strcmp($a['nome_facilitador'], $b['nome_facilitador']);
+        });
 
-                echo "<table class='table'>";
-                echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
-                echo "<tbody>";
-                foreach ($participantes as $participante) {
-                    // Aqui, você pode acessar os dados adicionais do facilitador usando $participante
-                    // Suponho que $participante já contenha os dados da tabela facilitadores
-                    echo "<tr id='participante-$id_ata-$participante[nome_facilitador]'>";
-                    echo "<td>{$participante['matricula']}</td>"; // Coluna de Matrícula
-                    echo "<td>{$participante['nome_facilitador']}</td>"; // Coluna de Nome
-                    echo "<td>{$participante['email_facilitador']}</td>"; // Coluna de Email
-                    // Botão de Excluir com chamada para a função JavaScript excluirParticipante
-                    echo "<td>
-    <button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>
-        <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' class='mr-2' style='width: 1em; height: 1em;'>
-            <path fill='#ffffff' d='M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z'/>
-        </svg>
-    </button>
-</td>";
-
-
-                    echo "</tr>";
-                }
-                echo "</tbody></table>";
-            } else {
-                echo "Nenhum participante encontrado para esta ATA.";
-            }
-          } else {
-            echo "Nenhum ID de ATA fornecido.";
-          }
-        ?>
+        echo "<table class='table'>";
+        echo "<thead><tr><th>Matrícula</th><th>Nome</th><th>Email</th><th>Ações</th></tr></thead>";
+        echo "<tbody>";
+        foreach ($participantes as $participante) {
+            // Aqui, você pode acessar os dados adicionais do facilitador usando $participante
+            // Suponho que $participante já contenha os dados da tabela facilitadores
+            echo "<tr id='participante-$id_ata-{$participante['nome_facilitador']}'>";
+            echo "<td>{$participante['matricula']}</td>"; // Coluna de Matrícula
+            echo "<td>{$participante['nome_facilitador']}</td>"; // Coluna de Nome
+            echo "<td>{$participante['email_facilitador']}</td>"; // Coluna de Email
+            // Botão de Excluir com chamada para a função JavaScript excluirParticipante
+            echo "<td>
+                <button type='button' class='btn btn-danger btn-sm' onclick='excluirParticipante($id_ata, \"{$participante['nome_facilitador']}\")'>
+                    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' class='mr-2' style='width: 1em; height: 1em;'>
+                        <path fill='#ffffff' d='M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z'/>
+                    </svg>
+                </button>
+            </td>";
+            echo "</tr>";
+        }
+        echo "</tbody></table>";
+    } else {
+        echo "Nenhum participante encontrado para esta ATA.";
+    }
+} else {
+    echo "Nenhum ID de ATA fornecido.";
+}
+?>
       </div>
     </div>
   </div>
 </div>
 <script>
-  function excluirParticipante(participante) {
-    if (confirm("Tem certeza de que deseja excluir o participante '" + participante + "'?")) {
-      var participanteElement = document.querySelector("li:contains('" + participante + "')");
-      if (participanteElement) {
-        participanteElement.remove();
-      } else {
-        alert("Participante não encontrado na lista.");
-      }
-    }
-  }
+function excluirParticipante(participanteId) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "excluir participante.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            // Exclui visualmente a linha da tabela
+            var row = document.getElementById('participante-' + participanteId);
+            if (row) {
+                row.parentNode.removeChild(row);
+            } else {
+                alert("Participante não encontrado na tabela.");
+            }
+        } else if (xhr.readyState === 4 && xhr.status !== 200) {
+            alert("Erro ao excluir o participante.");
+        }
+    };
+    xhr.send("participante_id=" + encodeURIComponent(participanteId));
+}
 </script>
 
 
