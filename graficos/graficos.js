@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['Reunião',],
             datasets: [{
-                data: [1],
+                data: [$data],
                 borderWidth: 1
             }]
         },
