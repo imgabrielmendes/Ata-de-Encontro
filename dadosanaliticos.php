@@ -8,7 +8,15 @@ include ("conexao.php");
 
 $chartsFunc = new ChartsFunc();
 $data = $chartsFunc->pegandoTudo();
-echo json_encode($data);
+
+$atasabertas = $chartsFunc->pegarQuantidadeAberta();
+$atasfechadas = $chartsFunc->pegarQuantidadeFechada();
+$todasasatas = $atasabertas + $atasfechadas;
+
+echo json_encode($todasasatas);
+// echo("<br>");
+// echo json_encode($atasfechadas);
+
 
 ?>
 <!DOCTYPE html>
@@ -82,7 +90,7 @@ echo json_encode($data);
 
         <script>
             function getMonthName(monthIndex) {
-                const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+                const months = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
                 return months[monthIndex];
             }
 
@@ -103,6 +111,7 @@ echo json_encode($data);
                     if (currentURL.indexOf("?mes=") !== -1) {
                         const updatedURL = currentURL.replace(/(mes=)[^\&]+/, '$1' + monthClicked);
                         window.location.href = updatedURL;
+
                     } else {
                         const updatedURL = `${currentURL}?mes=${monthClicked}`;
                         window.location.href = updatedURL;
