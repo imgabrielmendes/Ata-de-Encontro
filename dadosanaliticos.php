@@ -13,10 +13,11 @@ $atasabertas = $chartsFunc->pegarQuantidadeAberta();
 $atasfechadas = $chartsFunc->pegarQuantidadeFechada();
 $todasasatas = $atasabertas + $atasfechadas;
 
+echo json_encode($atasabertas);
+echo("<br>");
+echo json_encode($atasfechadas);
+echo("<br>");
 echo json_encode($todasasatas);
-// echo("<br>");
-// echo json_encode($atasfechadas);
-
 
 ?>
 <!DOCTYPE html>

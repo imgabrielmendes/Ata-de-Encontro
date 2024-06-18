@@ -5,9 +5,11 @@ use PDO;
 use PDOException;
 
 class ChartsFunc {
+
     private $pdo;
 
-    public function __construct() {
+    public function __construct() 
+    {
         try {
             $dbhost = 'localhost';
             $dbname = 'atareu';
@@ -40,7 +42,8 @@ class ChartsFunc {
         return $meses[$mesClicadoAbbr] ?? null;
     }
 
-    public function pegandoTudo() {
+    public function pegandoTudo() 
+    {
         try {
             $mesClicadourl = $_GET['mes'] ?? null;
             $mesClicado = $this->getMonthNumber($mesClicadourl);
@@ -153,6 +156,60 @@ class ChartsFunc {
             throw $e;
         }
     }
+
+    // FUNÇAO USADA PARA A QUANTIDADE DE FACILITADORES: QUANTOS/MÊS , QUEM+QUANT.DE ATAS 
+    public function pegandoFacilitadores()
+    {
+        if (isset($_GET['mes'])) {
+            $monthMap = array(
+                "Jan" => 1,
+                "Fev" => 2,
+                "Mar" => 3,
+                "Abr" => 4,
+                "Mai" => 5,
+                "Jun" => 6,
+                "Jul" => 7,
+                "Ago" => 8,
+                "Set" => 9,
+                "Out" => 10,
+                "Nov" => 11,
+                "Dez" => 12
+            );
+            $mesClicadoAbbr = $_GET['mes'];
+            $mesClicado = $monthMap[$mesClicadoAbbr];
+            $sql = "SELECT 
+                    ass.id as idassunto,
+                    ahf.id_ata,
+                    ahf.facilitadores,
+
+                    fac.id as idparticipantes,
+                    fac.nome_facilitador as nomesparticipantes,
+                    count(ahf.id_ata) as participancoes
+
+                    from atareu.ata_has_fac as ahf
+                        INNER JOIN atareu.facilitadores as fac ON fac.id = ahf.facilitadores
+                        INNER JOIN atareu.assunto as ass ON ass.id = ahf.id_ata
+                        WHERE 
+                        MONTH(ass.data_registro) = $mesClicado;
+                    ";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+            $resultado = $stmt->fetchColumn(); // Apenas uma coluna é retornada
+
+            return $resultado;
+
+        } else {
+            $sql = "SELECT COUNT(*) AS quantidade FROM assunto as ass WHERE status = 'ABERTA' AND MONTH(ass.data_solicitada)=$mesClicado";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute();
+            $resultado = $stmt->fetchColumn(); // Apenas uma coluna é retornada
+
+            return $resultado;
+        }
+    }
+
 }
 
 // try {
@@ -162,4 +219,5 @@ class ChartsFunc {
 // } catch (\Exception $e) {
 //     echo json_encode(['error' => $e->getMessage()]);
 // }
+
 ?>
