@@ -10,14 +10,46 @@ $chartsFunc = new ChartsFunc();
 $data = $chartsFunc->pegandoTudo();
 
 $atasabertas = $chartsFunc->pegarQuantidadeAberta();
+$ataaberta_json = json_encode($atasabertas);
 $atasfechadas = $chartsFunc->pegarQuantidadeFechada();
+$atafechada_json = json_encode($atasfechadas);
+
+//quantidade por objetivos
+$data2 = $chartsFunc->pegarObjetivo();  
+$objetivos = array_column($data2, 'objetivo');
+$quantidades = array_column($data2, 'quantidade');
+$objetivos_json = json_encode($objetivos);
+$quantidades_json = json_encode($quantidades);
+
+//quantidade por local
+$data3 = $chartsFunc->pegarLocal();  
+$local = array_column($data3, 'local');
+$quantidades2 = array_column($data3, 'quantidade');
+$local_json = json_encode($local);
+$quantidades2_json = json_encode($quantidades2);
+
+// //quantidade de atas por dia
+// $data4 = $chartsFunc->pegarPorDia();  
+// $date = array_column($data4, 'data');
+// $quantidade_ata = array_column($data4, 'quantidade_ata');
+// $date_json = json_encode($date);
+// $quantidadeata_json = json_encode($quantidade_ata);
+
+
+//5 últimas atas 
+$cincoultimos = $chartsFunc->pegar5();  
+$mes = array_column($cincoultimos, 'mes');
+$idata = array_column($cincoultimos, 'id');
+$datasolicitada = array_column($cincoultimos, 'data_solicitada');
+$objetivo = array_column($cincoultimos, 'objetivo');
+
+print_r($idata);
+print_r($datasolicitada);
+print_r($objetivo);
+
+
 $todasasatas = $atasabertas + $atasfechadas;
 
-echo json_encode($atasabertas);
-echo("<br>");
-echo json_encode($atasfechadas);
-echo("<br>");
-echo json_encode($todasasatas);
 
 ?>
 <!DOCTYPE html>
@@ -83,7 +115,7 @@ echo json_encode($todasasatas);
 <main class="container_fluid d-flex justify-content-center align-items-center">
     <div class="form-group col-10 mt-5">
         <div class="row mt-3 mb-3 border">
-            <p class="col-md-12 text-center m-3 p-2 fs-1"><b>Informações</b></p>
+            <p class="col-md-12 text-center m-3 p-2 fs-1"><b>Dados:</b></p>
         </div>
 
         <div class="col btn-group d-flex justify-content-center flex-wrap mt-2" role="group" aria-label="Basic example" id="monthButtons"></div>
@@ -132,76 +164,58 @@ echo json_encode($todasasatas);
                             const labels = data.map(item => item.label);
                             const values = data.map(item => item.value);
 
-                            const ctx1 = document.getElementById('myChart').getContext('2d');
-                            new Chart(ctx1, {
-                                type: 'bar',
-                                data: {
-                                    labels: labels,
-                                    datasets: [{
-                                        label: 'Dataset 1',
-                                        data: values,
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
+                         
 
-                            const ctx2 = document.getElementById('myChart2').getContext('2d');
-                            new Chart(ctx2, {
-                                type: 'bar',
-                                data: {
-                                    labels: labels,
-                                    datasets: [{
-                                        label: '# of Votes',
-                                        data: values,
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-
-                            const ctx3 = document.getElementById('myChart3').getContext('2d');
-                            new Chart(ctx3, {
-                                type: 'line',
-                                data: {
-                                    labels: labels,
-                                    datasets: [{
-                                        label: 'Dataset 3',
-                                        data: values,
-                                        borderWidth: 1
-                                    }]
-                                },
-                                options: {
-                                    scales: {
-                                        y: {
-                                            beginAtZero: true
-                                        }
-                                    }
-                                }
-                            });
-                        })
-                        .catch(error => console.error('Error:', error));
-                }
+                            
+                        });}           
+                       
             });
         </script>
 
+    <div class="row mt-4">
+    <div class="col-xl-3 col-md-12 col-lg-12 mb-4 mb-0">
+        <div class="card border-left-success shadow h-80 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Abertas
+                        </div>
+                        <div class="display-4 h4 mb-0 font-weight-bold text-gray-1000"><?php echo $ataaberta_json; ?></div>
+                    </div>
+                    <div class="col-auto">
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4 mb-0">
+        <div class="card border-left-warning shadow h-80 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                            Fechadas
+                        </div>
+                        <div class="display-4 h4 mb-0 font-weight-bold text-gray-800"><?php echo $atafechada_json; ?></div>
+                    </div>
+                    <div class="col-auto">
+                    
+                    </div>
+                </div>
+            </div>
+  
+
+    </div>
+    </div>
         <div class="row">
             <div class="col-4 shadow p-5 border">
                 <p class="fs-5"> Treinamento/Consulta/Reunião </p>
                 <hr>
                 <canvas class="mt-2" id="myChart"></canvas>
+        
             </div>
             
             <div class="col-8 shadow p-5 border g-col-6">
@@ -213,20 +227,34 @@ echo json_encode($todasasatas);
 
         <div class="grid row mt-4">
             <div class="col-8 shadow p-5 border">
-                <p class="fs-2">Atas/dia</p>
+                <p class="fs-2">Atas/dia</p><div class="col-4" style="text-align: left;">
+                <input class="form-control" type="date" id="solicitacaoInput" onchange="filtrarRegistros()"></div>
                 <hr>
+                
                 <canvas id="myChart3"></canvas>
             </div>
+
             <div class="col-4 shadow p-5 border">
-                <p class="fs-2">Atas feitas no mês</p>
-                <hr>
-                <?php
-                for ($linha = 0; $linha < 4; $linha++) {
-                    echo '<p class="border p-3 fs-7">Exemplo</p>';
-                }
-                ?>
-                <canvas id="myChart4"></canvas>
-            </div>
+    <p class="fs-2">Atas feitas no mês</p>
+    <hr>
+    <?php
+    // Iterar sobre os resultados para exibir as informações
+    foreach ($cincoultimos as $indice => $registro) {
+        $id = $registro['id'];
+        $data = date('d/m/Y', strtotime($registro['data_solicitada'])); // Formatando a data para dd/mm/aaaa
+        $objetivo = $registro['objetivo'];
+
+        // Exibindo cada registro dentro de uma caixa com borda
+        echo '<p class="border p-3 fs-7">';
+        echo "ID: $id<br>";
+        echo "Data: $data<br>";
+        echo "Objetivo: $objetivo";
+        echo '</p>';
+    }
+    ?>
+    <canvas id="myChart4"></canvas>
+</div>
+
         </div>
 
         <div class="row mt-4">
@@ -243,6 +271,70 @@ echo json_encode($todasasatas);
         </div>
     </div>
 </main>
+
+
+<script src="chart.js"></script>
+
+<script>
+//objetivos
+var objetivos = <?php echo $objetivos_json; ?>;
+  var quantidades = <?php echo $quantidades_json; ?>;
+  var colors = ['#FF5733', '#33FF57','#33FFF3',];
+  const ctx = document.getElementById('myChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: objetivos,
+      datasets: [{
+        label: 'Quantidade',
+        data: quantidades,
+        backgroundColor: colors,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+
+  //locais
+  var local = <?php echo $local_json; ?>;
+  var quantidades2 = <?php echo $quantidades2_json; ?>;
+  var colors2 = ['#FF5733', '#33FF57', '#3357FF', '#F3FF33', '#FF33A1', '#33FFF3', '#7D33FF', '#FFB533', '#33FF92', '#F933FF'];
+  const ctx2 = document.getElementById('myChart2').getContext('2d');
+  new Chart(ctx2, {
+    type: 'bar',
+    data: {
+      labels: local,
+      datasets: [{
+        label: 'Quantidade',
+        data: quantidades2,
+        backgroundColor: colors2,
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+
+
+
+
+
+  </script>
+
+
 
 <script src="graficos\graficos.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
