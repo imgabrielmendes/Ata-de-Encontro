@@ -4,11 +4,12 @@ namespace formulario;
 use PDO;
 use PDOException;
 
-class ChartsFunc {
+class ChartsFunc
+{
 
     private $pdo;
 
-    public function __construct() 
+    public function __construct()
     {
         try {
             $dbhost = 'localhost';
@@ -23,7 +24,8 @@ class ChartsFunc {
         }
     }
 
-    private function getMonthNumber($mesClicadoAbbr) {
+    private function getMonthNumber($mesClicadoAbbr)
+    {
         $meses = array(
             "Jan" => 1,
             "Fev" => 2,
@@ -42,31 +44,31 @@ class ChartsFunc {
         return $meses[$mesClicadoAbbr] ?? null;
     }
 
-    public function pegandoTudo() 
+    public function pegandoTudo()
     {
         try {
             $mesClicadourl = $_GET['mes'] ?? null;
             $mesClicado = $this->getMonthNumber($mesClicadourl);
-                
-                if ($mesClicado) {
-                    $sql = "SELECT * FROM assunto AS ass 
+
+            if ($mesClicado) {
+                $sql = "SELECT * FROM assunto AS ass 
                             WHERE MONTH(ass.data_registro) = :mesClicado 
                             GROUP BY ass.data_registro";
-                    $stmt = $this->pdo->prepare($sql);
-                    $stmt->bindParam(':mesClicado', $mesClicado, PDO::PARAM_INT);
-                    $stmt->execute();
-                    
-                    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-                } else {
-                    $sql = "SELECT * FROM assunto AS ass 
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->bindParam(':mesClicado', $mesClicado, PDO::PARAM_INT);
+                $stmt->execute();
+
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+                $sql = "SELECT * FROM assunto AS ass 
                     WHERE MONTH(ass.data_registro) = :mesClicado 
                     GROUP BY ass.data_registro";
-                    $stmt = $this->pdo->prepare($sql);
-                    $stmt->bindParam(':mesClicado', $mesClicado, PDO::PARAM_INT);
-                    $stmt->execute();
-                    
-                    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-                }
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->bindParam(':mesClicado', $mesClicado, PDO::PARAM_INT);
+                $stmt->execute();
+
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
 
         } catch (PDOException $e) {
             throw $e;
@@ -144,7 +146,7 @@ class ChartsFunc {
                 $resultado = $stmt->fetchColumn(); // Apenas uma coluna é retornada
 
                 return $resultado;
-                
+
             } else {
                 $mesClicado = null;
                 $sql = "SELECT COUNT(*) AS quantidade FROM assunto as ass WHERE status = 'FECHADA'";
@@ -179,7 +181,7 @@ class ChartsFunc {
                 );
                 $mesClicadoAbbr = $_GET['mes'];
                 $mesClicado = $monthMap[$mesClicadoAbbr];
-    
+
                 $sql = "SELECT objetivo, COUNT(id) as quantidade 
                         FROM atareu.assunto 
                         WHERE MONTH(data_solicitada) = :mesClicado 
@@ -192,17 +194,17 @@ class ChartsFunc {
                         GROUP BY objetivo";
                 $stmt = $this->pdo->prepare($sql);
             }
-    
+
             $stmt->execute();
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    
+
             return $resultados;
-    
+
         } catch (\PDOException $e) {
             throw $e;
         }
     }
-    
+
     public function pegarLocal()
     {
         try {
@@ -223,7 +225,7 @@ class ChartsFunc {
                 );
                 $mesClicadoAbbr = $_GET['mes'];
                 $mesClicado = $monthMap[$mesClicadoAbbr];
-    
+
                 $sql = "SELECT local, COUNT(id) as quantidade FROM atareu.assunto WHERE MONTH(data_solicitada) = :mesClicado  GROUP BY local";
 
                 $stmt = $this->pdo->prepare($sql);
@@ -233,17 +235,17 @@ class ChartsFunc {
 
                 $stmt = $this->pdo->prepare($sql);
             }
-    
+
             $stmt->execute();
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    
+
             return $resultados;
-    
+
         } catch (\PDOException $e) {
             throw $e;
         }
     }
-    
+
     public function pegar5()
     {
         try {
@@ -264,7 +266,7 @@ class ChartsFunc {
                 );
                 $mesClicadoAbbr = $_GET['mes'];
                 $mesClicado = $monthMap[$mesClicadoAbbr];
-    
+
                 $sql = "SELECT *
 FROM (
     SELECT 
@@ -299,17 +301,88 @@ ORDER BY mes DESC, data_solicitada DESC;
 
                 $stmt = $this->pdo->prepare($sql);
             }
-    
+
             $stmt->execute();
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    
+
             return $resultados;
-    
+
         } catch (\PDOException $e) {
             throw $e;
         }
     }
-    
+
+
+
+    public function faciliAta()
+    {
+        try {
+            if (isset($_GET['mes'])) {
+                $monthMap = array(
+                    "Jan" => 1,
+                    "Fev" => 2,
+                    "Mar" => 3,
+                    "Abr" => 4,
+                    "Mai" => 5,
+                    "Jun" => 6,
+                    "Jul" => 7,
+                    "Ago" => 8,
+                    "Set" => 9,
+                    "Out" => 10,
+                    "Nov" => 11,
+                    "Dez" => 12
+                );
+                $mesClicadoAbbr = $_GET['mes'];
+                $mesClicado = $monthMap[$mesClicadoAbbr];
+
+                $sql = "SELECT 
+    facili.id AS id_facilitador,
+    facili.nome_facilitador AS facilitador,
+    COUNT(ata.id_ata) AS numero_de_atas
+FROM 
+    atareu.ata_has_fac AS ata
+INNER JOIN 
+    atareu.assunto AS assunto ON ata.id_ata = assunto.id
+INNER JOIN 
+    atareu.facilitadores AS facili ON ata.facilitadores = facili.id
+ WHERE MONTH(data_solicitada) = :mesClicado GROUP BY 
+    facili.id, facili.nome_facilitador
+ORDER BY 
+    numero_de_atas DESC";
+
+                $stmt = $this->pdo->prepare($sql);
+                $stmt->bindParam(':mesClicado', $mesClicado, \PDO::PARAM_INT);
+            } else {
+                $sql = "SELECT 
+    facili.id AS id_facilitador,
+    facili.nome_facilitador AS facilitador,
+    COUNT(ata.id_ata) AS numero_de_atas
+FROM 
+    atareu.ata_has_fac AS ata
+INNER JOIN 
+    atareu.assunto AS assunto ON ata.id_ata = assunto.id
+INNER JOIN 
+    atareu.facilitadores AS facili ON ata.facilitadores = facili.id
+GROUP BY 
+    facili.id, facili.nome_facilitador
+ORDER BY 
+    numero_de_atas DESC";
+
+                $stmt = $this->pdo->prepare($sql);
+            }
+
+            $stmt->execute();
+            $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+            return $resultados;
+
+        } catch (\PDOException $e) {
+            throw $e;
+        }
+    }
+
+
+
 
     public function pegarPorDia()
     {
@@ -331,7 +404,7 @@ ORDER BY mes DESC, data_solicitada DESC;
                 );
                 $mesClicadoAbbr = $_GET['mes'];
                 $mesClicado = $monthMap[$mesClicadoAbbr];
-    
+
                 $sql = "SELECT DATE(assunto.data_solicitada) AS data, COUNT(*) AS quantidade_ata FROM atareu.ata_has_fac as has INNER JOIN atareu.assunto as assunto ON has.id_ata = assunto.id  WHERE MONTH(data_solicitada) = :mesClicado GROUP BY DATE(assunto.data_solicitada)";
 
                 $stmt = $this->pdo->prepare($sql);
@@ -341,12 +414,12 @@ ORDER BY mes DESC, data_solicitada DESC;
 
                 $stmt = $this->pdo->prepare($sql);
             }
-    
+
             $stmt->execute();
             $resultados = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-    
+
             return $resultados;
-    
+
         } catch (\PDOException $e) {
             throw $e;
         }
