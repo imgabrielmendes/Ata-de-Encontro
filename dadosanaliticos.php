@@ -6,6 +6,7 @@ session_start();
 include_once ("funcoesgraficos.php");
 include ("conexao.php");
 
+
 $chartsFunc = new ChartsFunc();
 $data = $chartsFunc->pegandoTudo();
 
@@ -48,9 +49,10 @@ $objetivo = array_column($cincoultimos, 'objetivo');
 $faciliata = $chartsFunc->faciliAta();
 $facilitador = array_column($faciliata, 'facilitador');
 $numeroatas = array_column($faciliata, 'numero_de_atas');
-
-print_r($facilitador);
-print_r($numeroatas);
+$facilitador_json = json_encode($facilitador);
+$numeros_json = json_encode($numeroatas);
+print_r($facilitador_json);
+print_r($numeros_json);
 
 
 
@@ -73,7 +75,6 @@ $todasasatas = $atasabertas + $atasfechadas;
     <link rel="stylesheet" href="view/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="view/css/bootstrap.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
@@ -291,6 +292,7 @@ $todasasatas = $atasabertas + $atasfechadas;
 
 
     <script src="chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
         //objetivos
@@ -308,14 +310,21 @@ $todasasatas = $atasabertas + $atasfechadas;
                     backgroundColor: colors,
                     borderWidth: 1
                 }]
+                
             },
             options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
+    scales: {
+        yAxes: [{
+            ticks: {
+                beginAtZero: true
+            },
+            stacked: true
+        }],
+        xAxes: [{
+            stacked: true
+        }]
+    }
+}
         });
 
 
@@ -343,12 +352,32 @@ $todasasatas = $atasabertas + $atasfechadas;
                 }
             }
         });
+     
 
-
-
-
-
-
+ //atas por facilitadores
+ var facilitadores = <?php echo $facilitador_json; ?>;
+        var numeros = <?php echo $numeros_json; ?>;
+        var colors3 = ['#FF5733', '#33FF57', '#3357FF', '#F3FF33', '#FF33A1', '#33FFF3', '#7D33FF', '#FFB533', '#33FF92', '#F933FF'];
+        const ctx3 = document.getElementById('myChart2').getContext('2d');
+        new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: facilitadores,
+                datasets: [{
+                    label: 'Quantidade',
+                    data: numeros,
+                    backgroundColor: colors2,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
     </script>
 
 
