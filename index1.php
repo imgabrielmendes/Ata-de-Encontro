@@ -1,38 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de contato</title>
-
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>Fale Conosco</title>
 </head>
 <body>
+    <h2>Enviar Mensagem</h2>
 
-
-<div class="container">
-    <div class="row">
-    <div class="col-sm-4"></div>
-    <div class="col-sm-4">
-        <br><br><br>
-        <h2>Entre em contato conosco</h2>
-        <form action="enviar.php" method="post">
-            <input type="text" name="nome" required placeholder="Seu nome completo" class="form-control" />
-            
-            <br>
-            <input type="email" name="email" required placeholder="E-mail" class="form-control" />
-
-            <br>
-            <textarea name="mensagem" required placeholder="Digite sua mensagem aqui." class="form-control"></textarea>
-            
-            <br>
-            <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
-        </form>
-    </div>
-        
-    </div>
-</div>
-
-
+    <form action="enviar.php" method="POST">
+        <div>
+            <input type="email" name="email" placeholder="E-mail" required>
+        </div>
+        <div>
+            <input type="text" name="nome" placeholder="Nome" required>
+        </div>
+        <div>
+            <textarea name="msg" placeholder="Mensagem" required></textarea>
+        </div>
+        <input type="submit" name="enviar">
+    </form>
 </body>
 </html>

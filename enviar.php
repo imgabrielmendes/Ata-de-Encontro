@@ -5,63 +5,42 @@ use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
 
-// Definição das constantes SMTP
-define('SMTP_HOST', 'smtp.seuservidor.com');
-define('SMTP_USER', 'seu_email@seuservidor.com');
-define('SMTP_PASS', 'sua_senha');
-define('SMTP_PORT', 587);
+if(isset($_POST['enviar'])){
+    $mail = new PHPMailer(true);
 
-$post = filter_input_array(INPUT_POST);
+    try {
+        //Server settings
+        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com'; // SMTP do Gmail
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'pedrofts2005@gmail.com';
+        // Use uma senha de app do Gmail
+        $mail->Password   = 'vaym xuxe rzbn igga';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+        $mail->Port       = 465;
 
-$nome = $post['nome'];
-$email = $post['email'];
-$mensagem = $post['mensagem'];
+        //Recipients
+        $mail->setFrom('pedrofts2005@gmail.com', 'Mailer');
+        $mail->addAddress($_POST['email'], $_POST['nome']); // Adicionar destinatário baseado no formulário
+        $mail->addReplyTo('info@example.com', 'Information');
 
-$body = "
-<div style='background:#CCC; padding: 60px'>
-    <div style='background:#FFF; padding: 20px; font-family: arial; font-size: 14px; width:600px; margin:auto;'>
-        <h3>Formulário de contato do site</h3>
-        <strong>Nome:</strong>
-        {$nome}
-        <br>
-        <strong>E-mail:</strong>
-        {$email}
-        <br>
-        <strong>Mensagem:</strong>
-        {$mensagem}
-    </div>
-</div>    
-";
+        $mail->isHTML(true);
+        $mail->Subject = 'Here is the subject';
+        $body = "Mensagem enviada através do site - Pedro<br>
+                 Nome: ". $_POST['nome']."<br>
+                 E-mail: ". $_POST['email']."<br>
+                 Mensagem:<br>
+                 ". $_POST['msg'];
 
-$mail = new PHPMailer(true);
-
-try {
-    // Configurações do servidor SMTP
-    $mail->isSMTP();
-    $mail->Host       = SMTP_HOST;
-    $mail->SMTPAuth   = true;
-    $mail->Username   = SMTP_USER;
-    $mail->Password   = SMTP_PASS;
-    $mail->Port       = SMTP_PORT;
-    $mail->CharSet    = 'utf8'; // utf8 / iso-8859-1
-
-    // Remetente e destinatário
-    $mail->setFrom(SMTP_USER, 'Seu Nome');
-    $mail->addAddress('ph4261009@gmail.com', 'Nome Destinatário');
-
-    // Conteúdo do e-mail
-    $mail->isHTML(true);
-    $mail->Subject = 'Contato do Site: ' . $nome;
-    $mail->Body    = $body;
-
-    // Enviar e-mail
-    $mail->send();
-    
-    // Redirecionamento após envio bem-sucedido
-    header("location: retorno.php");
-    exit;
-} catch (Exception $e) {
-    // Tratamento de erro
-    echo "Erro ao enviar o e-mail: {$mail->ErrorInfo}";
+        $mail->Body    = $body;
+        $mail->send();
+        echo 'Message has been sent';
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
+}
+else{
+    echo "ERRO AO ENVIAR";
 }
 ?>
