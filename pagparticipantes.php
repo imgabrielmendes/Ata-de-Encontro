@@ -21,7 +21,6 @@ $facilitadores = $_GET['facilitadores'];
 $facilitadoresArray = json_decode($facilitadores, true);   
 $facilitadoresString = implode(", ", $facilitadoresArray);
 
-// echo $facilitadoresString;
 
 $conteudo = $_GET['conteudo'];
 $horainicio = $_GET['horainicio'];

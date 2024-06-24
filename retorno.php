@@ -9,7 +9,6 @@
 </head>
 <body>
 
-
 <div class="container">
     <div class="row">
     <div class="col-sm-4"></div>
@@ -19,11 +18,8 @@
         <div class="alert alert-success">
             <strong>Obrigado por entrar em contato conosco.</strong>
         </div>
-    </div>
-        
+    </div>    
     </div>
 </div>
-
-
 </body>
 </html>
