@@ -5,7 +5,7 @@ use PHPMailer\PHPMailer\Exception;
 
 require 'vendor/autoload.php';
 
-if(isset($_POST['enviar'])){
+if(isset($_POST['email']) && isset($_POST['nome'])) {
     $mail = new PHPMailer(true);
 
     try {
@@ -23,12 +23,12 @@ if(isset($_POST['enviar'])){
         $mail->addReplyTo('info@example.com', 'Information');
 
         $mail->isHTML(true);
-        $mail->Subject = '';
+        $mail->Subject = 'Registro de Usuário';
         $body = "Mensagem do Hospital Rio Grande <br>
                  Nome: ". $_POST['nome']."<br>
                  E-mail: ". $_POST['email']."<br>
-                 Mensagem:<br>
-                 ". $_POST['msg'];
+                 Matricula: ". $_POST['matricula']."<br>
+                 Cargo: ". $_POST['cargo']."<br>";
 
         $mail->Body    = $body;
         $mail->send();
@@ -36,8 +36,7 @@ if(isset($_POST['enviar'])){
     } catch (Exception $e) {
         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
-}
-else{
+} else {
     echo "ERRO AO ENVIAR";
 }
 ?>
