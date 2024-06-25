@@ -21,7 +21,6 @@ $facilitadores = $_GET['facilitadores'];
 $facilitadoresArray = json_decode($facilitadores, true);   
 $facilitadoresString = implode(", ", $facilitadoresArray);
 
-// echo $facilitadoresString;
 
 $conteudo = $_GET['conteudo'];
 $horainicio = $_GET['horainicio'];
@@ -322,49 +321,65 @@ $local = $_GET['local'];
 
                       <!------------------ MODAL ------------------>
                       <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h1 class="col modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-
-                              <form>
-                                <div class="mb-3">
-
-                                  <label class="col-form-label">Nome completo:</label>
-                                  <input type="text" class="form-control" id="caixanome">
-                                </div>
-
-                                <div class="mb-3">
-                                  <label class="col-form-label">Informe o Email</label>
-                                  <input type="email" class="form-control" id="caixadeemail">
-                                </div>
-
-                                <div class="row">
-                                <label class="col-4 form-label">Matricula: </label>
-                                <label id="labelcargo" class="col-8 form-label">Cargo: </label>
-                                <div class="col-4">
-                                <input type="text" maxlength="4" class="form-control" id="caixamatricula">
-                                </div>  
-
-                                <div class="col-8">
-                                <input type="text" class="col-5 form-control" id="caixacargo">
-                              </div></div>
-                              </form>
-
-                            </div>
-
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                              <button id="registraremail" type="button" class="btn btn-primary" data-bs-dismiss="modal">Registrar</button>
-
-                            </div>
-                          </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="col modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm">
+                    <div class="mb-3">
+                        <label class="col-form-label">Nome completo:</label>
+                        <input type="text" class="form-control" id="caixanome" name="nome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Informe o Email</label>
+                        <input type="email" class="form-control" id="caixadeemail" name="email" required>
+                    </div>
+                    <div class="row">
+                        <label class="col-4 form-label">Matricula:</label>
+                        <label id="labelcargo" class="col-8 form-label">Cargo:</label>
+                        <div class="col-4">
+                            <input type="text" maxlength="4" class="form-control" id="caixamatricula" name="matricula" required>
+                        </div>  
+                        <div class="col-8">
+                            <input type="text" class="col-5 form-control" id="caixacargo" name="cargo" required>
                         </div>
-                      </div> 
-                      
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('registraremail').addEventListener('click', function() {
+    var form = document.getElementById('userForm');
+    var formData = new FormData(form);
+
+    fetch('enviar.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert(data);
+        // Optionally, close the modal here
+        var modal = bootstrap.Modal.getInstance(document.getElementById('modaldeemail'));
+        modal.hide();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('There was an error sending the email.');
+    });
+});
+</script>
+
 <!-------------------- BOTÃO DA MODAL ------------------->
      
       </div>
