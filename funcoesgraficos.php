@@ -348,7 +348,9 @@ INNER JOIN
  WHERE MONTH(data_solicitada) = :mesClicado GROUP BY 
     facili.id, facili.nome_facilitador
 ORDER BY 
-    numero_de_atas DESC";
+    numero_de_atas DESC
+LIMIT 5
+      ";
 
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->bindParam(':mesClicado', $mesClicado, \PDO::PARAM_INT);
@@ -366,7 +368,8 @@ INNER JOIN
 GROUP BY 
     facili.id, facili.nome_facilitador
 ORDER BY 
-    numero_de_atas DESC";
+    numero_de_atas DESC
+ LIMIT 5      ";
 
                 $stmt = $this->pdo->prepare($sql);
             }
