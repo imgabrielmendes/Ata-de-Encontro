@@ -49,43 +49,45 @@ $pegarlocal=$puxarform->pegarlocais();
     }
     </style>
       <header>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/"><img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
-                </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/" title="Central de Serviço">
+                <img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                    <button class="btn">
-                      <div class="btn nav-item">
-                        <a class="nav-link" href="index.php">Criar ata</a>
-                        </div>      
-                    </button>
-                    <button class="btn">
-                      <div class="btn nav-item">
-                        <a class="nav-link" href="paghistorico.php">Histórico</a>
-                        </div>      
-                    </button>
-                    <button class="btn">
-                      <div class="btn nav-item">
-                        <a class="nav-link" href="dadosanaliticos.php">Estatísticas</a>
-                        </div>      
-                    </button>
-      <div class="collapse navbar-collapse" id="navBarCentral">
-      </div>
-    </div>
-  </nav>
-  <div class="content-header shadow" style="border-bottom: solid 1px gray;">
-      <div class="container-fluid">
-        <div class="row py-1">
-          <div class="col-sm-6">
-            <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i><b>Ata de encontro</b></h2>
-          </div>
+            <button class="btn" title="Novo Encontro">
+                <div class="btn nav-item">
+                    <a class="nav-link" href="index.php">Criar ata</a>
+                </div>      
+            </button>
+            <button class="btn" title="Histórico de Encontros">
+                <div class="btn nav-item">
+                    <a class="nav-link" href="paghistorico.php">Histórico</a>
+                </div>      
+            </button>
+            <button class="btn" title="Dados Estatísticos">
+                <div class="btn nav-item">
+                    <a class="nav-link" href="dadosanaliticos.php">Estatísticas</a>
+                </div>      
+            </button>
+            <div class="collapse navbar-collapse" id="navBarCentral">
+            </div>
         </div>
-      </div>
+    </nav>
+    <div class="content-header shadow" style="border-bottom: solid 1px gray;">
+        <div class="container-fluid">
+            <div class="row py-1">
+                <div class="col-sm-6">
+                    <h2 class="m-3 text-light shadow"><i class="fas fa-users"></i><b>Ata de encontro</b></h2>
+                </div>
+            </div>
+        </div>
     </div>
-  </header>
+</header>
+
 
   <!--FORMULÁRIO-->
 </div>
@@ -202,45 +204,41 @@ $pegarlocal=$puxarform->pegarlocais();
 
               <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="col modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="formularioRegistro">
-            <div class="mb-3">
-              <label class="col-form-label">Nome completo:</label>
-              <input type="text" class="form-control" id="caixanome">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="col modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Fechar"></button>
             </div>
-            <div class="mb-3">
-              <label class="col-form-label">Informe o Email</label>
-              <input type="email" class="form-control" id="caixadeemail">
-            </div>
-            <div class="row mb-3">
-              <label class="col-4 form-label">Matricula: </label>
-              <label id="labelcargo" class="col-8 form-label">Cargo: </label>
-              <div class="col-4">
-                <input type="text" maxlength="4" pattern="[0-9]{4}" class="form-control" id="caixamatricula">
-              </div>
-              <div class="col-8">
-                <input type="text" class="form-control" id="caixacargo">
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-          <button id="registraremail" type="button" class="btn btn-primary" data-bs-dismiss="modal">Registrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-                          </div>
-
+            <div class="modal-body">
+                <form id="formularioRegistro">
+                    <div class="mb-3">
+                        <label class="col-form-label">Nome completo:</label>
+                        <input type="text" class="form-control" id="caixanome">
+                    </div>
+                    <div class="mb-3">
+                        <label class="col-form-label">Informe o Email</label>
+                        <input type="email" class="form-control" id="caixadeemail">
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-4 form-label">Matricula: </label>
+                        <label id="labelcargo" class="col-8 form-label">Cargo: </label>
+                        <div class="col-4">
+                            <input type="text" maxlength="4" pattern="[0-9]{4}" class="form-control" id="caixamatricula">
                         </div>
-                      </div>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="caixacargo">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button id="registraremail" type="button" class="btn btn-primary" data-bs-dismiss="modal">Registrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
       <script src="view\js\multi-select-tag.js"></script>

@@ -73,13 +73,12 @@ $local = $_GET['local'];
       <header>
       <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg">
         <div class="container-fluid">
-            <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/"><img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px"></a>
-
+        <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/" title="Central de Serviços">
+            <img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
+        </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
             </button>
-      
-
           <div class="collapse navbar-collapse" id="navBarCentral">
           </div>
         </div>
@@ -94,9 +93,6 @@ $local = $_GET['local'];
           </div>
         </div>
       </header>
-
-  <!--FORMULÁRIO-->
-  <!--PRIMEIRA LINHA DO FORMULÁRIO DA ATA---------------->
   <div class="box box-primary">
     <main class="container_fluid d-flex justify-content-center align-items-center">
       
@@ -323,10 +319,11 @@ $local = $_GET['local'];
                       <div class="modal fade" id="modaldeemail" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="col modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+        <div class="modal-header">
+    <h1 class="col modal-title fs-5" id="staticBackdropLabel">Registro de usuário</h1>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" title="Fechar"></button>
+</div>
+
             <div class="modal-body">
                 <form id="userForm">
                     <div class="mb-3">
@@ -351,8 +348,10 @@ $local = $_GET['local'];
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button id="registraremail" type="button" class="btn btn-primary">Registrar</button>
+                <button id="registraremail" type="button" class="btn btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Registrar participante">Registrar</button>
             </div>
+
+
         </div>
     </div>
 </div>

@@ -95,27 +95,28 @@ if ($conn->connect_error) {
       <header>
       <nav class="navbar navbar-expand-lg navbar-light bg-light navbar-border-hrg">
             <div class="container-fluid">
-                <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/"><img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
-                </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+            <a class="navbar-brand" href="http://10.1.1.31:80/centralservicos/" title="Central de Serviço">
+                <img src="http://10.1.1.31:80/centralservicos/resources/img/central-servicos.png" alt="Central de Serviço" style="width: 160px">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navBarCentral" aria-controls="navBarCentral" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                    <button class="btn">
-                      <div class="btn nav-item">
-                        <a class="nav-link" href="index.php">Criar ata</a>
-                        </div>      
-                    </button>
-                    <button class="btn">
-                      <div class="btn nav-item">
-                        <a class="nav-link" href="paghistorico.php">Histórico</a>
-                        </div>      
-                    </button>
-                    <button class="btn">
-                      <div class="btn nav-item">
-                        <a class="nav-link" href="dadosanaliticos.php">Estatísticas</a>
-                        </div>      
-                    </button>
+            <button class="btn" title="Novo Encontro">
+                <div class="btn nav-item">
+                    <a class="nav-link" href="index.php">Criar ata</a>
+                </div>      
+            </button>
+            <button class="btn" title="Histórico de Encontros">
+                <div class="btn nav-item">
+                    <a class="nav-link" href="paghistorico.php">Histórico</a>
+                </div>      
+            </button>
+            <button class="btn" title="Dados Estatísticos">
+                <div class="btn nav-item">
+                    <a class="nav-link" href="dadosanaliticos.php">Estatísticas</a>
+                </div>      
+            </button>
       <div class="collapse navbar-collapse" id="navBarCentral">
       </div>
     </div>
